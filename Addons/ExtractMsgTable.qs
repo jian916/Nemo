@@ -29,6 +29,17 @@ function ExtractMsgTable() {
 	  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+80);
   }
 
+    if (offset2 === -1) {
+      code = 
+          " 56"                // push esi
+        + " 33 AB"             // xor R,R
+        + " 33 AB"             // xor R,R
+        + " 8B FF"             // mov edi, edi
+        + " 8B AB AB AB AB 00" // mov reg1, tblAddr[reg2]
+        ;
+      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-40, offset+10);
+    }
+
 	if (offset2 === -1) {//Old clients
     code =
       " 33 F6"          //XOR ESI, ESI
