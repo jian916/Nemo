@@ -10,7 +10,11 @@ This program can be used for patch closed source clients for using with [Hercule
 
 ## Profiles
 
-Exits predefined minimal profile for zero clients. See in profiles directory.
+Predefined minimal profile for zero clients. See in [profiles](profiles) directory.
+
+## Configs
+
+Working config for [zero client](configs/zero/)
 
 # Support
 
