@@ -12,9 +12,11 @@ This program can be used for patch closed source clients for using with [Hercule
 
 Exits predefined minimal profile for zero clients. See in profiles directory.
 
-# Future updates
+# Support
 
 In future by me will be updated only some patches what really need to test hercules.
+
+Forum topic: http://herc.ws/board/topic/15523-another-nemo-patcher-fork/
 
 # License
 
