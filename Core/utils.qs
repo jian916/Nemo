@@ -42,6 +42,15 @@ function IsRenewal() {
 }
 
 //###########################################################
+//# Purpose: Check whether client is Zero or not
+//###########################################################
+
+function IsZero() {
+    // search for "Software\Gravity Soft\RenewSetup Zero"
+    return(exe.find("53 6F 66 74 77 61 72 65 5C 47 72 61 76 69 74 79 20 53 6F 66 74 5C 52 65 6E 65 77 53  65 74 75 70 20 5A 65 72 6F", PTYPE_HEX) !== -1);
+}
+
+//###########################################################
 //# Purpose: Extract the g_serviceType address from Client. # 
 //#          Returned value will be in PTYPE_HEX format     #
 //###########################################################

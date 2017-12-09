@@ -54,5 +54,5 @@ function RestoreOldLoginPacket() {
 // Disable for Unneeded Clients. Start from first zero client version //
 //====================================================================//
 function RestoreOldLoginPacket_() {
-  return (exe.getClientDate() > 20171019);
+  return (exe.getClientDate() > 20171019 && IsZero());
 }

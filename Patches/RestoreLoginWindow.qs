@@ -295,5 +295,5 @@ function RestoreLoginWindow() {
 // Disable for Unneeded Clients - Only VC9+ Client dont have it //
 //==============================================================//
 function RestoreLoginWindow_() {
-  return (exe.getClientDate() > 20100803);
+  return (exe.getClientDate() > 20100803 && !IsZero());
 }
