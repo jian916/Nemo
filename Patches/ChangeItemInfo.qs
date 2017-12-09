@@ -6,10 +6,16 @@
 function ChangeItemInfo() {
 
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
-    if (IsRenewal())
+    if (IsRenewal()) {
         var iiName = "System/iteminfo_Sak.lub";
-    else
+    } else {
+        // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
+        if (exe.findString(iiName, RVA) === -1) {
+            // iteminfo in new clients
+            iiName = "System/iteminfo_true.lub";
+        }
+    }
 
     //Step 1b - Find offset of the original string
     var offset = exe.findString(iiName, RVA);
@@ -42,9 +48,15 @@ function ChangeItemInfo() {
 // Disable for Unsupported clients //
 //=================================//
 function ChangeItemInfo_() {
-    if (IsRenewal())
+    if (IsRenewal()) {
         var iiName = "System/iteminfo_Sak.lub";
-    else
+    } else {
+        // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
+        if (exe.findString(iiName, RAW) !== -1)
+            return true;
+        // iteminfo in new clients
+        iiName = "System/iteminfo_true.lub";
+    }
     return (exe.findString(iiName, RAW) !== -1);
 }
