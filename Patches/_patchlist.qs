@@ -357,7 +357,9 @@ registerPatch(227, "SetWalkToDelay", "Change Walk To Delay.", "Fix", 16, "MegaBy
 registerPatch(228, "DisableDoram", "Disable Doram Character Creation UI [Experimental]", "UI", 0, "Ai4Rei, Secret", "Disable Doram race in the character creation UI. Server-side disabling is also recommended", false);
 
 registerPatch(229, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "Neo", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
+
 registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSettings lua file", "Fix", 0, "Secret", "Makes the client load Korea server's ExternalSettings file for all langtypes.", false);
 
 registerPatch(231, "RemoveHardcodedAddress", "Remove hardcoded address/port", "Fix", 17, "4144", "Remove hardcoded addresses and ports. For Zero client only.", false);
 registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 17, "4144", "Make client send old 0x64 login packet. For Zero client only.", false);
+registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret", "Hide SNS (Twitter) button", false);
