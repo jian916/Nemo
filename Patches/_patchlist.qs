@@ -367,3 +367,5 @@ registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 1
 registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret", "Hide SNS (Twitter) button", false);
 
 registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Fix", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
+
+registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "Custom", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
