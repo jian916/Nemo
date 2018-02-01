@@ -379,3 +379,5 @@ registerPatch(237, "EnableHomunSkills", "Enable Custom Homunculus Skills [Experi
 registerPatch(238, "EnableMerceSkills", "Enable Custom Mercenary Skills [Experimental]", "Custom", 18, "Neo", "Enables the use of custom skills for Mercenaries (using Lua Files)", false);
 
 registerPatch(239, "IgnoreAccountArgument", "Ignore /account: command line argument", "Fix", 0, "Secret", "Makes the client ignore /account: command line argument to prevent custom clientinfo.xml from being used.", false);
+
+registerPatch(240, "LoadCustomClientInfo", "Load custom ClientInfo file", "Custom", 0, "Secret", "Makes the client load your own clientinfo file instead of *clientinfo.xml", false);
