@@ -30,6 +30,13 @@ function GenMapEffectPlugin() {
     ;
     
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
+  if (offset === -1) {
+    var code = 
+        " B9 AB AB AB 01" //MOV ECX, g_Weather
+      + " E8"             //CALL CWeather::ScriptProcess
+      ;
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
+  }
   if (offset === -1)
     throw "Error: g_Weather assignment missing";
   
