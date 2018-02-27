@@ -382,4 +382,8 @@ registerPatch(239, "IgnoreAccountArgument", "Ignore /account: command line argum
 
 registerPatch(240, "LoadCustomClientInfo", "Load custom ClientInfo file", "Custom", 0, "Secret", "Makes the client load your own clientinfo file instead of *clientinfo.xml", false);
 
-registerPatch(241, "AlwaysLoadClientPlugins", "Always Load Client Plugins", "Fix", 0, "Secret", "Makes the client load client plug-ins regardless of its sound settings", false);
+registerPatch(241, "AlwaysLoadClientPlugins", "Always Load Client Plugins [Experimental]", "Fix", 0, "Secret", "Makes the client load client plug-ins regardless of its sound settings", false);
+
+registerPatch(242, "DisableKROSiteLaunch", "Disable kRO Site Launch", "Fix", 0, "mrjnumber1", "Disable ro.gnjoy.com launching after in-game settings change", false);
+
+registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "Fix", 0, "mrjnumber1", "Change quick item switch delay", false);
