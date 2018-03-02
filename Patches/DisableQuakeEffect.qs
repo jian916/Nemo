@@ -6,17 +6,27 @@
 function DisableQuakeEffect() {
   
   //Step 1a - Find offset of .BMP
-  var offset = exe.findString(".BMP", RVA);
-  if (offset === -1)
+  var bmpOffset = exe.findString(".BMP", RVA);
+  if (bmpOffset === -1)
     return "Failed in Step 1 - BMP not found";
   
   //Step 1b - Find its reference
+  // 2017 and older clients
   var code = 
-    " 68" + offset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
+    " 68" + bmpOffset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
   + " 8B"                       //MOV ECX, reg32_A
   ;
-  
   offset = exe.findCode(code, PTYPE_HEX, false);
+
+  if (offset === -1)
+  {
+    // for 2018 clients
+    var code = 
+      " 68" + bmpOffset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
+    + " 8D"                          //MOV ECX, [reg32+addr]
+    ;
+    offset = exe.findCode(code, PTYPE_HEX, false);
+  }
   if (offset === -1)
     return "Failed in Step 1 - BMP reference missing";
   
