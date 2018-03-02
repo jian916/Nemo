@@ -22,7 +22,28 @@ function UseSSOLoginPacket() {
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
  
   if (offset === -1) {
-    code = code.replace(" A1", " 8B AB");//Change MOV EAX to MOV reg32_A, DWORD PTR DS:[g_serviceType]
+    var code =
+      " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
+    + " 0F 85 AB AB 00 00"    //JNE addr1
+    + " 8B AB " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
+    + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    + " 83 AB 12"             //CMP EAX, 12
+    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    ;
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
+
+  if (offset === -1) {
+    var code =
+      " 80 3D AB AB AB 01 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
+    + " 0F 85 AB AB 00 00"    //JNE addr1
+    + " 8B AB " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
+    + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    + " 83 AB 12"             //CMP EAX, 12
+    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    ;
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
@@ -31,7 +52,8 @@ function UseSSOLoginPacket() {
     exe.replace(offset + code.hexlength() - 15, " 90 E9", PTYPE_HEX);
     return true;
   }
-  
+
+  // for very old clients
   //Step 2a - Since it failed it is an old client before VC9. Find the alternate comparison pattern
   code = 
     " A0 AB AB AB 00"       //MOV AL, DWORD PTR DS:[g_passwordencrypt]
