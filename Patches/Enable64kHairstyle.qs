@@ -105,15 +105,25 @@ function Enable64kHairstyle() {
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x1B0, offset2);
 
   if (offset === -1) {//const is > 0x7F
-    code = code.replace(" 83", " 81");
+    code =
+      " 6A FF"             //PUSH -1
+    + " 68 AB AB AB 00"    //PUSH value
+    + " 64 A1 00 00 00 00" //MOV EAX, FS:[0]
+    + " 50"                //PUSH EAX
+    + " 81 EC"             //SUB ESP, const
+    ;
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x280, offset2);
   }
-  
-  offset += code.hexlength();
-  
+
+  if (offset === -1) { // 2017 +
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x2A0, offset2);
+  }
+
   if (offset === -1)
     return "Failed in Step 3 - Function start missing";
-  
+
+  offset += code.hexlength();
+ 
   //Step 3b - Get the Stack offset w.r.t. ESP/EBP for Arg.5
   var arg5Dist = 5*4; //for the 5 PUSHes of the arguments
   
@@ -172,7 +182,20 @@ function Enable64kHairstyle() {
   }
   
   if (offsets.length === 0) {
-    code = code.replace(" 8B AB AB", " A1 AB");//reg32_A is EAX
+    code =
+      " 8B AB"             //MOV reg32_B, DWORD PTR DS:[reg32_C]
+    + " A1 AB AB AB 00"    //MOV reg32_A, DWORD PTR DS:[addr]
+    + " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A]
+    ;
+    offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", offset, assignOffset);
+  }
+
+  if (offsets.length === 0) {  // 2017 +
+    code =
+      " 8B AB"             //MOV reg32_B, DWORD PTR DS:[reg32_C]
+    + " A1 AB AB AB 01"    //MOV reg32_A, DWORD PTR DS:[addr]
+    + " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A]
+    ;
     offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", offset, assignOffset);
   }
  
@@ -195,7 +218,12 @@ function Enable64kHairstyle() {
   offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 4, offset + 0x50);//VC9 - VC10
   
   if (offset2 === -1) {
-    code = code.replace(" 7C", " 78");//changing JL to JS
+    code = 
+      " 78 05"    //JL SHORT addr1; skips the next two instructions
+    + " 83 AB AB" //CMP reg32_A, const; const = max hairstyle ID
+    + " 7E AB"    //JLE SHORT addr2; skip the next assignment - AB should be 06 or 07
+    + " C7"       //MOV DWORD PTR DS:[reg32_B], 0D
+    ;
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 4, offset + 0x50);//VC11
   }
   
