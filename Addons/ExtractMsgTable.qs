@@ -86,6 +86,7 @@ function ExtractMsgTable() {
         var parts = fp.readline().split('#');
         for (var i = 1; i <= parts.length; i++) {
             msgStr += parts[i-1];
+            msgStr = msgStr.replace("#", "_");
             if (i < parts.length) {
                 engMap[refList[index]] = msgStr;
                 msgStr = "";
@@ -114,6 +115,7 @@ function ExtractMsgTable() {
             } else {
                 msgStr = msgStr.replace(/\r/g, "\\r");
                 msgStr = msgStr.replace(/\n/g, "\\n");
+                msgStr = msgStr.replace("#", "_");
                 fp.writeline(msgStr + "#");
             }
             offset += 8;
