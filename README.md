@@ -22,6 +22,14 @@ In future by me will be updated only some patches what really need to test hercu
 
 Forum topic: http://herc.ws/board/topic/15523-another-nemo-patcher-fork/
 
+# Game guard files
+
+For disable game guard Cheat Defender need:
+
+1. get dropin replacment file [CDClient.dll](Input/CDClient.dll) and save into client directory.
+
+2. Enable patch "Disable Cheat Defender Game Guard".
+
 # License
 
 Original code and binary files licensed under unknown free use license.
