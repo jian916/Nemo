@@ -8,6 +8,13 @@ function DisableQuakeEffect()
     //Step 1a - Find offset of .BMP
     var bmpOffset = exe.findString(".BMP", RVA);
     if (bmpOffset === -1)
+    {
+        // .BMP\x00
+        bmpOffset = exe.find("2E 42 4D 50 00", PTYPE_HEX, false);
+        if (bmpOffset !== -1)
+            bmpOffset = exe.Raw2Rva(bmpOffset);
+    }
+    if (bmpOffset === -1)
         return "Failed in Step 1 - BMP not found";
 
     //Step 1b - Find its reference
