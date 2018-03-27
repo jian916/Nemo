@@ -388,4 +388,4 @@ registerPatch(242, "DisableKROSiteLaunch", "Disable kRO Site Launch", "Fix", 0, 
 
 registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "Fix", 0, "mrjnumber1", "Change quick item switch delay", false);
 
-registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 17, "4144", "Disables Cheat Defender Game Guard from new clients", false);
+registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 0, "4144", "Disables Cheat Defender Game Guard from new clients", false);
