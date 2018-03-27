@@ -177,6 +177,31 @@ function EnableCustomJobs() {//Pre-VC9 Client support not completed
     gJobName = 3;
     offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
+
+  if (offset2 === -1) {//Latest Clients
+    code =
+      " 85 C0"                                   //TEST EAX, EAX
+    + " 75 AB"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
+    + " A1 AB AB AB 00"                          //MOV EAX, DWORD PTR DS:[g_jobName]
+    + " C7 AB 38 3F 00 00" + offset.packToHex(4) //MOV DWORD PTR DS:[EAX+3F38], OFFSET addr; ASCII "TaeKwon Girl"
+    ;
+    gJobName = 5;
+    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+  }
+
+  if (offset2 === -1) {  // 2017+
+    code =
+      " 85 AB"                       //TEST EDI, EDI
+    + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"
+    + " 0F AB AB"                    //cmovnz ecx, eax
+    + " A1 AB AB AB 01"              //MOV EAX, DWORD PTR DS:[g_jobName]
+    + " AB"                          //pop edi
+    + " 89 AB 38 3F 00 00"           //mov [eax+3F38h], ecx
+    ;
+    gJobName = 13;
+    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+  }
+
   
   if (offset2 === -1)
     return "Failed in Step 5 - 'TaeKwon Girl' reference missing";
@@ -194,8 +219,22 @@ function EnableCustomJobs() {//Pre-VC9 Client support not completed
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
   
   if (offset === -1) {
-    code = code.replace(" 83 3D", " A1").replace(" 00 B9 AB AB AB 00 75", " B9 AB AB AB 00 85 C0 75");//Change the CMP to MOV EAX, DWORD PTR DS:[g_serviceType] and insert TEST EAX, EAX before JNZ
+    code =
+      " A1" + LANGTYPE   //mov eax, g_serviceType
+    + " B9 AB AB AB 00"  //mov ecx, addr1
+    + " 85 C0"           //test eax, eax
+    + " 75"              //jnz addr -> CALL CSession::GetSex
+    ;
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
+  }
+
+  if (offset === -1) { // 2017+
+    code =
+      " A1" + LANGTYPE   //mov eax, g_serviceType
+    + " 85 C0"           //test eax, eax
+    + " 75"              //jnz addr -> CALL CSession::GetSex
+    ;
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x90, offset2);
   }
 
   if (offset === -1)
@@ -217,6 +256,19 @@ function EnableCustomJobs() {//Pre-VC9 Client support not completed
   ;
   
   offset2 = exe.find(code, PTYPE_HEX, false, " ", offset + 0x10, offset + 0x100);
+  if (offset2 === -1)
+  {
+    code =
+      " 83 F8 0C" //CMP EAX, 0C
+    + " 74 29"    //JE SHORT addr
+    + " 83 F8 05" //CMP EAX, 5
+    + " 74 24"    //JE SHORT addr
+    + " 83 F8 06" //CMP EAX, 6
+    + " 74 1F"    //JNE addr2
+    ;
+
+    offset2 = exe.find(code, PTYPE_HEX, false, " ", offset - 0x20, offset + 0x100);
+  }
   if (offset2 === -1)
     return "Failed in Step 5 - 2nd LangType comparison missing";
   
