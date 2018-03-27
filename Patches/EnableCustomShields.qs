@@ -10,7 +10,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   // Find first inject & return locations - table loading area //
   //===========================================================//
   
-  //Step 1a - Find address of _∞°µÂ (Guard's suffix)
+  //Step 1a - Find address of _Í∞ÄÎìú (Guard's suffix)
   var offset = exe.findString("_\xB0\xA1\xB5\xE5", RVA);
   if (offset === -1)
     return "Failed in Step 1 - Guard not found";
@@ -41,7 +41,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     var regPush = exe.fetchHex(hookReq + 1, 1).replace("4", "5");//PUSH reg32_A
   }
  
-  //Step 1d - Find the address of _πˆ≈¨∑Ø (Buckler's suffix)
+  //Step 1d - Find the address of _Î≤ÑÌÅ¥Îü¨ (Buckler's suffix)
   offset = exe.findString("_\xB9\xF6\xC5\xAC\xB7\xAF", RVA);
   if (offset === -1)
     return "Failed in Step 1 - Buckler not found";
