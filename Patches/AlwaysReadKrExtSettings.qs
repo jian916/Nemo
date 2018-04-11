@@ -21,7 +21,7 @@ function AlwaysReadKrExtSettings() {
 	+	" 83 F8 12"      // CMP EAX, 12
 	;
 		
-	offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x50, korea_ref_offset);
+	offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x70, korea_ref_offset);
 	
 	if (offset === -1)
 		return "Failed in Step 2a - g_serviceType comparison not found";
