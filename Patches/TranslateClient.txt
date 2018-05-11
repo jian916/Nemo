@@ -1366,3 +1366,13 @@ M: Pet Evolution item amount in non-langtype 0
 
 F: 25 64 B0 B3 00
 R: '%dea'
+
+------------------------------
+M: Translate Tip box
+------------------------------
+
+F: BD C3 C0 DB C7 D2 20 B6 A7 20 BF AD B1 E2
+R: 'Save Tip?'
+
+F: B4 DD B1 E2
+R: 'Done'
