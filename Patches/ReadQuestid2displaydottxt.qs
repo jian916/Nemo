@@ -35,5 +35,5 @@ function ReadQuestid2displaydottxt() {
 }
 
 function ReadQuestid2displaydottxt_() {
-    return !IsZero();
+    return !IsZero() && (exe.findString("questID2display.txt", RAW) !== -1);
 }
