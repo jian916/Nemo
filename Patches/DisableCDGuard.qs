@@ -49,6 +49,21 @@ function DisableCDGuard()
         offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
     if (offsets.length === 0)
+    {
+        var code = 
+            "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
+            "E8 AB AB AB 00" +     // call CCheatDefenderMgr_init
+            "3c 01" +              // cmp al, 1    <-- change here
+            "A1 AB AB AB AB" +     // mov eax, g_CCheatDefenderMgr
+            "0F 94 C1" +           // setz cl
+            "68 AB AB AB 00" +     // push offset string_buffer
+            "88 48 05" +           // mov [eax+5], cl
+            "E8 AB AB AB 00" +     // call CRagConnection_instanceR
+            "8B C8" +              // mov ecx, eax
+            "E8";                  // call CRagConnection_some_func
+        offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    }
+    if (offsets.length === 0)
         return "Failed in Step 1 - CCheatDefenderMgr_init call not found";
     if (offsets.length !== 2)
         return "Failed in Step 1 - CCheatDefenderMgr_init calls wrong number found";
