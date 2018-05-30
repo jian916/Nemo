@@ -90,6 +90,18 @@ function EnableWhoCommand() {
           ;
         offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x60, offset);
     }
+    if (offset2 === -1)  // 2018-05-30 +
+    {
+        code =
+            " 75 AB"          //JNE SHORT addr
+          + " FF 35 AB AB AB 00"  // PUSH DWORD PTR DS:[refAddr]
+          + " E8 AB AB AB 00" //CALL IsGravityAid
+          + " 83 C4 04"       //ADD ESP, 4
+          + " 84 C0"          //TEST AL, AL
+          + " 75"             //JNE SHORT addr
+          ;
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x60, offset);
+    }
 
     if (offset2 === -1)
         return "Failed in Step 2 - LangType comparison missing";
