@@ -47,7 +47,7 @@ function EnableDNSSupport()
     }
 
     if (offset === -1)
-    { // 2018-03-xx +
+    { // 2018-03-xx ragexe +
         code =
             " E8 AB AB AB FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
@@ -57,6 +57,22 @@ function EnableDNSSupport()
           + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
           + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
           + " E8 AB AB AB FF"    //CALL CCheatDefenderMgr::init
+          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+        ;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
+    { // 2018-05-30 ragexe +
+        code =
+            " E8 AB AB AB FF"    //CALL g_resMgr
+          + " 8B C8"             //MOV ECX,EAX
+          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " 50"                //PUSH EAX
+          + " B9 AB AB AB 00"    //MOV ECX,OFFSET g_windowMgr
+          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
+          + " E8 AB AB AB 00"    //CALL CCheatDefenderMgr::init
           + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
