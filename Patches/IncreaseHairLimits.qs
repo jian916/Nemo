@@ -11,7 +11,13 @@ function IncreaseHairLimits()
     if (refOffset.length === 0)
         return "Failed in Step 1 - PUSH missing";
 
-    refOffset = refOffset[refOffset.length-1]; //Assumption : The last one is the one we need. Previously there was only one match but recent clients have 2
+    if (refOffset.length != 2)
+        return "Failed in Step 1 - PUSH count is wrong";
+
+    var index = 1; // Assumption : The last one is the one we need. Previously there was only one match but recent clients have 2
+    if (exe.getClientDate() >= 20180528)
+        index = 0;  // for 20180528+ it's first one
+    refOffset = refOffset[index];
 
     //Step 1b -  Find the Comparison for Hair Color after it
     var code =
