@@ -15,8 +15,19 @@ function EnableOfficialCustomFonts()
       + " 0F 85 AE 00 00 00"  //JNE addr - Skips .eot loading
       + " E8 AB AB AB FF"     //CALL func
     ;
-
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
+    {  // 2018-05-30 +
+        code =
+            LANGTYPE + " 00 "     //CMP g_serviceType, 0
+          + " AB"                 //POP EDI
+          + " 0F 85 AE 00 00 00"  //JNE addr - Skips .eot loading
+          + " E8 AB AB AB 00"     //CALL func
+        ;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
     if (offset === -1)
         return "Failed in Step 1";
 
