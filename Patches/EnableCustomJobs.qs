@@ -207,6 +207,19 @@ function EnableCustomJobs()
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
     }
 
+    if (offset2 === -1) {  // 2018-05-30+
+        code =
+          " 85 AB"                       //TEST EDI, EDI
+        + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"
+        + " 0F AB AB"                    //cmovnz ecx, eax
+        + " A1 AB AB AB 00"              //MOV EAX, DWORD PTR DS:[g_jobName]
+        + " AB"                          //pop edi
+        + " 89 AB 38 3F 00 00"           //mov [eax+3F38h], ecx
+        ;
+        gJobName = 13;
+        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+    }
+
     if (offset2 === -1)
         return "Failed in Step 5 - 'TaeKwon Girl' reference missing";
 
