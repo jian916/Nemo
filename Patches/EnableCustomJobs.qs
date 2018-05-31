@@ -306,6 +306,9 @@ function EnableCustomJobs()
     offset2 += code.hexlength();
     offset2 += 4 + exe.fetchDWord(offset2);
 
+    if (exe.Raw2Rva(offset2) == -1)
+        return "Failed in Step 5g - wrong offset.";
+
     //Step 5h - Change the CMP to NOP and JNE to JMP as shown below at The JNE address
     //A1 <LANGTYPE> ; MOV EAX, DWORD PTR DS:[g_serviceType]
     //83 F8 0A    => push2 push1 90
