@@ -24,15 +24,15 @@ function FixedCharJobCreate()
     // 2018-05-30
     var code = 
         "B8 39 0A 00 00" +        // mov     eax, 0A39h
-        "66 89 85 18 FD FF FF" +  // mov     [ebp+a39.packet_id], ax
-        "0F B7 05 44 7C FC 00" +  // movzx   eax, word_FC7C44
-        "66 89 85 33 FD FF FF" +  // mov     [ebp+a39.hair_color], ax
-        "0F B7 05 32 7C FC 00" +  // movzx   eax, word_FC7C32
-        "66 89 85 35 FD FF FF" +  // mov     [ebp+a39.hair_style], ax
-        "A0 66 7C FC 00" +        // mov     al, byte_FC7C66
-        "88 85 32 FD FF FF" +     // mov     [ebp+a39.slot], al
-        "0F BF 05 30 7C FC 00" +  // movsx   eax, word_FC7C30  <-- patch here
-        "89 85 37 FD FF FF"       // mov     dword ptr [ebp+a39.starting_job_id], eax
+        "66 89 85 AB AB AB AB" +  // mov     [ebp+a39.packet_id], ax
+        "0F B7 05 AB AB AB AB" +  // movzx   eax, word_FC7C44
+        "66 89 85 AB AB AB AB" +  // mov     [ebp+a39.hair_color], ax
+        "0F B7 05 AB AB AB AB" +  // movzx   eax, word_FC7C32
+        "66 89 85 AB AB AB AB" +  // mov     [ebp+a39.hair_style], ax
+        "A0 AB AB AB AB" +        // mov     al, byte_FC7C66
+        "88 85 AB AB AB AB" +     // mov     [ebp+a39.slot], al
+        "0F BF 05 AB AB AB AB" +  // movsx   eax, word_FC7C30  <-- patch here
+        "89 85 AB AB AB AB"       // mov     dword ptr [ebp+a39.starting_job_id], eax
     patchOffset = 51;
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     if (offsets.length === 0)
