@@ -48,14 +48,26 @@ function ShowReplayButton() {
     " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
   + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
   ;
-  
+  assignedLen = 4;
+
   var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  if (offset2 === -1)
+  {
+    code =
+      " C6 80 AB AB 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
+    + " C7 AB 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    ;
+    assignedLen = 7;
+    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
   if (offset2 === -1)
     return "Failed in Step 3 - Replay mode setter missing";
   
   //Step 3c - Get the Function address before the setter & the assigner
+  // get address of CRagConnection::instanceR
   var func = exe.Raw2Rva(offset2) + exe.fetchDWord(offset2 - 4);
-  var assigner = exe.fetchHex(offset2, 4).replace(" 01", " 00");
+  // get command related to CRagConnection::replayFlag ?
+  var assigner = exe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
 
   //Step 4a - Prep code to disable the Replay Mode and send 2722 instead of 2729
   code =
