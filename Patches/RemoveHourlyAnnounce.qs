@@ -6,18 +6,19 @@
 function RemoveHourlyAnnounce() {//PlayTime comparison is not there in Pre-2010 clients
   
   //Step 1a - Find the comparison for Game Grade
+  // clients before 2017-11-08b use ax, later cx
   var code = 
     " 75 AB"    //JNE SHORT addr1
-  + " MovAx"    //Frame Pointer Specific MOV
-  + " 66 85 C0" //TEST AX, AX
+  + " MovR16"    //Frame Pointer Specific MOV
+  + " 66 85 AB" //TEST r16, r16
   + " 75"       //JNE SHORT addr2
   ;
   
   var fpEnb = HasFramePointer();
   if (fpEnb)
-    code = code.replace(" MovAx", " 66 8B 45 AB"); //MOV AX, WORD PTR SS:[EBP-x]
+    code = code.replace(" MovR16", " 66 8B AB AB"); //MOV r16, WORD PTR SS:[EBP-x]
   else
-    code = code.replace(" MovAx", " 66 8B 44 24 AB"); //MOV AX, WORD PTR SS:[ESP+x]
+    code = code.replace(" MovR16", " 66 8B AB 24 AB"); //MOV r16, WORD PTR SS:[ESP+x]
   
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9+ Clients
   
@@ -27,7 +28,7 @@ function RemoveHourlyAnnounce() {//PlayTime comparison is not there in Pre-2010 
   }
 
   if (offset === -1 && !fpEnb) {
-    code = code.replace(" 8B 44 24 AB", " 66 8B 45 AB"); // HasFramePointer() broke? [Secret]
+    code = code.replace(" 8B AB 24 AB", " 66 8B AB AB"); // HasFramePointer() broke? [Secret]
 	offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
   
