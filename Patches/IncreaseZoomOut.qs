@@ -26,17 +26,67 @@ function IncreaseZoomOut(newvalue)
 {
     //Step 1 - Find the FAR_DIST location
     var code =
-        " 00 00 66 43" //DD FLOAT 230.000              zoom1
-      + " 00 00 C8 43" //DD FLOAT 400.000 <- FAR_DIST  zoom2
-      + " 00 00 96 43" //DD FLOAT 300.000              zoom3
+        " 00 00 66 43" //DD FLOAT 230.000              zoom1 (min zoom level indoor/outdoor)
+      + " 00 00 C8 43" //DD FLOAT 400.000 <- FAR_DIST  zoom2 (max outdoor zoom level)
+      + " 00 00 96 43" //DD FLOAT 300.000              zoom3 (max indoor zoom level)
     ;
 
-    var offset = exe.find(code, PTYPE_HEX, false);//Its not there in code section - so we use the generic find
+    var offset = exe.find(code, PTYPE_HEX, false); // Its not there in code section - so we use the generic find
     if (offset === -1)
         return "Failed in Step 1";
 
     //Step 2 - Modify with the value supplied - Current value is 400.0
-    exe.replace(offset + 6, newvalue, PTYPE_HEX); //newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
+    exe.replace(offset + 6, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
+
+    if (exe.findString("/zoom", RAW) !== -1 || exe.findString("/expandsight", RAW) !== -1)
+    {   // found zoom command. need do additional patching
+        //Step 3 - Patch /zoom enabled/disabled command
+        // get zoom2 addr bytes
+        var zoom2 = exe.Raw2Rva(offset + 4).packToHex(4);
+
+        // search and patch also enabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
+        code = " C7 05 " + zoom2 + " 00 00 F0 43"; // mov zoom2, 480.0
+        var offsets = exe.findCodes(code, PTYPE_HEX, false);
+        if (offsets.length === 0)
+            return "Failed in Step 3. Enabled /zoom usage not found";
+        if (offsets.length !== 2)
+            return "Failed in Step 3. Found wrong number of enabled /zoom usage count.";
+        exe.replace(offsets[0] + 8, newvalue, PTYPE_HEX);
+        exe.replace(offsets[1] + 8, newvalue, PTYPE_HEX);
+
+        // search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
+        code = " C7 05 " + zoom2 + " 00 00 C8 43"; // mov zoom2, 480.0
+        var offsets = exe.findCodes(code, PTYPE_HEX, false);
+        if (offsets.length === 0)
+            return "Failed in Step 3. Disabled /zoom usage not found";
+        if (offsets.length !== 2)
+            return "Failed in Step 3. Found wrong number of disabled /zoom usage count.";
+        exe.replace(offsets[0] + 8, newvalue, PTYPE_HEX);
+        exe.replace(offsets[1] + 8, newvalue, PTYPE_HEX);
+
+        //Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)
+        var code =
+            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_enabled
+            "EB 08" +                    // jmp +8
+            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_disabled
+            "F3 0F 10 05 AB AB AB AB" +  // movss xmm0, ADDR1
+            "F3 0F 10 15 AB AB AB AB" +  // movss xmm2, g_outdoorViewLatitude
+            "0F 2F C2" +                 // comiss xmm0, xmm2
+            "F3 0F 11 0D " + zoom2;      // movss zoom2_max_outdoor, xmm1
+        enabledOffset = 4;
+        disabledOffset = 14;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        if (offset === -1)
+            return "Failed in Step 4";
+
+        // patch enabled /zoom configuration limit
+        var enebledAddr = exe.Rva2Raw(exe.fetchDWord(offset + enabledOffset));
+        exe.replace(enebledAddr + 2, newvalue, PTYPE_HEX);
+
+        // patch disabled /zoom configuration limit
+        var disabledAddr = exe.Rva2Raw(exe.fetchDWord(offset + disabledOffset));
+        exe.replace(disabledAddr + 2, newvalue, PTYPE_HEX);
+    }
 
     return true;
 }
