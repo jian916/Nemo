@@ -115,7 +115,17 @@ function CancelToLoginWindow()
         if (exe.fetchHex(offset - 5, 5) === " 68 18 01 00 00")
             offset -= 7;
 
-        //Step 3c - Find the end point of the msgBox call.
+        //Step 3c - Search push 0 before patched block
+        if (exe.fetchHex(offset - 2, 2) === " 6a 00")
+        {
+            // do this change only for some 2017+ clients.
+            if (exe.getClientDate() > 20170000)
+            {
+                offset -= 2;
+            }
+        }
+
+        //Step 3d - Find the end point of the msgBox call.
         //          There will be a comparison for the return code
         code =
             " 3D AB 00 00 00"    //CMP EAX, const
@@ -134,7 +144,7 @@ function CancelToLoginWindow()
 
         offset2 += code.hexlength();
 
-        //Step 3d - Lastly we find PUSH 2 below offset2 which serves as argument to the register call (CALL reg32 / CALL DWORD PTR DS:[reg32+18]) - Window Maker?.
+        //Step 3e - Lastly we find PUSH 2 below offset2 which serves as argument to the register call (CALL reg32 / CALL DWORD PTR DS:[reg32+18]) - Window Maker?.
         //          What we need to do is to substitute the 2 with 2723 for it to show Login Window instead of quitting.
         code =
             zeroPush.repeat(3) //PUSH reg32 x3 or PUSH 0 x3
@@ -170,17 +180,6 @@ function CancelToLoginWindow()
         code = ReplaceVarHex(code, 1, crag - (offset + 5));
         code = ReplaceVarHex(code, 2, ccon - (offset + 12));
         code = code.replace(" XX", ((offset3 + 2) - (offset + code.hexlength())).packToHex(1));
-
-        //Step 4e - Search push 0 before patched block
-        if (exe.fetchHex(offset - 2, 2) === " 6a 00")
-        {
-            // do this change only for some 2017+ clients.
-            if (exe.getClientDate() > 20170000)
-            {
-                offset -= 2;
-                code = "90 90 " + code;  // replace "push 0" to "nop nop";
-            }
-        }
 
         //Step 4f - Replace with prepared code
         exe.replace(offset, code, PTYPE_HEX);
