@@ -21,7 +21,12 @@ function CancelToLoginWindow()
 
     if (offsets.length === 0)
     {
-        code = code.replace(" 8D AB AB AB AB AB 00", " 8D AB AB AB AB AB 01");
+        var code =
+            " 8D AB AB AB AB AB 01"  //LEA reg32_B, [reg32_A*8 + refAddr]
+          + " AB"                    //PUSH reg32_B
+          + " 68 37 03 00 00"        //PUSH 337
+          + " E8"                    //CALL addr
+        ;
         offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -46,7 +51,14 @@ function CancelToLoginWindow()
 
     if (offset === -1)
     {
-        code = code.replace(/ E8 AB AB AB 00/g, " E8 AB AB AB FF");
+        code =
+            " 83 C4 08"       //ADD ESP, 8
+          + " E8 AB AB AB FF" //CALL CRagConnection::instanceR
+          + " 8B C8"          //MOV ECX, EAX
+          + " E8 AB AB AB FF" //CALL CConnection::Disconnect
+          + " B9 AB AB AB 00" //MOV ECX, OFFSET addr
+        ;
+//        code = code.replace(/ E8 AB AB AB 00/g, " E8 AB AB AB FF");
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -159,7 +171,18 @@ function CancelToLoginWindow()
         code = ReplaceVarHex(code, 2, ccon - (offset + 12));
         code = code.replace(" XX", ((offset3 + 2) - (offset + code.hexlength())).packToHex(1));
 
-        //Step 4e - Replace with prepared code
+        //Step 4e - Search push 0 before patched block
+        if (exe.fetchHex(offset - 2, 2) === " 6a 00")
+        {
+            // do this change only for some 2017+ clients.
+            if (exe.getClientDate() > 20170000)
+            {
+                offset -= 2;
+                code = "90 90 " + code;  // replace "push 0" to "nop nop";
+            }
+        }
+
+        //Step 4f - Replace with prepared code
         exe.replace(offset, code, PTYPE_HEX);
 
         matchcount++;
