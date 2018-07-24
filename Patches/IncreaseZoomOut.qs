@@ -38,7 +38,7 @@ function IncreaseZoomOut(newvalue)
     //Step 2 - Modify with the value supplied - Current value is 400.0
     exe.replace(offset + 6, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
 
-    if (exe.findString("/zoom", RAW) !== -1 || exe.findString("/expandsight", RAW) !== -1 || exe.findString("/camera", RAW) !== -1)
+    if (exe.findString("/zoom", RAW) !== -1)
     {   // found zoom command. need do additional patching
         //Step 3 - Patch /zoom enabled/disabled command
         // get zoom2 addr bytes
