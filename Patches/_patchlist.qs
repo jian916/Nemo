@@ -268,7 +268,7 @@ registerPatch(102, "SkipCheaterGuildCheck", "Skip Guild Member Cheat Check", "UI
 
 registerPatch(103, "DisableAutofollow", "Disable Auto follow", "UI", 0, "Functor, Neo", "Disables player auto-follow on Shift+Right click", false);
 
-registerPatch(104, "IncreaseHairLimits", "Increase Hair Style & Color Limits", "UI", 0, "Neo", "Modify the limits used in Make Character Window for Hair Style and Color to user specified values");
+registerPatch(104, "IncreaseHairLimits", "Increase creation Hair Style & Color Limits", "UI", 0, "Neo", "Modify the limits used in Make Character Window for Hair Style and Color to user specified values");
 
 registerPatch(105, "HideNavButton", "Hide Nav Button", "UI", 12, "Neo", "Hide Navigation Button", false);
 
@@ -391,3 +391,5 @@ registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "Fix",
 registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 0, "4144", "Disables Cheat Defender Game Guard from new clients", false);
 
 registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "Custom", 0, "4144", "Override selected job in char creation packet", false);
+
+registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "Custom", 0, "4144", "Allow use more hair styles than default limit", false);
