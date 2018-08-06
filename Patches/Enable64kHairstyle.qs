@@ -302,5 +302,8 @@ function Enable64kHairstyle()
 //=================================//
 function Enable64kHairstyle_()
 {
-    return (exe.getClientDate() > 20111102);
+    var code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s";
+    var offset = exe.findString(code, RAW);
+    // non for doram clients
+    return (exe.getClientDate() > 20111102 && offset === -1);
 }
