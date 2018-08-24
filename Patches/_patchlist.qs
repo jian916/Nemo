@@ -399,3 +399,5 @@ registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height
 registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "Custom", 0, "4144", "Hide wrong field with random values in cash shop", false);
 
 registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
+
+registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
