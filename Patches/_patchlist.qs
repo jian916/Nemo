@@ -397,3 +397,5 @@ registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "
 registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "Custom", 0, "4144", "Allow change height in input field in new char creation dialog", false);
 
 registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "Custom", 0, "4144", "Hide wrong field with random values in cash shop", false);
+
+registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
