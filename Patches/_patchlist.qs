@@ -401,3 +401,5 @@ registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash 
 registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
 
 registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
+
+registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc key", "Custom", 0, "4144", "Allow close cutin window by pressing esc key", false);
