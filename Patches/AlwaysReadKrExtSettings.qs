@@ -16,7 +16,6 @@ function AlwaysReadKrExtSettings()
 
     // Step 2a - Find server_korea reading code
     var LANGTYPE = GetLangType();
-    var SERVERTYPE = GetServerType();
 
     var code =
         " 8B F9"         // MOV EDI, ECX
@@ -25,18 +24,43 @@ function AlwaysReadKrExtSettings()
     ;
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x50, korea_ref_offset);
+    if (offset !== -1)
+    {  // old way for old clients
+        // offset now points to the JA instruction after CMP EAX, 12
+        offset += code.hexlength();
 
+        // Step 3a - Force the client to read Lua Files\service_korea\ExternalSettings_kr.lub
+        var diff = korea_ref_offset - offset - 2; // -2 for EB xx
+        exe.replace(offset, " EB" + diff.packToHex(1), PTYPE_HEX);
+
+        return true;
+    }
+
+    // new way for new clients here first way failed
+    code =
+        "8B F9 " +                // mov edi, ecx
+        "A1 " + LANGTYPE +        // mov eax, g_serviceType
+        "83 F8 AB " +             // cmp eax, 12h
+        "0F 87 AB AB AB AB " +    // ja default
+        "0F B6 80 AB AB AB AB " + // movzx eax, switch1_byte_AA28EC[eax]
+        "FF 24 85 ";              // jmp switch2_off_AA28C0[eax*4]
+    var patchOffset = 2;
+    var switch1Offset = 19;
+    var switch2Offset = 26;
+
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x100, korea_ref_offset);
     if (offset === -1)
         return "Failed in Step 2a - g_serviceType comparison not found";
 
-    // offset now points to the JA instruction after CMP EAX, 12
-    offset += code.hexlength();
-
-    // Step 3a - Force the client to read Lua Files\service_korea\ExternalSettings_kr.lub
-    var diff = korea_ref_offset - offset - 2; // -2 for EB xx
-    exe.replace(offset, " EB" + diff.packToHex(1), PTYPE_HEX);
-
-    return true;
+    // get switch jmp address for value 0
+    var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
+    var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+    var offset1 = exe.fetchUByte(addr1);
+    var jmpAddr = exe.fetchDWord(addr2 + 4 * offset1);
+    code =
+        "B8 " + jmpAddr.packToHex(4) + // mov eax, addr
+        "FF E0";                       // jmp eax
+    exe.replace(offset + patchOffset, code, PTYPE_HEX);  // add jump to korean settings
 }
 
 //=================================//
