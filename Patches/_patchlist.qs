@@ -403,3 +403,5 @@ registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolu
 registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
 
 registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc key", "Custom", 0, "4144", "Allow close cutin window by pressing esc key", false);
+
+//registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "Custom", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
