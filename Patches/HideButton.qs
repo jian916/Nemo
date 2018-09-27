@@ -119,7 +119,7 @@ function HideButton2(prefix) {
 //#######################################################################
 function HideButtonNew(reference, prefix) {
 	//Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
-	var refAddr = exe.findString("info", RVA);
+	var refAddr = exe.findString(reference, RVA);
 	if (refAddr === -1)
 		return "Failed in Step 1 - info missing";
 	
