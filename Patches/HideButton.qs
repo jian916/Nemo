@@ -108,9 +108,9 @@ function HideButtonOld(src, tgt) {
 
 function HideButton2(prefix) {
 	if(UseNewIcons())
-		HideButtonNew("equip", prefix);
+		return HideButtonNew("equip", prefix);
 	else
-		HideButtonNew("info", prefix);
+		return HideButtonNew("info", prefix);
 }
 
 //#######################################################################
@@ -118,7 +118,6 @@ function HideButton2(prefix) {
 //#          assign address of NULL after the prefix instead            #
 //#######################################################################
 function HideButtonNew(reference, prefix) {
-	
 	//Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
 	var refAddr = exe.findString("info", RVA);
 	if (refAddr === -1)
