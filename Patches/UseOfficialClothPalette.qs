@@ -9,7 +9,7 @@ function UseOfficialClothPalette() {
   if (getActivePatches().indexOf(202) !== -1)
     return "Patch Cancelled - Turn off Custom Job patch first";
   
-  //Step 1b - Find offset of palette prefix for Knight - ≈©∑Á
+  //Step 1b - Find offset of palette prefix for Knight - ÌÅ¨Î£®
   var offset = exe.findString("\xC5\xA9\xB7\xE7", RVA); //Same value is used for job path as well as imf
   if (offset === -1)
     return "Failed in Step 1 - Palette prefix missing";

@@ -4,7 +4,7 @@
 
 function RemoveGravityAds() {
   
-  //Step 1a - Find address of 1st Pic -> \T_Áß·Â¼ºÀÎ.tga
+  //Step 1a - Find address of 1st Pic -> \T_ì¤‘ë ¥ì„±ì¸.tga
   var offset = exe.findString("\\T_\xC1\xDF\xB7\xC2\xBC\xBA\xC0\xCE.tga", RAW, false);
   if (offset !== -1) {
     //Step 1b - Replace with NULL
@@ -21,7 +21,7 @@ function RemoveGravityAds() {
   //Step 2b - Replace with NULL
   exe.replace(offset + 1, "00", PTYPE_HEX);
 
-  //Step 3a - Find address of Last Pic -> \T_Å×ÀÔ%d.tga 
+  //Step 3a - Find address of Last Pic -> \T_í…Œìž…%d.tga 
   offset = exe.findString("\\T_\xC5\xD7\xC0\xD4%d.tga", RAW, false);
   if (offset === -1)
     return "Failed in Step 3";
