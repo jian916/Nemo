@@ -411,3 +411,7 @@ registerPatch(300, "FixItemDescBug", "­×´_ª««~»¡©ú¶Ã½XBug", "UI", 0, "Jchcc", "­
 registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
 registerPatch(302, "SetAutoFollowDelay", "¦Û­q¦Û°Ê§óÀH©µ¿ð", "Custom", 0, "Jchcc", "Åý¦Û°Ê§óÀH§óºò±K,´î¤Ö¹L¹Ï¸ò¥áªº±¡ªp", false);
+
+registerPatch(303, "DefaultBrowserInCashshop", "¥Î¹w³]ÂsÄý¾¹¶}±Ò°Ó«°¤º³sµ²", "Custom", 0, "Jchcc", "¨Ï¥Î¹w³]ªºÂsÄý¾¹¶}±Ò·sª©°Ó«°(2018)¤ºªº³sµ²", false);
+
+registerPatch(304, "UseDefaultBrowser", "¥Î¹w³]ÂsÄý¾¹¶}±Ò<URL>³sµ²", "Custom", 0, "Jchcc", "¨Ï¥Î¹w³]ÂsÄý¾¹¶}±Ò<URL>ªº³sµ²,¤£¦A¨Ï¥ÎRO¤º«ØªºÂsÄý¾¹", false);
