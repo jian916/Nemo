@@ -1,4 +1,4 @@
-﻿########################################################################
+########################################################################
 # To use a variable simply remove the '//' before it and set the value.#
 # For XTYPE_COLOR the value has 6 Hex characters, similarly            #
 # XTYPE_HEXSTRING has 8 Hex characters. Don't remove the $ signs.      #
