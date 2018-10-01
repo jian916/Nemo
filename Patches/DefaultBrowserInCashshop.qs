@@ -39,3 +39,11 @@ function DefaultBrowserInCashshop () {
 	
 	return true;
 }
+
+//=======================================================================//
+// Disable for Unsupported Clients - Check for string "iexplore.exe"     //
+//=======================================================================//
+
+function DefaultBrowserInCashshop_() {
+	return (exe.findString("iexplore.exe") !== -1);
+}
