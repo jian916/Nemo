@@ -298,6 +298,8 @@ registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, 
 
 registerPatch(302, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
 
+registerPatch(303, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
+
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
 //======================================//
