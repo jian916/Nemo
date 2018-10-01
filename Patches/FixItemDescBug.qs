@@ -9,3 +9,7 @@ function FixItemDescBug() {
 	exe.replace(offset, "80 3E 5B EB 31", PTYPE_HEX);
 	return true;
 }
+
+function FixItemDescBug_() {
+	return (exe.findCode("80 3E 5B 75 31", PTYPE_HEX, false) !== -1);
+}
