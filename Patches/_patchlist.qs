@@ -302,6 +302,8 @@ registerPatch(303, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashs
 
 registerPatch(304, "UseDefaultBrowser", "Use Default Web Browser for <URL>", "Custom", 0, "Jchcc", "Use default web browser to open <URL> instead of built-in ROWebBrowser.", false);
 
+registerPatch(305, "ShortcutAllItem", "Enable Shortcut All Item", "Fix", 0, "Jchcc", "Allow players put all items on the shortcut window make it easy to trace.", false);
+
 registerPatch(311, "NavigationButton", "Set Navigation Button", "Custom", 0, "Jchcc", "Set navigation button hide or show.", false);
 
 registerPatch(312, "BankButton", "Set Bank Button", "Custom", 0, "Jchcc", "Set bank button hide or show.", false);
