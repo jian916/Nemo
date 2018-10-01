@@ -1,7 +1,7 @@
 // When an in-game setting that requires a restart to take effect is changed,
 // the client tries to launch ro.gnjoy.com. This patch disables the behavior.
 // Author: mrjnumber1
-function DisableKroSiteLaunch() {
+function DisableKROSiteLaunch() {
 
   //Step 1 - Find offset of ro.gnjoy.com
   var offset = exe.findString("ro.gnjoy.com", RAW);

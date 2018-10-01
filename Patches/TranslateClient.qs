@@ -7,7 +7,7 @@ function TranslateClient() {
 
   //Step 1 - Open the text file for reading
   var f = new TextFile();
-  if (!f.open(APP_PATH + "/patches/TranslateClient.txt") )
+  if (!f.open(APP_PATH + "/Patches/TranslateClient.txt") )
     return "Failed in Step 1 - Unable to open file";
   
   var offset = -1;
