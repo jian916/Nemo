@@ -294,6 +294,8 @@ registerPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experi
 
 //registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "UI", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 
+registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
+
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
 //======================================//
