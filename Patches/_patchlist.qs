@@ -300,6 +300,8 @@ registerPatch(302, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0
 
 registerPatch(303, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
 
+registerPatch(304, "UseDefaultBrowser", "Use Default Web Browser for <URL>", "Custom", 0, "Jchcc", "Use default web browser to open <URL> instead of built-in ROWebBrowser.", false);
+
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
 //======================================//
