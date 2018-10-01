@@ -255,7 +255,7 @@ function FetchPacketKeyInfo() {
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
   if (offset2 == -1) {
       code =
-        " 8B 0D AB AB AB 01" //MOV ECX, DWORD PTR DS:[refAddr]
+        " 8B 0D AB AB AB AB" //MOV ECX, DWORD PTR DS:[refAddr]
       + " 6A 01"             //PUSH 1
       + " E8"                //CALL CRagConnection::Obfuscate2
       ;
