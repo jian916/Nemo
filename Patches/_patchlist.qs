@@ -415,3 +415,21 @@ registerPatch(302, "SetAutoFollowDelay", "自訂自動更隨延遲", "Custom", 0, "Jchcc
 registerPatch(303, "DefaultBrowserInCashshop", "用預設瀏覽器開啟商城內連結", "Custom", 0, "Jchcc", "使用預設的瀏覽器開啟新版商城(2018)內的連結", false);
 
 registerPatch(304, "UseDefaultBrowser", "用預設瀏覽器開啟<URL>連結", "Custom", 0, "Jchcc", "使用預設瀏覽器開啟<URL>的連結,不再使用RO內建的瀏覽器", false);
+
+registerPatch(311, "NavigationButton", "設定 導航 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(312, "BankButton", "設定 銀行 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(313, "ReplayButton", "設定 重播 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(314, "MailButton", "設定 郵件 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(315, "AchievementButton", "設定 成就系統 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(316, "TipButton", "設定 提示框 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(317, "ShopButton", "設定 商城 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(318, "SNSButton", "設定 TWITTER 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(319, "AttendanceButton", "設定 簽到 按鈕", "Custom", 0, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
