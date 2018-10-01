@@ -335,16 +335,21 @@ function FetchPacketKeyInfo() {
     return "PKI: Unable to open map file";
   
   var cdate = exe.getClientDate();
-  while (!f.eof()) {
-    //Step 5b - Iterate through file and look for any entry for the clients date. Extract the keys after the clientdate
-    var str = f.readline().trim();
-    if (str.length < 16) continue;
-    if (str.search(cdate) === 0) {
-      var keys = str.split('=')[1].trim().split(",");
-      if (keys.length === 3)
+  delete keys;
+  if(cdate > 20180306) {
+	var keys = [0,0,0];
+  } else {
+    while (!f.eof()) {
+      //Step 5b - Iterate through file and look for any entry for the clients date. Extract the keys after the clientdate
+      var str = f.readline().trim();
+      if (str.length < 16) continue;
+      if (str.search(cdate) === 0) {
+        var keys = str.split('=')[1].trim().split(",");
+        if (keys.length === 3)
         break;
-      
-      delete keys;
+        
+        delete keys;
+      }
     }
   }
   
