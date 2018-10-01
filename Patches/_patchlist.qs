@@ -296,6 +296,8 @@ registerPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experi
 
 registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
+registerPatch(302, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
+
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
 //======================================//
