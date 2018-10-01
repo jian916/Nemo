@@ -435,3 +435,5 @@ registerPatch(317, "ShopButton", "設定 商城 按鈕", "自訂", 12, "Jchcc", "設定201
 registerPatch(318, "SNSButton", "設定 TWITTER 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
 registerPatch(319, "AttendanceButton", "設定 簽到 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+
+registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 19, "Jian", "修改預設 BGM 路徑，改變登入帳號時的聲音，官方為 bgm\\01.mp3", false);
