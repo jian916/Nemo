@@ -409,3 +409,5 @@ registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc ke
 registerPatch(300, "FixItemDescBug", "修復物品說明亂碼Bug", "UI", 0, "Jchcc", "修復物品右鍵內容 '[' 造成的亂碼", false);
 
 registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
+
+registerPatch(302, "SetAutoFollowDelay", "自訂自動更隨延遲", "Custom", 0, "Jchcc", "讓自動更隨更緊密,減少過圖跟丟的情況", false);
