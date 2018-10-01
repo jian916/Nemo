@@ -46,6 +46,8 @@ registerGroup(17, "起源版", false);
 
 registerGroup(18, "自訂技能", false);
 
+registerGroup(19, "路徑", false);
+
 //#########################################################################################################################################################
 //#                                                                                                                                                       #
 //# FORMAT for registering patch : registerPatch(patch id, functionName, patch Name, category, group id, author, description, recommended [true/false] ); #
@@ -192,7 +194,7 @@ registerPatch( 63, "UseOfficialClothPalette", "Use Official Cloth Palettes", "UI
 
 registerPatch( 64, "FixChatAt", "修復 @ 符號 Bug", "UI", 0, "Shinryo", "修復聊天視窗不能輸入 @ 的限制", true);
 
-registerPatch( 65, "ChangeItemInfo", "Load Custom lua file instead of iteminfo*.lub", "UI", 0, "Neo", "Makes the client load your own lua file instead of iteminfo*.lub . If you directly use itemInfo*.lub for your translated items, it may become lost during the next kRO update", true);
+registerPatch( 65, "ChangeItemInfo", "Load Custom lua file instead of iteminfo*.lub", "自訂", 19, "Neo", "Makes the client load your own lua file instead of iteminfo*.lub . If you directly use itemInfo*.lub for your translated items, it may become lost during the next kRO update", true);
 
 registerPatch( 66, "LoadItemInfoPerServer", "Load iteminfo with char server", "Data", 0, "Neo", "Load ItemInfo file and call main function with selected char server name as argument", false);
 
@@ -300,57 +302,57 @@ registerPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experi
 // Special Patches by Neo and Curiosity //
 //======================================//
 
-registerPatch(200, "EnableMultipleGRFsV2", "Enable Multiple GRFs - Embedded", "Custom", 5, "Neo", "Enables the use of multiple grf files without needing INI file in client folder. Instead you specify the INI file as input to the patch", false);
+registerPatch(200, "EnableMultipleGRFsV2", "Enable Multiple GRFs - Embedded", "自訂", 5, "Neo", "Enables the use of multiple grf files without needing INI file in client folder. Instead you specify the INI file as input to the patch", false);
 
-registerPatch(201, "EnableCustomHomunculus", "Enable Custom Homunculus", "Custom", 0, "Neo", "Enables the addition of Custom Homunculus using Lua Files", false);
+registerPatch(201, "EnableCustomHomunculus", "Enable Custom Homunculus", "自訂", 0, "Neo", "Enables the addition of Custom Homunculus using Lua Files", false);
 
-registerPatch(202, "EnableCustomJobs", "Enable Custom Jobs", "Custom", 0, "Neo", "Enables the use of Custom Jobs (using Lua Files similar to Xray)", false);
+registerPatch(202, "EnableCustomJobs", "Enable Custom Jobs", "自訂", 0, "Neo", "Enables the use of Custom Jobs (using Lua Files similar to Xray)", false);
 
-registerPatch(203, "EnableCustomShields", "Enable Custom Shields", "Custom", 0, "Neo", "Enables the use of Custom Shield Types (using Lua Files similar to Xray)", false);
+registerPatch(203, "EnableCustomShields", "Enable Custom Shields", "自訂", 0, "Neo", "Enables the use of Custom Shield Types (using Lua Files similar to Xray)", false);
 
-registerPatch(204, "IncreaseAtkDisplay", "Increase Attack Display", "Custom", 0, "Neo", "Increases the limit of digits displayed while attacking from 6 to 10", false);
+registerPatch(204, "IncreaseAtkDisplay", "Increase Attack Display", "自訂", 0, "Neo", "Increases the limit of digits displayed while attacking from 6 to 10", false);
 
-registerPatch(205, "EnableMonsterTables", "Enable Monster Tables", "Custom", 0, "Ind, Neo", "Enables Loading of MonsterTalkTable.xml, PetTalkTable.xml & MonsterSkillInfo.xml for all LangTypes", false);
+registerPatch(205, "EnableMonsterTables", "Enable Monster Tables", "自訂", 0, "Ind, Neo", "Enables Loading of MonsterTalkTable.xml, PetTalkTable.xml & MonsterSkillInfo.xml for all LangTypes", false);
 
-registerPatch(206, "LoadCustomQuestLua", "Load Custom Quest Lua/Lub files", "Custom", 0, "Neo", "Enables loading of custom lua files used for quests. You need to specify a txt file containing list of files in the 'lua files\\quest' folder to load (one file per line)", false);
+registerPatch(206, "LoadCustomQuestLua", "Load Custom Quest Lua/Lub files", "自訂", 0, "Neo", "Enables loading of custom lua files used for quests. You need to specify a txt file containing list of files in the 'lua files\\quest' folder to load (one file per line)", false);
 
-registerPatch(207, "ResizeFont", "Resize Font", "Custom", 0, "Yommy, Neo", "Resizes the height of the font used to the value specified", false);
+registerPatch(207, "ResizeFont", "Resize Font", "自訂", 0, "Yommy, Neo", "Resizes the height of the font used to the value specified", false);
 
 registerPatch(208, "RestoreCashShop", "Restore Cash Shop Icon", "Special", 0, "Neo", "Restores the Cash Shop Icon in RE clients that can have them", false);
 
-registerPatch(209, "EnableMailBox", "Enable Mail Box for All LangTypes", "Custom", 0, "Neo", "Enables the full use of Mail Boxes and @mail commands (write is disabled for few LangTypes by default in 2013 Clients)", false);
+registerPatch(209, "EnableMailBox", "Enable Mail Box for All LangTypes", "自訂", 0, "Neo", "Enables the full use of Mail Boxes and @mail commands (write is disabled for few LangTypes by default in 2013 Clients)", false);
 
-registerPatch(210, "UseCustomIcon", "Use Custom Icon", "Custom", 4, "Neo", "Makes the hexed client use the User specified icon. Icon file should have an 8bpp (256 color) 32x32 image", false);
+registerPatch(210, "UseCustomIcon", "Use Custom Icon", "自訂", 4, "Neo", "Makes the hexed client use the User specified icon. Icon file should have an 8bpp (256 color) 32x32 image", false);
 
-registerPatch(211, "UseCustomDLL", "Use Custom DLL", "Custom", 0, "Neo", "Makes the hexed client load the specified DLL and functions", false);
+registerPatch(211, "UseCustomDLL", "Use Custom DLL", "自訂", 0, "Neo", "Makes the hexed client load the specified DLL and functions", false);
 
-registerPatch(212, "RestoreRoulette", "Restore Roulette", "Custom", 0, "Neo", "Brings back the Roulette Icon that was removed in new clients", false);
+registerPatch(212, "RestoreRoulette", "Restore Roulette", "自訂", 0, "Neo", "Brings back the Roulette Icon that was removed in new clients", false);
 
-registerPatch(213, "DisableHelpMsg", "關閉遊戲提示", "Custom", 0, "Neo", "關閉登入遊戲顯示的提示", true);
+registerPatch(213, "DisableHelpMsg", "關閉遊戲提示", "自訂", 0, "Neo", "關閉登入遊戲顯示的提示", true);
 
-registerPatch(214, "RestoreModelCulling", "Restore Model Culling", "Custom", 0, "Curiosity", "Culls models in front of player by turning them transparent", false);
+registerPatch(214, "RestoreModelCulling", "Restore Model Culling", "自訂", 0, "Curiosity", "Culls models in front of player by turning them transparent", false);
 
-registerPatch(215, "IncreaseMapQuality", "Increase Map Quality", "Custom", 0, "Curiosity", "Makes client use 32 bit color maps for Map Textures", false);
+registerPatch(215, "IncreaseMapQuality", "Increase Map Quality", "自訂", 0, "Curiosity", "Makes client use 32 bit color maps for Map Textures", false);
 
-registerPatch(216, "HideCashShop", "Hide Cash Shop", "Custom", 0, "Neo", "Hide Cash Shop Icon", false);
+registerPatch(216, "HideCashShop", "Hide Cash Shop", "自訂", 0, "Neo", "Hide Cash Shop Icon", false);
 
-registerPatch(217, "HideRoulette", "Hide Roulette", "Custom", 0, "Neo", "Hide Roulette Icon", false);
+registerPatch(217, "HideRoulette", "Hide Roulette", "自訂", 0, "Neo", "Hide Roulette Icon", false);
 
-registerPatch(218, "ShowExpNumbers", "Show Exp Numbers", "Custom", 0, "Neo", "Show Base and Job Exp numbers in Basic Info Window", false);
+registerPatch(218, "ShowExpNumbers", "Show Exp Numbers", "自訂", 0, "Neo", "Show Base and Job Exp numbers in Basic Info Window", false);
 
-registerPatch(219, "ShowResurrectionButton", "顯示原地復活按鈕", "Custom", 15, "Neo", "角色死亡時強制顯示原地復活按鈕(不管mapflag都會顯示)", false);
+registerPatch(219, "ShowResurrectionButton", "顯示原地復活按鈕", "自訂", 15, "Neo", "角色死亡時強制顯示原地復活按鈕(不管mapflag都會顯示)", false);
 
-registerPatch(220, "DisableMapInterface", "關閉世界地圖", "Custom", 0, "Neo", "關閉世界地圖功能", false);
+registerPatch(220, "DisableMapInterface", "關閉世界地圖", "自訂", 0, "Neo", "關閉世界地圖功能", false);
 
-registerPatch(221, "RemoveJobsFromBooking", "Remove Jobs from Booking", "Custom", 0, "Neo", "Removes user specified set of Job Names from Party Booking Window.", false);
+registerPatch(221, "RemoveJobsFromBooking", "Remove Jobs from Booking", "自訂", 0, "Neo", "Removes user specified set of Job Names from Party Booking Window.", false);
 
-registerPatch(222, "ShowReplayButton", "Show Replay Button", "Custom", 0, "Neo", "Makes the client show Replay button on Service Select screen that opens the Replay File List window", false);
+registerPatch(222, "ShowReplayButton", "Show Replay Button", "自訂", 0, "Neo", "Makes the client show Replay button on Service Select screen that opens the Replay File List window", false);
 
-registerPatch(223, "MoveItemCountUpwards", "Move Item Count Upwards [Experimental]", "Custom", 0, "Neo", "Move Item Count upwards in Shortcut Window so as to align with Skill Level display", false);
+registerPatch(223, "MoveItemCountUpwards", "Move Item Count Upwards [Experimental]", "自訂", 0, "Neo", "Move Item Count upwards in Shortcut Window so as to align with Skill Level display", false);
 
-//registerPatch(224, "IncreaseNpcIDs", "Increase NPC Ids [Experimental]", "Custom", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
+//registerPatch(224, "IncreaseNpcIDs", "Increase NPC Ids [Experimental]", "自訂", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
 
-registerPatch(225, "ShowRegisterButton", "Show Register Button", "Custom", 0, "Neo", "Makes the client always show register button on Login Window for all Langtypes. Clicking the button will open <registrationweb> from clientinfo and closes the client.", false);
+registerPatch(225, "ShowRegisterButton", "Show Register Button", "自訂", 0, "Neo", "Makes the client always show register button on Login Window for all Langtypes. Clicking the button will open <registrationweb> from clientinfo and closes the client.", false);
 
 registerPatch(226, "DisableWalkToDelay", "Disable Walk To Delay.", "Fix", 16, "MegaByte", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
 
@@ -370,17 +372,17 @@ registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret", "Hide
 
 registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Fix", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
 
-registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "Custom", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
+registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "自訂", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
 
-registerPatch(236, "EnablePlayerSkills", "Enable Custom Player Skills [Experimental]", "Custom", 18, "Neo", "Enables the use of custom skills castable on players (using Lua Files)", false);
+registerPatch(236, "EnablePlayerSkills", "Enable Custom Player Skills [Experimental]", "自訂", 18, "Neo", "Enables the use of custom skills castable on players (using Lua Files)", false);
 
-registerPatch(237, "EnableHomunSkills", "Enable Custom Homunculus Skills [Experimental]", "Custom", 18, "Neo", "Enables the use of custom skills for Homunculus (using Lua Files)", false);
+registerPatch(237, "EnableHomunSkills", "Enable Custom Homunculus Skills [Experimental]", "自訂", 18, "Neo", "Enables the use of custom skills for Homunculus (using Lua Files)", false);
 
-registerPatch(238, "EnableMerceSkills", "Enable Custom Mercenary Skills [Experimental]", "Custom", 18, "Neo", "Enables the use of custom skills for Mercenaries (using Lua Files)", false);
+registerPatch(238, "EnableMerceSkills", "Enable Custom Mercenary Skills [Experimental]", "自訂", 18, "Neo", "Enables the use of custom skills for Mercenaries (using Lua Files)", false);
 
 registerPatch(239, "IgnoreAccountArgument", "Ignore /account: command line argument", "Fix", 0, "Secret", "Makes the client ignore /account: command line argument to prevent custom clientinfo.xml from being used.", false);
 
-registerPatch(240, "LoadCustomClientInfo", "Load custom ClientInfo file", "Custom", 0, "Secret", "Makes the client load your own clientinfo file instead of *clientinfo.xml", false);
+registerPatch(240, "LoadCustomClientInfo", "Load custom ClientInfo file", "自訂", 0, "Secret", "Makes the client load your own clientinfo file instead of *clientinfo.xml", false);
 
 registerPatch(241, "AlwaysLoadClientPlugins", "Always Load Client Plugins [Experimental]", "Fix", 0, "Secret", "Makes the client load client plug-ins regardless of its sound settings", false);
 
@@ -390,46 +392,46 @@ registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "Fix",
 
 registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 0, "4144", "Disables Cheat Defender Game Guard from new clients", false);
 
-registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "Custom", 0, "4144", "Override selected job in char creation packet", false);
+registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "自訂", 0, "4144", "Override selected job in char creation packet", false);
 
-registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "Custom", 0, "4144", "Allow use more hair styles than default limit", false);
+registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "自訂", 0, "4144", "Allow use more hair styles than default limit", false);
 
-registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "Custom", 0, "4144", "Allow change height in input field in new char creation dialog", false);
+registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "自訂", 0, "4144", "Allow change height in input field in new char creation dialog", false);
 
-registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "Custom", 0, "4144", "Hide wrong field with random values in cash shop", false);
+registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "自訂", 0, "4144", "Hide wrong field with random values in cash shop", false);
 
-registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
+registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "自訂", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
 
-registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
+registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "自訂", 0, "4144", "Allow leader to leave party if not party members on same map", false);
 
-registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc key", "Custom", 0, "4144", "Allow close cutin window by pressing esc key", false);
+registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc key", "自訂", 0, "4144", "Allow close cutin window by pressing esc key", false);
 
-//registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "Custom", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
+//registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "自訂", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
 
 registerPatch(300, "FixItemDescBug", "修復物品說明亂碼Bug", "UI", 0, "Jchcc", "修復物品右鍵內容 '[' 造成的亂碼", false);
 
 registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
-registerPatch(302, "SetAutoFollowDelay", "自訂自動更隨延遲", "Custom", 0, "Jchcc", "讓自動更隨更緊密,減少過圖跟丟的情況", false);
+registerPatch(302, "SetAutoFollowDelay", "自訂自動更隨延遲", "自訂", 0, "Jchcc", "讓自動更隨更緊密,減少過圖跟丟的情況", false);
 
-registerPatch(303, "DefaultBrowserInCashshop", "用預設瀏覽器開啟商城內連結", "Custom", 0, "Jchcc", "使用預設的瀏覽器開啟新版商城(2018)內的連結", false);
+registerPatch(303, "DefaultBrowserInCashshop", "用預設瀏覽器開啟商城內連結", "自訂", 0, "Jchcc", "使用預設的瀏覽器開啟新版商城(2018)內的連結", false);
 
-registerPatch(304, "UseDefaultBrowser", "用預設瀏覽器開啟<URL>連結", "Custom", 0, "Jchcc", "使用預設瀏覽器開啟<URL>的連結,不再使用RO內建的瀏覽器", false);
+registerPatch(304, "UseDefaultBrowser", "用預設瀏覽器開啟<URL>連結", "自訂", 0, "Jchcc", "使用預設瀏覽器開啟<URL>的連結,不再使用RO內建的瀏覽器", false);
 
-registerPatch(311, "NavigationButton", "設定 導航 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(311, "NavigationButton", "設定 導航 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(312, "BankButton", "設定 銀行 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(312, "BankButton", "設定 銀行 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(313, "ReplayButton", "設定 重播 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(313, "ReplayButton", "設定 重播 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(314, "MailButton", "設定 郵件 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(314, "MailButton", "設定 郵件 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(315, "AchievementButton", "設定 成就系統 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(315, "AchievementButton", "設定 成就系統 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(316, "TipButton", "設定 提示框 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(316, "TipButton", "設定 提示框 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(317, "ShopButton", "設定 商城 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(317, "ShopButton", "設定 商城 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(318, "SNSButton", "設定 TWITTER 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(318, "SNSButton", "設定 TWITTER 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
-registerPatch(319, "AttendanceButton", "設定 簽到 按鈕", "Custom", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
+registerPatch(319, "AttendanceButton", "設定 簽到 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
