@@ -302,6 +302,24 @@ registerPatch(303, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashs
 
 registerPatch(304, "UseDefaultBrowser", "Use Default Web Browser for <URL>", "Custom", 0, "Jchcc", "Use default web browser to open <URL> instead of built-in ROWebBrowser.", false);
 
+registerPatch(311, "NavigationButton", "Set Navigation Button", "Custom", 0, "Jchcc", "Set navigation button hide or show.", false);
+
+registerPatch(312, "BankButton", "Set Bank Button", "Custom", 0, "Jchcc", "Set bank button hide or show.", false);
+
+registerPatch(313, "ReplayButton", "Set Replay Button", "Custom", 0, "Jchcc", "Set replay button hide or show.", false);
+
+registerPatch(314, "MailButton", "Set Mail Button", "Custom", 0, "Jchcc", "Set mail button hide or show.", false);
+
+registerPatch(315, "AchievementButton", "Set Achievement Button", "Custom", 0, "Jchcc", "Set achievement button hide or show.", false);
+
+registerPatch(316, "TipButton", "Set Tip Button", "Custom", 0, "Jchcc", "Set tip button hide or show.", false);
+
+registerPatch(317, "ShopButton", "Set Shop Button", "Custom", 0, "Jchcc", "Set shop button hide or show.", false);
+
+registerPatch(318, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS button hide or show.", false);
+
+registerPatch(319, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
+
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
 //======================================//
