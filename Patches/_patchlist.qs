@@ -436,4 +436,23 @@ registerPatch(318, "SNSButton", "設定 TWITTER 按鈕", "自訂", 12, "Jchcc", "設定2
 
 registerPatch(319, "AttendanceButton", "設定 簽到 按鈕", "自訂", 12, "Jchcc", "設定20180416之後登入器的左上角功能按鈕是否顯示", false);
 
+
+registerPatch(350, "ChangeAchievementList", "修改AchievementList*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的成就 AchievementList*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(351, "ChangeMonsterSizeEffect", "修改MonsterSizeEffect*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的魔物設定 MonsterSizeEffect*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(353, "ChangeTowninfo", "修改Towninfo*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的圖標 Towninfo*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(354, "ChangePetEvolutionCln", "修改PetEvolutionCln*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的生命體 PetEvolutionCln*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(355, "ChangeTipbox", "修改Tipbox*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的教學 Tipbox*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(356, "ChangeCheckAttendance", "修改CheckAttendance*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的簽到 CheckAttendance*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(357, "ChangeOngoingQuestInfoList", "修改OngoingQuestInfoList*路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的任務 OngoingQuestInfoList* 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(358, "ChangeRecommendedQuestInfoList", "修改RecommendedQuestInfoList*路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的任務 RecommendedQuestInfoList* 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
+registerPatch(359, "ChangePrivateAirplane", "修改PrivateAirplane*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的飛空艇 PrivateAirplane*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
+
 registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 19, "Jian", "修改預設 BGM 路徑，改變登入帳號時的聲音，官方為 bgm\\01.mp3", false);
