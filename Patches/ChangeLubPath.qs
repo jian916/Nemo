@@ -53,83 +53,74 @@ function getiiName(type) {
 	switch(type){
 		case 1: {
 			iiName = "system\\Achievement_list.lub";
-			break;
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 2: {
-			if (IsRenewal()) {
-				iiName = "System/monster_size_effect_sak.lub";
-				if (exe.findString(iiName, RVA) === -1) {
-					iiName = "System/monster_size_effect_sak_new.lub";
-				}
-			} else {
-				iiName = "System/monster_size_effect.lub";
-				if (exe.findString(iiName, RVA) === -1) {
-					iiName = "System/monster_size_effect_new.lub";
-				}
-			}
-			break;
+			iiName = "System/monster_size_effect_sak_new.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "System/monster_size_effect_sak.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "System/monster_size_effect_new.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "System/monster_size_effect.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 3: {
 			iiName = "System/Towninfo.lub";
-			break;
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 4: {
-			if (IsRenewal()) {
-				iiName = "system\\PetEvolutionCln_sak.lub";
-			} else {
-				iiName = "system\\PetEvolutionCln.lub";
-				if (exe.findString(iiName, RVA) === -1) {
-					iiName = "system\PetEvolutionCln_true.lub";
-				}
-			}
-			break;
+			iiName = "system\\PetEvolutionCln_sak.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\PetEvolutionCln_true.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\PetEvolutionCln.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 5: {
 			iiName = "System/tipbox.lub";
-			break;
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 6: {
 			iiName = "System/CheckAttendance.lub";
-			break;
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 7: {
-			if (IsRenewal()) {
-				iiName = "system\\OngoingQuestInfoList_Sakray";
-			} else {
-				iiName = "system\\OngoingQuestInfoList";
-				if (exe.findString(iiName, RVA) === -1) {
-					iiName = "system\\OngoingQuestInfoList_True";
-				}
-			}
-			break;
+			iiName = "system\\OngoingQuestInfoList_Sakray";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\OngoingQuestInfoList_True";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\OngoingQuestInfoList";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 8: {
-			if (IsRenewal()) {
-				iiName = "system\\RecommendedQuestInfoList_Sakray";
-			} else {
-				iiName = "system\\RecommendedQuestInfoList";
-				if (exe.findString(iiName, RVA) === -1) {
-					iiName = "system\\RecommendedQuestInfoList_True";
-				}
-			}
-			break;
+			iiName = "system\\RecommendedQuestInfoList_Sakray";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\RecommendedQuestInfoList_True";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\RecommendedQuestInfoList";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		case 9: {
-			if (IsRenewal()) {
-				iiName = "System\\PrivateAirplane_Sakray.lub";
-			} else {
-				iiName = "System\\PrivateAirplane_true.lub";
-			}
-			break;
+			iiName = "System\\PrivateAirplane_Sakray.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "System\\PrivateAirplane_true.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
 		}
 		default: {
 			return "";
 		}
 	}
-	if (exe.findString(iiName, RVA) === -1) {
-		return "";
-	}
-	return iiName;
+	return "";
 }
 
 function ChangeLubPath(old_path, new_path) {
