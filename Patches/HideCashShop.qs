@@ -4,6 +4,9 @@
 
 function HideCashShop() {
 
+  if (getActivePatches().indexOf(208) !== -1)
+    return "Patch Cancelled - Restore Cash Shop is ON";
+
   //Step 1a - Get Window Manager Info  
   var mgrInfo = GetWinMgrInfo();
   if (typeof(mgrInfo) === "string")
