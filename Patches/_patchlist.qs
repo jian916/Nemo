@@ -280,7 +280,7 @@ registerPatch(107, "HideBankButton", "ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ»
 
 registerPatch(108, "HideBooking", "ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ²Õ¶¤©Û¶Òªº«ö¶s", false);
 
-registerPatch(109, "HideRodex", "ÁôÂÃ[RODEX]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃRODEXªº«ö¶s", false);
+registerPatch(109, "HideRodex", "ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ«H½c(RODEX)ªº«ö¶s", false);
 
 registerPatch(110, "HideAchieve", "ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦¨´Nªº«ö¶s", false);
 
@@ -316,7 +316,7 @@ registerPatch(205, "EnableMonsterTables", "Åª¨úÅ]ª«¹ï¸ÜÀÉ®×", "¦Û­q", 0, "Ind, N
 
 registerPatch(206, "LoadCustomQuestLua", "¸ü¤J¦Û»sªº¥ô°È lub ÀÉ", "¦Û­q", 0, "Neo", "¸ü¤J¦Û»sªº¥ô°È lub ÀÉ¡A¦b¸É¤B lua files\quest ¸Ì­±", false);
 
-registerPatch(207, "ResizeFont", "­×§ï¦r«¬¤j¤p", "¦Û­q", 0, "Yommy, Neo", "­×§ï¦r«¬¤j¤p¡A¹w³]¬O10¡A¤¤¤å§ï¤j·|ÅÜ«ÜÁà", false);
+registerPatch(207, "ResizeFont", "­×§ï¦r«¬¤j¤p", "¤¶­±", 0, "Yommy, Neo", "­×§ï¦r«¬¤j¤p¡A¹w³]¬O10¡A¤¤¤å§ï¤j·|ÅÜ«ÜÁà", false);
 
 registerPatch(208, "RestoreCashShop", "«ì´_°Ó«°«ö¶s¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_°Ó«°ªº«ö¶s¹Ï¥Ü¡ARE ª©¥»¨S¦³°Ó«°¤~­n¤Ä¿ï", false);
 
@@ -334,25 +334,25 @@ registerPatch(214, "RestoreModelCulling", "«ì´_³zµø¼Ò²Õ", "¯S®í", 0, "Curiosity"
 
 registerPatch(215, "IncreaseMapQuality", "¦a¹Ï¤ä´©32¦ì¤¸¯¾²z", "¦Û­q", 0, "Curiosity", "Åı¦a¹Ï¤ä´©32¦ì¤¸ÃC¦â¯¾²z", false);
 
-registerPatch(216, "HideCashShop", "ÁôÂÃ[°Ó«°]«ö¶s", "¦Û­q", 0, "Neo", "ÁôÂÃ°Ó«°ªº«ö¶s", false);
+registerPatch(216, "HideCashShop", "ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ°Ó«°ªº«ö¶s", false);
 
-registerPatch(217, "HideRoulette", "ÁôÂÃ[Âà½L]«ö¶s", "¦Û­q", 0, "Neo", "ÁôÂÃÂà½Lªº«ö¶s", false);
+registerPatch(217, "HideRoulette", "ÁôÂÃ[Âà½L]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃÂà½Lªº«ö¶s", false);
 
-registerPatch(218, "ShowExpNumbers", "Åã¥Ü¸gÅç±ø", "¦Û­q", 0, "Neo", "¦b¥ª¤W¨¤¨¤¦âª¬ºAÄæÅã¥Ü¸gÅç±ø", false);
+registerPatch(218, "ShowExpNumbers", "Åã¥Ü¸gÅç±ø", "¤¶­±", 0, "Neo", "¦b¥ª¤W¨¤¨¤¦âª¬ºAÄæÅã¥Ü¸gÅç±ø", false);
 
 registerPatch(219, "ShowResurrectionButton", "Åã¥Ü­ì¦a´_¬¡«ö¶s", "¤¶­±", 15, "Neo", "¨¤¦â¦º¤`®É±j¨îÅã¥Ü­ì¦a´_¬¡«ö¶s(¤£ºŞmapflag³£·|Åã¥Ü)", false);
 
 registerPatch(220, "DisableMapInterface", "Ãö³¬¥@¬É¦a¹Ï", "¤¶­±", 0, "Neo", "Ãö³¬¥@¬É¦a¹Ï¥\¯à", false);
 
-registerPatch(221, "RemoveJobsFromBooking", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", "¦Û­q", 0, "Neo", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", false);
+registerPatch(221, "RemoveJobsFromBooking", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", "¤¶­±", 0, "Neo", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", false);
 
-registerPatch(222, "ShowReplayButton", "Åã¥Ü¿ı¼v¼½©ñ«ö¶s", "¦Û­q", 0, "Neo", "¿ï¾Ü¦øªA¾¹®É¡AÅã¥Ü¿ı¼v¼½©ñªº«ö¶s", false);
+registerPatch(222, "ShowReplayButton", "Åã¥Ü¿ı¼v¼½©ñ«ö¶s", "¤¶­±", 0, "Neo", "¿ï¾Ü¦øªA¾¹®É¡AÅã¥Ü¿ı¼v¼½©ñªº«ö¶s", false);
 
-registerPatch(223, "MoveItemCountUpwards", "¬ü¤Æ¥ª¤W¨¤ª¬ºAÄæ[´ú¸Õ]", "¦Û­q", 0, "Neo", "¬ü¤Æ¥ª¤W¨¤ªºª¬ºAÄæ", false);
+registerPatch(223, "MoveItemCountUpwards", "¬ü¤Æ¥ª¤W¨¤ª¬ºAÄæ[´ú¸Õ]", "¤¶­±", 0, "Neo", "¬ü¤Æ¥ª¤W¨¤ªºª¬ºAÄæ", false);
 
 //registerPatch(224, "IncreaseNpcIDs", "Increase NPC Ids[´ú¸Õ]", "¦Û­q", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
 
-registerPatch(225, "ShowRegisterButton", "Åã¥Üµù¥U«ö¶s", "¦Û­q", 0, "Neo", "¦bµn¤J¤¶­±Åã¥Üµù¥U«ö¶s", false);
+registerPatch(225, "ShowRegisterButton", "Åã¥Üµù¥U«ö¶s", "¤¶­±", 0, "Neo", "¦bµn¤J¤¶­±Åã¥Üµù¥U«ö¶s", false);
 
 registerPatch(226, "DisableWalkToDelay", "Ãö³¬²¾°Ê©µ¿ğ[¤£«ØÄ³]", "¦Û­q", 16, "MegaByte", "Ãö³¬²¾°Ê©µ¿ğ¡AÅıª±®a¥i¥HµL©µ¿ğ²¾°Ê¡A±Ò¥Î«á·|³y¦¨¦øªA¾¹­t¾á", false);
 
@@ -417,6 +417,8 @@ registerPatch(302, "SetAutoFollowDelay", "³]©w¦Û°Ê¸òÀH©µ¿ğ", "¦Û­q", 0, "Jchcc",
 registerPatch(303, "DefaultBrowserInCashshop", "¨Ï¥Î¹w³]ÂsÄı¾¹¶}±Ò°Ó«°¤º³sµ²", "¤¶­±", 0, "Jchcc", "¨Ï¥Î¨t²Î¹w³]ªºÂsÄı¾¹¶}±Ò·sª©°Ó«°(2018)¤ºªº³sµ²¡A¤£¨Ï¥Î IE", false);
 
 registerPatch(304, "UseDefaultBrowser", "¨Ï¥Î¹w³]ÂsÄı¾¹¶}±ÒNPCªº<URL>³sµ²", "¤¶­±", 0, "Jchcc", "¨Ï¥Î¨t²Î¹w³]ªºÂsÄı¾¹¶}±Ò NPC ªº <URL> ³sµ²¡A¤£¦A¨Ï¥ÎRO¤º«ØªºÂsÄı¾¹", false);
+
+registerPatch(305, "ShortcutAllItem", "¤¹³\©Ò¦³ª««~©ñ§Ö±¶¦C", "Fix", 0, "Jchcc", "Åı©Ò¦³ª««~³£¯à©ñ¨ì§Ö±¶¦C¡A¤è«K°µ¼Æ¶q°lÂÜ", false);
 
 registerPatch(311, "NavigationButton", "³]©w[¾É¯è]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
 
