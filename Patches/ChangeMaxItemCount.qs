@@ -3,7 +3,7 @@
 //=============================================================//
 
 function SetMaxItemCount() {
-	return ChangeMaxItemCount(exe.getUserInput("$MaxItemCount", XTYPE_STRING, "Number Input", "Enter the max item count (0-999)", 100, 0, 3));
+	return ChangeMaxItemCount(exe.getUserInput("$MaxItemCount", XTYPE_STRING, "輸入數字", "輸入道具持有種類數顯示上限 (0-999)", 100, 0, 3));
 }
 
 //####################################################################################
@@ -39,4 +39,12 @@ function ChangeMaxItemCount(value) {
 	}
 
 	return true;
+}
+
+//=======================================================================//
+// Disable for Unsupported Clients - Check for string "icon_num.bmp"     //
+//=======================================================================//
+
+function SetMaxItemCount_() {
+	return (exe.findString("icon_num.bmp", RAW, false) !== -1);
 }

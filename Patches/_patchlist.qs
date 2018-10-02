@@ -410,7 +410,7 @@ registerPatch(251, "AllowCloseCutinByEsc", "可使用 Esc 關閉 cutin 圖片", "自訂",
 
 registerPatch(300, "FixItemDescBug", "修復物品說明亂碼 Bug", "介面", 0, "Jchcc", "修復物品右鍵內容 '[' 造成的亂碼", false);
 
-registerPatch(301, "SetMaxItemCount", "修改角色道具最大上限", "介面", 0, "Jchcc", "修改角色道具容量最大上限的數值 (只是登入器顯示，跟伺服端無關)", false);
+registerPatch(301, "SetMaxItemCount", "修改角色道具上限顯示", "介面", 0, "Jchcc", "修改角色道具容量最大上限顯示的數值 (只是登入器顯示，跟伺服端無關)", false);
 
 registerPatch(302, "SetAutoFollowDelay", "設定自動跟隨延遲", "自訂", 0, "Jchcc", "讓自動跟隨更緊密，減少過圖跟丟的情況", false);
 
