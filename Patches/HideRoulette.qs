@@ -3,6 +3,9 @@
 //###################################################################################
 
 function HideRoulette() {
+
+  if (getActivePatches().indexOf(212) !== -1)
+    return "Patch Cancelled - Restore Roulette is ON";
   
   //Step 1a - Get Window Manager Info
   var mgrInfo = GetWinMgrInfo();
