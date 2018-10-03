@@ -272,23 +272,23 @@ registerPatch(103, "DisableAutofollow", "Ãö³¬¦Û°Ê¸òÀH¥\¯à", "¦Û­q", 0, "Functor,
 
 registerPatch(104, "IncreaseHairLimits", "ÂX¼W¾v«¬¸ò¬V¦âÀÉ½s¸¹", "¤¶­±", 0, "Neo", "ÂX¼W¾v«¬¸ò¬V¦âÀÉ½s¸¹");
 
-registerPatch(105, "HideNavButton", "ÁôÂÃ[¾É¯è]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾É¯èªº«ö¶s", false);
+// registerPatch(105, "HideNavButton", "ÁôÂÃ[¾É¯è]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾É¯èªº«ö¶s", false);
 
-registerPatch(106, "HideBgButton", "ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾Ô³õªº«ö¶s", false);
+// registerPatch(106, "HideBgButton", "ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾Ô³õªº«ö¶s", false);
 
-registerPatch(107, "HideBankButton", "ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ»È¦æªº«ö¶s", false);
+// registerPatch(107, "HideBankButton", "ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ»È¦æªº«ö¶s", false);
 
-registerPatch(108, "HideBooking", "ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ²Õ¶¤©Û¶Òªº«ö¶s", false);
+// registerPatch(108, "HideBooking", "ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ²Õ¶¤©Û¶Òªº«ö¶s", false);
 
-registerPatch(109, "HideRodex", "ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ«H½c(RODEX)ªº«ö¶s", false);
+// registerPatch(109, "HideRodex", "ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ«H½c(RODEX)ªº«ö¶s", false);
 
-registerPatch(110, "HideAchieve", "ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦¨´Nªº«ö¶s", false);
+// registerPatch(110, "HideAchieve", "ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦¨´Nªº«ö¶s", false);
 
-registerPatch(111, "HideRecButton", "ÁôÂÃ[¿ı¼v]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¿ı¼vªº«ö¶s", false);
+// registerPatch(111, "HideRecButton", "ÁôÂÃ[¿ı¼v]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¿ı¼vªº«ö¶s", false);
 
-registerPatch(112, "HideMapButton", "ÁôÂÃ[¦a¹Ï]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦a¹Ïªº«ö¶s", false);
+// registerPatch(112, "HideMapButton", "ÁôÂÃ[¦a¹Ï]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦a¹Ïªº«ö¶s", false);
 
-registerPatch(113, "HideQuest", "ÁôÂÃ[¥ô°È]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¥ô°Èªº«ö¶s", false);
+// registerPatch(113, "HideQuest", "ÁôÂÃ[¥ô°È]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¥ô°Èªº«ö¶s", false);
 
 registerPatch(114, "ChangeVendingLimit", "­×§ï¦¬ÁÊ°Ó©±ª÷ÃB­­¨î [´ú¸Õ]", "¸ê®Æ", 0, "Neo", "­×§ï¦¬ÁÊ°Ó©±³Ì¦h100¸Uªº­­¨î", false);
 
@@ -318,7 +318,7 @@ registerPatch(206, "LoadCustomQuestLua", "¸ü¤J¦Û»sªº¥ô°È lub ÀÉ", "¦Û­q", 0, "Ne
 
 registerPatch(207, "ResizeFont", "­×§ï¦r«¬¤j¤p", "¤¶­±", 0, "Yommy, Neo", "­×§ï¦r«¬¤j¤p¡A¹w³]¬O10¡A¤¤¤å§ï¤j·|ÅÜ«ÜÁà", false);
 
-registerPatch(208, "RestoreCashShop", "«ì´_°Ó«°«ö¶s¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_°Ó«°ªº«ö¶s¹Ï¥Ü¡ARE ª©¥»¨S¦³°Ó«°¤~­n¤Ä¿ï", false);
+registerPatch(208, "RestoreCashShop", "«ì´_¥k¤W¤è[°Ó«°]¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_¥k¤W¤è°Ó«°ªº«ö¶s¹Ï¥Ü¡ARE ª©¥»¨S¦³°Ó«°¤~­n¤Ä¿ï", false);
 
 registerPatch(209, "EnableMailBox", "«ì´_«H½c¥\¯à", "¤¶­±", 0, "Neo", "±Ò¥Î«H½c¥\¯à(ÂÂª©«H½c¡A«D RODEX)¡A¹ï©Ò¦³(langtype)³£¤ä´©", false);
 
@@ -326,7 +326,7 @@ registerPatch(210, "UseCustomIcon", "¨Ï¥Î¦Û»sªº¹Ï¥Ü", "¤¶­±", 4, "Neo", "¨Ï¥Î¦Û»
 
 registerPatch(211, "UseCustomDLL", "¸ü¤J¦Û»sªº DLL", "¦Û­q", 0, "Neo", "±¾¸ü¦Û»sªº DLL¡A¨Ò¦p ±Ò°Ê°Êµe (½d¨ÒÀÉ¦bInput\dlls.txt)", false);
 
-registerPatch(212, "RestoreRoulette", "«ì´_Âà½L«ö¶s¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_Âà½L«ö¶s¹Ï¥Ü¡A·sª©¹w³]¤£·|Åã¥Ü", false);
+registerPatch(212, "RestoreRoulette", "«ì´_¥k¤W¤è[Âà½L]¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_¥k¤W¤èÂà½L«ö¶s¹Ï¥Ü¡A·sª©¹w³]¤wÃö³¬", false);
 
 registerPatch(213, "DisableHelpMsg", "Ãö³¬µn¤J¹CÀ¸ªº±Ğ¾Ç´£¥Ü", "¤¶­±", 0, "Neo", "Ãö³¬µn¤J¹CÀ¸Åã¥Üªº±Ğ¾Ç´£¥Ü", true);
 
@@ -334,9 +334,9 @@ registerPatch(214, "RestoreModelCulling", "«ì´_³zµø¼Ò²Õ", "¯S®í", 0, "Curiosity"
 
 registerPatch(215, "IncreaseMapQuality", "¦a¹Ï¤ä´©32¦ì¤¸¯¾²z", "¦Û­q", 0, "Curiosity", "Åı¦a¹Ï¤ä´©32¦ì¤¸ÃC¦â¯¾²z", false);
 
-registerPatch(216, "HideCashShop", "ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ°Ó«°ªº«ö¶s", false);
+registerPatch(216, "HideCashShop", "ÁôÂÃ¥k¤W¤è[°Ó«°]¹Ï¥Ü", "¤¶­±", 12, "Neo", "ÁôÂÃ¥k¤W¤è°Ó«°«ö¶s¹Ï¥Ü", false);
 
-registerPatch(217, "HideRoulette", "ÁôÂÃ[Âà½L]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃÂà½Lªº«ö¶s", false);
+registerPatch(217, "HideRoulette", "ÁôÂÃ¥k¤W¤è[Âà½L]¹Ï¥Ü", "¤¶­±", 12, "Neo", "ÁôÂÃ¥k¤W¤èÂà½L«ö¶s¹Ï¥Ü", false);
 
 registerPatch(218, "ShowExpNumbers", "Åã¥Ü¸gÅç±ø", "¤¶­±", 0, "Neo", "¦b¥ª¤W¨¤¨¤¦âª¬ºAÄæÅã¥Ü¸gÅç±ø", false);
 
@@ -368,7 +368,7 @@ registerPatch(231, "RemoveHardcodedAddress", "²¾°£¼g¦º¦bµn¤J¾¹ªºIP¸òPort", "­×´_
 
 registerPatch(232, "RestoreOldLoginPacket", "«ì´_ÂÂª©ªºµn¤J«Ê¥]", "¯S®í", 17, "4144", "«ì´_ÂÂª©ªºµn¤J«Ê¥] 0x64", false);
 
-registerPatch(233, "HideSNSButton", "ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Secret", "ÁôÂÃ TWITTER ªº«ö¶s", false);
+// registerPatch(233, "HideSNSButton", "ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Secret", "ÁôÂÃ TWITTER ªº«ö¶s", false);
 
 registerPatch(234, "IgnoreLuaErrors", "©¿²¤ Lua ¿ù»~", "­×´_", 0, "4144", "©¿²¤©Ò¦³ Lua/Lub ¿ù»~(¥iÀ°§U°£¿ù¡ADeBug®É¤£¥Î¤Ä)", false);
 
@@ -408,6 +408,8 @@ registerPatch(251, "AllowCloseCutinByEsc", "¥i¨Ï¥Î Esc Ãö³¬ cutin ¹Ï¤ù", "¦Û­q",
 
 //registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "¦Û­q", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
 
+
+
 registerPatch(300, "FixItemDescBug", "­×´_ª««~»¡©ú¶Ã½X Bug", "¤¶­±", 0, "Jchcc", "­×´_ª««~¥kÁä¤º®e '[' ³y¦¨ªº¶Ã½X", false);
 
 registerPatch(301, "SetMaxItemCount", "­×§ï¨¤¦â¹D¨ã¤W­­Åã¥Ü", "¤¶­±", 0, "Jchcc", "­×§ï¨¤¦â¹D¨ã®e¶q³Ì¤j¤W­­Åã¥Üªº¼Æ­È (¥u¬Oµn¤J¾¹Åã¥Ü¡A¸ò¦øªAºİµLÃö)", false);
@@ -420,23 +422,31 @@ registerPatch(304, "UseDefaultBrowser", "¨Ï¥Î¹w³]ÂsÄı¾¹¶}±ÒNPCªº<URL>³sµ²", "¤¶­
 
 registerPatch(305, "ShortcutAllItem", "¤¹³\©Ò¦³ª««~©ñ§Ö±¶¦C", "Fix", 0, "Jchcc", "Åı©Ò¦³ª««~³£¯à©ñ¨ì§Ö±¶¦C¡A¤è«K°µ¼Æ¶q°lÂÜ", false);
 
-registerPatch(311, "NavigationButton", "³]©w[¾É¯è]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(310, "SetButtonBooking",	"ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¶¤¥î©Û¶Ò«ö¶s", false);
 
-registerPatch(312, "BankButton", "³]©w[»È¦æ]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(311, "SetButtonBg",		"ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¾Ô³õ«ö¶s", false);
 
-registerPatch(313, "ReplayButton", "³]©w[­«¼½]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(312, "SetButtonQuest",	"ÁôÂÃ[¥ô°È]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¥ô°È«ö¶s", false);
 
-registerPatch(314, "MailButton", "³]©w[«H½c]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(313, "SetButtonMap",		"ÁôÂÃ[¦a¹Ï]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¦a¹Ï«ö¶s", false);
 
-registerPatch(315, "AchievementButton", "³]©w[¦¨´N]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(314, "SetButtonNav",		"ÁôÂÃ[¾É¯è]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¾É¯è«ö¶s", false);
 
-registerPatch(316, "TipButton", "³]©w[´£¥Ü]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(315, "SetButtonBank",		"ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ»È¦æ«ö¶s", false);
 
-registerPatch(317, "ShopButton", "³]©w[°Ó«°]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(316, "SetButtonRec",		"ÁôÂÃ[¿ı¼v]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¿ı¼v«ö¶s", false);
 
-registerPatch(318, "SNSButton", "³]©w[TWITTER]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(317, "SetButtonMail",		"ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ«H½c«ö¶s", false);
 
-registerPatch(319, "AttendanceButton", "³]©w[Ã±¨ì]«ö¶s", "¤¶­±", 12, "Jchcc", "³]©w20180416¤§«áµn¤J¾¹ªº¥ª¤W¨¤¥\¯à«ö¶s¬O§_Åã¥Ü", false);
+registerPatch(318, "SetButtonAchieve",	"ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¦¨´N«ö¶s", false);
+
+registerPatch(319, "SetButtonTip",		"ÁôÂÃ[´£¥Ü]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ´£¥Ü«ö¶s", false);
+
+registerPatch(320, "SetButtonAttend",	"ÁôÂÃ[Ã±¨ì]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæÃ±¨ì«ö¶s", false);
+
+registerPatch(321, "SetButtonSNS",		"ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæTWITTER«ö¶s", false);
+
+registerPatch(322, "SetButtonCashShop",	"ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ°Ó«°«ö¶s", false);
 
 
 registerPatch(350, "ChangeAchievementList", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
