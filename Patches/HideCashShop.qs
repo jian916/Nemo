@@ -31,5 +31,5 @@ function HideCashShop() {
 // Disable for Unsupported Clients - Check for Icon bmp //
 //======================================================//
 function HideCashShop_() {
-  return (exe.findString("NC_CashShop", RAW) !== -1 && exe.findString("adventurerAgency") === -1);
+  return (exe.findString("NC_CashShop", RAW) !== -1);
 }

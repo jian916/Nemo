@@ -163,42 +163,14 @@ function UseNewIcons() {
 // Disable for Unsupported Clients - Check for Button bmp //
 //========================================================//
 
-function HideNavButton_() {
-	return (exe.findString("adventurerAgency") === -1);
-}
-
-// function HideBgButton_() {
-// 	return (exe.findString("adventurerAgency") === -1);
-// }
-
-function HideBankButton_() {
-	return (exe.findString("adventurerAgency") === -1);
-}
-
-// function HideBooking() {
-// 	return (exe.findString("adventurerAgency") === -1);
-// }
-
 function HideRodex_() {
-	return ((exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\mail", RAW) !== -1 || (UseNewIcons() && exe.findString("navigation") !== -1)) && exe.findString("adventurerAgency") === -1);
+	return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\mail", RAW) !== -1 || (UseNewIcons() && exe.findString("navigation") !== -1));
 }
 
 function HideAchieve_() {
-	return ((exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\achievement", RAW) !== -1 || (UseNewIcons() && exe.findString("achievement") !== -1)) && exe.findString("adventurerAgency") === -1);
+	return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\achievement", RAW) !== -1 || (UseNewIcons() && exe.findString("achievement") !== -1));
 }
-
-function HideRecButton_() {
-	return (exe.findString("adventurerAgency") === -1);
-}
-
-// function HideMapButton() {
-// 	return (exe.findString("adventurerAgency") === -1);
-// }
-
-// function HideQuest() {
-// 	return (exe.findString("adventurerAgency") === -1);
-// }
 
 function HideSNSButton_() {
-	return (exe.findString("sns") !== -1 && exe.findString("adventurerAgency") === -1);
+	return (exe.findString("sns") !== -1);
 }
