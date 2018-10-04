@@ -397,7 +397,7 @@ function GetFunction(funcName, dllName, ordinal) {
     //Step 1d - If DLL name is provided, only check if it matches with current DLL Name (case insensitively)
     if (dllName !== "") {
       nameOff = exe.Rva2Raw(nameOff + imgBase);
-      var nameEnd = exe.find("00", PTYPE_HEX, false, "", nameOff);
+      var nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
       if (dllName !== exe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
     }
     
@@ -417,7 +417,7 @@ function GetFunction(funcName, dllName, ordinal) {
         //Step 2d - The Thunk will point to a location with first 2 bytes as Hint followed by Function Name.
         //          So extract it after 2nd byte
         nameOff = exe.Rva2Raw((funcData & 0x7FFFFFFF) + imgBase) + 2;
-        nameEnd = exe.find("00", PTYPE_HEX, false, "", nameOff);
+        nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
 
         //Step 2e - Check if the Function name matches. If it does, save the address in IAT and break
         if (funcName === exe.fetch(nameOff, nameEnd - nameOff)) {

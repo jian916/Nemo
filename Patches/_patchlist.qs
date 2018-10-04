@@ -46,6 +46,8 @@ registerGroup(17, "Zero", false);
 
 registerGroup(18, "EnableSkills", false);
 
+globalVarTest = 123;
+
 //#########################################################################################################################################################
 //#                                                                                                                                                       #
 //# FORMAT for registering patch : registerPatch(patch id, functionName, patch Name, category, group id, author, description, recommended [true/false] ); #
