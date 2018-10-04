@@ -408,6 +408,8 @@ registerPatch(251, "AllowCloseCutinByEsc", "可使用 Esc 關閉 cutin 圖片", "自訂",
 
 //registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "自訂", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
 
+registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons", "Custom", 12, "4144", "Allow skip buttons hidden by patches 'Hide XXX button'", false);
+
 
 
 registerPatch(300, "FixItemDescBug", "修復物品說明亂碼 Bug", "介面", 0, "Jchcc", "修復物品右鍵內容 '[' 造成的亂碼", false);
@@ -468,3 +470,5 @@ registerPatch(358, "ChangeRecommendedQuestInfoList", "修改RecommendedQuestInfoLi
 registerPatch(359, "ChangePrivateAirplane", "修改PrivateAirplane*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的飛空艇 PrivateAirplane*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
 
 registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 19, "Jian", "修改預設 BGM 路徑，改變登入帳號時的聲音，官方為 bgm\\01.mp3", false);
+
+// registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
