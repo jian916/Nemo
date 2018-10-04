@@ -56,7 +56,11 @@ function EnableCustomHomunculus() {//Work In Progress
   ;
   var csize = code.hexlength();
   
-  code += GenLuaCaller(hookLoc + csize, "RegJobName", offset, "d>s", " 57");
+  var result = GenLuaCaller(hookLoc + csize, "RegJobName", offset, "d>s", " 57");
+  if (result.indexOf("LUA:") !== -1)
+      return result;
+
+  code += result;
   
   code += 
     " 8A 08"          //MOV CL, BYTE PTR DS:[EAX]

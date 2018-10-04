@@ -72,8 +72,12 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " BF 01 00 00 00" //MOV EDI, 1
   + " BB" + MaxShield.packToHex(4) //MOV EBX, finalValue
   ;
+
+  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>s", " 57");
+  if (result.indexOf("LUA:") !== -1)
+      return result;
   
-  code += GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>s", " 57");
+  code += result;
   
   code +=
     " 8A 08"          //MOV CL, BYTE PTR DS:[EAX]
@@ -172,8 +176,12 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " 52"             //PUSH EDX
   + " 8B 54 24 08"    //MOV EDX, DWORD PTR SS:[ESP+8]
   ;
+
+  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>d", " 52");
+  if (result.indexOf("LUA:") !== -1)
+      return result;
   
-  code += GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>d", " 52");
+  code += result;
   
   code += 
     " 5A"             //POP EDX

@@ -95,9 +95,12 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
     if (isPlayerFn)
     {
         //Step 3.1 - Prep Lua Function caller
+        var result = GenLuaCaller(fnBegin + 4, funcName, exe.Raw2Rva(fnBegin + 0x80), "d>d", " 50");
+        if (result.indexOf("LUA:") !== -1)
+          return result;
         code =
             " 8B 44 24 04"  //MOV EAX, DWORD PTR SS:[ARG.1]
-        +   GenLuaCaller(fnBegin + 4, funcName, exe.Raw2Rva(fnBegin + 0x80), "d>d", " 50")
+        +   result
         +   " C3"           //RETN ; AL is already set
         ;
         
@@ -115,9 +118,12 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
             return "Failed in Step 4 - Not enough free space";
         
         //Step 4.2 - Prep function which calls the Lua function
+          var result = GenLuaCaller(free, funcName, exe.Raw2Rva(fnBegin + 0x10), "d>d", " 52");
+          if (result.indexOf("LUA:") !== -1)
+              return result;
         code =
             funcName.toHex()
-        +   GenLuaCaller(free, funcName, exe.Raw2Rva(fnBegin + 0x10), "d>d", " 52")
+        +   result
         +   " C3" //RETN
         ;
         
