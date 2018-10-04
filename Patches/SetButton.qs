@@ -7,9 +7,8 @@ function SetButtonBooking() {
 		return "Failed in Patch - 2018 was disabled";
 	}
 	else if(Use17Icons()) {
-		if(!ReplaceHex(" C7 45 B0 63 01 00 00", "F0 01", 3))
-			return Hide17Button("booking");
-		return true;
+		if(ReplaceHex(" C7 45 B0 63 01 00 00", "F0 01", 3)) return true;
+		return Hide17Button("equip", "booking");
 	}
 	else if(Use14Icons() || FindOldRes("booking")) {
 		return ReplaceString(
@@ -22,13 +21,12 @@ function SetButtonBooking() {
 
 function SetButtonBg() {
 	if(Use18Icons()) {
-		return ReplaceString("battle", "\x00");
+		return Hide17Button("equip", "battle");
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 BC 60 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 B8 61 01 00 00", "06 02", 3))
-				return Hide17Button("battle");
-		return true;
+		if(ReplaceHex(" C7 45 BC 60 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 B8 61 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "battle");
 	}
 	else if(Use14Icons() || FindOldRes("btn_battle_field")) {
 		return ReplaceString(
@@ -41,35 +39,32 @@ function SetButtonBg() {
 
 function SetButtonQuest() {
 	if(Use18Icons()) {
-		return ReplaceString("quest", "\x00");
+		return Hide17Button("equip", "quest");
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 C0 51 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 BC 52 01 00 00", "06 02", 3))
-				return Hide17Button("quest");
-		return true;
+		if(ReplaceHex(" C7 45 C0 51 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 BC 52 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "quest");
 	}
-	else if(Use14Icons() || FindOldRes("quest_%d.bmp")) {
-		return ReplaceString(
-			["basic_interface\\quest_%d.bmp", "RO_menu_icon\\quest"],
-			["\x00", "\x00"]
-		);
+	else if(Use14Icons()) {
+		if(ReplaceString("RO_menu_icon\\quest","\x00")) return true;
+		return Hide17Button("info", "quest");
+	}
+	else if(FindOldRes("quest_%d.bmp")) {
+		return ReplaceString("basic_interface\\quest_%d.bmp","\x00"); // not effect
 	}
 	return "Failed in Patch - NO resource found";
 }
 
 function SetButtonMap() {
 	if(Use18Icons()) {
-		return ReplaceString("map", "\x00");
+		return Hide17Button("equip", "map");
 	}
 	else if(Use17Icons()) {
-		return Hide17Button("map");
+		return Hide17Button("equip", "map");
 	}
-	else if(Use14Icons() || FindOldRes("map")) {
-		return ReplaceString(
-			["basic_interface\\map", "RO_menu_icon\\map"],
-			["\x00", "\x00"]
-		);
+	else if(Use14Icons() || (exe.findString("map", RAW) !== -1)) {
+		return ReplaceString("map","\x00"); // not effect
 	}
 	return "Failed in Patch - NO resource found";
 }
@@ -79,10 +74,9 @@ function SetButtonNav() {
 		return Hide18Button("0x197", exe.getUserInput("$navi", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 C8 96 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 C4 97 01 00 00", "06 02", 3))
-				return Hide17Button("navigation");
-		return true;
+		if(ReplaceHex(" C7 45 C8 96 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 C4 97 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "navigation");
 	}
 	else if(Use14Icons() || (exe.findString("navigation_interface\\btn_Navigation", RAW, false) !== -1)) {
 		return ReplaceString(
@@ -98,10 +92,9 @@ function SetButtonBank() {
 		return Hide18Button("0x1B6", exe.getUserInput("$bank", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 D0 B5 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 CC B6 01 00 00", "06 02", 3))
-				return Hide17Button("bank");
-		return true;
+		if(ReplaceHex(" C7 45 D0 B5 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 CC B6 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "bank");
 	}
 	else if(Use14Icons() || FindOldRes("btn_bank")) {
 		return ReplaceString(
@@ -117,10 +110,9 @@ function SetButtonRec() {
 		return Hide18Button("0x178", exe.getUserInput("$replay", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 D4 77 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 D0 78 01 00 00", "06 02", 3))
-				return Hide17Button("rec");
-		return true;
+		if(ReplaceHex(" C7 45 D4 77 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 D0 78 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "rec");
 	}
 	else if(Use14Icons() || (exe.findString("replay_interface\\rec", RAW, false) !== -1)) {
 		return ReplaceString(
@@ -136,10 +128,9 @@ function SetButtonMail() {
 		return Hide18Button("0x1C5", exe.getUserInput("$mail", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 D8 C4 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 D4 C5 01 00 00", "06 02", 3))
-				return Hide17Button("mail");
-		return true;
+		if(ReplaceHex(" C7 45 D8 C4 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 D4 C5 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "mail");
 	}
 	else if(Use14Icons()) {
 		return ReplaceString(
@@ -154,10 +145,9 @@ function SetButtonAchieve() {
 		return Hide18Button("0x1C2", exe.getUserInput("$achievement", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 DC C1 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 D8 C2 01 00 00", "06 02", 3))
-				return Hide17Button("achievement");
-		return true;
+		if(ReplaceHex(" C7 45 DC C1 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 D8 C2 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "achievement");
 	}
 	else if(Use14Icons()) {
 		return ReplaceString(
@@ -172,10 +162,9 @@ function SetButtonTip() {
 		return Hide18Button("0x1E8", exe.getUserInput("$tip", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 E0 E8 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 DC E8 01 00 00", "06 02", 3))
-				return Hide17Button("tip");
-		return true;
+		if(ReplaceHex(" C7 45 E0 E8 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 DC E8 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "tip");
 	}
 	else if(Use14Icons()) {
 		return "Failed in Patch - 2014 not had";
@@ -188,9 +177,8 @@ function SetButtonAttend() {
 		return Hide18Button("0x205", exe.getUserInput("$attendance", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 EC 05 02 00 00", "06 02", 3))
-			return Hide17Button("attendance");
-		return true;
+		if(ReplaceHex(" C7 45 EC 05 02 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "attendance");
 	}
 	else if(Use14Icons()) {
 		return "Failed in Patch - 2014 not had";
@@ -203,13 +191,12 @@ function SetButtonSNS() {
 		return Hide18Button("0x1EF", exe.getUserInput("$sns", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
-		if (!ReplaceHex(" C7 45 EC EF 01 00 00", "F0 01", 3))
-			if (!ReplaceHex(" C7 45 E8 EF 01 00 00", "06 02", 3))
-				return Hide17Button("sns");
-		return true;
+		if(ReplaceHex(" C7 45 EC EF 01 00 00", "F0 01", 3)) return true;
+		if(ReplaceHex(" C7 45 E8 EF 01 00 00", "06 02", 3)) return true;
+		return Hide17Button("equip", "sns");
 	}
 	else if(Use14Icons()) {
-		return "Failed in Patch - 2014 not had";
+		return Hide17Button("info", "sns");
 	}
 	return "Failed in Patch - NO resource found";
 }
@@ -219,7 +206,7 @@ function SetButtonCashShop() {
 		return Hide18Button("0x1E9", exe.getUserInput("$shop", XTYPE_BYTE, "Set Button", "設定按鈕: 隱藏(0) 或 顯示(1)", 1, 0, 1));
 	}
 	else if(Use17Icons()) {
-		return Hide17Button("shop");
+		return Hide17Button("equip", "shop");
 	}
 	else if(Use14Icons()) {
 		return "Failed in Patch - 2014 not had";
@@ -248,7 +235,7 @@ function ReplaceString(src, tgt) {
 	}
 
 	if (offset === -1)
-		return "Failed in Step 1";
+		return false;
 
 	//Step 2 - Replace with corresponding value in tgt
 	exe.replace(offset, tgt[i], PTYPE_STRING);
@@ -270,9 +257,9 @@ function ReplaceHex(src, tgt, rpc_offset) {
 //# Purpose: Find the prefix assignment inside UIBasicWnd::OnCreate and #
 //#          assign address of NULL after the prefix instead            #
 //#######################################################################
-function Hide17Button(prefix) {
+function Hide17Button(reference, prefix) {
 	//Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
-	var refAddr = exe.findString("info", RVA);
+	var refAddr = exe.findString(reference, RVA);
 	if (refAddr === -1)
 		return "Failed in Step 1 - info missing";
 
@@ -371,7 +358,7 @@ function Find17Res(name) {
 //========================================================//
 
 function SetButtonBooking_() {
-	return (FindOldRes("booking") || Find14Res("booking")/* || Find17Res("booking")*/); // 17 disabled
+	return ((FindOldRes("booking") || Find14Res("booking") || Find17Res("booking")) && !Use18Icons()); // 17 disabled
 }
 
 function SetButtonBg_() {
@@ -383,7 +370,7 @@ function SetButtonQuest_() {
 }
 
 function SetButtonMap_() {
-	return (FindOldRes("map") || Find14Res("map") || Find17Res("map"));
+	return ((exe.findString("map", RAW) !== -1) || Find14Res("map") || Find17Res("map"));
 }
 
 function SetButtonNav_() {
