@@ -87,7 +87,7 @@ function ButtonNew(tbloffset, value) {
 	tbl = exe.Rva2Raw(tbl);
 	
 	//Step 4 - Set bool value for button
-	exe.replace((tbloffset - 0x164 + tbl), value, PTYPE_HEX);
+	exe.replaceByte((tbloffset - 0x164 + tbl), value);
 	
 	return true;
 }
