@@ -26,7 +26,7 @@ function RestoreCashShop() {
 
   var offset2 = offset + code.hexlength() + 4;
 
-  if (exe.find("68 BE 00 00 00" + movEcx, PTYPE_HEX, false, "", offset - 0x30, offset) !== -1)
+  if (exe.find("68 BE 00 00 00" + movEcx, PTYPE_HEX, false, "\xAB", offset - 0x30, offset) !== -1)
     return "Patch Cancelled - Icon is already there";
   
   //Step 3a - Prep insert code (starting portion is same as above hence we dont repeat it)

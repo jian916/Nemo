@@ -89,7 +89,7 @@ function IncreaseAtkDisplay() {
   }
   
   //Step 2c - Find Location where the digit extraction starts
-  offset = exe.find("B8 67 66 66 66", PTYPE_HEX, false, "", offset);//MOV EAX, 66666667
+  offset = exe.find("B8 67 66 66 66", PTYPE_HEX, false, "\xAB", offset);//MOV EAX, 66666667
   if (offset === -1)
     return "Failed in Step 2 - Digit Extractor missing";
   

@@ -48,7 +48,7 @@ function RestoreModelCulling() {
 	var pJmpHideCheck = -1;
 
 	for (var i = 0; i < jmpCodes.length; i++) {
-		pJmpHideCheck = exe.find( jmpCodes[i], PTYPE_HEX, false, "", pBase - 10, pBase);
+		pJmpHideCheck = exe.find(jmpCodes[i], PTYPE_HEX, false, "\xAB", pBase - 10, pBase);
 		if (pJmpHideCheck !== -1)
 			break;
 	}
@@ -62,7 +62,7 @@ function RestoreModelCulling() {
 	//Step 3a - Find call to C3dNode::SetToAlpha
   // MOV ECX, DWORD PTR DS:[ESI]
   // CALL addr
-	var pSetAlpha = exe.find(" 8B 0E E8", PTYPE_HEX, false, "", pBase + 7, pBase + 30);
+	var pSetAlpha = exe.find(" 8B 0E E8", PTYPE_HEX, false, "\xAB", pBase + 7, pBase + 30);
 	if (pSetAlpha === -1)
 		return "Failed in Step 3 - Missing SetToAlpha call";
 

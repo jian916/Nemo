@@ -28,7 +28,7 @@ function DumpImportTable() {
     
     //Step 2d - Write the Descriptor Info to file
     dllName = exe.Rva2Raw(dllName + exe.getImageBase());
-    var offset2 = exe.find("00", PTYPE_HEX, false, "", dllName);
+    var offset2 = exe.find("00", PTYPE_HEX, false, "\xAB", dllName);
     
     fp.writeline( "Lookup Table = 0x" + ilt.toBE()
                 + ", TimeStamp = " + ts 
@@ -52,7 +52,7 @@ function DumpImportTable() {
       else if (funcData > 0) { //First Bit (Sign) shows whether this functions is imported by Name (0) or Ordinal (1)
         funcData = funcData & 0x7FFFFFFF;//Address pointing to IMAGE_IMPORT_BY_NAME struct (First 2 bytes is Hint, remaining is the Function Name)
         var offset3 = exe.Rva2Raw(funcData + exe.getImageBase());
-        var offset4 = exe.find("00", PTYPE_HEX, false, "", offset3+2);
+        var offset4 = exe.find("00", PTYPE_HEX, false, "\xAB", offset3+2);
         fp.writeline( "  Thunk Address (RVA) = 0x" + exe.Raw2Rva(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()
                     + ", Function Hint = 0x" + exe.fetchHex(offset3, 2).replace(/ /g, "")

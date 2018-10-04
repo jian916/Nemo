@@ -150,7 +150,7 @@ function CancelToLoginWindow()
             zeroPush.repeat(3) //PUSH reg32 x3 or PUSH 0 x3
           + " 6A 02";
 
-        var offset3 = exe.find(code, PTYPE_HEX, false, "", offset2, offset2 + 0x20);
+        var offset3 = exe.find(code, PTYPE_HEX, false, "\xAB", offset2, offset2 + 0x20);
         if (offset3 === -1)
             continue;
 

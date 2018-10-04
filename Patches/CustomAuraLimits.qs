@@ -42,7 +42,7 @@ function CustomAuraLimits() {
   var cmpEnd = (offset + 6) + exe.fetchDWord(offset + 2);
 
   //Step 2c - Find PUSH 2E2 after it (only there in 2010+)
-  offset = exe.find(" 68 E2 02 00 00", PTYPE_HEX, false, "", offset + 6, offset + 0x100);
+  offset = exe.find(" 68 E2 02 00 00", PTYPE_HEX, false, "\xAB", offset + 6, offset + 0x100);
   if (offset === -1)
     return "Failed in Step 2 - 2E2 push missing";
 

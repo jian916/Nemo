@@ -27,7 +27,7 @@ function DCToLoginWindow() {
     return "Failed in Part 2 - Format string missing";
   
   //Step 2b - Find its reference after the MsgString ID PUSH
-  offset = exe.find(" 68" + offset.packToHex(4), PTYPE_HEX, false, "", offsets[1], offsets[1] + 0x120);
+  offset = exe.find(" 68" + offset.packToHex(4), PTYPE_HEX, false, "\xAB", offsets[1], offsets[1] + 0x120);
   if (offset === -1)
     return "Failed in Part 2 - Format reference missing";
 
@@ -52,18 +52,18 @@ function DCToLoginWindow() {
   + " FF D0" //CALL EAX
   ;
   
-  var offset2 = exe.find(code, PTYPE_HEX, false, "", offset + 0x6, offset + 0x20);
+  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
 
   if (offset2 === -1) {
     code = code.replace(" D0", " 50 18");
-    offset2 = exe.find(code, PTYPE_HEX, false, "", offset + 0x6, offset + 0x20);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
   }
   
   if (offset2 === -1)
     return "Failed in Part 2 - Mode Changer call missing";
   
   //Step 2f - Get the number of PUSH 0 s . We need to push the same number in our code
-  var zeroPushes = exe.findAll(" 6A 00", PTYPE_HEX, false, "", offset + 6, offset2);
+  var zeroPushes = exe.findAll(" 6A 00", PTYPE_HEX, false, "\xAB", offset + 6, offset2);
   if (zeroPushes.length === 0)
     return "Failed in Part 2 - Zero Pushes not found";
 

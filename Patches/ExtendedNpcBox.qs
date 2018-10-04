@@ -44,7 +44,7 @@ function ExtendNpcBox() {
     ;
   }
   
-  var offset2 = exe.find(code, PTYPE_HEX, false, "", offsets[i] + 5, offset + 0x200);//i is from the for loop
+  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 5, offset + 0x200);//i is from the for loop
   if (offset2 === -1)
     return "Failed in Step 1 - Function end missing";
 
@@ -62,7 +62,7 @@ function ExtendNpcBox() {
     //Step 2c - Update all EBP-x+i Stack references, for now we are limiting i to (0 - 3)
     for (var i = 0; i <= 3; i++) {
       code = (i - stackSub).packToHex(4);//-x+i
-      offsets = exe.findAll(code, PTYPE_HEX, false, "", offset + 6, offset2);
+      offsets = exe.findAll(code, PTYPE_HEX, false, "\xAB", offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++) {
         exe.replaceDWord(offsets[j], i - value);
       }
@@ -71,7 +71,7 @@ function ExtendNpcBox() {
   else {
     //Step 2d - Update all ESP+i Stack references, where i is in (0x804 - 0x820)
     for (var i = 0x804; i <= 0x820; i += 4 ) {
-      offsets = exe.findAll(i.packToHex(4), PTYPE_HEX, false, "", offset + 6, offset2);
+      offsets = exe.findAll(i.packToHex(4), PTYPE_HEX, false, "\xAB", offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++) {
         exe.replaceDWord(offsets[j], value + i - 0x804);
       }

@@ -26,7 +26,7 @@ function UseCustomDLL() {
     
     //Step 1e - Get the DLL Name for the import entry
     var offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-    var offset3 = exe.find("00", PTYPE_HEX, false, "", offset2);
+    var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
     var curDLL = exe.fetch(offset2, offset3 - offset2);
     
     //Step 1f - Make sure there is no duplicate

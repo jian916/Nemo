@@ -46,7 +46,7 @@ function EnableCustomJobs()
         hooks[2] = offset - 4;
 
         //Step 1f - Little trick to change the PUSH 3 to PUSH 0 so that EAX will point to the first location like we need
-        offset = exe.find(" 6A 03", PTYPE_HEX, false, "", hooks[2] - 0x12, hooks[2]);
+        offset = exe.find(" 6A 03", PTYPE_HEX, false, "\xAB", hooks[2] - 0x12, hooks[2]);
         exe.replace(offset + 1, "00", PTYPE_HEX);
     }
     if (hooks.length !== 3)

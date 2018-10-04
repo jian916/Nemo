@@ -105,7 +105,7 @@ function ExtractMsgTable() {
         if (exe.fetchDWord(offset) === id) {
             //Step 3a - Get the string for the current id
             var start_offset = exe.Rva2Raw(exe.fetchDWord(offset+4));
-            var end_offset   = exe.find("00", PTYPE_HEX, false, "", start_offset);
+            var end_offset   = exe.find("00", PTYPE_HEX, false, "\xAB", start_offset);
 
             msgStr = exe.fetch(start_offset, end_offset - start_offset);
 

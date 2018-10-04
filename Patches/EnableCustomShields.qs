@@ -192,7 +192,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " 6A 05" //PUSH 5
   + " 8B"    //MOV ECX, reg32_A
   ;
-  offset = exe.find(code, PTYPE_HEX, false, "", hookReq - 0x30, hookReq);
+  offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x30, hookReq);
   
   if (offset !== -1) {
     exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
@@ -204,7 +204,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     + " 2B"          //SUB reg32_A, reg32_B
     ;
     
-    offset = exe.find(code, PTYPE_HEX, false, "", hookReq - 0x60, hookReq);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x60, hookReq);
     if (offset === -1)
       return "Failed in Step 5 - No Allocator PUSHes found";
    
@@ -216,7 +216,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     + " 73"       //JAE SHORT addr
     ;
     
-    offset = exe.find(code, PTYPE_HEX, false, "", offset - 0x10, offset);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
     if (offset === -1)
       return "Failed in Step 5 - Comparison Missing";
    

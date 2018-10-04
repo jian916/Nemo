@@ -23,7 +23,7 @@ function ChangeVendingLimit() {
   + " 7E"          //JLE SHORT addr
   ;
   var newstyle = true;
-  var offset2 = exe.find(code, PTYPE_HEX, false, "", offset - 0x10, offset);
+  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
   if (offset2 === -1)
   {
     code =
@@ -31,7 +31,7 @@ function ChangeVendingLimit() {
     + " 7C"          //JL SHORT addr
     ;
     newstyle = false;
-    offset2 = exe.find(code, PTYPE_HEX, false, "", offset - 0x10, offset);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
   }
   
   if (offset2 === -1)
@@ -62,11 +62,11 @@ function ChangeVendingLimit() {
     + " 7D"          //JGE SHORT addr
     ;
   }
-  var offset1 = exe.find(code, PTYPE_HEX, false, "", offset - 0x80, offset);
+  var offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
   
   if (offset1 === -1 && newstyle) {
     code = code.replace("7E", "76");//Recent clients use JBE instead of JLE
-    offset1 = exe.find(code, PTYPE_HEX, false, "", offset - 0x80, offset);
+    offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
   }
   
   if (offset1 === -1)
@@ -76,7 +76,7 @@ function ChangeVendingLimit() {
   if (!newstyle)
   {
     code = code.replace("7D", "75");//JNE instead of JGE
-    offset = exe.find(code, PTYPE_HEX, false, offset - 0x60, offset);
+    offset = exe.find(code, PTYPE_HEX, false, '\xAB', offset - 0x60, offset);
     if (offset === -1)
       return "Failed in Step 2 - Extra Comparison missing";
     

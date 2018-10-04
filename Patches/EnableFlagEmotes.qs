@@ -68,7 +68,7 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
     var offset = exe.Rva2Raw(exe.fetchDWord(refAddr + (i - 1)*4));
     
     //Step 3c - Find the first code. Ideally it would be at offset itself unless something changed
-    offset = exe.find(code, PTYPE_HEX, false, "", offset);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
     if (offset === -1)
       return "Failed in Step 3 - First part missing : " + i;
     
