@@ -1,5 +1,5 @@
 //#############################################
-//# Purpose: Change the °∫ °ª brackets to ( ) #
+//# Purpose: Change the „Äé „Äè brackets to ( ) #
 //#############################################
   
 function UseNormalGuildBrackets() {

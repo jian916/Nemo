@@ -3,25 +3,25 @@
 //=======================================================//
 
 function SharedBodyPalettesV1() {
-  // "¸ö\%s_%s_%d.pal" => "¸ö\body%.s_%s_%d.pal"
+  // "ëª¸\%s_%s_%d.pal" => "ëª¸\body%.s_%s_%d.pal"
   
   return SharedPalettes("\xB8\xF6\\", "\xB8\xF6\\body%.s_%s_%d.pal\x00"); //%.s is required. Skips jobname
 }
 
 function SharedBodyPalettesV2() {
-  // "¸ö\%s_%s_%d.pal" => "¸ö\body%.s%.s_%d.pal"
+  // "ëª¸\%s_%s_%d.pal" => "ëª¸\body%.s%.s_%d.pal"
   
   return SharedPalettes("\xB8\xF6\\", "\xB8\xF6\\body%.s%.s_%d.pal\x00"); //%.s is required. Skips jobname & gender
 }
 
 function SharedHeadPalettesV1() {
-  // "¸Ó¸®\¸Ó¸®%s_%s_%d.pal" => "¸Ó¸®\head%.s_%s_%d.pal"
+  // "ë¨¸ë¦¬\ë¨¸ë¦¬%s_%s_%d.pal" => "ë¨¸ë¦¬\head%.s_%s_%d.pal"
   
   return SharedPalettes("\xB8\xD3\xB8\xAE\\\xB8\xD3\xB8\xAE", "\xB8\xD3\xB8\xAE\\head%.s_%s_%d.pal\x00");// %.s is required. Skips jobname
 }
 
 function SharedHeadPalettesV2() {
-  // "¸Ó¸®\¸Ó¸®%s_%s_%d.pal" => "¸Ó¸®\head%.s%.s_%d.pal"
+  // "ë¨¸ë¦¬\ë¨¸ë¦¬%s_%s_%d.pal" => "ë¨¸ë¦¬\head%.s%.s_%d.pal"
   
   return SharedPalettes("\xB8\xD3\xB8\xAE\\\xB8\xD3\xB8\xAE", "\xB8\xD3\xB8\xAE\\head%.s%.s_%d.pal\x00");// %.s is required. Skips jobname & gender
 }

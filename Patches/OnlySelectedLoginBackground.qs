@@ -17,7 +17,7 @@ function OnlySecondLoginBackground() {//Change 1 to 2
   
 function OnlySelectedBackground(s1, s2) {
   
-  //Step 1a - Prep Strings to Find and Replace using s1 and s2 respectively. ( À¯ÀúÀÎÅÍÆäÀÌ½º\T_¹è°æ%d-%d.bmp & À¯ÀúÀÎÅÍÆäÀÌ½º\T2_¹è°æ%d-%d.bmp )
+  //Step 1a - Prep Strings to Find and Replace using s1 and s2 respectively. ( ìœ ì €ì¸í„°í˜ì´ìŠ¤\T_ë°°ê²½%d-%d.bmp & ìœ ì €ì¸í„°í˜ì´ìŠ¤\T2_ë°°ê²½%d-%d.bmp )
   var fnd = "\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\T" + s1 + "_\xB9\xE8\xB0\xE6" + "%d-%d.bmp";
   if (s1 === "")
     fnd  += "\x00";
