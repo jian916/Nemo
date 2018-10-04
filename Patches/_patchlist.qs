@@ -394,7 +394,7 @@ registerPatch(244, "DisableCDGuard", "關閉 Cheat Defender 遊戲保護器", "修復", 0
 
 registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "自訂", 0, "4144", "Override selected job in char creation packet", false);
 
-registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "自訂", 0, "4144", "Allow use more hair styles than default limit", false);
+// registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "自訂", 0, "4144", "Allow use more hair styles than default limit", false);
 
 registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "自訂", 0, "4144", "Allow change height in input field in new char creation dialog", false);
 
