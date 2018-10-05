@@ -22,6 +22,7 @@ function HideCashShop() {
   
   //Step 2 - If found then JMP over it
   exe.replace(offset, "EB 0D", PTYPE_HEX);
+  return true;
 }
 
 //======================================================//

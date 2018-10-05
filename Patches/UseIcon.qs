@@ -49,7 +49,7 @@ function ReadIconFile(fname) {
 //==================================================================//
 
 function UseRagnarokIcon() {
-  UseCustomIcon(true);
+    return UseCustomIcon(true);
 }
 
 //###################################################################################
