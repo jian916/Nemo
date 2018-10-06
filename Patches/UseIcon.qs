@@ -101,7 +101,7 @@ function UseCustomIcon(nomod) {
   
   //Step 5a - Load the new icon
   var fp = new BinFile();
-  var iconfile = GetInputFile(fp, "$inpIconFile", "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH);
+  var iconfile = GetInputFile(fp, "$inpIconFile", "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH + "/Input/NEMO.ico");
   if (!iconfile)
     return "Patch Cancelled";
   
