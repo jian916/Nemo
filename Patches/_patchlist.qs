@@ -424,6 +424,8 @@ registerPatch(304, "UseDefaultBrowser", "¨Ï¥Î¹w³]ÂsÄý¾¹¶}±ÒNPCªº<URL>³sµ²", "¤¶­
 
 registerPatch(305, "ShortcutAllItem", "¤¹³\©Ò¦³ª««~©ñ§Ö±¶¦C", "­×´_", 0, "Jchcc", "Åý©Ò¦³ª««~³£¯à©ñ¨ì§Ö±¶¦C¡A¤è«K°µ¼Æ¶q°lÂÜ", false);
 
+registerPatch(306, "CustomWindowTitleHex", "­×§ïµn¤J¾¹¼ÐÃD[HEX]", "¤¶­±", 0, "Jian", "­×§ïµn¤J¾¹ªº¼ÐÃD(¤ä´©¤¤¤å¡A½Ð¿é¤J16¶i¨î)¡A¹w³]¬° '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+
 registerPatch(310, "SetButtonBooking",	"ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¶¤¥î©Û¶Ò«ö¶s", false);
 
 registerPatch(311, "SetButtonBg",		"ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¾Ô³õ«ö¶s", false);
