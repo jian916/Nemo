@@ -129,7 +129,7 @@ registerPatch( 31, "IncreaseZoomOut75Per", "視野限制增加 75%", "介面", 3, "Shinr
 
 registerPatch( 32, "IncreaseZoomOutMax", "視野限制取消", "介面", 3, "Shinryo", "取消視野遠近限制 (滾輪拉遠近)", true);
 
-registerPatch( 33, "KoreaServiceTypeXMLFix", "Always Call SelectKoreaClientInfo()", "修復", 0, "Shinryo", "Calls SelectKoreaClientInfo() always before SelectClientInfo() allowing you to use features that would be only visible on Korean Service Type", true);
+registerPatch( 33, "KoreaServiceTypeXMLFix", "啟用韓版預設的 ClientInfo 設定", "修復", 0, "Shinryo", "當讀取自訂的 ClientInfo 失敗時，使用韓版預設的 ClientInfo ，只有在 ServiceType 為 Korean 時才會顯示選項", true);
 
 registerPatch( 34, "EnableShowName", "預設啟用/showname功能", "修復", 0, "Neo", "此功能會把名字跟公會稱號對換，簡化並加粗顯示，隱藏組隊名跟公會名 (預設啟用/showname功能)", false);
 
@@ -386,9 +386,9 @@ registerPatch(240, "LoadCustomClientInfo", "修改 clientinfo.xml 路徑", "自訂", 0
 
 registerPatch(241, "AlwaysLoadClientPlugins", "自動載入插件[測試]", "修復", 0, "Secret", "自動載入 DLL 插件", false);
 
-registerPatch(242, "DisableKROSiteLaunch", "關閉韓版網頁登入的功能", "修復", 0, "mrjnumber1", "關閉韓版(ro.gnjoy.com)網頁登入的功能，若未關閉將無法使用傳統方式登入", true);
+registerPatch(242, "DisableKROSiteLaunch", "關閉韓版網頁登入的功能", "修復", 0, "mrjnumber1", "關閉韓版(ro.gnjoy.com)網頁登入的功能，若未關閉將無法使用傳統方式登入", false);
 
-registerPatch(243, "ChangeQuickSwitchDelay", "修改一件換裝的延遲時間", "修復", 0, "mrjnumber1", "修改一件換裝的延遲時間", false);
+registerPatch(243, "ChangeQuickSwitchDelay", "修改一鍵換裝的延遲時間", "修復", 0, "mrjnumber1", "修改一鍵換裝的延遲時間", false);
 
 registerPatch(244, "DisableCDGuard", "移除 Cheat Defender 遊戲保護器", "修復", 0, "4144", "移除 Cheat Defender 遊戲保護器，沒移除無法啟動遊戲", true);
 
