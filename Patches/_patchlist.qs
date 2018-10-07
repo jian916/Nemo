@@ -65,7 +65,7 @@ registerGroup(19, "路徑", false);
 //==========================================================================================================================//
 
 //0 Unused - to be filled
-registerPatch(  1, "UseTildeForMatk", "使用~號顯示Matk範圍", "介面", 0, "Neo", "素質欄的Matk區間顯示~號，而不是+號，Matk 是區間傷害", false);
+registerPatch(  1, "UseTildeForMatk", "使用~號顯示Matk範圍", "介面", 0, "Neo", "素質欄的Matk區間顯示~號，而不是+號，Matk 是區間傷害", true);
 
 registerPatch(  2, "AllowChatFlood", "發話洗頻判斷次數", "介面", 1, "Shinryo", "設定發話洗頻的限制，預設是只能發3次一樣內容", false);
 
@@ -89,11 +89,11 @@ registerPatch( 11, "Disable4LetterUsernameLimit", "取消帳號最少4個字限制", "修復
 
 registerPatch( 12, "Disable4LetterPasswordLimit", "取消密碼最少4個字限制", "修復", 0, "Shinryo", "取消密碼最少4個字的限制 (伺服端還是有限制)", false);
 
-registerPatch( 13, "DisableFilenameCheck", "取消登入器名稱檢查", "修復", 0, "Shinryo", "取消登入器名稱檢查，解決檔名只要不是Ragexe.exe就無法啟動遊戲的問題", true);
+registerPatch( 13, "DisableFilenameCheck", "移除登入器名稱檢查", "修復", 0, "Shinryo", "移除登入器名稱檢查機制，解決檔名只要不是Ragexe.exe就無法啟動遊戲的問題", true);
 
 registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "修復", 0, "Shinryo", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
 
-registerPatch( 15, "DisableHShield", "關閉駭客保護程式", "修復", 0, "Ai4rei/AN, Neo", "關閉駭客保護程式，要 Diff 就一定要關閉 (它會吃 aossdk.dll 及 v3hunt.dll)", true);
+registerPatch( 15, "DisableHShield", "移除駭客保護程式", "修復", 0, "Ai4rei/AN, Neo", "移除駭客保護機制，要 Diff 就一定要關閉 (它會吃 aossdk.dll 及 v3hunt.dll)", true);
 
 registerPatch( 16, "DisableSwearFilter", "關閉發言過濾", "介面", 0, "Shinryo", "關閉發言過濾機制，忽略 manner.txt 內的關鍵字", false);
 
@@ -101,7 +101,7 @@ registerPatch( 17, "EnableOfficialCustomFonts", "使用官方的字型", "介面", 0, "Sh
 
 registerPatch( 18, "SkipServiceSelect", "跳過伺服器選擇介面", "介面", 0, "Shinryo", "跳過伺服器選擇的介面，預設會選第一個伺服器", false);
 
-registerPatch( 19, "EnableTitleBarMenu", "遊戲標題顯示功能列", "介面", 0, "Shinryo", "讓遊戲的右上角顯示功能列(縮小&關閉)", false);
+registerPatch( 19, "EnableTitleBarMenu", "遊戲標題顯示功能列", "介面", 0, "Shinryo", "讓遊戲的右上角顯示功能列(縮小&關閉)", true);
 
 registerPatch( 20, "ExtendChatBox", "擴增聊天輸入限制", "介面", 0, "Shinryo", "擴增聊天視窗輸入的字數限制(最少70、最多234)", false);
 
@@ -117,17 +117,17 @@ registerPatch( 25, "FixCameraAnglesLess", "修正視角角度(最小)", "介面", 2, "Shin
 
 registerPatch( 26, "FixCameraAnglesFull", "修正視角角度(無限制)", "介面", 2, "Shinryo", "修正視角的角度，無限制角度 (shift+右鍵按著移動)", false);
 
-registerPatch( 27, "HKLMtoHKCU", "登錄表儲存位置(HKLM改HKCU)", "修復", 0, "Shinryo", "有關設定在登錄表儲存的位置，啟動遊戲反覆彈 Setup 就是這個原因", false);
+registerPatch( 27, "HKLMtoHKCU", "登錄表儲存位置(HKLM改HKCU)", "修復", 0, "Shinryo", "有關登錄表儲存設定的位置，啟動遊戲反覆彈 Setup 請勾選測試", false);
 
-registerPatch( 28, "IncreaseViewID", "擴增頭飾編號", "資料", 0, "Shinryo", "擴增頭飾的編號(預設2000，最大32000)", false);
+registerPatch( 28, "IncreaseViewID", "擴增頭飾編號", "資料", 0, "Shinryo", "擴增頭飾的編號(預設2000，最大32000)", true);
 
-registerPatch( 29, "DisableGameGuard", "Disable Game Guard", "修復", 0, "Neo", "Disables Game Guard from new clients", true);
+registerPatch( 29, "DisableGameGuard", "移除 Game Guard 遊戲保護器", "修復", 0, "Neo", "移除 Game Guard 遊戲保護器，沒移除無法啟動遊戲", true);
 
 registerPatch( 30, "IncreaseZoomOut50Per", "視野限制增加 50%", "介面", 3, "Shinryo", "增加 50% 視野遠近限制 (滾輪拉遠近)", false);
 
 registerPatch( 31, "IncreaseZoomOut75Per", "視野限制增加 75%", "介面", 3, "Shinryo", "增加 75% 視野遠近限制 (滾輪拉遠近)", false);
 
-registerPatch( 32, "IncreaseZoomOutMax", "視野限制取消", "介面", 3, "Shinryo", "取消視野遠近限制 (滾輪拉遠近)", false);
+registerPatch( 32, "IncreaseZoomOutMax", "視野限制取消", "介面", 3, "Shinryo", "取消視野遠近限制 (滾輪拉遠近)", true);
 
 registerPatch( 33, "KoreaServiceTypeXMLFix", "Always Call SelectKoreaClientInfo()", "修復", 0, "Shinryo", "Calls SelectKoreaClientInfo() always before SelectClientInfo() allowing you to use features that would be only visible on Korean Service Type", true);
 
@@ -157,9 +157,9 @@ registerPatch( 45, "UseCustomAuraSprites", "使用自製的滿等光圈", "資料", 0, "Shi
 
 registerPatch( 46, "UseNormalGuildBrackets", "改變工會名稱外框", "介面", 0, "Shinryo", "修改角色ID旁顯示的工會名稱外框，預設()，勾選使用[]", true);
 
-registerPatch( 47, "UseRagnarokIcon", "使用RO預設Icon圖示", "介面", 4, "Shinryo, Neo", "使用RO預設的Icon圖示", false);
+registerPatch( 47, "UseRagnarokIcon", "使用RO預設Icon圖示", "介面", 4, "Shinryo, Neo", "使用RO預設的Icon圖示", true);
 
-registerPatch( 48, "UsePlainTextDescriptions", "文字檔使用純文字", "資料", 0, "Shinryo", "文字檔使用純文字，而不是編碼過的", true);
+registerPatch( 48, "UsePlainTextDescriptions", "文字檔使用原編碼讀取", "資料", 0, "Shinryo", "文字檔使用原編碼讀取，而不是編碼過的", true);
 
 registerPatch( 49, "EnableMultipleGRFs", "讀取多個 GRF [INI]", "自訂", 5, "Shinryo", "啟用後讀取多個GRF，勾選時可輸入自訂的名稱(預設 data.ini)，最多只能讀取10個 GRF", true);
 
@@ -190,17 +190,17 @@ registerPatch( 61, "DisablePacketEncryption", "關閉封包混淆", "封包", 0, "Ai4rei
 
 registerPatch( 62, "DisableLoginEncryption", "關閉登入封包加密", "封包", 0, "Neo", "關閉登入封包加密，封包 0x2b0", true);
 
-registerPatch( 63, "UseOfficialClothPalette", "使用官方外觀染色檔", "介面", 0, "Neo", "使用官方預設的外觀染色檔", false);
+registerPatch( 63, "UseOfficialClothPalette", "使用官方外觀染色檔", "介面", 0, "Neo", "使用官方預設的外觀染色檔", true);
 
 registerPatch( 64, "FixChatAt", "修復 @ 符號 Bug", "修復", 0, "Shinryo", "修復聊天視窗不能輸入 @ 的限制", true);
 
-registerPatch( 65, "ChangeItemInfo", "修改iteminfo*.lub路徑", "自訂", 19, "Neo", "勾選後可以輸入自訂的成就 iteminfo*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", true);
+registerPatch( 65, "ChangeItemInfo", "修改iteminfo*.lub路徑", "自訂", 19, "Neo", "勾選後可以輸入自訂的成就 iteminfo*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
 
 registerPatch( 66, "LoadItemInfoPerServer", "用伺服器名稱自動選擇iteminfo", "資料", 0, "Neo", "讓 iteminfo 的 main function 引入伺服器名稱，自動判斷需要的內容，有分流且需要不同iteminfo才會用到", false);
 
 registerPatch( 67, "DisableQuakeEffect", "取消技能震動效果", "介面", 0, "Ai4rei/AN", "取消技能震動效果、地裂、爆氣等等", false);
 
-registerPatch( 68, "Enable64kHairstyle", "解除髮型數量限制", "介面", 0, "Ai4rei/AN", "解除髮型數量限制，支援64k種髮型，官方僅 27 種", false);
+registerPatch( 68, "Enable64kHairstyle", "解除髮型數量限制", "介面", 0, "Ai4rei/AN", "解除髮型數量限制，支援64k種髮型，官方僅 27 種", true);
 
 registerPatch( 69, "ExtendNpcBox", "擴增input的字數限制", "介面", 0, "Ai4rei/AN", "擴增腳本 input 的字數限制(最少2052、最多4096)", false);
 
@@ -212,7 +212,7 @@ registerPatch( 72, "IgnoreMissingPaletteError", "忽略染色檔案錯誤", "修復", 0, "
 
 registerPatch( 73, "RemoveHourlyAnnounce", "關閉健康提示", "介面", 0, "Ai4rei/AN", "關閉健康提示，就是每個小時的問候語", true);
 
-registerPatch( 74, "IncreaseScreenshotQuality", "修改截圖的品質", "介面", 0, "Ai4rei/AN", "修改截圖 jpeg 的品質 (最小0%，最大100%)", false);
+registerPatch( 74, "IncreaseScreenshotQuality", "修改照相截圖的品質", "介面", 0, "Ai4rei/AN", "修改照相截圖 jpeg 的品質 (最小0%，最大100%)", false);
 
 registerPatch( 75, "EnableFlagEmotes", "啟用旗子表情", "介面", 0, "Neo", "是否啟用旗子表情，需要自行設定旗子的列表", false);
 
@@ -222,15 +222,15 @@ registerPatch( 77, "EnableCustom3DBones", "載入自製的3D模型", "自訂", 0, "Ai4rei
 
 registerPatch( 78, "MoveCashShopIcon", "移動商城圖示位置", "介面",  11, "Neo", "移動商城圖示顯示的位置", false);
 
-registerPatch( 79, "SharedBodyPalettesV2", "服裝共用染色檔", "介面", 6, "Ai4rei/AN, Neo", "服裝共用單一染色檔，格式為(body_%d.pal)", false);
+registerPatch( 79, "SharedBodyPalettesV2", "服裝共用染色檔", "介面", 6, "Ai4rei/AN, Neo", "所有職業服裝共用單一染色檔，格式為(body_%d.pal)", false);
 
-registerPatch( 80, "SharedBodyPalettesV1", "服裝共用染色檔(分男女)", "介面", 6, "Ai4rei/AN, Neo", "服裝共用單一染色檔(分男女)，格式為(body_%s_%d.pal)", false);
+registerPatch( 80, "SharedBodyPalettesV1", "服裝共用染色檔(分男女)", "介面", 6, "Ai4rei/AN, Neo", "所有職業服裝共用單一染色檔(分男女)，格式為(body_%s_%d.pal)", false);
 
 registerPatch( 81, "RenameLicenseTxt", "修改授權條款路徑", "資料", 0, "Neo", "修改授權條款 licence.txt 的檔案名稱", false);
 
-registerPatch( 82, "SharedHeadPalettesV1", "髮色共用染色檔(分男女)", "介面", 7, "Ai4rei/AN, Neo", "髮色共用單一染色檔(分男女)，格式為(head_%s_%d.pal)", false);
+registerPatch( 82, "SharedHeadPalettesV1", "髮色共用染色檔(分男女)", "介面", 7, "Ai4rei/AN, Neo", "髮色在相同髮型共用單一染色檔(分男女)，格式為(head_%s_%d.pal)", false);
 
-registerPatch( 83, "SharedHeadPalettesV2", "髮色共用染色檔", "介面", 7, "Ai4rei/AN, Neo", "髮色共用單一染色檔，格式為(head_%d.pal)", false);
+registerPatch( 83, "SharedHeadPalettesV2", "髮色共用染色檔", "介面", 7, "Ai4rei/AN, Neo", "髮色在相同髮型共用單一染色檔，格式為(head_%d.pal)", false);
 
 registerPatch( 84, "RemoveSerialDisplay", "移除右下角序號顯示", "介面", 0, "Shinryo", "移除遊戲介面右下角的序號顯示", true);
 
@@ -262,15 +262,15 @@ registerPatch( 98, "DisableDCScream", "不讀取驚聲尖叫的檔案", "介面", 0, "Neo", 
 
 registerPatch( 99, "DisableBAFrostJoke", "不讀取冷笑話的檔案", "介面", 0, "Neo", "不讀取冷笑話的檔案 ba_frostjoke.txt", false);
 
-registerPatch(100, "DisableMultipleWindows", "禁止登入器雙開", "介面", 0, "Shinryo, Ai4rei/AN", "禁止登入器雙開(這無法杜絕雙開)", false);
+registerPatch(100, "DisableMultipleWindows", "禁止登入器雙開", "介面", 0, "Shinryo, Ai4rei/AN", "禁止登入器雙開 (這無法有效杜絕雙開)", false);
 
 registerPatch(101, "SkipCheaterFriendCheck", "關閉朋友名稱相似提示", "介面", 0, "Ai4rei/AN", "在密語時關閉相似朋友名字的提醒", false);
 
 registerPatch(102, "SkipCheaterGuildCheck", "關閉公會玩家名稱相似提示", "介面", 0, "Ai4rei/AN", "在密語時關閉相似工會玩家名字的提醒", false);
 
-registerPatch(103, "DisableAutofollow", "關閉自動跟隨功能", "自訂", 0, "Functor, Neo", "關閉自動跟隨的功能 Shift+右鍵", false);
+registerPatch(103, "DisableAutofollow", "關閉自動跟隨功能", "自訂", 0, "Functor, Neo", "關閉自動跟隨的功能 [Shift+右鍵]", false);
 
-registerPatch(104, "IncreaseHairLimits", "擴增髮型跟染色檔編號", "介面", 0, "Neo", "擴增髮型跟染色檔編號");
+registerPatch(104, "IncreaseHairLimits", "擴增髮型跟染色檔編號", "介面", 0, "Neo", "擴增髮型跟染色檔編號", true);
 
 // registerPatch(105, "HideNavButton", "隱藏[導航]按鈕", "介面", 12, "Neo", "隱藏導航的按鈕", false);
 
@@ -292,7 +292,7 @@ registerPatch(104, "IncreaseHairLimits", "擴增髮型跟染色檔編號", "介面", 0, "Neo
 
 registerPatch(114, "ChangeVendingLimit", "修改收購商店金額限制 [測試]", "資料", 0, "Neo", "修改收購商店最多100萬的限制", false);
 
-registerPatch(115, "EnableEffectForAllMaps", "開啟地圖特效 [測試]", "資料", 0, "Neo", "在所有地圖開啟地圖特效 (EffectTool)", false);
+registerPatch(115, "EnableEffectForAllMaps", "開啟所有地圖的特效 [測試]", "資料", 0, "Neo", "在所有地圖開啟地圖特效 (EffectTool)", false);
 
 //registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "介面", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 
@@ -310,7 +310,7 @@ registerPatch(202, "EnableCustomJobs", "載入自製的職業外觀", "自訂", 0, "Neo", "
 
 registerPatch(203, "EnableCustomShields", "載入自製的盾牌外觀", "自訂", 0, "Neo", "是否載入自製的盾牌外觀", false);
 
-registerPatch(204, "IncreaseAtkDisplay", "擴增傷害顯示位數", "自訂", 0, "Neo", "擴增傷害顯示的位數，預設是6位數99萬9999，啟用後變10位", false);
+registerPatch(204, "IncreaseAtkDisplay", "擴增傷害顯示位數", "自訂", 0, "Neo", "擴增傷害顯示的位數，預設是6位數99萬9999，啟用後變10位", true);
 
 registerPatch(205, "EnableMonsterTables", "讀取魔物對話檔案", "自訂", 0, "Ind, Neo", "讀取魔物對話檔案，MonsterTalkTable.xml、PetTalkTable.xml 和 MonsterSkillInfo.xml", false);
 
@@ -328,9 +328,9 @@ registerPatch(211, "UseCustomDLL", "載入自製的 DLL", "自訂", 0, "Neo", "掛載自製
 
 registerPatch(212, "RestoreRoulette", "恢復右上方[轉盤]圖示", "特殊", 0, "Neo", "恢復右上方轉盤按鈕圖示，新版預設已關閉", false);
 
-registerPatch(213, "DisableHelpMsg", "關閉登入遊戲的教學提示", "介面", 0, "Neo", "關閉登入遊戲顯示的教學提示", true);
+registerPatch(213, "DisableHelpMsg", "關閉登入遊戲的教學提示", "介面", 0, "Neo", "關閉登入遊戲時，顯示的教學提示", true);
 
-registerPatch(214, "RestoreModelCulling", "恢復透視模組", "特殊", 0, "Curiosity", "透視模組，當玩家在房子後面會將房子透明化處理(有些地圖有BUG)", false);
+registerPatch(214, "RestoreModelCulling", "恢復透視模組", "特殊", 0, "Curiosity", "啟用透視模組(Culling)，當玩家在房子後面會將房子透明化處理(有些地圖有BUG)", false);
 
 registerPatch(215, "IncreaseMapQuality", "地圖支援32位元紋理", "自訂", 0, "Curiosity", "讓地圖支援32位元顏色紋理", false);
 
@@ -350,9 +350,9 @@ registerPatch(222, "ShowReplayButton", "顯示錄影播放按鈕", "介面", 0, "Neo", "選
 
 registerPatch(223, "MoveItemCountUpwards", "美化左上角狀態欄[測試]", "介面", 0, "Neo", "美化左上角的狀態欄", false);
 
-//registerPatch(224, "IncreaseNpcIDs", "Increase NPC Ids[測試]", "自訂", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
+//registerPatch(224, "IncreaseNpcIDs", "擴充 NPC 編號上限[測試]", "自訂", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
 
-registerPatch(225, "ShowRegisterButton", "顯示註冊按鈕", "介面", 0, "Neo", "在登入介面顯示註冊按鈕", false);
+registerPatch(225, "ShowRegisterButton", "顯示註冊按鈕", "介面", 0, "Neo", "在登入輸入帳號介面顯示註冊按鈕", false);
 
 registerPatch(226, "DisableWalkToDelay", "關閉移動延遲[不建議]", "自訂", 16, "MegaByte", "關閉移動延遲，讓玩家可以無延遲移動，啟用後會造成伺服器負擔", false);
 
@@ -360,9 +360,9 @@ registerPatch(227, "SetWalkToDelay", "修改移動延遲", "自訂", 16, "MegaByte", "修
 
 registerPatch(228, "DisableDoram", "關閉喵族的腳色介面[測試]", "介面", 0, "Ai4Rei, Secret", "關閉喵族的創立腳色介面 (建議伺服端也要限制)", false);
 
-registerPatch(229, "EnableEmblemForBG", "顯示公會圖在戰場", "介面", 0, "Neo", "在戰場顯示公會圖", false);
+registerPatch(229, "EnableEmblemForBG", "顯示公會圖示在戰場地圖", "介面", 0, "Neo", "在戰場地圖時，玩家頭上顯示公會圖示", false);
 
-registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSettings lua file", "修復", 0, "Secret", "Makes the client load Korea server's ExternalSettings file for all langtypes.", false);
+registerPatch(230, "AlwaysReadKrExtSettings", "永遠讀取韓版lua的檔案名稱", "修復", 0, "Secret", "永遠讀取韓版 lua 的檔案名稱，而不會受登入器 clientinfo 設定的 ServiceType 而改變路徑", false);
 
 registerPatch(231, "RemoveHardcodedAddress", "移除寫死在登入器的IP跟Port", "修復", 17, "4144", "移除寫死在登入器的IP跟Port", false);
 
@@ -372,13 +372,13 @@ registerPatch(232, "RestoreOldLoginPacket", "恢復舊版的登入封包", "特殊", 17, "4
 
 registerPatch(234, "IgnoreLuaErrors", "忽略 Lua 錯誤", "修復", 0, "4144", "忽略所有 Lua/Lub 錯誤(可幫助除錯，DeBug時不用勾)", false);
 
-registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "自訂", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
+registerPatch(235, "EnableGuildWhenInClan", "啟用在氏族中也可加入公會", "自訂", 0, "Functor, Secret", "在成為氏族成員時，移除單一公會的限制，可同時有兩個工會", false);
 
-registerPatch(236, "EnablePlayerSkills", "Enable Custom Player Skills[測試]", "自訂", 18, "Neo", "Enables the use of custom skills castable on players (using Lua Files)", false);
+registerPatch(236, "EnablePlayerSkills", "啟用自訂玩家技能[測試]", "自訂", 18, "Neo", "啟用自訂玩家技能 (使用 Lua 檔案)", false);
 
-registerPatch(237, "EnableHomunSkills", "Enable Custom Homunculus Skills[測試]", "自訂", 18, "Neo", "Enables the use of custom skills for Homunculus (using Lua Files)", false);
+registerPatch(237, "EnableHomunSkills", "啟用自訂生命體技能[測試]", "自訂", 18, "Neo", "啟用自訂生命體技能 (使用 Lua 檔案)", false);
 
-registerPatch(238, "EnableMerceSkills", "Enable Custom Mercenary Skills[測試]", "自訂", 18, "Neo", "Enables the use of custom skills for Mercenaries (using Lua Files)", false);
+registerPatch(238, "EnableMerceSkills", "啟用自訂傭兵技能[測試]", "自訂", 18, "Neo", "啟用自訂傭兵技能 (使用 Lua 檔案)", false);
 
 registerPatch(239, "IgnoreAccountArgument", "禁止 /account: 參數", "修復", 0, "Secret", "禁止 /account: 參數", false);
 
@@ -386,29 +386,29 @@ registerPatch(240, "LoadCustomClientInfo", "修改 clientinfo.xml 路徑", "自訂", 0
 
 registerPatch(241, "AlwaysLoadClientPlugins", "自動載入插件[測試]", "修復", 0, "Secret", "自動載入 DLL 插件", false);
 
-registerPatch(242, "DisableKROSiteLaunch", "Disable kRO Site Launch", "修復", 0, "mrjnumber1", "Disable ro.gnjoy.com launching after in-game settings change", false);
+registerPatch(242, "DisableKROSiteLaunch", "關閉韓版網頁登入的功能", "修復", 0, "mrjnumber1", "關閉韓版(ro.gnjoy.com)網頁登入的功能，若未關閉將無法使用傳統方式登入", true);
 
-registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "修復", 0, "mrjnumber1", "Change quick item switch delay", false);
+registerPatch(243, "ChangeQuickSwitchDelay", "修改一件換裝的延遲時間", "修復", 0, "mrjnumber1", "修改一件換裝的延遲時間", false);
 
-registerPatch(244, "DisableCDGuard", "關閉 Cheat Defender 遊戲保護器", "修復", 0, "4144", "關閉新版登入器的 Cheat Defender 遊戲保護器", false);
+registerPatch(244, "DisableCDGuard", "移除 Cheat Defender 遊戲保護器", "修復", 0, "4144", "移除 Cheat Defender 遊戲保護器，沒移除無法啟動遊戲", true);
 
-registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "自訂", 0, "4144", "Override selected job in char creation packet", false);
+registerPatch(245, "FixedCharJobCreate", "修改建立角色時的角色編號錯誤", "自訂", 0, "4144", "修改建立角色時的角色編號錯誤", false);
 
 // registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "自訂", 0, "4144", "Allow use more hair styles than default limit", false);
 
-registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "自訂", 0, "4144", "Allow change height in input field in new char creation dialog", false);
+registerPatch(247, "ChangeNewCharNameHeight", "修改新的創角介面名字欄位的高度", "自訂", 0, "4144", "修改新的創角介面名字欄位的高度", false);
 
-registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "自訂", 0, "4144", "Hide wrong field with random values in cash shop", false);
+registerPatch(248, "RemoveWrongCharFromCashShop", "移除點數商城中隨機出現的字元", "自訂", 0, "4144", "移除點數商城中隨機出現的字元", false);
 
-registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "自訂", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
+registerPatch(249, "ChangeMinimalResolutionLimit", "修改遊戲最小解析度限制", "自訂", 0, "4144", "修改遊戲最小解析度限制 (預設值為 1024x768", false);
 
-registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "自訂", 0, "4144", "Allow leader to leave party if not party members on same map", false);
+registerPatch(250, "AllowLeavelPartyLeader", "允許隊長在沒有隊員的地圖離開組隊", "自訂", 0, "4144", "允許隊長在沒有隊員的地圖離開組隊，此為新版登入器的限制", false);
 
-registerPatch(251, "AllowCloseCutinByEsc", "可使用 Esc 關閉 cutin 圖片", "自訂", 0, "4144", "可使用 Esc 關閉 cutin NPC 圖片", false);
+registerPatch(251, "AllowCloseCutinByEsc", "可使用 Esc 關閉 cutin 圖片", "自訂", 0, "4144", "可使用 Esc 關閉 cutin 的 NPC 圖片", false);
 
 //registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "自訂", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
 
-registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons", "Custom", 12, "4144", "Allow skip buttons hidden by patches 'Hide XXX button'", false);
+registerPatch(253, "SkipHiddenMenuButtons", "修復功能列的隱形按鈕", "Custom", 12, "4144", "當啟用隱藏左上方功能列的按鈕時，修復隱形的按鈕", false);
 
 
 
@@ -422,7 +422,7 @@ registerPatch(303, "DefaultBrowserInCashshop", "使用預設瀏覽器開啟商城內連結", "
 
 registerPatch(304, "UseDefaultBrowser", "使用預設瀏覽器開啟NPC的<URL>連結", "介面", 0, "Jchcc", "使用系統預設的瀏覽器開啟 NPC 的 <URL> 連結，不再使用RO內建的瀏覽器", false);
 
-registerPatch(305, "ShortcutAllItem", "允許所有物品放快捷列", "Fix", 0, "Jchcc", "讓所有物品都能放到快捷列，方便做數量追蹤", false);
+registerPatch(305, "ShortcutAllItem", "允許所有物品放快捷列", "修復", 0, "Jchcc", "讓所有物品都能放到快捷列，方便做數量追蹤", false);
 
 registerPatch(310, "SetButtonBooking",	"隱藏[招募]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄隊伍招募按鈕", false);
 
@@ -469,6 +469,6 @@ registerPatch(358, "ChangeRecommendedQuestInfoList", "修改RecommendedQuestInfoLi
 
 registerPatch(359, "ChangePrivateAirplane", "修改PrivateAirplane*.lub路徑", "自訂", 19, "Jian", "勾選後可以輸入自訂的飛空艇 PrivateAirplane*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
 
-registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 19, "Jian", "修改預設 BGM 路徑，改變登入帳號時的聲音，官方為 bgm\\01.mp3", false);
+registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 19, "Jian", "修改預設 BGM 路徑，改變登入帳號或未設定地圖的背景聲音，官方預設為 bgm\\01.mp3", false);
 
 // registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
