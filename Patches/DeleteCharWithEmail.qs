@@ -46,7 +46,7 @@ function DeleteCharWithEmail()
             "85 C9 " +             // test ecx, ecx
             "75";                  // jnz addr
         patchOffset = code.hexlength() - 1;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
         if (offset === -1)
             return "Failed in Step 1c - g_serviceType not found";
 

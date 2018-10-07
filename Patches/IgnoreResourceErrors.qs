@@ -52,7 +52,7 @@ function IgnoreResourceErrors()
           + " 68 AB AB AB 00" //PUSH OFFSET addr; ASCII "Error"
           + " FF 75 08"       //PUSH DWORD PTR SS:[EBP+8]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
         if (offset === -1)
             return "Failed search MsgBox call";
     }
