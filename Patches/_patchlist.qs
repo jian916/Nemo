@@ -2,6 +2,8 @@
 // Register all your Patches and Patch groups in this file. Always register group before using its id in a patch //
 //===============================================================================================================//
 
+GlobalInit();
+
 //###################################################################################################
 //#                                                                                                 #
 //# FORMAT for registering group : registerGroup(group id, group Name, mutualexclude [true/false]); #
@@ -244,7 +246,7 @@ registerPatch( 88, "AllowSpaceInGuildName", "Allow space in guild name", "UI", 0
 
 registerPatch( 90, "EnableDNSSupport", "Enable DNS Support", "UI", 0, "Shinryo", "Enable DNS support for clientinfo.xml", true);
 
-registerPatch( 91, "DCToLoginWindow", "Disconnect to Login Window", "UI", 0, "Neo", "Make the client return to Login Window upon disconnection", false);
+registerPatch( 91, "DCToLoginWindow", "Disconnect to Login Window", "UI", 0, "Neo", "Make the client return to Login Window upon disconnection", false, [40]);
 
 registerPatch( 92, "PacketFirstKeyEncryption", "Packet First Key Encryption", "Packet", 9, "Shakto, Neo", "Change the 1st key for packet encryption. Dont select the patch Disable Packet Header Encryption if you are using this. Don't use it if you don't know what you are doing", false);
 
@@ -256,7 +258,7 @@ registerPatch( 95, "UseSSOLoginPacket", "Use SSO Login Packet", "Packet", 10, "A
 
 registerPatch( 96, "RemoveGMSprite", "Remove GM Sprites", "UI", 0, "Neo", "Remove the GM sprites and keeping all the functionality like Yellow name and Admin right click menu", false);
 
-registerPatch( 97, "CancelToLoginWindow", "Cancel to Login Window", "Fix", 0, "Neo", "Makes clicking the Cancel button in Character selection window return to login window instead of Quitting", true);
+registerPatch( 97, "CancelToLoginWindow", "Cancel to Login Window", "Fix", 0, "Neo", "Makes clicking the Cancel button in Character selection window return to login window instead of Quitting", true, [40]);
 
 registerPatch( 98, "DisableDCScream", "Disable dc_scream.txt", "UI", 0, "Neo", "Disable chat on file dc_scream", false);
 
@@ -439,3 +441,5 @@ registerPatch(318, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS
 registerPatch(319, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
 
 registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
+
+GlobalPostInit();
