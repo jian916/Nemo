@@ -23,7 +23,7 @@ function DisableQuakeEffect()
         " 68" + bmpOffset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
       + " 8B"                       //MOV ECX, reg32_A
       ;
-    offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = exe.findCode(code, PTYPE_HEX, false);
 
     if (offset === -1)
     {

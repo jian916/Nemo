@@ -16,7 +16,7 @@ function ExtractMsgTable() {
         throw "Error: msgStringTable.txt reference missing";
 
     //Step 1c - Find the msgstring push after it
-    code = 
+    var code = 
         " 73 05"                //JAE SHORT addr1 -> after JMP below
       + " 8B AB AB"             //MOV reg32_A, DWORD PTR DS:[reg32_B*4 + reg32_C]
       + " EB AB"                //JMP SHORT addr2

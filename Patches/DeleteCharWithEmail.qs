@@ -18,7 +18,7 @@ function DeleteCharWithEmail()
       + " 83 F8 0A"      //CMP EAX,0A
       + " 74"            //JE SHORT addr -> do the one for Email
       ;
-    patchOffset = code.hexlength() - 1;
+    var patchOffset = code.hexlength() - 1;
     var offset = exe.findCode(code, PTYPE_HEX, false);
     if (offset !== -1)
     {

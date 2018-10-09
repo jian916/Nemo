@@ -8,7 +8,7 @@ function DumpImportTable() {
   var offset = GetDataDirectory(1).offset;
   
   //Step 1b - Open text file for writing
-  fp = new TextFile();
+  var fp = new TextFile();
   if (!fp.open(APP_PATH + "/Output/importTable_Dump_" + exe.getClientDate() + ".txt", "w"))
     throw "Error: Unable to create text file in Output folder";
   

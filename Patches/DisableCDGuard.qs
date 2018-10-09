@@ -32,7 +32,7 @@ function DisableCDGuard()
         "E8 AB AB AB FF" +     // call CRagConnection_instanceR
         "8B C8" +              // mov ecx, eax
         "E8";                  // call CRagConnection_some_func
-    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     if (offsets.length === 0)
     {
         var code = 
@@ -78,7 +78,7 @@ function DisableCDGuard()
         "A1 AB AB AB 00" + // mov eax, g_CCheatDefenderMgr
         "C6 40 05 01" +    // mov byte ptr [eax+5], 1
         "B8 AB AB 00 00";  // mov eax, CZ_ENTER
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[1], offsets[1] + 0x150);
+    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[1], offsets[1] + 0x150);
     if (offset === -1)
         return "Failed in Step 2 - 'g_CCheatDefenderMgr->enc_enabled = 1' not found";
     exe.replace(offset + 8, "00", PTYPE_HEX);  // replace mov byte ptr [eax+5], 1 to mov byte ptr [eax+5], 0

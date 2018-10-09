@@ -37,7 +37,7 @@ function IncreaseHairSprites()
     if (offset === -1)
         return "Failed in step 1 - string reference missing";
 
-    refOffset = offset;
+    var refOffset = offset;
 
     code = 
         "85 C0" +             // test eax, eax
@@ -45,8 +45,8 @@ function IncreaseHairSprites()
         "83 F8 AB" +          // cmp eax, 1Dh
         "7E 06" +             // jle short B
         "C7 06 AB 00 00 00";  // mov dword ptr [esi], 0Dh
-    assignOffset = 9;
-    valueOffset = 6;
+    var assignOffset = 9;
+    var valueOffset = 6;
 
     // step 2 - search hair limit
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
@@ -135,7 +135,7 @@ function IncreaseHairSprites()
     if (vectorCallAddr !== vectorCallAddr2)
         return "Failed in step 6 - vector call functions different";
 
-    jmpAddr = exe.Raw2Rva(offset);
+    var jmpAddr = exe.Raw2Rva(offset);
     var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 5 + varCode.hexlength() + 5);  // calc offset to call vector function (offsets from next code block)
 
     // normal job male hair style table loader patch

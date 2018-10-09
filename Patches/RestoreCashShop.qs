@@ -13,14 +13,14 @@ function RestoreCashShop() {
   var makeWin = mgrInfo['makeWin'];
   
   //Step 2a - Find the location where the cash shop icon was supposed to be created
-  code = 
+  var code = 
     " 75 0F"           //JNE addr; skips to location after the call for creating another icon
   + " 68 9F 00 00 00"  //PUSH 09F
   + movEcx             //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
   
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = exe.findCode(code, PTYPE_HEX, false);
   if (offset === -1)
     return "Failed in Step 2";
 

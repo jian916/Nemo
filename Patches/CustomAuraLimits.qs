@@ -138,7 +138,7 @@ function CustomAuraLimits() {
     //Step 4c - Go inside the function
     offset = (offset + 5) + exe.fetchDWord(offset + 1);
 
-    offset0 = offset
+    var offset0 = offset
     //Step 4d - Find g_session assignment
     code =
       " E8 AB AB AB AB" //CALL jobIdFunc
@@ -189,6 +189,7 @@ function CustomAuraLimits() {
   var tblSize = 0;
   var index = -1;
 
+  var matches;
   while (!fp.eof()) {
     var line = fp.readline().trim();
     if (line === "") continue;

@@ -46,6 +46,7 @@ function Enable64kHairstyle()
     if (regNum < 0 || regNum > 7)
         return "Failed in Step 2 - Missing Reg PUSH";
 
+    var regc;
     if (fpEnb)
         regc = (0x45 | (regNum << 3)).packToHex(1);
     else

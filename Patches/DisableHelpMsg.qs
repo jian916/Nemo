@@ -1,4 +1,4 @@
-﻿//###################################################################
+//###################################################################
 //# Purpose: Change the JNE after Langtype comparison to JMP in the #
 //#         On Login callback which skips loading HelpMsgStr        #
 //###################################################################
@@ -29,7 +29,7 @@ function DisableHelpMsg() {//Some Pre-2010 client doesnt have this PUSHes or Hel
     LANGTYPE //CMP DWORD PTR DS:[g_serviceType], reg32_A
   + " 75"    //JNE addr
   ;
-  offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
+  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
   
   if (offset2 === -1) {
     code = code.replace(" 75", " 00 75");//directly compared to 0

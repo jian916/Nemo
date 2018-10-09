@@ -48,7 +48,7 @@ function ShowReplayButton() {
     " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
   + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
   ;
-  assignedLen = 4;
+  var assignedLen = 4;
 
   var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset2 === -1)

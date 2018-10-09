@@ -25,7 +25,7 @@ function RestoreOldLoginPacket() {
         return "Failed in Step 1a - " + LANGTYPE[0];
 
     // Step 1b - Force the client to send 0x64
-    code =
+    var code =
         " 80 3D AB AB AB 01 00" + // cmp g_passwordencrypt, 0
         " 0F 85 AB AB 00 00" +    // jne addr1
         " 8B AB" + LANGTYPE +     // mov ecx, clientinfo_lang_type
@@ -35,7 +35,7 @@ function RestoreOldLoginPacket() {
         " 0F 84 AB AB 00 00" +    // jz addr2
         " 83 AB 0C" +             // cmp ecx, 0Ch
         " 0F 84 AB AB 00 00";     // jz addr2
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
         return "Failed in Step 1b";

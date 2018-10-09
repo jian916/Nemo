@@ -30,6 +30,7 @@ function ExtendNpcBox() {
   
   //Step 1e - Find the End of the Function.
   var fpEnb = HasFramePointer();
+  var code;
   if (fpEnb) {
     code =
       " 8B E5"    //MOV ESP, EBP
