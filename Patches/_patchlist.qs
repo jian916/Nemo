@@ -412,34 +412,33 @@ registerPatch(251, "AllowCloseCutinByEsc", "Allow close cutin by pressing esc ke
 
 registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons", "Custom", 12, "4144", "Allow skip buttons hidden by patches 'Hide XXX button'", false);
 
-registerPatch(301, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
+registerPatch(254, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
-registerPatch(302, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
+registerPatch(255, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
 
-registerPatch(303, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
+registerPatch(256, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
 
-registerPatch(304, "UseDefaultBrowser", "Use Default Web Browser for <URL>", "Custom", 0, "Jchcc", "Use default web browser to open <URL> instead of built-in ROWebBrowser.", false);
+registerPatch(257, "UseDefaultBrowser", "Use Default Web Browser for <URL>", "Custom", 0, "Jchcc", "Use default web browser to open <URL> instead of built-in ROWebBrowser.", false);
 
-registerPatch(305, "ShortcutAllItem", "Enable Shortcut All Item", "Fix", 0, "Jchcc", "Allow players put all items on the shortcut window make it easy to trace.", false);
+registerPatch(258, "ShortcutAllItem", "Enable Shortcut All Item", "Fix", 0, "Jchcc", "Allow players put all items on the shortcut window make it easy to trace.", false);
 
-registerPatch(311, "NavigationButton", "Set Navigation Button", "Custom", 0, "Jchcc", "Set navigation button hide or show.", false);
+registerPatch(259, "NavigationButton", "Set Navigation Button", "Custom", 0, "Jchcc", "Set navigation button hide or show.", false);
 
-registerPatch(312, "BankButton", "Set Bank Button", "Custom", 0, "Jchcc", "Set bank button hide or show.", false);
+registerPatch(260, "BankButton", "Set Bank Button", "Custom", 0, "Jchcc", "Set bank button hide or show.", false);
 
-registerPatch(313, "ReplayButton", "Set Replay Button", "Custom", 0, "Jchcc", "Set replay button hide or show.", false);
+registerPatch(261, "ReplayButton", "Set Replay Button", "Custom", 0, "Jchcc", "Set replay button hide or show.", false);
 
-registerPatch(314, "MailButton", "Set Mail Button", "Custom", 0, "Jchcc", "Set mail button hide or show.", false);
+registerPatch(262, "MailButton", "Set Mail Button", "Custom", 0, "Jchcc", "Set mail button hide or show.", false);
 
-registerPatch(315, "AchievementButton", "Set Achievement Button", "Custom", 0, "Jchcc", "Set achievement button hide or show.", false);
+registerPatch(263, "AchievementButton", "Set Achievement Button", "Custom", 0, "Jchcc", "Set achievement button hide or show.", false);
 
-registerPatch(316, "TipButton", "Set Tip Button", "Custom", 0, "Jchcc", "Set tip button hide or show.", false);
+registerPatch(264, "TipButton", "Set Tip Button", "Custom", 0, "Jchcc", "Set tip button hide or show.", false);
 
-registerPatch(317, "ShopButton", "Set Shop Button", "Custom", 0, "Jchcc", "Set shop button hide or show.", false);
+registerPatch(265, "ShopButton", "Set Shop Button", "Custom", 0, "Jchcc", "Set shop button hide or show.", false);
 
-registerPatch(318, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS button hide or show.", false);
+registerPatch(266, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS button hide or show.", false);
 
-registerPatch(319, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
+registerPatch(267, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
 
-registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
 
 GlobalPostInit();
