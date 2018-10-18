@@ -422,14 +422,14 @@ function Enable64kHairstyle() {
 			" A1 AB AB AB 00"    //MOV reg32_A, DWORD PTR DS:[addr]
 		  + " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A]
 		;
-		offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", offset, assignOffset);
+		offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", assignOffset - 0xD0, assignOffset);
 	}
 	if (offsets.length === 0) {  // 2017 +
 		code =
 			" A1 AB AB AB 01"    //MOV reg32_A, DWORD PTR DS:[addr]
 		  + " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A
 		;
-		offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", offset, assignOffset);
+		offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB", assignOffset - 0xD0, assignOffset);
 	}
 	if (offsets.length === 0)
 		return "Failed in Step p_4 - Table fetchers missing";
