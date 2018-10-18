@@ -48,6 +48,8 @@ registerGroup(17, "Zero", false);
 
 registerGroup(18, "EnableSkills", false);
 
+registerGroup(19, "Hairs", true);
+
 globalVarTest = 123;
 
 //#########################################################################################################################################################
@@ -202,7 +204,7 @@ registerPatch( 66, "LoadItemInfoPerServer", "Load iteminfo with char server", "D
 
 registerPatch( 67, "DisableQuakeEffect", "Disable Quake skill effect", "UI", 0, "Ai4rei/AN", " Disables the Earthquake skill effect", false);
 
-registerPatch( 68, "Enable64kHairstyle", "Enable 64k Hairstyle", "UI", 0, "Ai4rei/AN", "Increases Max Hairstyle limit to 64k from default 27", false);
+registerPatch( 68, "Enable64kHairstyle", "Enable 64k Hairstyle", "UI", 19, "Ai4rei/AN", "Increases Max Hairstyle limit to 64k from default 27", false);
 
 registerPatch( 69, "ExtendNpcBox", "Extend Npc Dialog Box", "UI", 0, "Ai4rei/AN", "Increases Max input chars of NPC Dialog boxes from 2052 to 4096", false);
 
@@ -396,7 +398,7 @@ registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix",
 
 registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "Custom", 0, "4144", "Override selected job in char creation packet", false);
 
-registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "Custom", 0, "4144", "Allow use more hair styles than default limit", false);
+registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "Custom", 19, "4144", "Allow use more hair styles than default limit", false);
 
 registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height", "Custom", 0, "4144", "Allow change height in input field in new char creation dialog", false);
 
