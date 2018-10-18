@@ -578,7 +578,10 @@ function Global_checkPatchFunction(functionName)
 
 function GlobalPostInit()
 {
-    registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
+    if (typeof(GLOBAL_enableSelfTest) !== "undefined")
+    {
+        registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
+    }
 }
 
 function Global_beforeCallTo(functionName)
