@@ -531,9 +531,11 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
   if (typeof(assigner) === "undefined") {
     assigner = -1;
   }
-  
+  var cnt = 0;
   while (!done) {//only exits at the end of initializations
-  
+
+    if (cnt > 1000)
+        throw "Infinite loop in FetchTillEnd";
     //Step 1a - Get Opcode and possible Mod R/M byte
     var opcode = exe.fetchUByte(offset);
     var modrm  = exe.fetchUByte(offset + 1);
@@ -676,7 +678,9 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
     //codes += exe.Raw2Rva(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
     
     //Step 1f - Update offset
+
     offset = details.nextOff;
+    cnt = cnt + 1;
   }
   //return {"endOff":offset, "code":extract, "debug":codes};
   return {"endOff":offset, "code":extract};
