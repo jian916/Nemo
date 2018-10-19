@@ -33,20 +33,27 @@ function DisableAutofollow() {
   
   if (offsets.length === 0)
     return "Failed in Step 1";
-  
+
   //Step 2 - NOP out the assignment for the correct match (pattern might match more than one location)
+  var found = false;
   for (var i = 0; i < offsets.length; i++) {
     var offset = offsets[i] + code.hexlength() - 4;
     var opcode = exe.fetchUByte(offset);
     if (opcode === 0xA3) {//MOV from EAX
       exe.replace(offset - 1, " 90 90 90 90 90");
+      found = true;
       break;
     }
     else if (opcode & 0xC7 === 0x5) {//MOV from other registers (mode bits should be 0 & r/m bits should be 5)
       exe.replace(offset - 2, " 90 90 90 90 90 90");
+      found = true;
       break;
     }
   }
-  
+  if (found === false)
+  {
+    return "Found nothing to patch";
+  }
+
   return true;
 }
