@@ -59,6 +59,7 @@ function DisableQuakeEffect()
 
     //Step 2c - Replace the start with RETN 0C
     exe.replace(offset2, " C2 0C 00", PTYPE_HEX);
+    var offset2Old = offset2;
 
     //Step 3a - Find the SetQuake call (should be within 0xA0 bytes before offset)
     code =
@@ -80,6 +81,11 @@ function DisableQuakeEffect()
 
     //Step 3b - Extract the Raw Address of SetQuake
     offset2 += exe.fetchDWord(offset2 + 3) + 7;
+
+    if (offset2Old == offset2)
+    {
+        return "Found two same offsets";
+    }
 
     //Step 3c - Replace the start with RETN 14
     exe.replace(offset2, " C2 14 00", PTYPE_HEX);
