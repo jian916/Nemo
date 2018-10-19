@@ -522,6 +522,10 @@ function OverwriteString(srcString, tgtString)
     //Step 1 - Find address
     var offset = exe.findString(srcString, RAW);
 
+    if (offset === -1)
+    {
+        throw "String " + srcString + " not found";
+    }
     //Step 2a - Overwrite it
     exe.replace(offset, tgtString, PTYPE_STRING);
 
