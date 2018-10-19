@@ -595,3 +595,10 @@ function Global_afterCallTo(functionName)
     function_logger.close();
     global_logger.data(functionName, "after functionName");
 }
+
+function consoleLog(message)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.log(message);
+}
