@@ -449,7 +449,6 @@ function GetDataDirectory(index) {
   
   var size = exe.fetchDWord(offset + 0x8*index + 0x4);
   offset = exe.Rva2Raw(exe.fetchDWord(offset + 0x8*index) + exe.getImageBase());
-  
   return {"offset":offset, "size":size};
 }
 

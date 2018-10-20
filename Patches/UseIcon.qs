@@ -61,6 +61,8 @@ function UseCustomIcon(nomod) {
   
   //Step 1a - Find Resource Table
   var offset = GetDataDirectory(2).offset;
+  if (offset === -1)
+    throw "found wrong offset in GetDataDirectory";
   
   //Step 1b - Get the Resource Tree (Check the function in core)
   var rsrcTree = new ResourceDir(offset, 0, 0);

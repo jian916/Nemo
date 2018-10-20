@@ -61,8 +61,8 @@ function ChangeQuickSwitchDelay() {
   offset = exe.find(code, PTYPE_HEX, false, '\xAB', ui_offset + 6, ui_offset + 30);
   if (offset === -1)
     return "Failed in Step 3b - Find Compare to " + tick_ms;
-  
-  exe.replace(offset + 1, new_tick_ms.packToHex(4), PTYPE_HEX);
+  if (offsets.indexOf(offset) === -1)
+    exe.replace(offset + 1, new_tick_ms.packToHex(4), PTYPE_HEX);
   return true;
 }
 

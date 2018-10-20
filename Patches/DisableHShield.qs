@@ -159,6 +159,9 @@ function DisableHShield() {
     var finalValue = " 00".repeat(20);
     var curValue;
     var lastDLL = "";//
+    if (dir.offset === -1)
+      throw "found wrong offset in GetDataDirectory";
+
     code = "";//will contain the import table
     
     for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20) {

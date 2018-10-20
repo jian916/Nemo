@@ -13,6 +13,8 @@ function UseCustomDLL() {
   
   //Step 1b - Get the current import table
   var dir = GetDataDirectory(1);
+  if (dir.offset === -1)
+    throw "found wrong offset in GetDataDirectory";
   
   //Step 1d - Loop through the table and extract to dirData. 
   //          if HShield patch is enabled then skip aossdk entry will be skipped then extracting
