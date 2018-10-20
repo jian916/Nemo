@@ -535,7 +535,10 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
   while (!done) {//only exits at the end of initializations
 
     if (cnt > 1000)
-        throw "Infinite loop in FetchTillEnd";
+        throw "FetchTillEnd: Infinite loop in FetchTillEnd";
+    if (offset < 0)
+        throw "FetchTillEnd: Negative offset found";
+
     //Step 1a - Get Opcode and possible Mod R/M byte
     var opcode = exe.fetchUByte(offset);
     var modrm  = exe.fetchUByte(offset + 1);
