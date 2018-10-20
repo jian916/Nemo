@@ -63,10 +63,11 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
   + " FF"    //CALL EDX or CALL DWORD PTR DS:[EAX+const]
   ;
 
+  var oldOffsets = [];
   for (var i = 1; i < 10; i++) {
     //Step 3b - Get the starting address of the case
     var offset = exe.Rva2Raw(exe.fetchDWord(refAddr + (i - 1)*4));
-    
+
     //Step 3c - Find the first code. Ideally it would be at offset itself unless something changed
     offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
     if (offset === -1)
@@ -89,6 +90,10 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
       offset = exe.find(code2, PTYPE_HEX, true, "\xAB", offset);
       if (offset === -1)
         return "Failed in Step 3 - Second part missing : " + i;
+
+      if (oldOffsets.indexOf(offset) !== -1)
+        return "Found two same offset";
+      oldOffsets.push(offset);
   
       //Step 3d - Replace the emoteConstant with the one we read from input file.
       exe.replace(offset + code2.hexlength() - 4, consts[i].toString(16), PTYPE_HEX);

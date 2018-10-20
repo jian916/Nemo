@@ -274,7 +274,7 @@ function EnableCustomJobs()
       + " 0F 85"    //JNE addr2
       ;
 
-    offset2 = exe.find(code, PTYPE_HEX, false, " ", offset + 0x10, offset + 0x100);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x10, offset + 0x100);
     if (offset2 === -1)
     {
         code =
@@ -286,7 +286,7 @@ function EnableCustomJobs()
           + " 74 1F"    //JNE addr2
           ;
 
-        offset2 = exe.find(code, PTYPE_HEX, false, " ", offset - 0x20, offset + 0x100);
+        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset + 0x100);
     }
     if (offset2 === -1)
         return "Failed in Step 5 - 2nd LangType comparison missing";

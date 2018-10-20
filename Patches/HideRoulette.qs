@@ -1,4 +1,4 @@
-﻿//###################################################################################
+//###################################################################################
 //# Purpose: Make client skip over the Roulette Icon UIWindow creation (ID = 0x11D) #
 //###################################################################################
 
@@ -29,6 +29,7 @@ function HideRoulette() {
 
   //Step 2b - If yes JMP over it
   exe.replace(offset, "EB 0D", PTYPE_HEX);//Skip over rest of the PUSH followed by ECX assignment and Function call
+  return true;
 }
 
 //======================================================//
