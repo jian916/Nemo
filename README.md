@@ -18,9 +18,11 @@ Working config for [zero client](configs/zero/)
 
 # Support
 
-In future by me will be updated only some patches what really need to test hercules.
-
 Forum topic: http://herc.ws/board/topic/15523-another-nemo-patcher-fork/
+
+You can create bug reports here: https://gitlab.com/4144/Nemo/issues/new?issue%5Bassignee_id%5D=&issue%5Bmilestone_id%5D=
+
+or vote on any existing issue here: https://gitlab.com/4144/Nemo/issues
 
 # Game guard files
 
