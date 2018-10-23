@@ -97,7 +97,7 @@ registerPatch( 15, "DisableHShield", "移除駭客保護程式", "修復", 0, "Ai4rei/AN, 
 
 registerPatch( 16, "DisableSwearFilter", "關閉發言過濾", "介面", 0, "Shinryo", "關閉發言過濾機制，忽略 manner.txt 內的關鍵字", false);
 
-registerPatch( 17, "EnableOfficialCustomFonts", "使用官方的字型", "介面", 0, "Shinryo", "使用官方可選的字型(只吃eot字型檔，可用ttf轉檔)", false);
+registerPatch( 17, "EnableOfficialCustomFonts", "使用官方的聊天泡泡字型", "介面", 0, "Shinryo", "對應角色 @font 編號，使用官方的自訂聊天泡泡字型(相關字型在 System\\Font 目錄下，但內建的不支援中文顯示，只吃eot字型檔，可用ttf轉檔)", false);
 
 registerPatch( 18, "SkipServiceSelect", "跳過伺服器選擇介面", "介面", 0, "Shinryo", "跳過伺服器選擇的介面，預設會選第一個伺服器", false);
 
@@ -167,7 +167,7 @@ registerPatch( 50, "SkipLicenseScreen", "跳過授權條款介面", "介面", 14, "Shinryo
 
 registerPatch( 51, "ShowLicenseScreen", "啟動遊戲時顯示授權條款", "介面", 14, "Neo", "強制登入時顯示授權條款，強制所有(langtype)都顯示", false);
 
-registerPatch( 52, "UseCustomFont", "使用自訂字型", "介面", 0, "Ai4rei/AN", "使用自訂的字型，系統字型自動轉檔", false);
+registerPatch( 52, "UseCustomFont", "自訂遊戲介面字型", "介面", 0, "Ai4rei/AN", "使用自訂的遊戲介面字型，從系統字型中挑選 (字型名稱不支援中文，若要中文請自行 HEX)", false);
 
 registerPatch( 53, "UseAsciiOnAllLangTypes", "使用 Ascii 編碼顯示文字", "介面", 0, "Ai4rei/AN", "使用 Ascii 編碼顯示文字", true);
 
