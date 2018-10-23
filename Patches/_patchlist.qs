@@ -442,5 +442,7 @@ registerPatch(266, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS
 
 registerPatch(267, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
 
+registerPatch(268, "RestoreChatFocus", "Restore chat focus", "Custom", 0, "4144", "Restore input focus from left mouse click.", false);
+
 
 GlobalPostInit();
