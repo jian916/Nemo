@@ -426,6 +426,8 @@ registerPatch(305, "ShortcutAllItem", "允許所有物品放快捷列", "修復", 0, "Jchcc"
 
 registerPatch(306, "CustomWindowTitleHex", "修改登入器標題[HEX]", "介面", 0, "Jian", "修改登入器的標題(支援中文，請輸入16進制)，預設為 '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
 
+registerPatch(307, "ChangeHealthBarSize", "修改角色下方生命條的大小", "介面", 0, "Jchcc", "修改角色下方藍綠色的HP/SP顯示大小", false);
+
 registerPatch(310, "SetButtonBooking",	"隱藏[招募]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄隊伍招募按鈕", false);
 
 registerPatch(311, "SetButtonBg",		"隱藏[戰場]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄戰場按鈕", false);
