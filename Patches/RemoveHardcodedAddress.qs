@@ -76,7 +76,7 @@ function RemoveHardcodedAddress() {
     if (offset === -1)
         return "Failed in step 4a";
 
-    callAtoi = exe.fetchHex(offset + 8, 6);
+    var callAtoi = exe.fetchHex(offset + 8, 6);
 
     // step 4b - change function override_address_port
     var newCode =
