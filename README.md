@@ -16,6 +16,10 @@ Predefined minimal profile for zero clients. See in [profiles](profiles) directo
 
 Working config for [zero client](configs/zero/)
 
+# Patch reports
+
+Reports for all patches and all clients http://nemo.herc.ws/
+
 # Support
 
 Forum topic: http://herc.ws/board/topic/15523-another-nemo-patcher-fork/
