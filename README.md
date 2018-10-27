@@ -2,11 +2,11 @@
 
 This is fork of @MStr3am project [Nemo](https://github.com/MStr3am/NEMO)
 
-Some patches was updated also in another fork by [secretdataz](https://github.com/secretdataz/NEMO)
+Some patches was updated also from another forks by [secretdataz](https://github.com/secretdataz/NEMO) and [jian916](https://github.com/jian916/Nemo)
 
 # Usage
 
-This program can be used for patch closed source clients for using with [Hercules](https://github.com/herculesws/hercules/)
+This program can be used for patch closed source clients for using with [Hercules](https://github.com/herculesws/hercules/) or other Rag*rok emulators.
 
 ## Profiles
 
