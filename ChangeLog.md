@@ -1,3 +1,15 @@
+# 2018-10-27 Patches update
+
+## Patches
+
+ - Add patch "Change default BGM file" by Jian.
+ - Add different change paths patches by Jian.
+ - Add patch "Fix item description bug" by Jchcc.
+ - Update patch "Load custom ClientInfo file" by jchcc.
+
+## User interface
+
+ - Changed nemo version string.
 
 # 2018-10-27 First change log entry
 
