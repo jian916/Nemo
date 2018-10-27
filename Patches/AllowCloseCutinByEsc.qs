@@ -21,6 +21,7 @@
 function AllowCloseCutinByEsc()
 {
     // step 1
+    // search in UIIllustWnd_virt136 / case 6
     var code =
         "B9 AB AB AB AB" +  // mov ecx, offset g_modeMgr
         "E8 AB AB AB AB" +  // call CModeMgr::GetGameMode
@@ -31,7 +32,7 @@ function AllowCloseCutinByEsc()
         "68 AB AB AB AB" +  // push offset EmptyStr
         "6A 64" +           // push 64h
         "8B C8" +           // mov ecx, eax
-        "FF 52";            // call dword ptr [edx+18h]
+        "FF 52";            // call dword ptr [edx+18h] (CGameMode_virt24)
 
     var gModeMgrOffset = 1;
     var getGameModeOffset = 6;
