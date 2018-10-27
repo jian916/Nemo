@@ -466,5 +466,7 @@ registerPatch(277, "ChangeRecommendedQuestInfoListPath", "Change RecommendedQues
 
 registerPatch(278, "ChangePrivateAirplanePath", "Change PrivateAirplane*.lub path", "Custom", 20, "Jian", "Change PrivateAirplane*.lub path", false);
 
+registerPatch(279, "FixItemDescBug", "Fix item description bug", "Custom", 0, "Jchcc", "Fix item description '[' bug", false);
+
 
 GlobalPostInit();
