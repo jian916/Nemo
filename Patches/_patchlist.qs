@@ -448,5 +448,23 @@ registerPatch(268, "RestoreChatFocus", "Restore chat focus", "Custom", 0, "4144"
 
 registerPatch(269, "ChangeDefaultBGM", "Change default BGM file", "Custom", 20, "Jian", "Change default BGM music file after login to account. Default is bgm\\01.mp3", false);
 
+registerPatch(270, "ChangeAchievementList", "Change AchievementList*.lub path", "Custom", 20, "Jian", "Change AchievementList*.lub path", false);
+
+registerPatch(271, "ChangeMonsterSizeEffect", "Change MonsterSizeEffect*.lub path", "Custom", 20, "Jian", "Change MonsterSizeEffect*.lub path", false);
+
+registerPatch(272, "ChangeTowninfo", "Change Towninfo*.lub path", "Custom", 20, "Jian", "Change Towninfo*.lub path", false);
+
+registerPatch(273, "ChangePetEvolutionCln", "Change PetEvolutionCln*.lub path", "Custom", 20, "Jian", "Change PetEvolutionCln*.lub path", false);
+
+registerPatch(274, "ChangeTipbox", "Change Tipbox*.lub path", "Custom", 20, "Jian", "Change Tipbox*.lub path", false);
+
+registerPatch(275, "ChangeCheckAttendance", "Change CheckAttendance*.lub path", "Custom", 20, "Jian", "Change CheckAttendance*.lub path", false);
+
+registerPatch(276, "ChangeOngoingQuestInfoList", "Change OngoingQuestInfoList* path", "Custom", 20, "Jian", "Change OngoingQuestInfoList*.lub path", false);
+
+registerPatch(277, "ChangeRecommendedQuestInfoList", "Change RecommendedQuestInfoList* path", "Custom", 20, "Jian", "Change RecommendedQuestInfoList* path", false);
+
+registerPatch(278, "ChangePrivateAirplane", "Change PrivateAirplane*.lub path", "Custom", 20, "Jian", "Change PrivateAirplane*.lub path", false);
+
 
 GlobalPostInit();
