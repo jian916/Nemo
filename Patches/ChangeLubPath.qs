@@ -3,52 +3,52 @@
 //#          to custom file specified by user  #
 //##############################################
 
-function ChangeAchievementList() {
-	var iiName = getiiName(1);
+function ChangeAchievementListPath() {
+	var iiName = ChangeLubPathGetIIName(1);
 	return ChangeLubPath(iiName, exe.getUserInput("$AchievementListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for AchievementList*.lub file", iiName, 1, 100));
 }
 
-function ChangeMonsterSizeEffect() {
-	var iiName = getiiName(2);
+function ChangeMonsterSizeEffectPath() {
+	var iiName = ChangeLubPathGetIIName(2);
 	return ChangeLubPath(iiName, exe.getUserInput("$MonsterSizeEffectPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for MonsterSizeEffect*.lub file", iiName, 1, 100));
 }
 
-function ChangeTowninfo() {
-	var iiName = getiiName(3);
+function ChangeTowninfoPath() {
+	var iiName = ChangeLubPathGetIIName(3);
 	return ChangeLubPath(iiName, exe.getUserInput("$TowninfoPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for Towninfo*.lub file", iiName, 1, 100));
 }
 
-function ChangePetEvolutionCln() {
-	var iiName = getiiName(4);
+function ChangePetEvolutionClnPath() {
+	var iiName = ChangeLubPathGetIIName(4);
 	return ChangeLubPath(iiName, exe.getUserInput("$PetEvolutionClnPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for PetEvolutionCln*.lub file", iiName, 1, 100));
 }
 
-function ChangeTipbox() {
-	var iiName = getiiName(5);
+function ChangeTipboxPath() {
+	var iiName = ChangeLubPathGetIIName(5);
 	return ChangeLubPath(iiName, exe.getUserInput("$TipboxPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for Tipbox*.lub file", iiName, 1, 100));
 }
 
-function ChangeCheckAttendance() {
-	var iiName = getiiName(6);
+function ChangeCheckAttendancePath() {
+	var iiName = ChangeLubPathGetIIName(6);
 	return ChangeLubPath(iiName, exe.getUserInput("$CheckAttendancePath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for CheckAttendance*.lub file", iiName, 1, 100));
 }
 
-function ChangeOngoingQuestInfoList() {
-	var iiName = getiiName(7);
+function ChangeOngoingQuestInfoListPath() {
+	var iiName = ChangeLubPathGetIIName(7);
 	return ChangeLubPath(iiName, exe.getUserInput("$OngoingQuestInfoListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for OngoingQuestInfoList* file", iiName, 1, 100));
 }
 
-function ChangeRecommendedQuestInfoList() {
-	var iiName = getiiName(8);
+function ChangeRecommendedQuestInfoListPath() {
+	var iiName = ChangeLubPathGetIIName(8);
 	return ChangeLubPath(iiName, exe.getUserInput("$RecommendedQuestInfoListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for RecommendedQuestInfoList* file", iiName, 1, 100));
 }
 
-function ChangePrivateAirplane() {
-	var iiName = getiiName(9);
+function ChangePrivateAirplanePath() {
+	var iiName = ChangeLubPathGetIIName(9);
 	return ChangeLubPath(iiName, exe.getUserInput("$PrivateAirplanePath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for PrivateAirplane*.lub file", iiName, 1, 100));
 }
 
-function getiiName(type) {
+function ChangeLubPathGetIIName(type) {
 	var iiName = "";
 	switch(type){
 		case 1: {
@@ -148,38 +148,38 @@ function ChangeLubPath(old_path, new_path) {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function ChangeAchievementList_() {
-    return (getiiName(1) !== "");
+function ChangeAchievementListPath_() {
+    return (ChangeLubPathGetIIName(1) !== "");
 }
 
-function ChangeMonsterSizeEffect_() {
-    return (getiiName(2) !== "");
+function ChangeMonsterSizeEffectPath_() {
+    return (ChangeLubPathGetIIName(2) !== "");
 }
 
-function ChangeTowninfo_() {
-    return (getiiName(3) !== "");
+function ChangeTowninfoPath_() {
+    return (ChangeLubPathGetIIName(3) !== "");
 }
 
-function ChangePetEvolutionCln_() {
-    return (getiiName(4) !== "");
+function ChangePetEvolutionClnPath_() {
+    return (ChangeLubPathGetIIName(4) !== "");
 }
 
-function ChangeTipbox_() {
-    return (getiiName(5) !== "");
+function ChangeTipboxPath_() {
+    return (ChangeLubPathGetIIName(5) !== "");
 }
 
-function ChangeCheckAttendance_() {
-    return (getiiName(6) !== "");
+function ChangeCheckAttendancePath_() {
+    return (ChangeLubPathGetIIName(6) !== "");
 }
 
-function ChangeOngoingQuestInfoList_() {
-    return (getiiName(7) !== "");
+function ChangeOngoingQuestInfoListPath_() {
+    return (ChangeLubPathGetIIName(7) !== "");
 }
 
-function ChangeRecommendedQuestInfoList_() {
-    return (getiiName(8) !== "");
+function ChangeRecommendedQuestInfoListPath_() {
+    return (ChangeLubPathGetIIName(8) !== "");
 }
 
-function ChangePrivateAirplane_() {
-    return (getiiName(9) !== "");
+function ChangePrivateAirplanePath_() {
+    return (ChangeLubPathGetIIName(9) !== "");
 }
