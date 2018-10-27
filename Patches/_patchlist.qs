@@ -50,6 +50,8 @@ registerGroup(18, "EnableSkills", false);
 
 registerGroup(19, "Hairs", true);
 
+registerGroup(20, "Path", false);
+
 globalVarTest = 123;
 
 //#########################################################################################################################################################
@@ -443,6 +445,8 @@ registerPatch(266, "SNSButton", "Set SNS Button", "Custom", 0, "Jchcc", "Set SNS
 registerPatch(267, "AttendanceButton", "Set Attendance Button", "Custom", 0, "Jchcc", "Set attendance button hide or show.", false);
 
 registerPatch(268, "RestoreChatFocus", "Restore chat focus", "Custom", 0, "4144", "Restore input focus from left mouse click.", false);
+
+registerPatch(269, "ChangeDefaultBGM", "Change default BGM file", "Custom", 20, "Jian", "Change default BGM music file after login to account. Default is bgm\\01.mp3", false);
 
 
 GlobalPostInit();
