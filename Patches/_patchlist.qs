@@ -470,5 +470,9 @@ registerPatch(279, "FixItemDescBug", "Fix item description bug", "Custom", 0, "J
 
 registerPatch(280, "ChangeGuildExpLimit", "Change guild exp limit", "Custom", 0, "4144", "Change guild exp limit percent. Default value is 50.", false);
 
+registerPatch(281, "ChangeHealthBarSize", "Change hp bar size", "Custom", 0, "Jchcc", "Change hp/sp bar size drawed under character", false);
+
+registerPatch(282, "ChangeMvpHealthBarSize", "Change MVP hp bar size", "Custom", 0, "Jchcc", "Change hp bar size drawed under MVP", false);
+
 
 GlobalPostInit();
