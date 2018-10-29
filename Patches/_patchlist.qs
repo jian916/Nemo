@@ -468,5 +468,7 @@ registerPatch(278, "ChangePrivateAirplanePath", "Change PrivateAirplane*.lub pat
 
 registerPatch(279, "FixItemDescBug", "Fix item description bug", "Custom", 0, "Jchcc", "Fix item description '[' bug", false);
 
+registerPatch(280, "ChangeGuildExpLimit", "Change guild exp limit", "Custom", 0, "4144", "Change guild exp limit percent. Default value is 50.", false);
+
 
 GlobalPostInit();
