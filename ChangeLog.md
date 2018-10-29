@@ -1,3 +1,9 @@
+# 2018-10-29 Patches update
+
+## Patches
+
+ - Add patch "Change guild exp limit".
+
 # 2018-10-27 Patches update
 
 ## Patches
