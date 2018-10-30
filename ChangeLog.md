@@ -2,6 +2,15 @@
 
 ## Patches
 
+ - Add patch "Change hp bar size" by Jchcc.
+ - Add patch "Change mvp hp bar size" by Jchcc.
+ - Fix patch "Show Exp Numbers" for new clients by Jchcc.
+
+
+# 2018-10-29 Patches update
+
+## Patches
+
  - Add patch "Change guild exp limit".
 
 # 2018-10-27 Patches update
