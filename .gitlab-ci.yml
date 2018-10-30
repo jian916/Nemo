@@ -10,4 +10,4 @@ checkfiles:
   - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
   - ./.ci/checkfiles.sh
   variables:
-    PACKAGES: dos2unix moreutils
+    PACKAGES: dos2unix moreutils git
