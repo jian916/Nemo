@@ -4,7 +4,7 @@ stages:
 image: debian:unstable
 
 checkfiles:
-  stage: prebuild
+  stage: test
   script:
   - ./.ci/retry.sh apt-get update
   - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
