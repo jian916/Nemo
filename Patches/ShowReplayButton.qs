@@ -1,4 +1,4 @@
-﻿//########################################################################
+//########################################################################
 //# Purpose : Change the coordinates of selectserver and replay buttons. #
 //#           Also modify the ShowMsg function for Replay List box to    #
 //#           make it return to Select Service window.                   #
