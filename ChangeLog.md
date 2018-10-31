@@ -1,3 +1,10 @@
+# 2018-10-31 Patches update
+
+## Patches
+
+ - Fix patch "Increase hair style limit in game" for old 2018 clients.
+
+
 # 2018-10-29 Patches update
 
 ## Patches
