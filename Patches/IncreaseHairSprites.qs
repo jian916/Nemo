@@ -74,7 +74,7 @@ function IncreaseHairSprites()
     // step 4 - search male hair table allocations in CSession::InitPcNameTable
     code = 
         "50 " +                                        // push eax
-        "6A " + currentLimit + " " +                   // push 1Eh
+        "6A AB " +                                     // push 1Eh
         "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // mov dword ptr [ebp+A], offset "2"
         "E8 AB AB AB AB " +                            // call vector__alloc_mem_and_set_pointer
         "8B 06 " +                                     // mov eax, [esi]
@@ -118,7 +118,7 @@ function IncreaseHairSprites()
         "C7 40 AB AB AB AB AB" +  // mov dword ptr [eax+74h], offset a29
         "8D 45 AB" +              // lea eax, [ebp+var_10]
         "50" +                    // push eax
-        "6A " + currentLimit +    // push 1Eh
+        "6A AB " +                // push 1Eh
         "8B CE " +                // mov ecx, esi
         "E8 AB AB AB AB ";        // call vector__alloc_mem_and_set_pointer
     var patchOffset2 = 18;   // from this offset code will be patched
