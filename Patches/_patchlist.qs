@@ -46,7 +46,9 @@ registerGroup(17, "°_·½ª©", false);
 
 registerGroup(18, "¦Û­q§Þ¯à", false);
 
-registerGroup(19, "¸ô®|", false);
+registerGroup(19, "¾v«¬", true);
+
+registerGroup(20, "¸ô®|", false);
 
 //#########################################################################################################################################################
 //#                                                                                                                                                       #
@@ -194,13 +196,13 @@ registerPatch( 63, "UseOfficialClothPalette", "¨Ï¥Î©x¤è¥~Æ[¬V¦âÀÉ", "¤¶­±", 0, "
 
 registerPatch( 64, "FixChatAt", "­×´_ @ ²Å¸¹ Bug", "­×´_", 0, "Shinryo", "­×´_²á¤Ñµøµ¡¤£¯à¿é¤J @ ªº­­¨î", true);
 
-registerPatch( 65, "ChangeItemInfo", "­×§ïiteminfo*.lub¸ô®|", "¦Û­q", 19, "Neo", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N iteminfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch( 65, "ChangeItemInfo", "­×§ïiteminfo*.lub¸ô®|", "¦Û­q", 20, "Neo", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N iteminfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
 registerPatch( 66, "LoadItemInfoPerServer", "¥Î¦øªA¾¹¦WºÙ¦Û°Ê¿ï¾Üiteminfo", "¸ê®Æ", 0, "Neo", "Åý iteminfo ªº main function ¤Þ¤J¦øªA¾¹¦WºÙ¡A¦Û°Ê§PÂ_»Ý­nªº¤º®e¡A¦³¤À¬y¥B»Ý­n¤£¦Piteminfo¤~·|¥Î¨ì", false);
 
 registerPatch( 67, "DisableQuakeEffect", "¨ú®ø§Þ¯à¾_°Ê®ÄªG", "¤¶­±", 0, "Ai4rei/AN", "¨ú®ø§Þ¯à¾_°Ê®ÄªG¡B¦aµõ¡BÃz®ðµ¥µ¥", false);
 
-registerPatch( 68, "Enable64kHairstyle", "¸Ñ°£¾v«¬¼Æ¶q­­¨î", "¤¶­±", 0, "Ai4rei/AN", "¸Ñ°£¾v«¬¼Æ¶q­­¨î¡A¤ä´©64kºØ¾v«¬¡A©x¤è¶È 27 ºØ", true);
+registerPatch( 68, "Enable64kHairstyle", "¸Ñ°£¾v«¬¼Æ¶q­­¨î", "¤¶­±", 19, "Ai4rei/AN", "¸Ñ°£¾v«¬¼Æ¶q­­¨î¡A¤ä´©64kºØ¾v«¬¡A©x¤è¶È 27 ºØ", true);
 
 registerPatch( 69, "ExtendNpcBox", "ÂX¼Winputªº¦r¼Æ­­¨î", "¤¶­±", 0, "Ai4rei/AN", "ÂX¼W¸}¥» input ªº¦r¼Æ­­¨î(³Ì¤Ö2052¡B³Ì¦h4096)", false);
 
@@ -394,7 +396,7 @@ registerPatch(244, "DisableCDGuard", "²¾°£ Cheat Defender ¹CÀ¸«OÅ@¾¹", "­×´_", 0
 
 registerPatch(245, "FixedCharJobCreate", "­×§ï«Ø¥ß¨¤¦â®Éªº¨¤¦â½s¸¹¿ù»~", "¦Û­q", 0, "4144", "­×§ï«Ø¥ß¨¤¦â®Éªº¨¤¦â½s¸¹¿ù»~", false);
 
-// registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "¦Û­q", 0, "4144", "Allow use more hair styles than default limit", false);
+// registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "¦Û­q", 19, "4144", "Allow use more hair styles than default limit", false);
 
 registerPatch(247, "ChangeNewCharNameHeight", "­×§ï·sªº³Ð¨¤¤¶­±¦W¦rÄæ¦ìªº°ª«×", "¦Û­q", 0, "4144", "­×§ï·sªº³Ð¨¤¤¶­±¦W¦rÄæ¦ìªº°ª«×", false);
 
@@ -410,9 +412,9 @@ registerPatch(251, "AllowCloseCutinByEsc", "¥i¨Ï¥Î Esc Ãö³¬ cutin ¹Ï¤ù", "¦Û­q",
 
 registerPatch(253, "SkipHiddenMenuButtons", "­×´_¥\¯à¦CªºÁô§Î«ö¶s", "Custom", 12, "4144", "·í±Ò¥ÎÁôÂÃ¥ª¤W¤è¥\¯à¦Cªº«ö¶s®É¡A­×´_Áô§Îªº«ö¶s", false);
 
-registerPatch(268, "RestoreChatFocus", "Restore chat focus", "Custom", 0, "4144", "Restore input focus from left mouse click.", false);
+registerPatch(268, "RestoreChatFocus", "«ì´_²á¤Ñµøµ¡¥ªÁä¿ï¨ú¤å¦r¥\¯à", "Custom", 0, "4144", "«ì´_²á¤Ñ¿é¤Jµøµ¡¥ªÁä¿ï¨úªº¥\¯à", false);
 
-registerPatch(280, "ChangeGuildExpLimit", "Change guild exp limit", "Custom", 0, "4144", "Change guild exp limit percent. Default value is 50.", false);
+registerPatch(280, "ChangeGuildExpLimit", "­×§ï¤½·|¸gÅç©â¦¨¤W­­", "Custom", 0, "4144", "­×§ï¤½·|¸gÅç©â¦¨ªº¦Ê¤À¤ñ­­¨î (¹w³]50%)", false);
 
 
 
@@ -463,24 +465,24 @@ registerPatch(321, "SetButtonSNS",		"ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Jchcc", "Á
 registerPatch(322, "SetButtonCashShop",	"ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ°Ó«°«ö¶s", false);
 
 
-registerPatch(350, "ChangeAchievementListPath", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(350, "ChangeAchievementListPath", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(351, "ChangeMonsterSizeEffectPath", "­×§ïMonsterSizeEffect*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(351, "ChangeMonsterSizeEffectPath", "­×§ïMonsterSizeEffect*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(353, "ChangeTowninfoPath", "­×§ïTowninfo*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¹Ï¼Ð Towninfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(353, "ChangeTowninfoPath", "­×§ïTowninfo*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¹Ï¼Ð Towninfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(354, "ChangePetEvolutionClnPath", "­×§ïPetEvolutionCln*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(354, "ChangePetEvolutionClnPath", "­×§ïPetEvolutionCln*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(355, "ChangeTipboxPath", "­×§ïTipbox*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº±Ð¾Ç Tipbox*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(355, "ChangeTipboxPath", "­×§ïTipbox*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº±Ð¾Ç Tipbox*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(356, "ChangeCheckAttendancePath", "­×§ïCheckAttendance*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(356, "ChangeCheckAttendancePath", "­×§ïCheckAttendance*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(357, "ChangeOngoingQuestInfoListPath", "­×§ïOngoingQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(357, "ChangeOngoingQuestInfoListPath", "­×§ïOngoingQuestInfoList*¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(358, "ChangeRecommendedQuestInfoListPath", "­×§ïRecommendedQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(358, "ChangeRecommendedQuestInfoListPath", "­×§ïRecommendedQuestInfoList*¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(359, "ChangePrivateAirplanePath", "­×§ïPrivateAirplane*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(359, "ChangePrivateAirplanePath", "­×§ïPrivateAirplane*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(360, "ChangeDefaultBGM", "­×§ï¹w³] BGM ¸ô®|", "¦Û­q", 19, "Jian", "­×§ï¹w³] BGM ¸ô®|¡A§ïÅÜµn¤J±b¸¹©Î¥¼³]©w¦a¹Ïªº­I´ºÁn­µ¡A©x¤è¹w³]¬° bgm\\01.mp3", false);
+registerPatch(360, "ChangeDefaultBGM", "­×§ï¹w³] BGM ¸ô®|", "¦Û­q", 20, "Jian", "­×§ï¹w³] BGM ¸ô®|¡A§ïÅÜµn¤J±b¸¹©Î¥¼³]©w¦a¹Ïªº­I´ºÁn­µ¡A©x¤è¹w³]¬° bgm\\01.mp3", false);
 
 // registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
