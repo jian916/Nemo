@@ -101,7 +101,7 @@ function LoadItemInfoPerServer() {
   var mainInject = offset2 + code.hexlength() - 5;
   
   //Step 3c - Find the arg count PUSHes after it
-  offset = exe.find(" 6A 00 6A 02 6A 00", PTYPE_HEX, false, "", mainInject + 5, mainInject + 0x20);
+  offset = exe.find(" 6A 00 6A 02 6A 00", PTYPE_HEX, false, "\xAB", mainInject + 5, mainInject + 0x20);
   if (offset === -1)
     return "Failed in Step 3 - Arg Count Push missing";
   

@@ -73,8 +73,8 @@ function IncreaseZoomOut(newvalue)
             "F3 0F 10 15 AB AB AB AB" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2" +                 // comiss xmm0, xmm2
             "F3 0F 11 0D " + zoom2;      // movss zoom2_max_outdoor, xmm1
-        enabledOffset = 4;
-        disabledOffset = 14;
+        var enabledOffset = 4;
+        var disabledOffset = 14;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
         if (offset === -1)
             return "Failed in Step 4";

@@ -49,7 +49,7 @@ function GenMapEffectPlugin() {
     + " B9" + gWeather //MOV ECX, g_Weather
     + " E8"            //CALL CWeather::LaunchPokJuk
     ;
-  offset = exe.find(code, PTYPE_HEX, false, "", CI_Entry+1);
+  offset = exe.find(code, PTYPE_HEX, false, "\xAB", CI_Entry+1);
   if (offset === -1)
     throw "Error: CI_Return missing";
   
@@ -65,7 +65,7 @@ function GenMapEffectPlugin() {
     throw "Error: yuno.rsw missing";
   
   //Step 5b - Find its reference between CI_Entry & CI_Return
-  offset = exe.find(offset2.packToHex(4) + " 8A", PTYPE_HEX, false, "", CI_Entry+1, CI_Return);
+  offset = exe.find(offset2.packToHex(4) + " 8A", PTYPE_HEX, false, "\xAB", CI_Entry+1, CI_Return);
   if (offset === -1)
     throw "Error: yuno.rsw reference missing";
   
@@ -89,7 +89,7 @@ function GenMapEffectPlugin() {
     + " E8"            //CALL CWeather::LaunchCloud
     ;
   
-  offset = exe.find(code, PTYPE_HEX, false, "", offset);
+  offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
   if (offset === -1)
     throw "Error: LaunchCloud call missing";
   
@@ -99,10 +99,10 @@ function GenMapEffectPlugin() {
   var CW_LCloud = (exe.Raw2Rva(offset+4) + exe.fetchDWord(offset)).packToHex(4);
   
   //Step 6a - Find the 2nd reference to yuno.rsw - which will be at CGameMode_OnInit_EntryPtr
-  offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "", 0, CI_Entry-1);
+  offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "\xAB", 0, CI_Entry-1);
 
   if (offset === -1)
-    offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "", CI_Return+1);
+    offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "\xAB", CI_Return+1);
   
   if (offset === -1)
     throw "Error: 2nd yuno.rsw reference missing";
@@ -189,10 +189,10 @@ function GenMapEffectPlugin() {
     + " 56"       //PUSH ESI
     + " 8B F1"    //MOV ESI, ECX
     ;
-  offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "", offset-0x70, offset);
+  offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "\xAB", offset-0x70, offset);
   
   if (offset2 === -1)
-    offset2 = exe.find(code, PTYPE_HEX, false, "", offset-0x60, offset);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset-0x60, offset);
   
   if (offset2 === -1)
     throw "Error: LaunchMaple start missing";
@@ -206,10 +206,10 @@ function GenMapEffectPlugin() {
     throw "Error: LaunchSakura missing";
   
   //Step 11b - Find the start of the function
-  offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "", offset-0x70, offset);
+  offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "\xAB", offset-0x70, offset);
   
   if (offset2 === -1)
-    offset2 = exe.find(code, PTYPE_HEX, false, "", offset-0x60, offset);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset-0x60, offset);
   
   if (offset2 === -1)
     throw "Error: LaunchSakura start missing";

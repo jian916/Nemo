@@ -61,6 +61,7 @@ function AlwaysReadKrExtSettings()
         "B8 " + jmpAddr.packToHex(4) + // mov eax, addr
         "FF E0";                       // jmp eax
     exe.replace(offset + patchOffset, code, PTYPE_HEX);  // add jump to korean settings
+    return true;
 }
 
 //=================================//

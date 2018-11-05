@@ -73,13 +73,6 @@ M: Translate Character Slot Usage
 F: 28 C4 B3 B8 AF C5 CD 2F C3 D1 20 BD BD B7 D4 29
 R: '(Used / Total)'
 
------------------------------
-M: Translate Cash Shop Points
------------------------------
-
-F: 54 6F 74 61 6C 20 3A 20 25 64 20 C4 B3 BD C3
-R: 'Total : %d Points'
-
 ----------------------------------
 M: Item Inventory
 ----------------------------------
@@ -333,13 +326,6 @@ F: B5 B5 C2 F8 20 C1 F6 C1 A1 BF A1 20 B4 EB C7 D1 20 C1 A4 BA B8 20 BC B3 C1 A4
 R: 'Failed to set info for location!'
 
 ----------------------------------
-M: Please specify target goals
-----------------------------------
-
-F: B8 F1 C7 A5 B8 A6 20 C1 F6 C1 A4 20 C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E
-R: 'Please specify target goals.'
-
-----------------------------------
 M: Is the map that your looking for mob
 ----------------------------------
 
@@ -438,13 +424,6 @@ F: B8 F1 C7 A5 20 20 20 3A 20 25 73 28 25 64 2C 20 25 64 29
 R: 'Goal : %s(%d, %d)'
 
 ----------------------------------
-M: Goal 3
-----------------------------------
-
-F: B8 F1 C7 A5 20 20 20 3A 20 25 73 28 25 73 29 00 C0 CF B9 DD 00 00
-R: 'Goal : %s(%s) General'
-
-----------------------------------
 M: Coord
 ----------------------------------
 
@@ -501,13 +480,6 @@ F: B8 F1 C7 A5 B8 A6 20 C1 F6 C1 A4 20 C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4
 R: 'Please Specify Destination..'
 
 ----------------------------------
-M: Cannot Give the Destination Info
-----------------------------------
-
-F: B5 B5 C2 F8 20 C1 F6 C1 A1 BF A1 20 B4 EB C7 D1 20 C1 A4 BA B8 20 BC B3 C1 A4 20 BD C7 C6 D0 21
-R: 'Cannot Give the Destination Info'
-
-----------------------------------
 M: Guidance 2
 ----------------------------------
 
@@ -520,13 +492,6 @@ M: Failed to Read Info
 
 F: 3E 3E 20 B8 F1 C7 A5 20 C1 A4 BA B8 B8 A6 20 C0 D0 C1 F6 20 B8 F8 C7 D4 21
 R: '>> Failed to Read Info..!'
-
-----------------------------------
-M: Warp By
-----------------------------------
-
-F: BF F6 C7 C1 20 C0 CC BF EB
-R: 'Warp By,'
 
 ----------------------------------
 M: ClickNPC
@@ -576,20 +541,6 @@ M: Norm Boss part 2
 
 F: C0 CF B9 DD
 R: 'Norm'
-
-----------------------------------
-M: Norm Boss part 3
-----------------------------------
-
-F: BA B8 BD BA
-R: 'Boss'
-
-----------------------------------
-M: Name 
-----------------------------------
-
-F: B8 F1 C7 A5 20 20 20 3A 20 25 73 28 25 64 2C 20 25 64 29
-R: 'Name   : %s(%d, %d)'
 
 ----------------------------------
 M: Bifrost message
@@ -680,12 +631,6 @@ M: Earn
 ----------------------------------
 F: BC AD B9 F6
 R: 'Earn'
-
-----------------------------------
-M: Hour
-----------------------------------
-F: BD C3 B0 A3
-R: 'Hour'
 
 ----------------------------------
 M: Minutes Left

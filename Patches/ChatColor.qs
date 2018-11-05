@@ -44,12 +44,12 @@ function ChatColorGM() {
     return "Failed in Step 1 - Orange color not found";
   
   //Step 1b - Find FF, FF, 00 (Cyan) PUSH in the vicinity of Orange
-  var offset2 = exe.find("68 FF FF 00 00", PTYPE_HEX, false, " ", offset1 - 0x30, offset1 + 0x30);
+  var offset2 = exe.find("68 FF FF 00 00", PTYPE_HEX, false, "\xAB", offset1 - 0x30, offset1 + 0x30);
   if (offset2 === -1)
     return "Failed in Step 1 - Cyan not found";
   
   //Step 1c - Find 00, FF, FF (Yellow) PUSH in the vicinity of Orange
-  var offset3 = exe.find("68 00 FF FF 00", PTYPE_HEX, false, " ", offset1 - 0x30, offset1 + 0x30);
+  var offset3 = exe.find("68 00 FF FF 00", PTYPE_HEX, false, "\xAB", offset1 - 0x30, offset1 + 0x30);
   if (offset3 === -1)
     return "Failed in Step 1 - Yellow not found";
   
@@ -80,7 +80,7 @@ function ChatColorPlayerSelf() {//N.B. - Check if it holds good for old client. 
   
   //Step 1b - Find the Green color push.
   for (var i = 0; i < offsets.length; i++) {
-    var offset = exe.find(" 68 00 FF 00 00", PTYPE_HEX, false, "", offsets[i] + 5, offsets[i] + 40);
+    var offset = exe.find(" 68 00 FF 00 00", PTYPE_HEX, false, "\xAB", offsets[i] + 5, offsets[i] + 40);
     if (offset !== -1) break;
   }
   

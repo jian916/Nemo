@@ -37,11 +37,11 @@ function EnableCustom3DBones() {
     " 85 FF" //TEST EDI, EDI
   + " 75 27" //JNE SHORT addr
   ;
-  offset2 = exe.find(code, PTYPE_HEX, false, "", offset, offset + 0x20);
+  offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
   
   if (offset2 === -1) {
     code = code.replace("27", "28"); //VC10 and older has 28 instead of 27
-    offset2 = exe.find(code, PTYPE_HEX, false, "", offset, offset + 0x20);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
   }
   
   if (offset2 === -1)

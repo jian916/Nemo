@@ -72,8 +72,12 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " BF 01 00 00 00" //MOV EDI, 1
   + " BB" + MaxShield.packToHex(4) //MOV EBX, finalValue
   ;
+
+  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>s", " 57");
+  if (result.indexOf("LUA:") !== -1)
+      return result;
   
-  code += GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>s", " 57");
+  code += result;
   
   code +=
     " 8A 08"          //MOV CL, BYTE PTR DS:[EAX]
@@ -172,8 +176,12 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " 52"             //PUSH EDX
   + " 8B 54 24 08"    //MOV EDX, DWORD PTR SS:[ESP+8]
   ;
+
+  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>d", " 52");
+  if (result.indexOf("LUA:") !== -1)
+      return result;
   
-  code += GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>d", " 52");
+  code += result;
   
   code += 
     " 5A"             //POP EDX
@@ -192,7 +200,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   + " 6A 05" //PUSH 5
   + " 8B"    //MOV ECX, reg32_A
   ;
-  offset = exe.find(code, PTYPE_HEX, false, "", hookReq - 0x30, hookReq);
+  offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x30, hookReq);
   
   if (offset !== -1) {
     exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
@@ -204,7 +212,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     + " 2B"          //SUB reg32_A, reg32_B
     ;
     
-    offset = exe.find(code, PTYPE_HEX, false, "", hookReq - 0x60, hookReq);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x60, hookReq);
     if (offset === -1)
       return "Failed in Step 5 - No Allocator PUSHes found";
    
@@ -216,7 +224,7 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     + " 73"       //JAE SHORT addr
     ;
     
-    offset = exe.find(code, PTYPE_HEX, false, "", offset - 0x10, offset);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
     if (offset === -1)
       return "Failed in Step 5 - Comparison Missing";
    

@@ -16,7 +16,7 @@ function ExtractMsgTable() {
         throw "Error: msgStringTable.txt reference missing";
 
     //Step 1c - Find the msgstring push after it
-    code = 
+    var code = 
         " 73 05"                //JAE SHORT addr1 -> after JMP below
       + " 8B AB AB"             //MOV reg32_A, DWORD PTR DS:[reg32_B*4 + reg32_C]
       + " EB AB"                //JMP SHORT addr2
@@ -105,7 +105,7 @@ function ExtractMsgTable() {
         if (exe.fetchDWord(offset) === id) {
             //Step 3a - Get the string for the current id
             var start_offset = exe.Rva2Raw(exe.fetchDWord(offset+4));
-            var end_offset   = exe.find("00", PTYPE_HEX, false, "", start_offset);
+            var end_offset   = exe.find("00", PTYPE_HEX, false, "\xAB", start_offset);
 
             msgStr = exe.fetch(start_offset, end_offset - start_offset);
 

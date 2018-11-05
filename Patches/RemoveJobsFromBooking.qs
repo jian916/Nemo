@@ -1,4 +1,4 @@
-﻿//########################################################################
+//########################################################################
 //# Purpose: Hijack the MsgStr function call inside the Booking OnCreate #
 //#          function which loads comboboxes for testing the ID against  #
 //#          our list and skip iteration if present.                     #
@@ -109,7 +109,7 @@ function RemoveJobsFromBooking() {
   }
 
   //Step 1d - Find the pattern 
-  var retAddr = exe.findCode(code, PTYPE_HEX, true, "\xAB", offset + 5, offset + 0x100);
+  var retAddr = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 5, offset + 0x100);
   if (retAddr === -1)
     return "Failed in Step 1b - Loop End missing";
   

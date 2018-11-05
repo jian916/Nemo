@@ -4,7 +4,7 @@
 //###############################################################################
 
 function CustomExpBarLimits() {
-  
+  var matches;
   //Step 1a - Find the reference PUSHes (coord PUSHes ?)
   var code =
     " 6A 4E"          //PUSH 4E

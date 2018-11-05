@@ -410,6 +410,10 @@ registerPatch(251, "AllowCloseCutinByEsc", "¥i¨Ï¥Î Esc Ãö³¬ cutin ¹Ï¤ù", "¦Û­q",
 
 registerPatch(253, "SkipHiddenMenuButtons", "­×´_¥\¯à¦CªºÁô§Î«ö¶s", "Custom", 12, "4144", "·í±Ò¥ÎÁôÂÃ¥ª¤W¤è¥\¯à¦Cªº«ö¶s®É¡A­×´_Áô§Îªº«ö¶s", false);
 
+registerPatch(268, "RestoreChatFocus", "Restore chat focus", "Custom", 0, "4144", "Restore input focus from left mouse click.", false);
+
+registerPatch(280, "ChangeGuildExpLimit", "Change guild exp limit", "Custom", 0, "4144", "Change guild exp limit percent. Default value is 50.", false);
+
 
 
 registerPatch(300, "FixItemDescBug", "­×´_ª««~»¡©ú¶Ã½X Bug", "¤¶­±", 0, "Jchcc", "­×´_ª««~¥kÁä¤º®e '[' ³y¦¨ªº¶Ã½X", false);
@@ -459,23 +463,23 @@ registerPatch(321, "SetButtonSNS",		"ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Jchcc", "Á
 registerPatch(322, "SetButtonCashShop",	"ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ°Ó«°«ö¶s", false);
 
 
-registerPatch(350, "ChangeAchievementList", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(350, "ChangeAchievementListPath", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(351, "ChangeMonsterSizeEffect", "­×§ïMonsterSizeEffect*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(351, "ChangeMonsterSizeEffectPath", "­×§ïMonsterSizeEffect*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(353, "ChangeTowninfo", "­×§ïTowninfo*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¹Ï¼Ð Towninfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(353, "ChangeTowninfoPath", "­×§ïTowninfo*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¹Ï¼Ð Towninfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(354, "ChangePetEvolutionCln", "­×§ïPetEvolutionCln*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(354, "ChangePetEvolutionClnPath", "­×§ïPetEvolutionCln*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(355, "ChangeTipbox", "­×§ïTipbox*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº±Ð¾Ç Tipbox*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(355, "ChangeTipboxPath", "­×§ïTipbox*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº±Ð¾Ç Tipbox*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(356, "ChangeCheckAttendance", "­×§ïCheckAttendance*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(356, "ChangeCheckAttendancePath", "­×§ïCheckAttendance*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(357, "ChangeOngoingQuestInfoList", "­×§ïOngoingQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(357, "ChangeOngoingQuestInfoListPath", "­×§ïOngoingQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(358, "ChangeRecommendedQuestInfoList", "­×§ïRecommendedQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(358, "ChangeRecommendedQuestInfoListPath", "­×§ïRecommendedQuestInfoList*¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
-registerPatch(359, "ChangePrivateAirplane", "­×§ïPrivateAirplane*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
+registerPatch(359, "ChangePrivateAirplanePath", "­×§ïPrivateAirplane*.lub¸ô®|", "¦Û­q", 19, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂÐ»\", false);
 
 registerPatch(360, "ChangeDefaultBGM", "­×§ï¹w³] BGM ¸ô®|", "¦Û­q", 19, "Jian", "­×§ï¹w³] BGM ¸ô®|¡A§ïÅÜµn¤J±b¸¹©Î¥¼³]©w¦a¹Ïªº­I´ºÁn­µ¡A©x¤è¹w³]¬° bgm\\01.mp3", false);
 

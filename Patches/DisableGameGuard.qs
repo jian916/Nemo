@@ -1,4 +1,4 @@
-﻿//##################################################################
+//##################################################################
 //# Purpose: Skip the call to ProcessFindHack function and the     #
 //#          Conditional Jump after it. Also ignore nProtect tests #
 //##################################################################
@@ -23,7 +23,7 @@ function DisableGameGuard() {
   + " 68"     //PUSH value
   ;
   
-  offset = exe.find(code, PTYPE_HEX, false, "", offset - 0x160, offset);
+  offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x160, offset);
   if (offset === -1)
     return "Failed in Step 1 - ProcessFindHack Function missing";
   

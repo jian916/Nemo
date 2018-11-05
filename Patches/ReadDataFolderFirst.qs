@@ -47,7 +47,7 @@ function ReadDataFolderFirst() {
   //===================================================================//
   
   //Step 2a - Extract g_readFolderFirst
-  var gReadFolderFirst = exe.fetchDWord(offset2+gloc, 4);
+  var gReadFolderFirst = exe.fetchDWord(offset2 + gloc);
   
   //Step 2b - Look for Comparison Pattern 1 - VC9+ Clients
   var offsets = exe.findCodes(" 80 3D" + gReadFolderFirst.packToHex(4) + " 00"); //CMP DWORD PTR DS:[g_readFolderFirst], 0

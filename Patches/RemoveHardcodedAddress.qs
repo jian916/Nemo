@@ -31,7 +31,7 @@ function RemoveHardcodedAddress() {
         return "Failed in step 1";
 
     // step 1b - replace call to nop
-    overrideAddr = offset + 14 + exe.fetchDWord(offset + 10)
+    var overrideAddr = offset + 14 + exe.fetchDWord(offset + 10)
 
     // step 2a - find string "127.0.0.1"
     var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
@@ -76,7 +76,7 @@ function RemoveHardcodedAddress() {
     if (offset === -1)
         return "Failed in step 4a";
 
-    callAtoi = exe.fetchHex(offset + 8, 6);
+    var callAtoi = exe.fetchHex(offset + 8, 6);
 
     // step 4b - change function override_address_port
     var newCode =

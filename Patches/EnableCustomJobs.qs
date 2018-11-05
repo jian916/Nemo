@@ -46,7 +46,7 @@ function EnableCustomJobs()
         hooks[2] = offset - 4;
 
         //Step 1f - Little trick to change the PUSH 3 to PUSH 0 so that EAX will point to the first location like we need
-        offset = exe.find(" 6A 03", PTYPE_HEX, false, "", hooks[2] - 0x12, hooks[2]);
+        offset = exe.find(" 6A 03", PTYPE_HEX, false, "\xAB", hooks[2] - 0x12, hooks[2]);
         exe.replace(offset + 1, "00", PTYPE_HEX);
     }
     if (hooks.length !== 3)
@@ -274,7 +274,7 @@ function EnableCustomJobs()
       + " 0F 85"    //JNE addr2
       ;
 
-    offset2 = exe.find(code, PTYPE_HEX, false, " ", offset + 0x10, offset + 0x100);
+    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x10, offset + 0x100);
     if (offset2 === -1)
     {
         code =
@@ -286,7 +286,7 @@ function EnableCustomJobs()
           + " 74 1F"    //JNE addr2
           ;
 
-        offset2 = exe.find(code, PTYPE_HEX, false, " ", offset - 0x20, offset + 0x100);
+        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset + 0x100);
     }
     if (offset2 === -1)
         return "Failed in Step 5 - 2nd LangType comparison missing";
@@ -379,9 +379,14 @@ function EnableCustomJobs()
     if (offset !== -1)
     {
         //Step 7b - Build the replacement code using GetHalter Lua function
+
+        var result = GenLuaCaller(offset + 1, "GetHalter", Funcs[12], "d>d", " 50");
+        if (result.indexOf("LUA:") !== -1)
+          return result;
+
         code =
             " 52" //PUSH EDX
-          + GenLuaCaller(offset + 1, "GetHalter", Funcs[12], "d>d", " 50")
+          + result
           + " 5A" //POP EDX
         ;
 
@@ -433,9 +438,13 @@ function EnableCustomJobs()
             offset2 = (0x50 + (exe.fetchByte(offset + 1) & 0x7)).packToHex(1);
 
         //Step 8c - Build the replacement code using IsDwarf Lua function
+        var result = GenLuaCaller(offset + 1, "IsDwarf", Funcs[13], "d>d", offset2);
+        if (result.indexOf("LUA:") !== -1)
+          return result;
+
         code =
             " 52" //PUSH EDX
-          + GenLuaCaller(offset + 1, "IsDwarf", Funcs[13], "d>d", offset2)
+          + result
           + " 5A" //POP EDX
         ;
 
@@ -513,6 +522,10 @@ function OverwriteString(srcString, tgtString)
     //Step 1 - Find address
     var offset = exe.findString(srcString, RAW);
 
+    if (offset === -1)
+    {
+        throw "String " + srcString + " not found";
+    }
     //Step 2a - Overwrite it
     exe.replace(offset, tgtString, PTYPE_STRING);
 
@@ -598,7 +611,11 @@ function WriteLoader(hookLoc, curReg, suffix, reqAddr, mapAddr, jmpLoc, extraDat
             var coff = code.hexlength() + prefixes[j].hexlength(); //relative offset from hookLoc
 
             code += templates[i].replace(" PrepVars", prefixes[j]); //Change PrepVars to the actual prefix
-            code = code.replace(" GenCaller", GenLuaCaller(hookLoc + coff, fnNames[i], fnAddrs[i], argFormats[i], " 57")); //Change GenCaller with generated code
+            var result = GenLuaCaller(hookLoc + coff, fnNames[i], fnAddrs[i], argFormats[i], " 57");
+            if (result.indexOf("LUA:") !== -1)
+              return result;
+
+            code = code.replace(" GenCaller", result); //Change GenCaller with generated code
 
             code = code.replace(" ToGenCaller", "");//Remove ToGenCaller and
             code += (coff - (code.hexlength() + 1)).packToHex(1);//put the actual JLE distance

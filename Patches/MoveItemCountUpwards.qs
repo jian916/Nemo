@@ -1,4 +1,4 @@
-﻿//##############################################################
+//##############################################################
 //# Purpose: Change the 'boldtext' comparison JE to JMP inside #
 //#          UIFrameWnd::DrawItemWithCount function            #
 //##############################################################
@@ -65,7 +65,7 @@ function MoveItemCountUpwards() {
   //Step 2b - Find the comparison within 0x50 bytes before one of the patterns
   var offset = -1;
   for (var i = 0; i < offsets.length; i++) {
-    offset = exe.find(code, PTYPE_HEX, false, "", offsets[i] - 0x50, offsets[i]);
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] - 0x50, offsets[i]);
     if (offset !== -1)
       break;
   }

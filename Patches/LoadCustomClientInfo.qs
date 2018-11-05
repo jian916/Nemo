@@ -21,26 +21,26 @@ function LoadCustomClientInfo() {
 		return "Failed in Step 1b - clientinfo reference not found";
 
 	if (ciName == "sclientinfo.xml") {
-		var offset2 = exe.findCode(" F3 0F AB AB" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
+		var offset2 = exe.find(" F3 0F AB AB" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
 		if (offset2 === -1)
 			return "Failed in Step 1c - clientinfo reference 2 not found";
 	}
 	else {
-		var offset2 = exe.findCode(" A1" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1 - 10, offset1);
+		var offset2 = exe.find(" A1" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1 - 10, offset1);
 		if (offset2 === -1)
 			return "Failed in Step 1c - clientinfo reference 2 not found";
 
-		var offset3 = exe.findCode(" 66 A1" + (offset + 0xC).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x10);
+		var offset3 = exe.find(" 66 A1" + (offset + 0xC).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x10);
 		if (offset3 === -1)
 			return "Failed in Step 1c - clientinfo reference 3 not found";
 
-		var offset4 = exe.findCode(" A0" + (offset + 0xE).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
+		var offset4 = exe.find(" A0" + (offset + 0xE).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
 		if (offset4 === -1)
 			return "Failed in Step 1c - clientinfo reference 4 not found";
 	}
 
 	//Step 2a - Get the new filename from user
-	var myfile = exe.getUserInput("$newclientinfo", XTYPE_STRING, "String input - maximum 14 characters", "Enter the new clientinfo path", ciName, 1, 28);
+	var myfile = exe.getUserInput("$newclientinfo", XTYPE_STRING, "String input - maximum 14 characters", "Enter the new clientinfo path", ciName, 9, 14);
 	if (myfile === ciName)
 		return "Patch Cancelled - New value is same as old";
 	if (myfile.length > 14 || myfile.length < 9)

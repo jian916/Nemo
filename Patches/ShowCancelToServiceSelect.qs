@@ -1,4 +1,4 @@
-﻿//###############################################################
+//###############################################################
 //# Purpose: Modify the Coordinates of Login and Cancel buttons #
 //#          to show both of them in Login Screen.              #
 //###############################################################
@@ -62,5 +62,5 @@ function ShowCancelToServiceSelect() {
 // Disable for Unneeded Clients - Only Certain Client onwards shows Exit button //
 //==============================================================================//
 function ShowCancelToServiceSelect_() {
-  return (exe.getClientDate() > 20100803 && !isZero());
+  return (exe.getClientDate() > 20100803 && !IsZero());
 }

@@ -49,7 +49,7 @@ function ReadIconFile(fname) {
 //==================================================================//
 
 function UseRagnarokIcon() {
-  UseCustomIcon(true);
+    return UseCustomIcon(true);
 }
 
 //###################################################################################
@@ -61,6 +61,8 @@ function UseCustomIcon(nomod) {
   
   //Step 1a - Find Resource Table
   var offset = GetDataDirectory(2).offset;
+  if (offset === -1)
+    throw "found wrong offset in GetDataDirectory";
   
   //Step 1b - Get the Resource Tree (Check the function in core)
   var rsrcTree = new ResourceDir(offset, 0, 0);
@@ -101,7 +103,7 @@ function UseCustomIcon(nomod) {
   
   //Step 5a - Load the new icon
   var fp = new BinFile();
-  var iconfile = GetInputFile(fp, "$inpIconFile", "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH);
+  var iconfile = GetInputFile(fp, "$inpIconFile", "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH + "/Input/NEMO.ico");
   if (!iconfile)
     return "Patch Cancelled";
   

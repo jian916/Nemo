@@ -33,13 +33,13 @@ function FixedCharJobCreate()
         "88 85 AB AB AB AB" +     // mov     [ebp+a39.slot], al
         "0F BF 05 AB AB AB AB" +  // movsx   eax, word_FC7C30  <-- patch here
         "89 85 AB AB AB AB"       // mov     dword ptr [ebp+a39.starting_job_id], eax
-    patchOffset = 51;
-    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var patchOffset = 51;
+    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     if (offsets.length === 0)
         return "Search packet 0xA39 error";
     if (offsets.length != 1)
         return "Found too many 0xA39 packets";
-    offset = offsets[0]
+    var offset = offsets[0]
     var newJob = exe.getUserInput("$newJobVal", XTYPE_DWORD, "Number Input", "Enter fixe job id", 1);
     exe.replace(offset + patchOffset, "B8 " + newJob.packToHex(4) + " 90 90" , PTYPE_HEX);
     return true;

@@ -169,7 +169,7 @@ function RestoreLoginWindow() {
   ;
   
   //Step 5d - Find how many PUSH 0s are there. Older clients had 3 arguments but newer ones only have 3
-  var pushes = exe.findAll("6A 00", PTYPE_HEX, false, "", offset + code.hexlength() + 4, offset + code.hexlength() + 16);
+  var pushes = exe.findAll("6A 00", PTYPE_HEX, false, "\xAB", offset + code.hexlength() + 4, offset + code.hexlength() + 16);
   
   //Step 5e - Find error handler = CModeMgr::Quit
   code =
@@ -266,7 +266,7 @@ function RestoreLoginWindow() {
     var call = exe.fetchDWord(offset + 2) + offset + 6;
     
     //Step 6e - Sly devils have made a jump here so search for that.
-    offset = exe.find("E9", PTYPE_HEX, false, "", call);
+    offset = exe.find("E9", PTYPE_HEX, false, "\xAB", call);
     if (offset === -1)
       return "Failed in Step 6 - Jump Not found";
     

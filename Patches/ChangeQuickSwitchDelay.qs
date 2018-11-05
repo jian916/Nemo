@@ -29,7 +29,7 @@ function ChangeQuickSwitchDelay() {
 
   var new_tick_ms = new_tick * 1000;
 	
-  for (i=0; i < size; ++i)
+  for (var i = 0; i < size; ++i)
   {
     // replace the first found values
 	exe.replace(offsets[i]+1, new_tick_ms.packToHex(4), PTYPE_HEX);
@@ -58,11 +58,12 @@ function ChangeQuickSwitchDelay() {
   
   // find the comparison to the default tick_ms value
   code = " 3D " + tick_ms.packToHex(4); // CMP eax, tick_ms (default)
-  offset = exe.find(code, PTYPE_HEX, true, ui_offset+6, ui_offset+30);
+  offset = exe.find(code, PTYPE_HEX, false, '\xAB', ui_offset + 6, ui_offset + 30);
   if (offset === -1)
     return "Failed in Step 3b - Find Compare to " + tick_ms;
-  
-  exe.replace(offset + 1, new_tick_ms.packToHex(4), PTYPE_HEX);
+  if (offsets.indexOf(offset) === -1)
+    exe.replace(offset + 1, new_tick_ms.packToHex(4), PTYPE_HEX);
+  return true;
 }
 
 //==============================//

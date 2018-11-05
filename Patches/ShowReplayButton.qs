@@ -1,4 +1,4 @@
-﻿//########################################################################
+//########################################################################
 //# Purpose : Change the coordinates of selectserver and replay buttons. #
 //#           Also modify the ShowMsg function for Replay List box to    #
 //#           make it return to Select Service window.                   #
@@ -22,7 +22,7 @@ function ShowReplayButton() {
     " 83 78 04 1E" //CMP DWORD PTR DS:[EAX+4], 1E
   + " 75"          //JNE SHORT addr
   ;
-  var offset = exe.find(code, PTYPE_HEX, false, "", result, result + 0x40);
+  var offset = exe.find(code, PTYPE_HEX, false, "\xAB", result, result + 0x40);
   if (offset === -1)
     return "Failed in Step 2.6 - Mode comparison missing";
   
@@ -48,7 +48,7 @@ function ShowReplayButton() {
     " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
   + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
   ;
-  assignedLen = 4;
+  var assignedLen = 4;
 
   var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset2 === -1)
@@ -123,7 +123,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2) {
   offset += 5;
 
   //Step .2 - Find the coordinate assignment for the Cancel/Exit button
-  var offset2 = exe.find(" EA 00 00 00", PTYPE_HEX, false, "", offset, offset + 0x50);
+  var offset2 = exe.find(" EA 00 00 00", PTYPE_HEX, false, "\xAB", offset, offset + 0x50);
   if (offset2 === -1)
     return "2 - 2nd Button asssignment missing";
   

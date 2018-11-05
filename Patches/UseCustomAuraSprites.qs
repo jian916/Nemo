@@ -79,10 +79,10 @@ function UseCustomAuraSprites() {
   //          (addr1 should pikapika2 reference & addr2 should contain ring_blue reference)
   for (var i = 0; i < offsets.length; i++) {
     offset = offsets[i] + 8 +  exe.fetchDWord(offsets[i] + 4);
-    offsetP = exe.find(ppika2, PTYPE_HEX, false, "", offset, offset + 0x100);
+    offsetP = exe.find(ppika2, PTYPE_HEX, false, "\xAB", offset, offset + 0x100);
     
     offset = offsets[i] + 16 + exe.fetchDWord(offsets[i] + 12);
-    offsetR = exe.find(rblue,  PTYPE_HEX, false, "", offset, offset + 0x120);
+    offsetR = exe.find(rblue,  PTYPE_HEX, false, "\xAB", offset, offset + 0x120);
     
     if (offsetP !== -1 && offsetR !== -1) break;
   }

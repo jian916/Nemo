@@ -15,7 +15,7 @@ function IgnoreMissingPaletteError() {
     " 68" + offset.packToHex(4) //PUSH OFFSET addr; ASCII "CPaletteRes :: Cannot find File : "
   + " 8D"                       //LEA ECX, [LOCAL.x]
   ;
-  offset2 = exe.findCode(code, PTYPE_HEX, false);
+  var offset2 = exe.findCode(code, PTYPE_HEX, false);
   
   if (offset2 === -1) {
     code = "BF" + offset.packToHex(4); //MOV EDI, OFFSET addr; ASCII "CPaletteRes :: Cannot find File : "

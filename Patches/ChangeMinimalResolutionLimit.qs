@@ -50,8 +50,8 @@ function ChangeMinimalResolutionLimit()
     if (exe.fetchDWord(offset + heightOffset1) !== heightLimit || exe.fetchDWord(offset + heightOffset1) !== exe.fetchDWord(offset + heightOffset2))
         return "Failed in step 1 - wrong height limit found";
 
-    var width = exe.getUserInput("$newWidth", XTYPE_DWORD, "Number Input", "Enter new minimal width:", widthLimit, 0, 100000);
-    var height = exe.getUserInput("$newHeight", XTYPE_DWORD, "Number Input", "Enter new minimal height:", heightLimit, 0, 100000);
+    var width = exe.getUserInput("$newScreenWidth", XTYPE_DWORD, "Number Input", "Enter new minimal width:", widthLimit, 0, 100000);
+    var height = exe.getUserInput("$newScreenHeight", XTYPE_DWORD, "Number Input", "Enter new minimal height:", heightLimit, 0, 100000);
     if (width === widthLimit && height === heightLimit)
     {
         return "Patch Cancelled - New width and height is same as old";

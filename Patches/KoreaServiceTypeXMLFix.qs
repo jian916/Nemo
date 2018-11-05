@@ -14,7 +14,7 @@ function KoreaServiceTypeXMLFix() {
   var offsets = exe.findCodes(" 68" + offset.packToHex(4), PTYPE_HEX, false);
   if (offsets.length === 0)
     return "Failed in Step 1 - No references found";
-  
+
   for (var i = 0; i < offsets.length; i++) {
     //Step 2a - Find the Select calls before each PUSH
     var code = 
@@ -58,7 +58,8 @@ function KoreaServiceTypeXMLFix() {
     
     //Step 2c - Extract the refAddr
     offset = exe.Rva2Raw(exe.fetchDWord(offset + 3));
-    
+    if (offset < 0)
+        return "Failed in step 2c - found wrong offset for iteration no." + i;
     //Step 2d - Replace refAddr + 4 with the contents from refAddr, so that all valid langtypes will use same case as 0 i.e. Korea
     code = exe.fetchHex(offset, 4);
     exe.replace(offset + 4, code, PTYPE_HEX);

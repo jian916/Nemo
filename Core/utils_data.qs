@@ -1,4 +1,4 @@
-﻿OpcodeSizeMap = 
+OpcodeSizeMap = 
 [
   [
     0x06, 0x07, 0x0E,

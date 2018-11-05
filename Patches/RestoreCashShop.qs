@@ -1,4 +1,4 @@
-﻿//#####################################################################
+//#####################################################################
 //# Purpose: Restore the Cash Shop Icon UIWindow creation (ID = 0xBE) #
 //#####################################################################
 
@@ -16,20 +16,20 @@ function RestoreCashShop() {
   var makeWin = mgrInfo['makeWin'];
   
   //Step 2a - Find the location where the cash shop icon was supposed to be created
-  code = 
+  var code = 
     " 75 0F"           //JNE addr; skips to location after the call for creating another icon
   + " 68 9F 00 00 00"  //PUSH 09F
   + movEcx             //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
   
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = exe.findCode(code, PTYPE_HEX, false);
   if (offset === -1)
     return "Failed in Step 2";
 
   var offset2 = offset + code.hexlength() + 4;
 
-  if (exe.find("68 BE 00 00 00" + movEcx, PTYPE_HEX, false, "", offset - 0x30, offset) !== -1)
+  if (exe.find("68 BE 00 00 00" + movEcx, PTYPE_HEX, false, "\xAB", offset - 0x30, offset) !== -1)
     return "Patch Cancelled - Icon is already there";
   
   //Step 3a - Prep insert code (starting portion is same as above hence we dont repeat it)

@@ -1,4 +1,4 @@
-﻿//#############################################################
+//#############################################################
 //# Purpose: Change the pf argument to CTexMgr::CreateTexture #
 //#          to increase the color depth used to 32 bit       #
 //#############################################################
@@ -28,7 +28,7 @@ function IncreaseMapQuality() {
     offset--;
   }
   else {
-    offset = exe.find(" 6A 01", PTYPE_HEX, false, "", offset - 10, offset);//PUSH 1
+    offset = exe.find(" 6A 01", PTYPE_HEX, false, "\xAB", offset - 10, offset);//PUSH 1
     if (offset === -1)
       return "Failed in Step 1 - pf push missing";
     

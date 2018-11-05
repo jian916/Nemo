@@ -15,7 +15,7 @@ function TranslateClient() {
   var failmsgs = [];//Array to store all Failure messages
   
   //Step 2 - Loop through the text file, get the respective strings & do findString + replace
-  
+  var found = false;
   while (!f.eof()) {
     var str = f.readline().trim();
     
@@ -41,12 +41,11 @@ function TranslateClient() {
         exe.replace(offset, str.substring(1, str.length-1) + "\x00", PTYPE_STRING);
       else //HEX
         exe.replace(offset, str + " 00", PTYPE_HEX);
-      
+      found = true;
       offset = -1;
     }
   }
   f.close();
-  
   //Step 3 - Dump all the Failure messages collected to FailedTranslations.txt
   if (failmsgs.length != 0) {
     var outfile = new TextFile();
@@ -87,8 +86,14 @@ function TranslateClient() {
   }
 
   if (offset === -1) // This change isn't necessary. [Secret]
+  {
+    if (found === false)
+    {
+      return "Found nothing to translate";
+    }
     //return "Failed in Step 4 - Translate Taekwon Job";
 	return true;
+  }
   
   //Step 4b - Change the JNZ to JMP so that Korean names never get assigned.
   exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX);

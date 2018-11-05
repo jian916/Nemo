@@ -402,7 +402,7 @@ function GetFunction(funcName, dllName, ordinal) {
     //Step 1d - If DLL name is provided, only check if it matches with current DLL Name (case insensitively)
     if (dllName !== "") {
       nameOff = exe.Rva2Raw(nameOff + imgBase);
-      var nameEnd = exe.find("00", PTYPE_HEX, false, "", nameOff);
+      var nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
       if (dllName !== exe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
     }
     
@@ -422,7 +422,7 @@ function GetFunction(funcName, dllName, ordinal) {
         //Step 2d - The Thunk will point to a location with first 2 bytes as Hint followed by Function Name.
         //          So extract it after 2nd byte
         nameOff = exe.Rva2Raw((funcData & 0x7FFFFFFF) + imgBase) + 2;
-        nameEnd = exe.find("00", PTYPE_HEX, false, "", nameOff);
+        nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
 
         //Step 2e - Check if the Function name matches. If it does, save the address in IAT and break
         if (funcName === exe.fetch(nameOff, nameEnd - nameOff)) {
@@ -454,7 +454,6 @@ function GetDataDirectory(index) {
   
   var size = exe.fetchDWord(offset + 0x8*index + 0x4);
   offset = exe.Rva2Raw(exe.fetchDWord(offset + 0x8*index) + exe.getImageBase());
-  
   return {"offset":offset, "size":size};
 }
 
@@ -536,9 +535,14 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
   if (typeof(assigner) === "undefined") {
     assigner = -1;
   }
-  
+  var cnt = 0;
   while (!done) {//only exits at the end of initializations
-  
+
+    if (cnt > 1000)
+        throw "FetchTillEnd: Infinite loop in FetchTillEnd";
+    if (offset < 0)
+        throw "FetchTillEnd: Negative offset found";
+
     //Step 1a - Get Opcode and possible Mod R/M byte
     var opcode = exe.fetchUByte(offset);
     var modrm  = exe.fetchUByte(offset + 1);
@@ -681,7 +685,9 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
     //codes += exe.Raw2Rva(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
     
     //Step 1f - Update offset
+
     offset = details.nextOff;
+    cnt = cnt + 1;
   }
   //return {"endOff":offset, "code":extract, "debug":codes};
   return {"endOff":offset, "code":extract};

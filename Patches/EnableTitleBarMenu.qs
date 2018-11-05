@@ -19,7 +19,7 @@ function EnableTitleBarMenu() {
   code = " FF 15" + offset.packToHex(4); //CALL DWORD PTR DS:[<&USER32.CreateWindowExA>]
   
   for (var i = 0; i < offsets.length; i++) {
-    offset = exe.find(code, PTYPE_HEX, false, "", offsets[i] + 8, offsets[i] + 29);//5 + 3 for minimum operand pushes, 5 + 18 for maximum operand pushes + 6 for function call
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 8, offsets[i] + 29);//5 + 3 for minimum operand pushes, 5 + 18 for maximum operand pushes + 6 for function call
     if (offset !== -1) {
       offset = offsets[i];//Get the corresponding Style push offset
       break;

@@ -1,4 +1,4 @@
-﻿//#############################################################################
+//#############################################################################
 //# Purpose: Make the code inside CLoginMode::OnChangeState which sends 0x2B0 #
 //#          use Original Password (which is the Arg.1 of Encryptor) instead  #
 //#          of Encrypted Password                                            #  

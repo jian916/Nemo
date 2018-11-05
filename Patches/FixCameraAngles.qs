@@ -102,7 +102,7 @@ function FixCameraAngles(newvalue) {
     + " 00 00 82 C2" //DD FLOAT -65.00000
     ;
     
-    offset = exe.find(code, PTYPE_HEX, false, "", exe.getROffset(CODE) + exe.getRSize(CODE));//Check only after Code section
+    offset = exe.find(code, PTYPE_HEX, false, "\xAB", exe.getROffset(CODE) + exe.getRSize(CODE));//Check only after Code section
     if (offset === -1)
       return "Failed in Step 5";
     

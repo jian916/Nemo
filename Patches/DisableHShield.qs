@@ -159,12 +159,15 @@ function DisableHShield() {
     var finalValue = " 00".repeat(20);
     var curValue;
     var lastDLL = "";//
+    if (dir.offset === -1)
+      throw "found wrong offset in GetDataDirectory";
+
     code = "";//will contain the import table
     
     for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20) {
       //Step 4e - Get the DLL Name for the import entry
       offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-      var offset3 = exe.find("00", PTYPE_HEX, false, "", offset2);
+      var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
       var curDLL = exe.fetch(offset2, offset3 - offset2);
       
       //Step 4f - Make sure its not a duplicate or aossdk.dll

@@ -349,7 +349,7 @@ function _IHL_InjectComparison(rcode, ptr, min, limit, opsize)
 function _IHL_JumpNCall(begin, end, func)
 {  //func is RAW
     //Step 1 - Create the JMP SHORT
-    code = " EB" + ((end - 5) - (begin + 2)).packToHex(1);
+    var code = " EB" + ((end - 5) - (begin + 2)).packToHex(1);
     exe.replace(begin, code, PTYPE_HEX);
 
     //Step 2 - Next CALL the Comparison function
@@ -360,7 +360,7 @@ function _IHL_JumpNCall(begin, end, func)
 function _IHL_UpdateScrollBar(oldLimit, newLimit)
 {
     //Step 1a - Find the Scrollbar create CALLs
-    code =
+    var code =
         " 6A" + (oldLimit+1).packToHex(1) //PUSH oldLimit+1
       + " 6A 01"                          //PUSH 1
       + " 6A" + oldLimit.packToHex(1)     //PUSH oldLimit

@@ -27,7 +27,7 @@ function IncreaseViewID() {
     return "Patch Cancelled - New value is same as old";
   
   //Step 2b - Find all occurrences of the old limit with the user specified value
-  var offsets = exe.findAll(oldValue.packToHex(4), PTYPE_HEX, false, "", offset - 0xA0, offset + 0x50);
+  var offsets = exe.findAll(oldValue.packToHex(4), PTYPE_HEX, false, "\xAB", offset - 0xA0, offset + 0x50);
   
   if (offsets.length === 0)
     return "Failed in Step 2 - No match found";

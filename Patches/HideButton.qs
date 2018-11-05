@@ -141,7 +141,7 @@ function HideButtonNew(reference, prefix) {
 		return "Failed in Step 2 - info assignment missing";
 	
 	//Step 2b - Find the assignment of prefix after "info" assignment
-	offset = exe.find(strAddr.packToHex(4) + suffix, PTYPE_HEX, false, "", offset + 5, offset + 0x500);
+	offset = exe.find(strAddr.packToHex(4) + suffix, PTYPE_HEX, false, "\xAB", offset + 5, offset + 0x500);
 	if (offset === -1)
 		return "Failed in Step 2 - Prefix assignment missing";
 	

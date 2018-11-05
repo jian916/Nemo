@@ -39,8 +39,8 @@ function ChangeMvpHealthBarSize() {
 	var oriCode = exe.fetchHex(offset1, 6);
 	var retAdd = offset1 + 6;
 
-	var height = exe.getUserInput("$height", XTYPE_BYTE, "血條高度", "輸入自訂的血條高度:(最大:127,預設:5 pixel)", "5", 1, 127);
-	var width = exe.getUserInput("$width", XTYPE_BYTE, "血條寬度", "輸入自訂的血條寬度:(最大:127,預設:60 pixel)", "60", 1, 127);
+	var height = exe.getUserInput("$mvpHpHeight", XTYPE_BYTE, "血條高度", "輸入自訂的血條高度:(最大:127,預設:5 pixel)", "5", 1, 127);
+	var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, "血條寬度", "輸入自訂的血條寬度:(最大:127,預設:60 pixel)", "60", 1, 127);
 
 	var ins =
 	    " 80 BB" + isBoss + " 01"
