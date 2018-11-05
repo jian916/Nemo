@@ -430,6 +430,8 @@ registerPatch(307, "ChangeHealthBarSize", "修改角色下方生命條的大小", "介面", 0,
 
 registerPatch(308, "ChangeMvpHealthBarSize", "修改MVP下方生命條的大小", "介面", 0, "Jchcc", "修改MVP下方生命條顯示大小", false);
 
+registerPatch(309, "MvpItemIdenfifyName", "MVP物品用已鑑定名稱顯示", "Fix", 0, "Jchcc", "MVP物品訊息用已鑑定名稱顯示.", false);
+
 registerPatch(310, "SetButtonBooking",	"隱藏[招募]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄隊伍招募按鈕", false);
 
 registerPatch(311, "SetButtonBg",		"隱藏[戰場]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄戰場按鈕", false);
