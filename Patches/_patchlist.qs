@@ -474,5 +474,7 @@ registerPatch(281, "ChangeHealthBarSize", "Change hp bar size", "Custom", 0, "Jc
 
 registerPatch(282, "ChangeMvpHealthBarSize", "Change MVP hp bar size", "Custom", 0, "Jchcc", "Change hp bar size drawed under MVP", false);
 
+registerPatch(283, "ChangeFadeOutDelay", "Change fade in/out delay", "Custom", 0, "4144", "Change fade in/out time in warps on same map", false);
+
 
 GlobalPostInit();
