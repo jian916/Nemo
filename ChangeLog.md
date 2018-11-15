@@ -2,7 +2,7 @@
 
 ## Patches
 
- - Add new patch [Change fade in/out delay](http://nemo.herc.ws/patches/ChangeFadeOutDelay#success-clients) by 4144
+ - Add new patch [Change fade in/out delay](http://nemo.herc.ws/patches/ChangeFadeOutDelay/#success-clients) by 4144
  - Enable patch [Remove hardcoded connection address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for new main and re clients by 4144.
 
 ## Other
