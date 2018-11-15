@@ -370,7 +370,7 @@ registerPatch(229, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "
 
 registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSettings lua file", "Fix", 0, "Secret", "Makes the client load Korea server's ExternalSettings file for all langtypes.", false);
 
-registerPatch(231, "RemoveHardcodedAddress", "Remove hardcoded address/port", "Fix", 17, "4144", "Remove hardcoded addresses and ports. For Zero client only.", false);
+registerPatch(231, "RemoveHardcodedAddress", "Remove hardcoded address/port", "Fix", 0, "4144", "Remove hardcoded connection addresses and ports.", true);
 
 registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 17, "4144", "Make client send old 0x64 login packet. For Zero client only.", false);
 
