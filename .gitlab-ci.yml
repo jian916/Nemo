@@ -9,5 +9,7 @@ checkfiles:
   - ./.ci/retry.sh apt-get update
   - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
   - ./.ci/checkfiles.sh
+  - cd ./.ci
+  - ./updatetranslations.py
   variables:
-    PACKAGES: dos2unix moreutils git
+    PACKAGES: dos2unix moreutils git python
