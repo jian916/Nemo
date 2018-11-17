@@ -476,5 +476,7 @@ registerPatch(282, "ChangeMvpHealthBarSize", "Change MVP hp bar size", "Custom",
 
 registerPatch(283, "ChangeFadeOutDelay", "Change fade in/out delay", "Custom", 0, "4144", "Change fade in/out time in warps on same map", false);
 
+registerPatch(284, "CopyCDGuard", "Copy patched Cheat Defender Game Guard", "Fix", 0, "4144", "Copy patched/disabled Cheat Defender Game Guard into destination directory", true);
+
 
 GlobalPostInit();
