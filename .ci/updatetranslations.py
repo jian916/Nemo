@@ -21,12 +21,15 @@ import os
 langs = set()
 # lang = dict(strGroup, dict(engText = transText))
 patchesIni = dict()
+# lang = dict(strGroup, dict(engText = transText))
+oldPatchesIni = dict()
 retCode = 0
 
 patchesName = set()
 patchesDescription = set()
 patchesCategory = set()
 patchesGroup = set()
+scriptLines = set()
 
 def langToInit(lang):
     return "Patches_{0}.ini".format(lang)
@@ -37,6 +40,13 @@ def initPatchLang(name):
     patchesIni[name]["Category"] = dict()
     patchesIni[name]["Description"] = dict()
     patchesIni[name]["Group"] = dict()
+    patchesIni[name]["Script"] = dict()
+    oldPatchesIni["Input/backup/" + name] = dict()
+    oldPatchesIni["Input/backup/" + name]["Name"] = dict()
+    oldPatchesIni["Input/backup/" + name]["Category"] = dict()
+    oldPatchesIni["Input/backup/" + name]["Description"] = dict()
+    oldPatchesIni["Input/backup/" + name]["Group"] = dict()
+    oldPatchesIni["Input/backup/" + name]["Script"] = dict()
 
 def findLangs():
     files = sorted(os.listdir(".."))
@@ -51,12 +61,12 @@ def findLangs():
         langs.add(lang)
         initPatchLang(langToInit(lang))
 
-def addPatchIniGroup(name, groupName, group):
+def addPatchIniGroup(name, groupName, group, iniDict):
     if groupName == "":
         return
-    patchesIni[name][groupName] = group
+    iniDict[name][groupName] = group
 
-def parsePatchIni(name):
+def parsePatchIni(name, iniDict):
     path = "../" + name
     if os.path.exists(path) is False:
         return
@@ -72,7 +82,7 @@ def parsePatchIni(name):
             if line[0] == ";":
                 continue
             if line[0] == "[":
-                addPatchIniGroup(name, groupName, group)
+                addPatchIniGroup(name, groupName, group, iniDict)
                 group = dict()
                 groupName = line[1:-1]
             else:
@@ -80,12 +90,13 @@ def parsePatchIni(name):
                 if idx < 0:
                     continue
                 group[line[:idx+1]] = line[idx+2:]
-        addPatchIniGroup(name, groupName, group)
+        addPatchIniGroup(name, groupName, group, iniDict)
 
 def parsePatchLangs():
     for lang in langs:
         iniName = langToInit(lang)
-        parsePatchIni(iniName)
+        parsePatchIni(iniName, patchesIni)
+        parsePatchIni("Input/backup/" + iniName, oldPatchesIni)
 
 def parsePatchesList(name):
     with open(name, "rt") as r:
@@ -104,34 +115,107 @@ def parsePatchesList(name):
             patchesCategory.add("\"" + category + "\"")
             patchesGroup.add("\"" + group + "\"")
 
-def savePatchSection(w, name, patches, iniFile):
+def savePatchSection(w, name, patches, iniFile, oldIniFile, normalIni):
+    global retCode
     section = iniFile[name]
+    oldSection = oldIniFile[name]
     for line in patches:
-        if line not in section:
-            print "Add line in file {0}: {1}".format(name, line)
-            section[line] = line
+        if normalIni and line not in section:
+            if line in oldSection:
+                print "Restore line in section {0}: {1}".format(name, line)
+                section[line] = oldSection[line]
+                del oldSection[line]
+            else:
+                print "Add line in section {0}: {1}".format(name, line)
+                section[line] = line
+            retCode = 1
+    if normalIni:
+        section2 = dict()
+        for line in section:
+            if line not in patches:
+                print "backup old line: " + line
+                oldSection[line] = section[line]
+            else:
+                section2[line] = section[line]
+        section = section2
     w.write("\n[{0}]\n".format(name))
     for line in sorted(section.keys()):
         w.write("{0}={1}\n".format(line, section[line]))
 
-def savePatchIni(name):
-    iniFile = patchesIni[name]
+def filterLines(name, strings, iniFile, oldIniFile, normalIni):
+    section = iniFile[name]
+    section2 = dict()
+    if normalIni:
+        oldSection = oldIniFile[name]
+    for line in section:
+        if line in strings:
+            section2[line] = section[line]
+        elif normalIni:
+            print "backup old line: " + line
+            oldSection[line] = section[line]
+    iniFile[name] = section2
+    if normalIni:
+        oldIniFile[name] = oldSection
+
+def savePatchIni(name, iniDict, normalIni):
+    if normalIni:
+        iniFile = iniDict[name]
+    else:
+        iniFile = iniDict[name]
+    if normalIni:
+        oldIniFile = oldPatchesIni["Input/backup/" + name]
+    else:
+        oldIniFile = oldPatchesIni[name]
     with open("../" + name, "wt") as w:
         w.write(";Patches translations\n")
-        savePatchSection(w, "Name", patchesName, iniFile)
-        savePatchSection(w, "Category", patchesCategory, iniFile)
-        savePatchSection(w, "Description", patchesDescription, iniFile)
-        savePatchSection(w, "Group", patchesGroup, iniFile)
+        savePatchSection(w, "Name", patchesName, iniFile, oldIniFile, normalIni)
+        savePatchSection(w, "Category", patchesCategory, iniFile, oldIniFile, normalIni)
+        savePatchSection(w, "Description", patchesDescription, iniFile, oldIniFile, normalIni)
+        savePatchSection(w, "Group", patchesGroup, iniFile, oldIniFile, normalIni)
+        if normalIni:
+            filterLines("Script", scriptLines, iniFile, oldIniFile, normalIni)
+        savePatchSection(w, "Script", scriptLines, iniFile, oldIniFile, normalIni)
 
 def savePatchLangs():
     for lang in langs:
         iniName = langToInit(lang)
-        savePatchIni(iniName)
+        savePatchIni(iniName, patchesIni, True)
+        savePatchIni("Input/backup/" + iniName, oldPatchesIni, False)
+
+def parsePoFile(path):
+    with open(path, "r") as f:
+        flag = 0
+        msgid = ""
+        for line in f:
+            if flag == 0:
+                idx = line.find ("msgid ")
+                if idx == 0:
+                    msgid = line[len("msgid "):]
+                    msgid = msgid[1:len(msgid) - 2]
+                    flag = 1
+            elif flag == 1:
+                idx = line.find ("msgstr ")
+                if idx == 0:
+                    if msgid != "":
+                        scriptLines.add("\"" + msgid + "\"")
+                    flag = 0
+            if line == "\n":
+                if flag == 0:
+                    if msgid != "":
+                        scriptLines.add("\"" + msgid + "\"")
+                    flag = 0
+
+            idx = line.find ("\"")
+            if idx == 0:
+                line = line[1:len(line) - 2]
+                if flag == 1:
+                    msgid = msgid + line
 
 
 findLangs()
 parsePatchesList("index.txt")
 parsePatchLangs()
+parsePoFile("nemo.po")
 savePatchLangs()
 
 exit(retCode)

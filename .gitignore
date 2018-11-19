@@ -1,1 +1,4 @@
 /Output/selftest
+.ci/files.txt
+.ci/index.txt
+.ci/nemo.po
