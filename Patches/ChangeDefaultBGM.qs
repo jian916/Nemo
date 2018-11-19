@@ -13,7 +13,7 @@ function ChangeDefaultBGM() {
 	if (offset === -1)
 		return "Failed in Step 1b - Default BGM reference not found";
 
-	var myfile = exe.getUserInput("$newBGMPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new BGM file path", org_name, 1, 100);
+	var myfile = exe.getUserInput("$newBGMPath", XTYPE_STRING, _("String input - maximum 100 characters"), _("Please enter new BGM file path"), org_name, 1, 100);
 	if (myfile === org_name)
 		return "Patch Cancelled - New value is same as old";
 

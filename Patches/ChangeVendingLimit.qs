@@ -85,7 +85,7 @@ function ChangeVendingLimit() {
   }
   
   //Step 3a - Get the new value from user
-  var newValue = exe.getUserInput("$vendingLimit", XTYPE_DWORD, "Number Input", "Enter new Vending Limit (0 - 2,147,483,647):", 1000000000);
+  var newValue = exe.getUserInput("$vendingLimit", XTYPE_DWORD, _("Number Input"), _("Enter new Vending Limit (0 - 2,147,483,647):"), 1000000000);
   if (newValue === 1000000000)
     return "Patch Cancelled - Vending Limit not changed";
 

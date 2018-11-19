@@ -21,7 +21,7 @@ function ChatColorGuild() {
     return "Failed in Step 1";
 
   //Step 2a - Get new color from user
-  var color = exe.getUserInput("$guildChatColor", XTYPE_COLOR, "Color input", "Select the new Guild Chat Color", 0x00B4FFB4);
+  var color = exe.getUserInput("$guildChatColor", XTYPE_COLOR, _("Color input"), _("Select the new Guild Chat Color"), 0x00B4FFB4);
   if (color === 0x00B4FFB4)
     return "Patch Cancelled - New Color is same as old";
   
@@ -54,7 +54,7 @@ function ChatColorGM() {
     return "Failed in Step 1 - Yellow not found";
   
   //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$gmChatColor", XTYPE_COLOR, "Color input", "Select the new GM Chat Color", 0x0000FFFF);
+  var color = exe.getUserInput("$gmChatColor", XTYPE_COLOR, _("Color input"), _("Select the new GM Chat Color"), 0x0000FFFF);
   if (color === 0x0000FFFF)
     return "Patch Cancelled - New Color is same as old";
   
@@ -88,7 +88,7 @@ function ChatColorPlayerSelf() {//N.B. - Check if it holds good for old client. 
     return "Failed in Step 1 - Green not found";
   
   //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$yourChatColor", XTYPE_COLOR, "Color input", "Select the new Self Chat Color", 0x0000FF00);
+  var color = exe.getUserInput("$yourChatColor", XTYPE_COLOR, _("Color input"), _("Select the new Self Chat Color"), 0x0000FF00);
   if (color === 0x0000FF00)
     return "Patch Cancelled - New Color is same as old";
 
@@ -115,7 +115,7 @@ function ChatColorPlayerOther() {
     return "Failed in Step 1";
   
   //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$otherChatColor", XTYPE_COLOR, "Color input", "Select the new Other Player Chat Color", 0x00FFFFFF);  
+  var color = exe.getUserInput("$otherChatColor", XTYPE_COLOR, _("Color input"), _("Select the new Other Player Chat Color"), 0x00FFFFFF);  
   if (color === 0x00FFFFFF)
     return "Patch Cancelled - New Color is same as old";
 
@@ -148,7 +148,7 @@ function ChatColorPartySelf() {
     return "Failed in Step 1";
     
   //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$yourpartyChatColor", XTYPE_COLOR, "Color input", "Select the new Self Party Chat Color", 0x0000C8FF);
+  var color = exe.getUserInput("$yourpartyChatColor", XTYPE_COLOR, _("Color input"), _("Select the new Self Party Chat Color"), 0x0000C8FF);
   if (color === 0x0000C8FF)
     return "Patch Cancelled - New Color is same as old";
 
@@ -181,7 +181,7 @@ function ChatColorPartyOther() {
     return "Failed in Step 1";
 
   //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$otherpartyChatColor", XTYPE_COLOR, "Color input", "Select the new Others Party Chat Color", 0x00C8C8FF);
+  var color = exe.getUserInput("$otherpartyChatColor", XTYPE_COLOR, _("Color input"), _("Select the new Others Party Chat Color"), 0x00C8C8FF);
   if (color === 0x00C8C8FF)
     return "Patch Cancelled - New Color is same as old";
 

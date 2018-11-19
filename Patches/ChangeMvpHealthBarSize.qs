@@ -39,8 +39,8 @@ function ChangeMvpHealthBarSize() {
 	var oriCode = exe.fetchHex(offset1, 6);
 	var retAdd = offset1 + 6;
 
-	var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, "Hp bar width (default 60)", "Enter new hp bar width in pixels", "60", 1, 127);
-	var height = exe.getUserInput("$mvpHpHeight", XTYPE_BYTE, "Hp bar height (default 5)", "Enter new hp bar height in pixels", "5", 1, 127);
+	var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, _("Hp bar width (default 60)"), _("Enter new hp bar width in pixels"), "60", 1, 127);
+	var height = exe.getUserInput("$mvpHpHeight", XTYPE_BYTE, _("Hp bar height (default 5)"), _("Enter new hp bar height in pixels"), "5", 1, 127);
 
 	var ins =
 	    " 80 BB" + isBoss + " 01"

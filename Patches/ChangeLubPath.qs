@@ -5,47 +5,65 @@
 
 function ChangeAchievementListPath() {
 	var iiName = ChangeLubPathGetIIName(1);
-	return ChangeLubPath(iiName, exe.getUserInput("$AchievementListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for AchievementList*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$AchievementListPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for AchievementList*.lub file"), iiName, 1, 100));
 }
 
 function ChangeMonsterSizeEffectPath() {
 	var iiName = ChangeLubPathGetIIName(2);
-	return ChangeLubPath(iiName, exe.getUserInput("$MonsterSizeEffectPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for MonsterSizeEffect*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$MonsterSizeEffectPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for MonsterSizeEffect*.lub file"), iiName, 1, 100));
 }
 
 function ChangeTowninfoPath() {
 	var iiName = ChangeLubPathGetIIName(3);
-	return ChangeLubPath(iiName, exe.getUserInput("$TowninfoPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for Towninfo*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$TowninfoPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for Towninfo*.lub file"), iiName, 1, 100));
 }
 
 function ChangePetEvolutionClnPath() {
 	var iiName = ChangeLubPathGetIIName(4);
-	return ChangeLubPath(iiName, exe.getUserInput("$PetEvolutionClnPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for PetEvolutionCln*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$PetEvolutionClnPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for PetEvolutionCln*.lub file"), iiName, 1, 100));
 }
 
 function ChangeTipboxPath() {
 	var iiName = ChangeLubPathGetIIName(5);
-	return ChangeLubPath(iiName, exe.getUserInput("$TipboxPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for Tipbox*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$TipboxPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for Tipbox*.lub file"), iiName, 1, 100));
 }
 
 function ChangeCheckAttendancePath() {
 	var iiName = ChangeLubPathGetIIName(6);
-	return ChangeLubPath(iiName, exe.getUserInput("$CheckAttendancePath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for CheckAttendance*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$CheckAttendancePath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for CheckAttendance*.lub file"), iiName, 1, 100));
 }
 
 function ChangeOngoingQuestInfoListPath() {
 	var iiName = ChangeLubPathGetIIName(7);
-	return ChangeLubPath(iiName, exe.getUserInput("$OngoingQuestInfoListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for OngoingQuestInfoList* file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$OngoingQuestInfoListPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for OngoingQuestInfoList* file"), iiName, 1, 100));
 }
 
 function ChangeRecommendedQuestInfoListPath() {
 	var iiName = ChangeLubPathGetIIName(8);
-	return ChangeLubPath(iiName, exe.getUserInput("$RecommendedQuestInfoListPath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for RecommendedQuestInfoList* file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$RecommendedQuestInfoListPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for RecommendedQuestInfoList* file"), iiName, 1, 100));
 }
 
 function ChangePrivateAirplanePath() {
 	var iiName = ChangeLubPathGetIIName(9);
-	return ChangeLubPath(iiName, exe.getUserInput("$PrivateAirplanePath", XTYPE_STRING, "String input - maximum 100 characters", "Please enter new path for PrivateAirplane*.lub file", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$PrivateAirplanePath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for PrivateAirplane*.lub file"), iiName, 1, 100));
 }
 
 function ChangeLubPathGetIIName(type) {

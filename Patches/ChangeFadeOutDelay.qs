@@ -92,7 +92,7 @@ function ChangeFadeOutDelay()
         return "Failed in step 3 - pattern not found";
 
     // step 4
-    var delay = exe.getUserInput("$warpFadeOutDelay", XTYPE_DWORD, "Number Input", "Enter new fadeout delay in ms (0-255, 0 - disable, default is 255):", 255, 0, 255);
+    var delay = exe.getUserInput("$warpFadeOutDelay", XTYPE_DWORD, _("Number Input"), _("Enter new fadeout delay in ms (0-255, 0 - disable, default is 255):"), 255, 0, 255);
     if (delay === 255)
     {
         return "Patch Cancelled - New value is same as old";

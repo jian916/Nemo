@@ -23,8 +23,8 @@ function ChangeHealthBarSize() {
 		return "Failed in Step 2";
 	offset2 = offset2 + 8;
 
-	var width = exe.getUserInput("$hpWidth", XTYPE_BYTE, "hp bar width (default 60)", "Enter new hp bar width in pixels", "60", 1, 127);
-	var height = exe.getUserInput("$hpHeight", XTYPE_BYTE, "hp bar height (default 9)", "Enter new hp bar height in pixels", "9", 1, 127);
+	var width = exe.getUserInput("$hpWidth", XTYPE_BYTE, _("hp bar width (default 60)"), _("Enter new hp bar width in pixels"), "60", 1, 127);
+	var height = exe.getUserInput("$hpHeight", XTYPE_BYTE, _("hp bar height (default 9)"), _("Enter new hp bar height in pixels"), "9", 1, 127);
 
 	exe.replace(offset+1, height.packToHex(1), PTYPE_HEX);
 	exe.replace(offset+3, width.packToHex(1), PTYPE_HEX);

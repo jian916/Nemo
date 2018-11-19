@@ -20,39 +20,39 @@
 
 
 function NavigationButton() {
-		return ButtonNew("0x197", exe.getUserInput("$navi", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x197", exe.getUserInput("$navi", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function BankButton() {
-		return ButtonNew("0x1B6", exe.getUserInput("$bank", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1B6", exe.getUserInput("$bank", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function ReplayButton() {
-		return ButtonNew("0x178", exe.getUserInput("$replay", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x178", exe.getUserInput("$replay", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function MailButton() {
-		return ButtonNew("0x1C5", exe.getUserInput("$mail", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1C5", exe.getUserInput("$mail", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function AchievementButton() {
-		return ButtonNew("0x1C2", exe.getUserInput("$achievement", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1C2", exe.getUserInput("$achievement", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function TipButton() {
-		return ButtonNew("0x1E8", exe.getUserInput("$tip", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1E8", exe.getUserInput("$tip", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function ShopButton() {
-		return ButtonNew("0x1E9", exe.getUserInput("$shop", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1E9", exe.getUserInput("$shop", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function SNSButton() {
-		return ButtonNew("0x1EF", exe.getUserInput("$sns", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x1EF", exe.getUserInput("$sns", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 function AttendanceButton() {
-		return ButtonNew("0x205", exe.getUserInput("$attendance", XTYPE_BYTE, "Set Button", "Set Button Hide(0) or Show(1)", 0, 0, 1));
+		return ButtonNew("0x205", exe.getUserInput("$attendance", XTYPE_BYTE, _("Set Button"), _("Set Button Hide(0) or Show(1)"), 0, 0, 1));
 }
 
 

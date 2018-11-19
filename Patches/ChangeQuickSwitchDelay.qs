@@ -23,7 +23,7 @@ function ChangeQuickSwitchDelay() {
   
   var g_qsTick = exe.fetchDWord(offsets[0]+13);
 
-  var new_tick = exe.getUserInput("$my_new_tick", XTYPE_BYTE, "Number - (0-255)", "Enter the new Quickswitch delay", tick, 0, 255);
+  var new_tick = exe.getUserInput("$my_new_tick", XTYPE_BYTE, _("Number - (0-255)"), _("Enter the new Quickswitch delay"), tick, 0, 255);
   if (tick == new_tick)
     return "Patch Cancelled - New value is same as old";
 

@@ -38,7 +38,7 @@ function ChangeGuildExpLimit()
     if (offset === -1)
         return "Failed in step 1 - check limit pattern not found";
 
-    var limit = exe.getUserInput("$guildExpLimit", XTYPE_BYTE, "Number Input", "Enter new guild exp limit (0-100, default is 50):", 50, 0, 100);
+    var limit = exe.getUserInput("$guildExpLimit", XTYPE_BYTE, _("Number Input"), _("Enter new guild exp limit (0-100, default is 50):"), 50, 0, 100);
     if (limit === 50)
     {
         return "Patch Cancelled - New value is same as old";

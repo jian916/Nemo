@@ -11,7 +11,7 @@ function CustomWindowTitle() {
     return "Failed in Step 1";
   
   //Step 1b - Get the new Title from User
-  var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, "String Input - maximum 60 characters", "Enter the new window Title", "Ragnarok", 1, 60);
+  var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, _("String Input - maximum 60 characters"), _("Enter the new window Title"), "Ragnarok", 1, 60);
   if (title.trim() === "Ragnarok")
     return "Patch Cancelled - New Title is same as old";
 

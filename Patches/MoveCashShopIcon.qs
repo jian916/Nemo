@@ -58,8 +58,8 @@ function MoveCashShopIcon() {
   var g_ScreenStats = exe.fetchHex(offset2 + code.hexlength() - 5, 4);
   
   //Step 2a - Get User Coords
-  var xCoord = exe.getUserInput("$cashShopX", XTYPE_WORD, "Number Input", "Enter new X coordinate:", -0xBB, -0xFFFF, 0xFFFF);
-  var yCoord = exe.getUserInput("$cashShopY", XTYPE_WORD, "Number Input", "Enter new Y coordinate:", 0x10, -0xFFFF, 0xFFFF);
+  var xCoord = exe.getUserInput("$cashShopX", XTYPE_WORD, _("Number Input"), _("Enter new X coordinate:"), -0xBB, -0xFFFF, 0xFFFF);
+  var yCoord = exe.getUserInput("$cashShopY", XTYPE_WORD, _("Number Input"), _("Enter new Y coordinate:"), 0x10, -0xFFFF, 0xFFFF);
   
   if (xCoord === -0xBB && yCoord === 0x10)
     return "Patch Cancelled - New coordinate is same as old";

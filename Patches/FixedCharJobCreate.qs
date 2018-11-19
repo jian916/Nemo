@@ -40,7 +40,7 @@ function FixedCharJobCreate()
     if (offsets.length != 1)
         return "Found too many 0xA39 packets";
     var offset = offsets[0]
-    var newJob = exe.getUserInput("$newJobVal", XTYPE_DWORD, "Number Input", "Enter fixe job id", 1);
+    var newJob = exe.getUserInput("$newJobVal", XTYPE_DWORD, _("Number Input"), _("Enter fixe job id"), 1);
     exe.replace(offset + patchOffset, "B8 " + newJob.packToHex(4) + " 90 90" , PTYPE_HEX);
     return true;
 }

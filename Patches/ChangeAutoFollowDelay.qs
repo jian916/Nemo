@@ -21,7 +21,7 @@
 
 
 function SetAutoFollowDelay() {
-  return ChangeAutoFollowDelay(exe.getUserInput("$followDelay", XTYPE_WORD, "Number Input", "Enter the new autofollow delay(0-1000) - snaps to closest valid value", 200, 0, 1000));
+  return ChangeAutoFollowDelay(exe.getUserInput("$followDelay", XTYPE_WORD, _("Number Input"), _("Enter the new autofollow delay(0-1000) - snaps to closest valid value"), 200, 0, 1000));
 }
 
 //##############################################################################

@@ -57,7 +57,7 @@ function ChatLimit(option) {
 
   if (option === 1) {
     //Step 2a - Get new value from user
-    var flood = exe.getUserInput("$allowChatFlood", XTYPE_BYTE, "Number Input", "Enter new chat limit (0-127, default is 2):", 2, 0, 127);
+    var flood = exe.getUserInput("$allowChatFlood", XTYPE_BYTE, _("Number Input"), _("Enter new chat limit (0-127, default is 2):"), 2, 0, 127);
     if (flood === 2)
       return "Patch Cancelled - New value is same as old";
     

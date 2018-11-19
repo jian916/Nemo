@@ -60,7 +60,7 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
 
     //Step 3a - Get the INI file from user to read
     var f = new TextFile();
-    if (!GetInputFile(f, "$inpMultGRF", 'File Input - Enable Multiple GRF', 'Enter your INI file', APP_PATH + "/Input/DATA.INI") )
+    if (!GetInputFile(f, "$inpMultGRF", _('File Input - Enable Multiple GRF'), _('Enter your INI file'), APP_PATH + "/Input/DATA.INI") )
         return "Patch Cancelled";
 
     if (f.eof())

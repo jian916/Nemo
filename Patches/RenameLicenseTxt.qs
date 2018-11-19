@@ -16,7 +16,7 @@ function RenameLicenseTxt() {
     return "Failed in Step 1 - String reference missing";
 
   //Step 2a - Get new Filename from user
-  var txtFile = exe.getUserInput("$licenseTXT", XTYPE_STRING, "String Input", "Enter the name of the Txt file", "..\\licence.txt", 1, 20);
+  var txtFile = exe.getUserInput("$licenseTXT", XTYPE_STRING, _("String Input"), _("Enter the name of the Txt file"), "..\\licence.txt", 1, 20);
   if (txtFile === "" || txtFile === "..\\licence.txt")
     return "Failed in Step 2 - Patch Cancelled";
   
