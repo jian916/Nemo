@@ -1,3 +1,36 @@
+# 2018-11-23 Different updates.
+
+## Patches
+
+ - Fix patch [Change PrivateAirplane*.lub path](http://nemo.herc.ws/patches/ChangePrivateAirplanePath/#success-clients)
+ - Add new patch [Copy patched Cheat Defender Game Guard](http://nemo.herc.ws/patches/CopyCDGuard/#success-clients) by 4144
+ - Add new patch [Fix achievement counters for each type of achievement](http://nemo.herc.ws/patches/FixAchievementCounters/#success-clients) by 4144
+ - Add new patch [Fix act delay for act files with many frames](http://nemo.herc.ws/patches/FixActDelay/#success-clients) by Functor, 4144
+
+## Translations
+
+ - Fix codepage for patch files. Now All files loaded as utf-8.
+ - Add support for right to left languages.
+ - Add support for translation almost all strings in UI.
+ - Add support for translation texts inside patches.
+ - Add partial translation for Russian language by 4144.
+ - Add partial translation for Arabic language by Asheraf.
+
+## User interface
+
+ - Fix status label height.
+ - Add menu help.
+ - Fix scroll bar issue in qtgui.dll with enabled right to left text direction.
+
+## For devs
+
+ - Add functions for patches: NAME_apply(). Called for each patch NAME after pressed button apply.
+ - Add function for copy files into destination directory: copyFileToDst(srcPathWithName, dstName).
+ - Add function for translate string and mark for translation: _(text)
+ - Add function for mark for translation: N_(text)
+ - Add script variable with plugin version: PLUGIN_VERSION.
+ - Add script variables with source and destination client paths SRC_CLIENT_FILE, DST_CLIENT_FILE.
+
 # 2018-11-16 Patches update
 
 ## Patches
