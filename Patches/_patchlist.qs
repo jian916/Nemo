@@ -396,7 +396,7 @@ registerPatch(242, "DisableKROSiteLaunch", "Disable kRO Site Launch", "Fix", 0, 
 
 registerPatch(243, "ChangeQuickSwitchDelay", "Change Quick Switch Delay", "Fix", 0, "mrjnumber1", "Change quick item switch delay", false);
 
-registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 0, "4144", "Disables Cheat Defender Game Guard from new clients", false);
+registerPatch(244, "DisableCDGuard", "Disable Cheat Defender Game Guard", "Fix", 0, "4144", "Disables Cheat Defender Game Guard from new clients", true);
 
 registerPatch(245, "FixedCharJobCreate", "Set fixed job id in char create dialog", "Custom", 0, "4144", "Override selected job in char creation packet", false);
 
@@ -476,7 +476,7 @@ registerPatch(282, "ChangeMvpHealthBarSize", "Change MVP hp bar size", "Custom",
 
 registerPatch(283, "ChangeFadeOutDelay", "Change fade in/out delay", "Custom", 0, "4144", "Change fade in/out time in warps on same map", false);
 
-registerPatch(284, "CopyCDGuard", "Copy patched Cheat Defender Game Guard", "Fix", 0, "4144", "Copy patched/disabled Cheat Defender Game Guard into destination directory", true);
+registerPatch(284, "CopyCDGuard", "Copy patched Cheat Defender Game Guard", "Fix", 0, "4144", "Copy patched/disabled Cheat Defender Game Guard into destination directory", false);
 
 registerPatch(285, "FixActDelay", "Fix act delay for act files with many frames", "Fix", 0, "Functor, 4144", "Fix act delay for act files with big amount of frames", false);
 
