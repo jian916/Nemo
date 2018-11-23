@@ -478,5 +478,7 @@ registerPatch(283, "ChangeFadeOutDelay", "Change fade in/out delay", "Custom", 0
 
 registerPatch(284, "CopyCDGuard", "Copy patched Cheat Defender Game Guard", "Fix", 0, "4144", "Copy patched/disabled Cheat Defender Game Guard into destination directory", true);
 
+registerPatch(285, "FixActDelay", "Fix act delay for act files with many frames", "Fix", 0, "Functor, 4144", "Fix act delay for act files with big amount of frames", false);
+
 
 GlobalPostInit();
