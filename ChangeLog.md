@@ -1,3 +1,9 @@
+# 2018-11-24 Patches update
+
+## Patches
+ - Fix patch [Restore old login packet](http://nemo.herc.ws/patches/RestoreOldLoginPacket/#success-clients) for new Ragexe clients.
+ - Include patch [Restore old login packet](http://nemo.herc.ws/patches/RestoreOldLoginPacket/#success-clients) into recommented patches list.
+
 # 2018-11-23 Different updates.
 
 ## Patches
