@@ -13,7 +13,7 @@ checkfiles:
   - rm -rf ./.ci/index.txt || true
   - cp nemosite/logs/index.txt ./.ci/
   - cd ./.ci
-  - ./genpofiles.py
-   - ./updatetranslations.py
+  - ./genpofiles.sh
+  - ./updatetranslations.py
   variables:
     PACKAGES: dos2unix moreutils git python git gettext
