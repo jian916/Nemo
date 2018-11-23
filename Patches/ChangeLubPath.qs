@@ -130,7 +130,7 @@ function ChangeLubPathGetIIName(type) {
 		case 9: {
 			iiName = "System\\PrivateAirplane_Sakray.lub";
 			if (exe.findString(iiName, RVA) !== -1) return iiName;
-			iiName = "System\\PrivateAirplane_true.lub";
+			iiName = "System\\PrivateAirplane_True.lub";
 			if (exe.findString(iiName, RVA) !== -1) return iiName;
 			return "";
 		}
