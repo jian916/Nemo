@@ -41,7 +41,8 @@ function RestoreOldLoginPacket() {
         return "Failed in Step 1b";
 
     exe.replace(offset + 19,
-        " 90 90" + "90 90 90 90 90 90" +
+        " 90 90" +
+        " 90 90 90 90 90 90" +
         " 90 90 90" +
         " 90 90 90 90 90 90" +
         " 90 90 90" +
@@ -54,5 +55,5 @@ function RestoreOldLoginPacket() {
 // Disable for Unneeded Clients. Start from first zero client version //
 //====================================================================//
 function RestoreOldLoginPacket_() {
-  return (exe.getClientDate() > 20171019 && IsZero());
+  return (exe.getClientDate() > 20171019 && IsZero()) || exe.getClientDate() >= 20181114;
 }

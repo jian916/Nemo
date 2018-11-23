@@ -372,7 +372,7 @@ registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSetting
 
 registerPatch(231, "RemoveHardcodedAddress", "Remove hardcoded address/port", "Fix", 0, "4144", "Remove hardcoded connection addresses and ports.", true);
 
-registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 17, "4144", "Make client send old 0x64 login packet. For Zero client only.", false);
+registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 17, "4144", "Make client send old 0x64 login packet.", true);
 
 registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret", "Hide SNS (Twitter) button", false);
 
