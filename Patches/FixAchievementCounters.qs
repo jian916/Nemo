@@ -28,8 +28,35 @@ function FixAchievementCounters()
         return "Failed in Step 1 - '%d/%d' string missing";
 
     // step 2
-    // search categories except general
+    // search global counter
+    var code =
+        "8B 57 AB " +                 // 0 mov edx, [edi+68h]
+        "8B 42 04 " +                 // 3 mov eax, [edx+4]    <-- type1
+        "8B 48 AB " +                 // 6 mov ecx, [eax+68h]
+        "8B 02 " +                    // 9 mov eax, [edx]
+        "51 " +                       // 11 push ecx
+        "FF 70 AB " +                 // 12 push dword ptr [eax+64h]
+        "8D 45 AB " +                 // 15 lea eax, [ebp+dstStr]
+        "68 " + countersStr.packToHex(4) + // 18 push offset "%d/%d"
+        "50 " +                       // 23 push eax
+        "E8 ";                        // 24 call std_string_sprintf
+    var type1Offset = 5;
+    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
+    if (offset === -1)
+    {
+        if (exe.getClientDate() < 20170000)
+            return "Failed in step 2 - pattern not found";
+        else
+            var addr1 = false;  // can skip 2017 clients, because no this bug
+    }
+    else
+    {
+        var addr1 = offset + type1Offset;
+    }
+
+    // step 3
+    // search categories except general
     var code =
         "8B 57 AB " +  // mov edx, [edi+78h]
         "8B 42 04 " +  // mov eax, [edx+4]    <-- type1
@@ -47,11 +74,17 @@ function FixAchievementCounters()
     var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
 
     if (offsets.length === 0)
-        return "Failed in step 2 - pattern not found";
+        return "Failed in step 3 - pattern not found";
     if (offsets.length !== 5)
-        return "Failed in step 2 - found wrong number of patterns: " + offsets.length;
+        return "Failed in step 3 - found wrong number of patterns: " + offsets.length;
 
-    // step 3
+    if (addr1 !== false)
+    {
+        if (addr1 > offsets[0] || addr1 + 0x200 < offsets[0])
+            return "Failed in step 3 - found wrong offsets";
+    }
+
+    // step 4
     var msgOffsets = [];
     var msgIds = [];
     var type1Offsets = [];
@@ -72,15 +105,21 @@ function FixAchievementCounters()
             "50 ";                     // push eax
         var offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x40, offsets[i]);
         if (offset === -1)
-            return "Failed in Step 3: pattern not found, offset " + i;
+            return "Failed in step 4: pattern not found, offset " + i;
         msgOffsets[i] = offset;
         msgIds[i] = exe.fetchDWord(msgOffsets[i] + msgOffset);
         type1Offsets[i] = exe.fetchUByte(offsets[i] + type1Offset);
         type2Offsets[i] = exe.fetchUByte(offsets[i] + type2Offset);
     }
 
-    // step 4
+    // step 5
     var data = 0;
+
+    // global counter
+    if (addr1 !== false)
+    {
+        exe.replace(addr1, "00", PTYPE_HEX);     // change wrong offset to correct one
+    }
 
     // 0
     // 52, 9d  - Adventure -> Battle
