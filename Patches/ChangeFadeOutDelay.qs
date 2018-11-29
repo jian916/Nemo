@@ -37,8 +37,28 @@ function ChangeFadeOutDelay()
     var fadeOutDelayOffset1 = 33;
     var g_rendererOffset = 10;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    var addr1 = offset;
 
+    if (offset === -1)
+    {
+        var code =
+            "8B 35 AB AB AB AB " +        // 0 mov esi, ds:timeGetTime
+            "83 C4 AB " +                 // 6 add esp, 18h
+            "FF D6 " +                    // 9 call esi
+            "8B 0D AB AB AB AB " +        // 11 mov ecx, g_renderer
+            "A3 AB AB AB AB " +           // 17 mov dwFadeStart, eax
+            "E8 AB AB AB AB " +           // 22 call CRenderer_BackupFrame
+            "FF D6 " +                    // 27 call esi
+            "2B 05 AB AB AB AB " +        // 29 sub eax, dwFadeStart
+            "3D AB 00 00 00 " +           // 35 cmp eax, 0FFh
+            "0F 83 AB AB 00 00 ";         // 40 jnb loc_5880DE
+        var dwFadeStartOffset1 = 18;
+        var dwFadeStartOffset2 = 31;
+        var fadeOutDelayOffset1 = 36;
+        var g_rendererOffset = 13;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    var addr1 = offset;
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
@@ -66,7 +86,7 @@ function ChangeFadeOutDelay()
         "0F 82 AB AB FF FF ";                 // 24 jb loc_71FFD0
     var fadeOutDelayOffset2 = 20;
 
-    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", addr1, addr1 + 0xa0);
+    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", addr1, addr1 + 0xc0);
     if (offset === -1)
         return "Failed in step 2 - pattern not found";
     var addr2 = offset;
@@ -86,8 +106,27 @@ function ChangeFadeOutDelay()
         "51 ";                        // 35 push ecx
     var fadeOutDelayOffset3 = 14;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    var addr3 = offset;
 
+    if (offset === -1)
+    {
+        var code =
+            "FF D7 " +                    // 0 call edi
+            "2B 05 " + dwFadeStart.packToHex(4) + // 2 sub eax, dwFadeStart
+            "5F " +                       // 8 pop edi
+            "5E " +                       // 9 pop esi
+            "3D AB 00 00 00 " +           // 10 cmp eax, 0FFh
+            "73 AB " +                    // 15 jnb short loc_587FF4
+            "BA AB 00 00 00 " +           // 17 mov edx, 0FFh
+            "2B D0 " +                    // 22 sub edx, eax
+            "A1 " + g_renderer.packToHex(4) + // 24 mov eax, g_renderer
+            "8B 48 AB " +                 // 29 mov ecx, [eax+28h]
+            "C1 E2 18 " +                 // 32 shl edx, 18h
+            "52 ";                        // 35 push edx
+        var fadeOutDelayOffset3 = 11;
+        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    var addr3 = offset;
     if (offset === -1)
         return "Failed in step 3 - pattern not found";
 
