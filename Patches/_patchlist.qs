@@ -480,5 +480,7 @@ registerPatch(284, "CopyCDGuard", "Copy patched Cheat Defender Game Guard", "Fix
 
 registerPatch(285, "FixActDelay", "Fix act delay for act files with many frames", "Fix", 0, "Functor, 4144", "Fix act delay for act files with big amount of frames", false);
 
+registerPatch(286, "HideZeroDateInGuildMembers", "Hide zero date (1969-01-01) in guild members window", "Fix", 0, "4144", "Hide zero date (1979-01-01) in guild members window", false);
+
 
 GlobalPostInit();
