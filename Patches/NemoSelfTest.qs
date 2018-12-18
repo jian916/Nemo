@@ -506,7 +506,7 @@ function NemoSelfTest()
     log.bool(exe.replaceDWord(addr + 6, 0x40506070), "replace 3");
 
     log.reopen("other");
-    var myfile = exe.getUserInput("$selfTestInfo", XTYPE_STRING, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", "qqqqqq", 1, 5);
+    var myfile = exe.getUserInput("$selfTestInfo", XTYPE_STRING, _("String input - maximum 28 characters including folder name/"), _("Enter the new ItemInfo path (should be relative to RO folder)"), "qqqqqq", 1, 5);
 //    var myfile = exe.getUserInput("$newItemInfo", XTYPE_BYTE, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", 30, -1000, 1000);
 
 //    var color = exe.getUserInput("$guildChatColor", XTYPE_COLOR, "Color input", "Select the new Guild Chat Color", 0x00B4FFB4);
