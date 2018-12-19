@@ -66,7 +66,7 @@ def addPatchIniGroup(name, groupName, group, iniDict):
         return
     iniDict[name][groupName] = group
 
-def parsePatchIni(name, iniDict):
+def parsePatchIni(name, iniDict, isOld):
     path = "../" + name
     if os.path.exists(path) is False:
         return
@@ -89,14 +89,17 @@ def parsePatchIni(name, iniDict):
                 idx = line.find("\"=\"")
                 if idx < 0:
                     continue
-                group[line[:idx+1]] = line[idx+2:]
+                line1 = line[:idx+1]
+                line2 = line[idx+2:]
+                if isOld is False or line1 != line2:
+                    group[line1] = line2
         addPatchIniGroup(name, groupName, group, iniDict)
 
 def parsePatchLangs():
     for lang in langs:
         iniName = langToInit(lang)
-        parsePatchIni(iniName, patchesIni)
-        parsePatchIni("Input/backup/" + iniName, oldPatchesIni)
+        parsePatchIni(iniName, patchesIni, False)
+        parsePatchIni("Input/backup/" + iniName, oldPatchesIni, True)
 
 def parsePatchesList(name):
     with open(name, "rt") as r:
@@ -152,7 +155,8 @@ def filterLines(name, strings, iniFile, oldIniFile, normalIni):
             section2[line] = section[line]
         elif normalIni:
             print "backup old line: " + line
-            oldSection[line] = section[line]
+            if line != section[line]:
+                oldSection[line] = section[line]
     iniFile[name] = section2
     if normalIni:
         oldIniFile[name] = oldSection
