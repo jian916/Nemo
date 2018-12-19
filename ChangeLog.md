@@ -1,3 +1,9 @@
+# 2018-12-19 Patches update
+
+## Patches
+
+- Add new patch [Hide zero date (1969-01-01) in guild members window](HideZeroDateInGuildMembers) by 4144.
+
 # 2018-11-29 Patches update
 
 ## Patches
