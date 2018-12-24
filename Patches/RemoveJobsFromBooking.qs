@@ -118,7 +118,7 @@ function RemoveJobsFromBooking() {
   
   //Step 2a - Get the Skip List file from User
   var fp = new TextFile();
-  var inpFile = GetInputFile(fp, "$bookingList", "File Input - Remove Jobs From Booking", "Enter the Booking Skip List file", APP_PATH + "/Input/bookingSkipList.txt");
+  var inpFile = GetInputFile(fp, "$bookingList", _("File Input - Remove Jobs From Booking"), _("Enter the Booking Skip List file"), APP_PATH + "/Input/bookingSkipList.txt");
   if (!inpFile)
     return "Patch Cancelled";
   

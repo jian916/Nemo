@@ -71,7 +71,7 @@ function SetButtonMap() {
 
 function SetButtonNav() {
 	if(Use18Icons()) {
-		return Hide18Button("0x197", exe.getUserInput("$navi", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x197", exe.getUserInput("$navi", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 C8 96 01 00 00", "F0 01", 3)) return true;
@@ -89,7 +89,7 @@ function SetButtonNav() {
 
 function SetButtonBank() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1B6", exe.getUserInput("$bank", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x1B6", exe.getUserInput("$bank", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 D0 B5 01 00 00", "F0 01", 3)) return true;
@@ -107,7 +107,7 @@ function SetButtonBank() {
 
 function SetButtonRec() {
 	if(Use18Icons()) {
-		return Hide18Button("0x178", exe.getUserInput("$replay", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x178", exe.getUserInput("$replay", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 D4 77 01 00 00", "F0 01", 3)) return true;
@@ -125,7 +125,7 @@ function SetButtonRec() {
 
 function SetButtonMail() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1C5", exe.getUserInput("$mail", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x1C5", exe.getUserInput("$mail", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 D8 C4 01 00 00", "F0 01", 3)) return true;
@@ -142,7 +142,7 @@ function SetButtonMail() {
 
 function SetButtonAchieve() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1C2", exe.getUserInput("$achievement", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x1C2", exe.getUserInput("$achievement", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 DC C1 01 00 00", "F0 01", 3)) return true;
@@ -159,7 +159,7 @@ function SetButtonAchieve() {
 
 function SetButtonTip() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1E8", exe.getUserInput("$tip", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x1E8", exe.getUserInput("$tip", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 E0 E8 01 00 00", "F0 01", 3)) return true;
@@ -174,7 +174,7 @@ function SetButtonTip() {
 
 function SetButtonAttend() {
 	if(Use18Icons()) {
-		return Hide18Button("0x205", exe.getUserInput("$attendance", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x205", exe.getUserInput("$attendance", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 EC 05 02 00 00", "06 02", 3)) return true;
@@ -188,7 +188,7 @@ function SetButtonAttend() {
 
 function SetButtonSNS() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1EF", exe.getUserInput("$sns", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 0, 0, 1));
+		return Hide18Button("0x1EF", exe.getUserInput("$sns", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 0, 0, 1));
 	}
 	else if(Use17Icons()) {
 		if(ReplaceHex(" C7 45 EC EF 01 00 00", "F0 01", 3)) return true;
@@ -203,7 +203,7 @@ function SetButtonSNS() {
 
 function SetButtonCashShop() {
 	if(Use18Icons()) {
-		return Hide18Button("0x1E9", exe.getUserInput("$shop", XTYPE_BYTE, "Set Button", "³]©w«ö¶s: ÁôÂÃ(0) ©Î Åã¥Ü(1)", 1, 0, 1));
+		return Hide18Button("0x1E9", exe.getUserInput("$shop", XTYPE_BYTE, "Set Button", "è¨­å®šæŒ‰éˆ•: éš±è—(0) æˆ– é¡¯ç¤º(1)", 1, 0, 1));
 	}
 	else if(Use17Icons()) {
 		return Hide17Button("equip", "shop");

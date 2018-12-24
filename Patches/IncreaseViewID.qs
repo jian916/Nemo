@@ -22,7 +22,7 @@ function IncreaseViewID() {
     var oldValue = 1000;
   
   //Step 2a - Get the new limit from user
-  var newValue = exe.getUserInput("$newValue", XTYPE_DWORD, "Number input", "Enter the new Max Headgear View ID", oldValue, oldValue, 32000);//32000 could prove fatal.
+  var newValue = exe.getUserInput("$newValue", XTYPE_DWORD, _("Number input"), _("Enter the new Max Headgear View ID"), oldValue, oldValue, 32000);//32000 could prove fatal.
   if (newValue === oldValue)
     return "Patch Cancelled - New value is same as old";
   

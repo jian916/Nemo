@@ -180,7 +180,7 @@ function CustomAuraLimits() {
 
   //Step 5a - Get the input file
   var fp = new TextFile();
-  var inpFile = GetInputFile(fp, "$auraSpec", "File Input - Custom Aura Limits", "Enter the Aura Spec file", APP_PATH + "/Input/auraSpec.txt");
+  var inpFile = GetInputFile(fp, "$auraSpec", _("File Input - Custom Aura Limits"), _("Enter the Aura Spec file"), APP_PATH + "/Input/auraSpec.txt");
   if (!inpFile)
     return "Patch Cancelled";
 

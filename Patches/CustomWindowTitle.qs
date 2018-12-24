@@ -1,11 +1,10 @@
 //##############################################################################
 //# Purpose: Switch "Ragnarok" reference with address of User specified Window #
-//#          Title                                                             #
 //##############################################################################
 
 function CustomWindowTitle() {
 	if(getActivePatches().indexOf(306) !== -1)
-		return "¸É¤B¨ú®ø - ­×§ï HEXª© ªº¼ĞÃD¡A´N¤£¯à¦A¨Ï¥Î ­^¤åª© ¼ĞÃD";
+		return "è£œä¸å–æ¶ˆ - ä¿®æ”¹ HEXç‰ˆ çš„æ¨™é¡Œï¼Œå°±ä¸èƒ½å†ä½¿ç”¨ è‹±æ–‡ç‰ˆ æ¨™é¡Œ";
 
 	//Step 1a - Find offset of 'Ragnarok'
 	var code = " C7 05 AB AB AB 00" + exe.findString("Ragnarok", RVA).packToHex(4);//MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
@@ -16,9 +15,9 @@ function CustomWindowTitle() {
 		return "Failed in Step 1";
 
 	//Step 2 - Get the new Title from User
-	var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "¿é¤J·sªºµøµ¡¼ĞÃD (Window Title)", "Ragnarok", 1, 100).trim();
+	var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è¼¸å…¥æ–°çš„è¦–çª—æ¨™é¡Œ (Window Title)", "Ragnarok", 1, 100).trim();
 	if (title === "Ragnarok")
-		return "¸É¤B¨ú®ø - ·sªº³]©w¸òÂÂªº³]©w¬Û¦P";
+		return "è£œä¸å–æ¶ˆ - æ–°çš„è¨­å®šè·ŸèˆŠçš„è¨­å®šç›¸åŒ";
 
 	var free = exe.findZeros(title.length);
 	if (free === -1)
@@ -32,7 +31,7 @@ function CustomWindowTitle() {
 
 function CustomWindowTitleHex() {
 	if(getActivePatches().indexOf(8) !== -1)
-		return "¸É¤B¨ú®ø - ­×§ï ­^¤åª© ªº¼ĞÃD¡A´N¤£¯à¦A¨Ï¥Î HEXª© ¼ĞÃD";
+		return "è£œä¸å–æ¶ˆ - ä¿®æ”¹ è‹±æ–‡ç‰ˆ çš„æ¨™é¡Œï¼Œå°±ä¸èƒ½å†ä½¿ç”¨ HEXç‰ˆ æ¨™é¡Œ";
 
 	//Step 1a - Find offset of 'Ragnarok'
 	var code = " C7 05 AB AB AB 00" + exe.findString("Ragnarok", RVA).packToHex(4);//MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
@@ -43,9 +42,9 @@ function CustomWindowTitleHex() {
 		return "Failed in Step 1";
 
 	//Step 1b - Get the new Title from User
-	var title = exe.getUserInput("$customWindowTitleHex", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "¿é¤J·sªºµøµ¡¼ĞÃD (Window Title) Hex ½s½X¡A¹w³]¬°: 52 61 67 6E 61 72 6F 6B (Ragnarok)", "52 61 67 6E 61 72 6F 6B", 1, 300);
+	var title = exe.getUserInput("$customWindowTitleHex", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è¼¸å…¥æ–°çš„è¦–çª—æ¨™é¡Œ (Window Title) Hex ç·¨ç¢¼ï¼Œé è¨­ç‚º: 52 61 67 6E 61 72 6F 6B (Ragnarok)", "52 61 67 6E 61 72 6F 6B", 1, 300);
 	if (title.trim() === "52 61 67 6E 61 72 6F 6B")
-		return "¸É¤B¨ú®ø - ·sªº³]©w¸òÂÂªº³]©w¬Û¦P";
+		return "è£œä¸å–æ¶ˆ - æ–°çš„è¨­å®šè·ŸèˆŠçš„è¨­å®šç›¸åŒ";
 
 	var free = exe.findZeros(title.hexlength() + 1);
 	if (free === -1)

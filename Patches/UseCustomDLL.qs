@@ -44,7 +44,7 @@ function UseCustomDLL() {
   //Step 2a - Get the list file containing the dlls and functions to add
   var fp = new TextFile();
   if (!dllFile)
-      dllFile = GetInputFile(fp, "$customDLL", "File Input - Use Custom DLL", "Enter the DLL info file", APP_PATH + "/Input/dlls.txt");
+      dllFile = GetInputFile(fp, "$customDLL", _("File Input - Use Custom DLL"), _("Enter the DLL info file"), APP_PATH + "/Input/dlls.txt");
  
   if (!dllFile)
     return "Patch Cancelled";

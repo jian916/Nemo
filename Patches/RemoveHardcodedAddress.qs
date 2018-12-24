@@ -94,5 +94,5 @@ function RemoveHardcodedAddress() {
 // Disable for Unneeded Clients. Start from first zero client version //
 //====================================================================//
 function RemoveHardcodedAddress_() {
-  return (exe.getClientDate() > 20171019 && IsZero());
+  return ((exe.getClientDate() > 20171019 && IsZero()) || exe.getClientDate() >= 20181113);
 }

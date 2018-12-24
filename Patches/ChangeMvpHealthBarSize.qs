@@ -39,8 +39,8 @@ function ChangeMvpHealthBarSize() {
 	var oriCode = exe.fetchHex(offset1, 6);
 	var retAdd = offset1 + 6;
 
-	var height = exe.getUserInput("$mvpHpHeight", XTYPE_BYTE, "¦å±ø°ª«×", "¿é¤J¦Û­qªº¦å±ø°ª«×:(³Ì¤j:127,¹w³]:5 pixel)", "5", 1, 127);
-	var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, "¦å±ø¼e«×", "¿é¤J¦Û­qªº¦å±ø¼e«×:(³Ì¤j:127,¹w³]:60 pixel)", "60", 1, 127);
+	var height = exe.getUserInput("$mvpHpHeight", XTYPE_BYTE, "è¡€æ¢é«˜åº¦", "è¼¸å…¥è‡ªè¨‚çš„è¡€æ¢é«˜åº¦:(æœ€å¤§:127,é è¨­:5 pixel)", "5", 1, 127);
+	var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, "è¡€æ¢å¯¬åº¦", "è¼¸å…¥è‡ªè¨‚çš„è¡€æ¢å¯¬åº¦:(æœ€å¤§:127,é è¨­:60 pixel)", "60", 1, 127);
 
 	var ins =
 	    " 80 BB" + isBoss + " 01"

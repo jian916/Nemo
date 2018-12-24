@@ -50,7 +50,7 @@ function ExtendNpcBox() {
     return "Failed in Step 1 - Function end missing";
 
   //Step 2a - Get new value from user
-  var value = exe.getUserInput("$npcBoxLength", XTYPE_DWORD, "Number Input", "Enter new NPC Dialog box length (2052 - 4096)", 0x804, 0x804, 0x1000);
+  var value = exe.getUserInput("$npcBoxLength", XTYPE_DWORD, _("Number Input"), _("Enter new NPC Dialog box length (2052 - 4096)"), 0x804, 0x804, 0x1000);
   if (value === 0x804)
     return "Patch Cancelled - New value is same as old";
   

@@ -25,8 +25,9 @@ function RestoreOldLoginPacket() {
         return "Failed in Step 1a - " + LANGTYPE[0];
 
     // Step 1b - Force the client to send 0x64
+    // search in CLoginMode_virt28
     var code =
-        " 80 3D AB AB AB 01 00" + // cmp g_passwordencrypt, 0
+        " 80 3D AB AB AB AB 00" + // cmp g_passwordencrypt, 0
         " 0F 85 AB AB 00 00" +    // jne addr1
         " 8B AB" + LANGTYPE +     // mov ecx, clientinfo_lang_type
         " AB AB" +                // test ecx, ecx  < --  nop code from here
@@ -41,7 +42,8 @@ function RestoreOldLoginPacket() {
         return "Failed in Step 1b";
 
     exe.replace(offset + 19,
-        " 90 90" + "90 90 90 90 90 90" +
+        " 90 90" +
+        " 90 90 90 90 90 90" +
         " 90 90 90" +
         " 90 90 90 90 90 90" +
         " 90 90 90" +
@@ -54,5 +56,5 @@ function RestoreOldLoginPacket() {
 // Disable for Unneeded Clients. Start from first zero client version //
 //====================================================================//
 function RestoreOldLoginPacket_() {
-  return (exe.getClientDate() > 20171019 && IsZero());
+  return (exe.getClientDate() > 20171019 && IsZero()) || exe.getClientDate() >= 20181114;
 }

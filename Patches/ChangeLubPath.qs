@@ -5,47 +5,47 @@
 
 function ChangeAchievementListPath() {
 	var iiName = ChangeLubPathGetIIName(1);
-	return ChangeLubPath(iiName, exe.getUserInput("$AchievementListPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$AchievementListPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„æˆå°± AchievementList*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeMonsterSizeEffectPath() {
 	var iiName = ChangeLubPathGetIIName(2);
-	return ChangeLubPath(iiName, exe.getUserInput("$MonsterSizeEffectPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$MonsterSizeEffectPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„é­”ç‰©è¨­å®š MonsterSizeEffect*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeTowninfoPath() {
 	var iiName = ChangeLubPathGetIIName(3);
-	return ChangeLubPath(iiName, exe.getUserInput("$TowninfoPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº¹Ï¼Ğ Towninfo*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$TowninfoPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„åœ–æ¨™ Towninfo*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangePetEvolutionClnPath() {
 	var iiName = ChangeLubPathGetIIName(4);
-	return ChangeLubPath(iiName, exe.getUserInput("$PetEvolutionClnPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$PetEvolutionClnPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„ç”Ÿå‘½é«” PetEvolutionCln*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeTipboxPath() {
 	var iiName = ChangeLubPathGetIIName(5);
-	return ChangeLubPath(iiName, exe.getUserInput("$TipboxPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº±Ğ¾Ç Tipbox*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$TipboxPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„æ•™å­¸ Tipbox*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeCheckAttendancePath() {
 	var iiName = ChangeLubPathGetIIName(6);
-	return ChangeLubPath(iiName, exe.getUserInput("$CheckAttendancePath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$CheckAttendancePath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„ç°½åˆ° CheckAttendance*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeOngoingQuestInfoListPath() {
 	var iiName = ChangeLubPathGetIIName(7);
-	return ChangeLubPath(iiName, exe.getUserInput("$OngoingQuestInfoListPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$OngoingQuestInfoListPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„ä»»å‹™ OngoingQuestInfoList* æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeRecommendedQuestInfoListPath() {
 	var iiName = ChangeLubPathGetIIName(8);
-	return ChangeLubPath(iiName, exe.getUserInput("$RecommendedQuestInfoListPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$RecommendedQuestInfoListPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„ä»»å‹™ RecommendedQuestInfoList* æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangePrivateAirplanePath() {
 	var iiName = ChangeLubPathGetIIName(9);
-	return ChangeLubPath(iiName, exe.getUserInput("$PrivateAirplanePath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®× (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", iiName, 1, 100));
+	return ChangeLubPath(iiName, exe.getUserInput("$PrivateAirplanePath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥è‡ªè¨‚çš„é£›ç©ºè‰‡ PrivateAirplane*.lub æª”æ¡ˆ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", iiName, 1, 100));
 }
 
 function ChangeLubPathGetIIName(type) {
@@ -135,7 +135,7 @@ function ChangeLubPath(old_path, new_path) {
 		return "Failed in Step 1b - reference not found";
 
 	if (old_path === new_path)
-		return "¸É¤B¨ú®ø - ·sªº³]©w¸òÂÂªº³]©w¬Û¦P";
+		return "è£œä¸å–æ¶ˆ - æ–°çš„è¨­å®šè·ŸèˆŠçš„è¨­å®šç›¸åŒ";
 
 	var free = exe.findZeros(new_path.length);
 	if (free === -1)

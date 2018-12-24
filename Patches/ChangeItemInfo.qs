@@ -28,7 +28,9 @@ function ChangeItemInfo() {
         return "Failed in Step 1 - iteminfo reference not found";
 
     //Step 2a - Get the new filename from user
-    var myfile = exe.getUserInput("$newItemInfo", XTYPE_STRING, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", iiName, 1, 28);
+    var myfile = exe.getUserInput("$newItemInfo", XTYPE_STRING,
+        _("String input - maximum 28 characters including folder name/"),
+        _("Enter the new ItemInfo path (should be relative to RO folder)"), iiName, 1, 28);
     if (myfile === iiName)
         return "Patch Cancelled - New value is same as old";
 

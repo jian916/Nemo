@@ -3,7 +3,7 @@
 //=============================================================//
 
 function SetMaxItemCount() {
-	return ChangeMaxItemCount(exe.getUserInput("$MaxItemCount", XTYPE_STRING, "¿é¤J¼Æ¦r", "¿é¤J¹D¨ã«ù¦³ºØÃş¼ÆÅã¥Ü¤W­­ (0-999)", 100, 0, 3));
+	return ChangeMaxItemCount(exe.getUserInput("$MaxItemCount", XTYPE_STRING, "è¼¸å…¥æ•¸å­—", "è¼¸å…¥é“å…·æŒæœ‰ç¨®é¡æ•¸é¡¯ç¤ºä¸Šé™ (0-999)", 100, 0, 3));
 }
 
 //####################################################################################

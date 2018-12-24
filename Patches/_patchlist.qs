@@ -2,6 +2,8 @@
 // Register all your Patches and Patch groups in this file. Always register group before using its id in a patch //
 //===============================================================================================================//
 
+GlobalInit();
+
 //###################################################################################################
 //#                                                                                                 #
 //# FORMAT for registering group : registerGroup(group id, group Name, mutualexclude [true/false]); #
@@ -10,45 +12,47 @@
 //#                                                                                                 #
 //###################################################################################################
 
-registerGroup( 0, "³q¥Î", false);
+registerGroup( 0, "é€šç”¨", false);
 
-registerGroup( 1, "²á¤Ñ­­¨î", true);
+registerGroup( 1, "èŠå¤©é™åˆ¶", true);
 
-registerGroup( 2, "­×¥¿µø¨¤¨¤«×", true);
+registerGroup( 2, "ä¿®æ­£è¦–è§’è§’åº¦", true);
 
-registerGroup( 3, "ÂX¼Wµø¨¤¶ZÂ÷", true);
+registerGroup( 3, "æ“´å¢è¦–è§’è·é›¢", true);
 
-registerGroup( 4, "¨Ï¥Î¹Ï¥Ü", true);
+registerGroup( 4, "ä½¿ç”¨åœ–ç¤º", true);
 
-registerGroup( 5, "GRFºŞ²z", true);
+registerGroup( 5, "GRFç®¡ç†", true);
 
-registerGroup( 6, "¦@¥Î¬V¦â", true)
+registerGroup( 6, "å…±ç”¨æŸ“è‰²", true)
 
-registerGroup( 7, "¦@¥Î¬V¦â", true);
+registerGroup( 7, "å…±ç”¨æŸ“è‰²", true);
 
-registerGroup( 8, "µn¤J­I´º", true);
+registerGroup( 8, "ç™»å…¥èƒŒæ™¯", true);
 
-registerGroup( 9, "«Ê¥]²V²c", false);
+registerGroup( 9, "å°åŒ…æ··æ·†", false);
 
-registerGroup(10, "µn¤J¼Ò¦¡", true);
+registerGroup(10, "ç™»å…¥æ¨¡å¼", true);
 
-registerGroup(11, "ÂI¼Æ°Ó«°", true);
+registerGroup(11, "é»æ•¸å•†åŸ", true);
 
-registerGroup(12, "ÁôÂÃ«ö¶s", false);
+registerGroup(12, "éš±è—æŒ‰éˆ•", false);
 
-registerGroup(14, "±ÂÅv¤¶­±", true);
+registerGroup(14, "æˆæ¬Šä»‹é¢", true);
 
-registerGroup(15, "´_¬¡¬ÛÃö", true);
+registerGroup(15, "å¾©æ´»ç›¸é—œ", true);
 
-registerGroup(16, "²¾°Ê©µ¿ğ", true);
+registerGroup(16, "ç§»å‹•å»¶é²", true);
 
-registerGroup(17, "°_·½ª©", false);
+registerGroup(17, "èµ·æºç‰ˆ", false);
 
-registerGroup(18, "¦Û­q§Ş¯à", false);
+registerGroup(18, "è‡ªè¨‚æŠ€èƒ½", false);
 
-registerGroup(19, "¾v«¬", true);
+registerGroup(19, "é«®å‹", true);
 
-registerGroup(20, "¸ô®|", false);
+registerGroup(20, "è·¯å¾‘", false);
+
+globalVarTest = 123;
 
 //#########################################################################################################################################################
 //#                                                                                                                                                       #
@@ -67,236 +71,236 @@ registerGroup(20, "¸ô®|", false);
 //==========================================================================================================================//
 
 //0 Unused - to be filled
-registerPatch(  1, "UseTildeForMatk", "¨Ï¥Î~¸¹Åã¥ÜMatk½d³ò", "¤¶­±", 0, "Neo", "¯À½èÄæªºMatk°Ï¶¡Åã¥Ü~¸¹¡A¦Ó¤£¬O+¸¹¡AMatk ¬O°Ï¶¡¶Ë®`", true);
+registerPatch(  1, "UseTildeForMatk", "ä½¿ç”¨~è™Ÿé¡¯ç¤ºMatkç¯„åœ", "ä»‹é¢", 0, "Neo", "ç´ è³ªæ¬„çš„Matkå€é–“é¡¯ç¤º~è™Ÿï¼Œè€Œä¸æ˜¯+è™Ÿï¼ŒMatk æ˜¯å€é–“å‚·å®³", true);
 
-registerPatch(  2, "AllowChatFlood", "µo¸Ü¬~ÀW§PÂ_¦¸¼Æ", "¤¶­±", 1, "Shinryo", "³]©wµo¸Ü¬~ÀWªº­­¨î¡A¹w³]¬O¥u¯àµo3¦¸¤@¼Ë¤º®e", false);
+registerPatch(  2, "AllowChatFlood", "ç™¼è©±æ´—é »åˆ¤æ–·æ¬¡æ•¸", "ä»‹é¢", 1, "Shinryo", "è¨­å®šç™¼è©±æ´—é »çš„é™åˆ¶ï¼Œé è¨­æ˜¯åªèƒ½ç™¼3æ¬¡ä¸€æ¨£å…§å®¹", false);
 
-registerPatch(  3, "RemoveChatLimit", "µo¸Ü¬~ÀW­­¨îÃö³¬", "¤¶­±", 1, "Neo", "¨ú®øµo¸Ü¬~ÀWªº­­¨î(³]©w¦¸¼Æ­­¨îªº¿ï¶µ·|¨ú®ø)", false);
+registerPatch(  3, "RemoveChatLimit", "ç™¼è©±æ´—é »é™åˆ¶é—œé–‰", "ä»‹é¢", 1, "Neo", "å–æ¶ˆç™¼è©±æ´—é »çš„é™åˆ¶(è¨­å®šæ¬¡æ•¸é™åˆ¶çš„é¸é …æœƒå–æ¶ˆ)", false);
 
-registerPatch(  4, "CustomAuraLimits", "¦Û­q¥ú°éÅã¥Ü±ø¥ó", "¤¶­±", 0, "Neo", "¥i¥H­×§ï¥ú°éÅã¥Üªº±ø¥ó(½d¨ÒÀÉ¦bInput\auraSpec.txt)", false);
+registerPatch(  4, "CustomAuraLimits", "è‡ªè¨‚å…‰åœˆé¡¯ç¤ºæ¢ä»¶", "ä»‹é¢", 0, "Neo", "å¯ä»¥ä¿®æ”¹å…‰åœˆé¡¯ç¤ºçš„æ¢ä»¶(ç¯„ä¾‹æª”åœ¨Input\auraSpec.txt)", false);
 
-registerPatch(  5, "EnableProxySupport", "±Ò¥Î¥N²z¦øªA¾¹", "­×´_", 0, "Ai4rei/AN", "¬O§_¤ä´©¥N²z¦øªA¾¹", false);
+registerPatch(  5, "EnableProxySupport", "å•Ÿç”¨ä»£ç†ä¼ºæœå™¨", "ä¿®å¾©", 0, "Ai4rei/AN", "æ˜¯å¦æ”¯æ´ä»£ç†ä¼ºæœå™¨", false);
 
-registerPatch(  6, "ForceSendClientHash", "µo°eµn¤J¾¹®ÕÅç½X", "«Ê¥]", 0, "GreenBox, Neo", "¬O§_µo°eµn¤J¾¹ªº MD5 ®ÕÅç½X¡A»İ­n¼ÒÀÀ¾¹¤ä´©¡A¥i¥H¨¾¤îµn¤J¾¹³Q­×§ï¡A©Î¬O®³¨Ó­­¨îµn¤J¾¹(¦blogin_athena.conf³]©w)", false);
+registerPatch(  6, "ForceSendClientHash", "ç™¼é€ç™»å…¥å™¨æ ¡é©—ç¢¼", "å°åŒ…", 0, "GreenBox, Neo", "æ˜¯å¦ç™¼é€ç™»å…¥å™¨çš„ MD5 æ ¡é©—ç¢¼ï¼Œéœ€è¦æ¨¡æ“¬å™¨æ”¯æ´ï¼Œå¯ä»¥é˜²æ­¢ç™»å…¥å™¨è¢«ä¿®æ”¹ï¼Œæˆ–æ˜¯æ‹¿ä¾†é™åˆ¶ç™»å…¥å™¨(åœ¨login_athena.confè¨­å®š)", false);
 
-//registerPatch(  7, "ChangeGravityErrorHandler", "Change Gravity Error Handler", "­×´_", 0, " ", "It changes the Gravity Error Handler Mesage for a Custom One Pre-Defined by Diff Team", false);
+//registerPatch(  7, "ChangeGravityErrorHandler", "Change Gravity Error Handler", "ä¿®å¾©", 0, " ", "It changes the Gravity Error Handler Mesage for a Custom One Pre-Defined by Diff Team", false);
 
-registerPatch(  8, "CustomWindowTitle", "­×§ïµn¤J¾¹¼ĞÃD[­^¤å]", "¤¶­±", 0, "Shinryo", "­×§ïµn¤J¾¹ªº¼ĞÃD(¤£¤ä´©¤¤¤å¡A¤¤¤å­n¥Î16¶i¨î¦Û¦æ­×§ï)¡A¹w³]¬° 'Ragnarok'", false);
+registerPatch(  8, "CustomWindowTitle", "ä¿®æ”¹ç™»å…¥å™¨æ¨™é¡Œ[è‹±æ–‡]", "ä»‹é¢", 0, "Shinryo", "ä¿®æ”¹ç™»å…¥å™¨çš„æ¨™é¡Œ(ä¸æ”¯æ´ä¸­æ–‡ï¼Œä¸­æ–‡è¦ç”¨16é€²åˆ¶è‡ªè¡Œä¿®æ”¹)ï¼Œé è¨­ç‚º 'Ragnarok'", false);
 
-registerPatch(  9, "Disable1rag1Params", "¤£¥Î°Ñ¼Æª½±µ±Ò°Ê¹CÀ¸", "­×´_", 0, "Shinryo", "¤£¥Î 1rag1 °Ñ¼Æ´N¥i¥Hª½±µ±Ò°Ê¹CÀ¸¡A­Y¨S¥Î°Ñ¼Æ±Ò°Ê¹CÀ¸·|Åã¥ÜªÅ¥Õªº Error", true);
+registerPatch(  9, "Disable1rag1Params", "ä¸ç”¨åƒæ•¸ç›´æ¥å•Ÿå‹•éŠæˆ²", "ä¿®å¾©", 0, "Shinryo", "ä¸ç”¨ 1rag1 åƒæ•¸å°±å¯ä»¥ç›´æ¥å•Ÿå‹•éŠæˆ²ï¼Œè‹¥æ²’ç”¨åƒæ•¸å•Ÿå‹•éŠæˆ²æœƒé¡¯ç¤ºç©ºç™½çš„ Error", true);
 
-registerPatch( 10, "Disable4LetterCharnameLimit", "¨ú®ø¨¤¦â¦W³Ì¤Ö4­Ó¦r­­¨î", "­×´_", 0, "Shinryo", "¨ú®ø¨¤¦â¦WºÙ³Ì¤Ö4­Ó¦rªº­­¨î (¦øªAºİÁÙ¬O¦³­­¨î)", false);
+registerPatch( 10, "Disable4LetterCharnameLimit", "å–æ¶ˆè§’è‰²åæœ€å°‘4å€‹å­—é™åˆ¶", "ä¿®å¾©", 0, "Shinryo", "å–æ¶ˆè§’è‰²åç¨±æœ€å°‘4å€‹å­—çš„é™åˆ¶ (ä¼ºæœç«¯é‚„æ˜¯æœ‰é™åˆ¶)", false);
 
-registerPatch( 11, "Disable4LetterUsernameLimit", "¨ú®ø±b¸¹³Ì¤Ö4­Ó¦r­­¨î", "­×´_", 0, "Shinryo", "¨ú®ø±b¸¹³Ì¤Ö4­Ó¦rªº­­¨î (¦øªAºİÁÙ¬O¦³­­¨î)", false);
+registerPatch( 11, "Disable4LetterUsernameLimit", "å–æ¶ˆå¸³è™Ÿæœ€å°‘4å€‹å­—é™åˆ¶", "ä¿®å¾©", 0, "Shinryo", "å–æ¶ˆå¸³è™Ÿæœ€å°‘4å€‹å­—çš„é™åˆ¶ (ä¼ºæœç«¯é‚„æ˜¯æœ‰é™åˆ¶)", false);
 
-registerPatch( 12, "Disable4LetterPasswordLimit", "¨ú®ø±K½X³Ì¤Ö4­Ó¦r­­¨î", "­×´_", 0, "Shinryo", "¨ú®ø±K½X³Ì¤Ö4­Ó¦rªº­­¨î (¦øªAºİÁÙ¬O¦³­­¨î)", false);
+registerPatch( 12, "Disable4LetterPasswordLimit", "å–æ¶ˆå¯†ç¢¼æœ€å°‘4å€‹å­—é™åˆ¶", "ä¿®å¾©", 0, "Shinryo", "å–æ¶ˆå¯†ç¢¼æœ€å°‘4å€‹å­—çš„é™åˆ¶ (ä¼ºæœç«¯é‚„æ˜¯æœ‰é™åˆ¶)", false);
 
-registerPatch( 13, "DisableFilenameCheck", "²¾°£µn¤J¾¹¦WºÙÀË¬d", "­×´_", 0, "Shinryo", "²¾°£µn¤J¾¹¦WºÙÀË¬d¾÷¨î¡A¸Ñ¨MÀÉ¦W¥u­n¤£¬ORagexe.exe´NµLªk±Ò°Ê¹CÀ¸ªº°İÃD", true);
+registerPatch( 13, "DisableFilenameCheck", "ç§»é™¤ç™»å…¥å™¨åç¨±æª¢æŸ¥", "ä¿®å¾©", 0, "Shinryo", "ç§»é™¤ç™»å…¥å™¨åç¨±æª¢æŸ¥æ©Ÿåˆ¶ï¼Œè§£æ±ºæª”ååªè¦ä¸æ˜¯Ragexe.exeå°±ç„¡æ³•å•Ÿå‹•éŠæˆ²çš„å•é¡Œ", true);
 
-registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "­×´_", 0, "Shinryo", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
+registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "ä¿®å¾©", 0, "Shinryo", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
 
-registerPatch( 15, "DisableHShield", "²¾°£Àb«È«OÅ@µ{¦¡", "­×´_", 0, "Ai4rei/AN, Neo", "²¾°£Àb«È«OÅ@¾÷¨î¡A­n Diff ´N¤@©w­nÃö³¬ (¥¦·|¦Y aossdk.dll ¤Î v3hunt.dll)", true);
+registerPatch( 15, "DisableHShield", "ç§»é™¤é§­å®¢ä¿è­·ç¨‹å¼", "ä¿®å¾©", 0, "Ai4rei/AN, Neo", "ç§»é™¤é§­å®¢ä¿è­·æ©Ÿåˆ¶ï¼Œè¦ Diff å°±ä¸€å®šè¦é—œé–‰ (å®ƒæœƒåƒ aossdk.dll åŠ v3hunt.dll)", true);
 
-registerPatch( 16, "DisableSwearFilter", "Ãö³¬µo¨¥¹LÂo", "¤¶­±", 0, "Shinryo", "Ãö³¬µo¨¥¹LÂo¾÷¨î¡A©¿²¤ manner.txt ¤ºªºÃöÁä¦r", false);
+registerPatch( 16, "DisableSwearFilter", "é—œé–‰ç™¼è¨€éæ¿¾", "ä»‹é¢", 0, "Shinryo", "é—œé–‰ç™¼è¨€éæ¿¾æ©Ÿåˆ¶ï¼Œå¿½ç•¥ manner.txt å…§çš„é—œéµå­—", false);
 
-registerPatch( 17, "EnableOfficialCustomFonts", "¨Ï¥Î©x¤èªº²á¤Ñªwªw¦r«¬", "¤¶­±", 0, "Shinryo", "¹ïÀ³¨¤¦â @font ½s¸¹¡A¨Ï¥Î©x¤èªº¦Û­q²á¤Ñªwªw¦r«¬(¬ÛÃö¦r«¬¦b System\\Font ¥Ø¿ı¤U¡A¦ı¤º«Øªº¤£¤ä´©¤¤¤åÅã¥Ü¡A¥u¦Yeot¦r«¬ÀÉ¡A¥i¥ÎttfÂàÀÉ)", false);
+registerPatch( 17, "EnableOfficialCustomFonts", "ä½¿ç”¨å®˜æ–¹çš„èŠå¤©æ³¡æ³¡å­—å‹", "ä»‹é¢", 0, "Shinryo", "å°æ‡‰è§’è‰² @font ç·¨è™Ÿï¼Œä½¿ç”¨å®˜æ–¹çš„è‡ªè¨‚èŠå¤©æ³¡æ³¡å­—å‹(ç›¸é—œå­—å‹åœ¨ System\\Font ç›®éŒ„ä¸‹ï¼Œä½†å…§å»ºçš„ä¸æ”¯æ´ä¸­æ–‡é¡¯ç¤ºï¼Œåªåƒeotå­—å‹æª”ï¼Œå¯ç”¨ttfè½‰æª”)", false);
 
-registerPatch( 18, "SkipServiceSelect", "¸õ¹L¦øªA¾¹¿ï¾Ü¤¶­±", "¤¶­±", 0, "Shinryo", "¸õ¹L¦øªA¾¹¿ï¾Üªº¤¶­±¡A¹w³]·|¿ï²Ä¤@­Ó¦øªA¾¹", false);
+registerPatch( 18, "SkipServiceSelect", "è·³éä¼ºæœå™¨é¸æ“‡ä»‹é¢", "ä»‹é¢", 0, "Shinryo", "è·³éä¼ºæœå™¨é¸æ“‡çš„ä»‹é¢ï¼Œé è¨­æœƒé¸ç¬¬ä¸€å€‹ä¼ºæœå™¨", false);
 
-registerPatch( 19, "EnableTitleBarMenu", "¹CÀ¸¼ĞÃDÅã¥Ü¥\¯à¦C", "¤¶­±", 0, "Shinryo", "Åı¹CÀ¸ªº¥k¤W¨¤Åã¥Ü¥\¯à¦C(ÁY¤p&Ãö³¬)", true);
+registerPatch( 19, "EnableTitleBarMenu", "éŠæˆ²æ¨™é¡Œé¡¯ç¤ºåŠŸèƒ½åˆ—", "ä»‹é¢", 0, "Shinryo", "è®“éŠæˆ²çš„å³ä¸Šè§’é¡¯ç¤ºåŠŸèƒ½åˆ—(ç¸®å°&é—œé–‰)", true);
 
-registerPatch( 20, "ExtendChatBox", "ÂX¼W²á¤Ñ¿é¤J­­¨î", "¤¶­±", 0, "Shinryo", "ÂX¼W²á¤Ñµøµ¡¿é¤Jªº¦r¼Æ­­¨î(³Ì¤Ö70¡B³Ì¦h234)", false);
+registerPatch( 20, "ExtendChatBox", "æ“´å¢èŠå¤©è¼¸å…¥é™åˆ¶", "ä»‹é¢", 0, "Shinryo", "æ“´å¢èŠå¤©è¦–çª—è¼¸å…¥çš„å­—æ•¸é™åˆ¶(æœ€å°‘70ã€æœ€å¤š234)", false);
 
-registerPatch( 21, "ExtendChatRoomBox", "ÂX¼W²á¤Ñ«Ç¿é¤J­­¨î", "¤¶­±", 0, "Shinryo", "ÂX¼W²á¤Ñ«Ç¿é¤Jªº¦r¼Æ­­¨î(³Ì¤Ö70¡B³Ì¦h234)", false);
+registerPatch( 21, "ExtendChatRoomBox", "æ“´å¢èŠå¤©å®¤è¼¸å…¥é™åˆ¶", "ä»‹é¢", 0, "Shinryo", "æ“´å¢èŠå¤©å®¤è¼¸å…¥çš„å­—æ•¸é™åˆ¶(æœ€å°‘70ã€æœ€å¤š234)", false);
 
-registerPatch( 22, "ExtendPMBox", "ÂX¼W±KÀW¿é¤J­­¨î", "¤¶­±", 0, "Shinryo", "ÂX¼W±KÀW(1:1)ªº¦r¼Æ­­¨î(³Ì¤Ö70¡B³Ì¦h221)", false);
+registerPatch( 22, "ExtendPMBox", "æ“´å¢å¯†é »è¼¸å…¥é™åˆ¶", "ä»‹é¢", 0, "Shinryo", "æ“´å¢å¯†é »(1:1)çš„å­—æ•¸é™åˆ¶(æœ€å°‘70ã€æœ€å¤š221)", false);
 
-registerPatch( 23, "EnableWhoCommand", "¶}±Ò /who «ü¥O", "¤¶­±", 0, "Neo", "¶}±Ò /who «ü¥O¡A¬d¸ß½u¤W¤H¼Æ¡A¹ï©Ò¦³(langtype)³£¶}±Ò (»İ­n¦øªAºİ¤ä´©)", true);
+registerPatch( 23, "EnableWhoCommand", "é–‹å•Ÿ /who æŒ‡ä»¤", "ä»‹é¢", 0, "Neo", "é–‹å•Ÿ /who æŒ‡ä»¤ï¼ŒæŸ¥è©¢ç·šä¸Šäººæ•¸ï¼Œå°æ‰€æœ‰(langtype)éƒ½é–‹å•Ÿ (éœ€è¦ä¼ºæœç«¯æ”¯æ´)", true);
 
-registerPatch( 24, "FixCameraAnglesRecomm", "­×¥¿µø¨¤¨¤«×(«ØÄ³)", "¤¶­±", 2, "Shinryo", "­×¥¿µø¨¤ªº¨¤«×¡A«ØÄ³ªº¨¤«× 60 «×", true);
+registerPatch( 24, "FixCameraAnglesRecomm", "ä¿®æ­£è¦–è§’è§’åº¦(å»ºè­°)", "ä»‹é¢", 2, "Shinryo", "ä¿®æ­£è¦–è§’çš„è§’åº¦ï¼Œå»ºè­°çš„è§’åº¦ 60 åº¦", true);
 
-registerPatch( 25, "FixCameraAnglesLess", "­×¥¿µø¨¤¨¤«×(³Ì¤p)", "¤¶­±", 2, "Shinryo", "­×¥¿µø¨¤ªº¨¤«×¡A­­¨î³Ì¤p¨¤«× 30 «×", false);
+registerPatch( 25, "FixCameraAnglesLess", "ä¿®æ­£è¦–è§’è§’åº¦(æœ€å°)", "ä»‹é¢", 2, "Shinryo", "ä¿®æ­£è¦–è§’çš„è§’åº¦ï¼Œé™åˆ¶æœ€å°è§’åº¦ 30 åº¦", false);
 
-registerPatch( 26, "FixCameraAnglesFull", "­×¥¿µø¨¤¨¤«×(µL­­¨î)", "¤¶­±", 2, "Shinryo", "­×¥¿µø¨¤ªº¨¤«×¡AµL­­¨î¨¤«× (shift+¥kÁä«öµÛ²¾°Ê)", false);
+registerPatch( 26, "FixCameraAnglesFull", "ä¿®æ­£è¦–è§’è§’åº¦(ç„¡é™åˆ¶)", "ä»‹é¢", 2, "Shinryo", "ä¿®æ­£è¦–è§’çš„è§’åº¦ï¼Œç„¡é™åˆ¶è§’åº¦ (shift+å³éµæŒ‰è‘—ç§»å‹•)", false);
 
-registerPatch( 27, "HKLMtoHKCU", "µn¿ıªíÀx¦s¦ì¸m(HKLM§ïHKCU)", "­×´_", 0, "Shinryo", "¦³Ãöµn¿ıªíÀx¦s³]©wªº¦ì¸m¡A±Ò°Ê¹CÀ¸¤ÏÂĞ¼u Setup ½Ğ¤Ä¿ï´ú¸Õ", false);
+registerPatch( 27, "HKLMtoHKCU", "ç™»éŒ„è¡¨å„²å­˜ä½ç½®(HKLMæ”¹HKCU)", "ä¿®å¾©", 0, "Shinryo", "æœ‰é—œç™»éŒ„è¡¨å„²å­˜è¨­å®šçš„ä½ç½®ï¼Œå•Ÿå‹•éŠæˆ²åè¦†å½ˆ Setup è«‹å‹¾é¸æ¸¬è©¦", false);
 
-registerPatch( 28, "IncreaseViewID", "ÂX¼WÀY¹¢½s¸¹", "¸ê®Æ", 0, "Shinryo", "ÂX¼WÀY¹¢ªº½s¸¹(¹w³]2000¡A³Ì¤j32000)", true);
+registerPatch( 28, "IncreaseViewID", "æ“´å¢é ­é£¾ç·¨è™Ÿ", "è³‡æ–™", 0, "Shinryo", "æ“´å¢é ­é£¾çš„ç·¨è™Ÿ(é è¨­2000ï¼Œæœ€å¤§32000)", true);
 
-registerPatch( 29, "DisableGameGuard", "²¾°£ Game Guard ¹CÀ¸«OÅ@¾¹", "­×´_", 0, "Neo", "²¾°£ Game Guard ¹CÀ¸«OÅ@¾¹¡A¨S²¾°£µLªk±Ò°Ê¹CÀ¸", true);
+registerPatch( 29, "DisableGameGuard", "ç§»é™¤ Game Guard éŠæˆ²ä¿è­·å™¨", "ä¿®å¾©", 0, "Neo", "ç§»é™¤ Game Guard éŠæˆ²ä¿è­·å™¨ï¼Œæ²’ç§»é™¤ç„¡æ³•å•Ÿå‹•éŠæˆ²", true);
 
-registerPatch( 30, "IncreaseZoomOut50Per", "µø³¥­­¨î¼W¥[ 50%", "¤¶­±", 3, "Shinryo", "¼W¥[ 50% µø³¥»·ªñ­­¨î (ºu½ü©Ô»·ªñ)", false);
+registerPatch( 30, "IncreaseZoomOut50Per", "è¦–é‡é™åˆ¶å¢åŠ  50%", "ä»‹é¢", 3, "Shinryo", "å¢åŠ  50% è¦–é‡é è¿‘é™åˆ¶ (æ»¾è¼ªæ‹‰é è¿‘)", false);
 
-registerPatch( 31, "IncreaseZoomOut75Per", "µø³¥­­¨î¼W¥[ 75%", "¤¶­±", 3, "Shinryo", "¼W¥[ 75% µø³¥»·ªñ­­¨î (ºu½ü©Ô»·ªñ)", false);
+registerPatch( 31, "IncreaseZoomOut75Per", "è¦–é‡é™åˆ¶å¢åŠ  75%", "ä»‹é¢", 3, "Shinryo", "å¢åŠ  75% è¦–é‡é è¿‘é™åˆ¶ (æ»¾è¼ªæ‹‰é è¿‘)", false);
 
-registerPatch( 32, "IncreaseZoomOutMax", "µø³¥­­¨î¨ú®ø", "¤¶­±", 3, "Shinryo", "¨ú®øµø³¥»·ªñ­­¨î (ºu½ü©Ô»·ªñ)", true);
+registerPatch( 32, "IncreaseZoomOutMax", "è¦–é‡é™åˆ¶å–æ¶ˆ", "ä»‹é¢", 3, "Shinryo", "å–æ¶ˆè¦–é‡é è¿‘é™åˆ¶ (æ»¾è¼ªæ‹‰é è¿‘)", true);
 
-registerPatch( 33, "KoreaServiceTypeXMLFix", "±Ò¥ÎÁúª©¹w³]ªº ClientInfo ³]©w", "­×´_", 0, "Shinryo", "·íÅª¨ú¦Û­qªº ClientInfo ¥¢±Ñ®É¡A¨Ï¥ÎÁúª©¹w³]ªº ClientInfo ¡A¥u¦³¦b ServiceType ¬° Korean ®É¤~·|Åã¥Ü¿ï¶µ", true);
+registerPatch( 33, "KoreaServiceTypeXMLFix", "å•Ÿç”¨éŸ“ç‰ˆé è¨­çš„ ClientInfo è¨­å®š", "ä¿®å¾©", 0, "Shinryo", "ç•¶è®€å–è‡ªè¨‚çš„ ClientInfo å¤±æ•—æ™‚ï¼Œä½¿ç”¨éŸ“ç‰ˆé è¨­çš„ ClientInfo ï¼Œåªæœ‰åœ¨ ServiceType ç‚º Korean æ™‚æ‰æœƒé¡¯ç¤ºé¸é …", true);
 
-registerPatch( 34, "EnableShowName", "¹w³]±Ò¥Î/showname¥\¯à", "­×´_", 0, "Neo", "¦¹¥\¯à·|§â¦W¦r¸ò¤½·|ºÙ¸¹¹ï´«¡AÂ²¤Æ¨Ã¥[²ÊÅã¥Ü¡AÁôÂÃ²Õ¶¤¦W¸ò¤½·|¦W (¹w³]±Ò¥Î/showname¥\¯à)", false);
+registerPatch( 34, "EnableShowName", "é è¨­å•Ÿç”¨/shownameåŠŸèƒ½", "ä¿®å¾©", 0, "Neo", "æ­¤åŠŸèƒ½æœƒæŠŠåå­—è·Ÿå…¬æœƒç¨±è™Ÿå°æ›ï¼Œç°¡åŒ–ä¸¦åŠ ç²—é¡¯ç¤ºï¼Œéš±è—çµ„éšŠåè·Ÿå…¬æœƒå (é è¨­å•Ÿç”¨/shownameåŠŸèƒ½)", false);
 
-registerPatch( 35, "ReadDataFolderFirst", "Àu¥ıÅª¨údata¸ê®Æ§¨", "¸ê®Æ", 0, "Shinryo", "Àu¥ıÅª¨údata¸ê®Æ§¨ªºÀÉ®×", true);
+registerPatch( 35, "ReadDataFolderFirst", "å„ªå…ˆè®€å–dataè³‡æ–™å¤¾", "è³‡æ–™", 0, "Shinryo", "å„ªå…ˆè®€å–dataè³‡æ–™å¤¾çš„æª”æ¡ˆ", true);
 
-registerPatch( 36, "ReadMsgstringtabledottxt", "¨Ï¥Îmsgstringtable.txt¤¶­±°T®§", "¸ê®Æ", 0, "Shinryo", "¨Ï¥Îmsgstringtable.txtªº©Ò¦³¤¶­±°T®§¡A¨S¤Ä¿ï¹w³]¬OÁú¤å¶Ã½X", true);
+registerPatch( 36, "ReadMsgstringtabledottxt", "ä½¿ç”¨msgstringtable.txtä»‹é¢è¨Šæ¯", "è³‡æ–™", 0, "Shinryo", "ä½¿ç”¨msgstringtable.txtçš„æ‰€æœ‰ä»‹é¢è¨Šæ¯ï¼Œæ²’å‹¾é¸é è¨­æ˜¯éŸ“æ–‡äº‚ç¢¼", true);
 
-registerPatch( 37, "ReadQuestid2displaydottxt", "¨Ï¥Îquestid2display.txt¥ô°È°T®§", "¸ê®Æ", 0, "Shinryo", "¨Ï¥Îquestid2display.txtªº³Q°Ê¥ô°È°T®§", true);
+registerPatch( 37, "ReadQuestid2displaydottxt", "ä½¿ç”¨questid2display.txtä»»å‹™è¨Šæ¯", "è³‡æ–™", 0, "Shinryo", "ä½¿ç”¨questid2display.txtçš„è¢«å‹•ä»»å‹™è¨Šæ¯", true);
 
-registerPatch( 38, "RemoveGravityAds", "²¾°£Gravityªº¼s§i", "¤¶­±", 0, "Shinryo", "²¾°£µn¤J¤¶­±Åã¥Üªº Gravity ¼s§i", true);
+registerPatch( 38, "RemoveGravityAds", "ç§»é™¤Gravityçš„å»£å‘Š", "ä»‹é¢", 0, "Shinryo", "ç§»é™¤ç™»å…¥ä»‹é¢é¡¯ç¤ºçš„ Gravity å»£å‘Š", true);
 
-registerPatch( 39, "RemoveGravityLogo", "²¾°£GravityªºLogo", "¤¶­±", 0, "Shinryo", "²¾°£µn¤J¤¶­±Åã¥Üªº Gravity Logo", true);
+registerPatch( 39, "RemoveGravityLogo", "ç§»é™¤Gravityçš„Logo", "ä»‹é¢", 0, "Shinryo", "ç§»é™¤ç™»å…¥ä»‹é¢é¡¯ç¤ºçš„ Gravity Logo", true);
 
-registerPatch( 40, "RestoreLoginWindow", "«ì´_ÂÂª©µn¤J¬É­±", "­×´_", 10, "Shinryo, Neo", "«ì´_ÂÂª©ªºµn¤J¬É­±¡A¨S¤Ä¿ï´N¨Sµn¤J¬É­±³á", true);
+registerPatch( 40, "RestoreLoginWindow", "æ¢å¾©èˆŠç‰ˆç™»å…¥ç•Œé¢", "ä¿®å¾©", 10, "Shinryo, Neo", "æ¢å¾©èˆŠç‰ˆçš„ç™»å…¥ç•Œé¢ï¼Œæ²’å‹¾é¸å°±æ²’ç™»å…¥ç•Œé¢å–”", true);
 
-registerPatch( 41, "DisableNagleAlgorithm", "Ãö³¬Nagleºô¥d½w½Ä", "«Ê¥]", 0, "Shinryo", "¨ú®ø Nagle ºtºâªk¡ANagle Â²³æÁ¿¬O½w½Äºtºâªk(¸ê®Æ¨ì¹F¤@©wªº¶q¤~·|¤@¨Ã¶Ç¿é)¡A¨Ï¥Î¦¹ºtºâªk¥i¥H´î¤Öºô¸ô¶Ç¿é¶q¡A¦ı·|¼W¥[©µ¿ğ¡A¥H¥Ø«eºô¸ôÀW¼e¨ÓÁ¿¨S¦³®t³o¤@ÂI¡A©Ò¥H·|¤Ä¿ïÃö³¬", true);
+registerPatch( 41, "DisableNagleAlgorithm", "é—œé–‰Nagleç¶²å¡ç·©è¡", "å°åŒ…", 0, "Shinryo", "å–æ¶ˆ Nagle æ¼”ç®—æ³•ï¼ŒNagle ç°¡å–®è¬›æ˜¯ç·©è¡æ¼”ç®—æ³•(è³‡æ–™åˆ°é”ä¸€å®šçš„é‡æ‰æœƒä¸€ä¸¦å‚³è¼¸)ï¼Œä½¿ç”¨æ­¤æ¼”ç®—æ³•å¯ä»¥æ¸›å°‘ç¶²è·¯å‚³è¼¸é‡ï¼Œä½†æœƒå¢åŠ å»¶é²ï¼Œä»¥ç›®å‰ç¶²è·¯é »å¯¬ä¾†è¬›æ²’æœ‰å·®é€™ä¸€é»ï¼Œæ‰€ä»¥æœƒå‹¾é¸é—œé–‰", true);
 
-registerPatch( 42, "SkipResurrectionButton", "ÁôÂÃ­ì¦a´_¬¡¿ï¶µ", "¤¶­±", 15, "Shinryo", "¨¤¦â¦º¤`®É¡A¤£Åã¥Ü­ì¦a´_¬¡¿ï¶µ", false);
+registerPatch( 42, "SkipResurrectionButton", "éš±è—åŸåœ°å¾©æ´»é¸é …", "ä»‹é¢", 15, "Shinryo", "è§’è‰²æ­»äº¡æ™‚ï¼Œä¸é¡¯ç¤ºåŸåœ°å¾©æ´»é¸é …", false);
 
-registerPatch( 43, "DeleteCharWithEmail", "¨Ï¥Î«H½c·í§R°£¨¤¦âªº±K½X", "­×´_", 0, "Neo", "§R°£¨¤¦â®É¡A¨Ï¥Î«H½c¨Ó·í±K½X¡A¦Ó¤£¦A¿é¤J¥Í¤é¡A±j¨î©Ò¦³(langtype)³£¨Ï¥Î", false);
+registerPatch( 43, "DeleteCharWithEmail", "ä½¿ç”¨ä¿¡ç®±ç•¶åˆªé™¤è§’è‰²çš„å¯†ç¢¼", "ä¿®å¾©", 0, "Neo", "åˆªé™¤è§’è‰²æ™‚ï¼Œä½¿ç”¨ä¿¡ç®±ä¾†ç•¶å¯†ç¢¼ï¼Œè€Œä¸å†è¼¸å…¥ç”Ÿæ—¥ï¼Œå¼·åˆ¶æ‰€æœ‰(langtype)éƒ½ä½¿ç”¨", false);
 
-registerPatch( 44, "TranslateClient", "Â½Ä¶µn¤J¾¹¼g¦ºªºÁú¤å", "¤¶­±", 0, "Ai4rei/AN, Neo", "­×´_¤@¨Ç¼g¦º¦Aµn¤J¾¹¤ºµLªkÂ½Ä¶ªºÁú¤å¡A·|¥ÎTranslateClient.txtªí´À´«", true);
+registerPatch( 44, "TranslateClient", "ç¿»è­¯ç™»å…¥å™¨å¯«æ­»çš„éŸ“æ–‡", "ä»‹é¢", 0, "Ai4rei/AN, Neo", "ä¿®å¾©ä¸€äº›å¯«æ­»å†ç™»å…¥å™¨å…§ç„¡æ³•ç¿»è­¯çš„éŸ“æ–‡ï¼Œæœƒç”¨TranslateClient.txtè¡¨æ›¿æ›", true);
 
-registerPatch( 45, "UseCustomAuraSprites", "¨Ï¥Î¦Û»sªºº¡µ¥¥ú°é", "¸ê®Æ", 0, "Shinryo", "¨Ï¥Î¦Û»sªºº¡µ¥¥ú°é", false);
+registerPatch( 45, "UseCustomAuraSprites", "ä½¿ç”¨è‡ªè£½çš„æ»¿ç­‰å…‰åœˆ", "è³‡æ–™", 0, "Shinryo", "ä½¿ç”¨è‡ªè£½çš„æ»¿ç­‰å…‰åœˆ", false);
 
-registerPatch( 46, "UseNormalGuildBrackets", "§ïÅÜ¤u·|¦WºÙ¥~®Ø", "¤¶­±", 0, "Shinryo", "­×§ï¨¤¦âID®ÇÅã¥Üªº¤u·|¦WºÙ¥~®Ø¡A¹w³]()¡A¤Ä¿ï¨Ï¥Î[]", true);
+registerPatch( 46, "UseNormalGuildBrackets", "æ”¹è®Šå·¥æœƒåç¨±å¤–æ¡†", "ä»‹é¢", 0, "Shinryo", "ä¿®æ”¹è§’è‰²IDæ—é¡¯ç¤ºçš„å·¥æœƒåç¨±å¤–æ¡†ï¼Œé è¨­()ï¼Œå‹¾é¸ä½¿ç”¨[]", true);
 
-registerPatch( 47, "UseRagnarokIcon", "¨Ï¥ÎRO¹w³]Icon¹Ï¥Ü", "¤¶­±", 4, "Shinryo, Neo", "¨Ï¥ÎRO¹w³]ªºIcon¹Ï¥Ü", true);
+registerPatch( 47, "UseRagnarokIcon", "ä½¿ç”¨ROé è¨­Iconåœ–ç¤º", "ä»‹é¢", 4, "Shinryo, Neo", "ä½¿ç”¨ROé è¨­çš„Iconåœ–ç¤º", true);
 
-registerPatch( 48, "UsePlainTextDescriptions", "¤å¦rÀÉ¨Ï¥Î­ì½s½XÅª¨ú", "¸ê®Æ", 0, "Shinryo", "¤å¦rÀÉ¨Ï¥Î­ì½s½XÅª¨ú¡A¦Ó¤£¬O½s½X¹Lªº", true);
+registerPatch( 48, "UsePlainTextDescriptions", "æ–‡å­—æª”ä½¿ç”¨åŸç·¨ç¢¼è®€å–", "è³‡æ–™", 0, "Shinryo", "æ–‡å­—æª”ä½¿ç”¨åŸç·¨ç¢¼è®€å–ï¼Œè€Œä¸æ˜¯ç·¨ç¢¼éçš„", true);
 
-registerPatch( 49, "EnableMultipleGRFs", "Åª¨ú¦h­Ó GRF [INI]", "¦Û­q", 5, "Shinryo", "±Ò¥Î«áÅª¨ú¦h­ÓGRF¡A¤Ä¿ï®É¥i¿é¤J¦Û­qªº¦WºÙ(¹w³] data.ini)¡A³Ì¦h¥u¯àÅª¨ú10­Ó GRF", true);
+registerPatch( 49, "EnableMultipleGRFs", "è®€å–å¤šå€‹ GRF [INI]", "è‡ªè¨‚", 5, "Shinryo", "å•Ÿç”¨å¾Œè®€å–å¤šå€‹GRFï¼Œå‹¾é¸æ™‚å¯è¼¸å…¥è‡ªè¨‚çš„åç¨±(é è¨­ data.ini)ï¼Œæœ€å¤šåªèƒ½è®€å–10å€‹ GRF", true);
 
-registerPatch( 50, "SkipLicenseScreen", "¸õ¹L±ÂÅv±ø´Ú¤¶­±", "¤¶­±", 14, "Shinryo, MS", "¸õ¹L¤£Åã¥Ü±ÂÅv±ø´Ú¡Aª½±µ¨ì¦øªA¾¹¿ï¾Üµe­±", false);
+registerPatch( 50, "SkipLicenseScreen", "è·³éæˆæ¬Šæ¢æ¬¾ä»‹é¢", "ä»‹é¢", 14, "Shinryo, MS", "è·³éä¸é¡¯ç¤ºæˆæ¬Šæ¢æ¬¾ï¼Œç›´æ¥åˆ°ä¼ºæœå™¨é¸æ“‡ç•«é¢", false);
 
-registerPatch( 51, "ShowLicenseScreen", "±Ò°Ê¹CÀ¸®ÉÅã¥Ü±ÂÅv±ø´Ú", "¤¶­±", 14, "Neo", "±j¨îµn¤J®ÉÅã¥Ü±ÂÅv±ø´Ú¡A±j¨î©Ò¦³(langtype)³£Åã¥Ü", false);
+registerPatch( 51, "ShowLicenseScreen", "å•Ÿå‹•éŠæˆ²æ™‚é¡¯ç¤ºæˆæ¬Šæ¢æ¬¾", "ä»‹é¢", 14, "Neo", "å¼·åˆ¶ç™»å…¥æ™‚é¡¯ç¤ºæˆæ¬Šæ¢æ¬¾ï¼Œå¼·åˆ¶æ‰€æœ‰(langtype)éƒ½é¡¯ç¤º", false);
 
-registerPatch( 52, "UseCustomFont", "¦Û­q¹CÀ¸¤¶­±¦r«¬", "¤¶­±", 0, "Ai4rei/AN", "¨Ï¥Î¦Û­qªº¹CÀ¸¤¶­±¦r«¬¡A±q¨t²Î¦r«¬¤¤¬D¿ï (¦r«¬¦WºÙ¤£¤ä´©¤¤¤å¡A­Y­n¤¤¤å½Ğ¦Û¦æ HEX)", false);
+registerPatch( 52, "UseCustomFont", "è‡ªè¨‚éŠæˆ²ä»‹é¢å­—å‹", "ä»‹é¢", 0, "Ai4rei/AN", "ä½¿ç”¨è‡ªè¨‚çš„éŠæˆ²ä»‹é¢å­—å‹ï¼Œå¾ç³»çµ±å­—å‹ä¸­æŒ‘é¸ (å­—å‹åç¨±ä¸æ”¯æ´ä¸­æ–‡ï¼Œè‹¥è¦ä¸­æ–‡è«‹è‡ªè¡Œ HEX)", false);
 
-registerPatch( 53, "UseAsciiOnAllLangTypes", "¨Ï¥Î Ascii ½s½XÅã¥Ü¤å¦r", "¤¶­±", 0, "Ai4rei/AN", "¨Ï¥Î Ascii ½s½XÅã¥Ü¤å¦r", true);
+registerPatch( 53, "UseAsciiOnAllLangTypes", "ä½¿ç”¨ Ascii ç·¨ç¢¼é¡¯ç¤ºæ–‡å­—", "ä»‹é¢", 0, "Ai4rei/AN", "ä½¿ç”¨ Ascii ç·¨ç¢¼é¡¯ç¤ºæ–‡å­—", true);
 
-registerPatch( 54, "ChatColorGM", "­×§ïGM°T®§¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ GM ²á¤Ñµøµ¡¤å¦rªºÃC¦â¡A¹w³]­È¬° FFFF00 (¶À¦â)", false);
+registerPatch( 54, "ChatColorGM", "ä¿®æ”¹GMè¨Šæ¯æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š GM èŠå¤©è¦–çª—æ–‡å­—çš„é¡è‰²ï¼Œé è¨­å€¼ç‚º FFFF00 (é»ƒè‰²)", false);
 
-registerPatch( 55, "ChatColorPlayerOther", "­×§ï¤@¯ë°T®§¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ ¤@¯ë¹ï¸Ü ²á¤Ñµøµ¡¤å¦rªºÃC¦â¡A¹w³]­È¬° FFFFFF (¥Õ¦â)" );
+registerPatch( 55, "ChatColorPlayerOther", "ä¿®æ”¹ä¸€èˆ¬è¨Šæ¯æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š ä¸€èˆ¬å°è©± èŠå¤©è¦–çª—æ–‡å­—çš„é¡è‰²ï¼Œé è¨­å€¼ç‚º FFFFFF (ç™½è‰²)", false);
 
 //Disabled since GM Chat Color also patches the Main color - to be removed
-//registerPatch( 56, "ChatColorMain", "Chat Color - Main", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "Changes the Main Chat color and sets it to the specified value", false);
+//registerPatch( 56, "ChatColorMain", "Chat Color - Main", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "Changes the Main Chat color and sets it to the specified value", false);
 
-registerPatch( 57, "ChatColorGuild", "­×§ï¤½·|°T®§¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ ¤½·| ²á¤Ñµøµ¡¤å¦rªºÃC¦â¡A¹w³]­È¬° B4FFB4 («Gºñ¦â)", false);
+registerPatch( 57, "ChatColorGuild", "ä¿®æ”¹å…¬æœƒè¨Šæ¯æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š å…¬æœƒ èŠå¤©è¦–çª—æ–‡å­—çš„é¡è‰²ï¼Œé è¨­å€¼ç‚º B4FFB4 (äº®ç¶ è‰²)", false);
 
-registerPatch( 58, "ChatColorPartyOther", "­×§ï²Õ¶¤¨ä¥L¤H°T®§¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ ²Õ¶¤¨ä¥L¤H ²á¤Ñµøµ¡¤å¦rªºÃC¦â¡A¹w³]­È¬° FFC8C8 (¯»¬õ¦â)", false);
+registerPatch( 58, "ChatColorPartyOther", "ä¿®æ”¹çµ„éšŠå…¶ä»–äººè¨Šæ¯æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š çµ„éšŠå…¶ä»–äºº èŠå¤©è¦–çª—æ–‡å­—çš„é¡è‰²ï¼Œé è¨­å€¼ç‚º FFC8C8 (ç²‰ç´…è‰²)", false);
 
-registerPatch( 59, "ChatColorPartySelf", "­×§ï²Õ¶¤¦Û¤vµo¨¥¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ ²Õ¶¤¦Û¤vµo¨¥ ªºÃC¦â¡A¹w³]­È¬° FFC800 (¾ï¦â)", false);
+registerPatch( 59, "ChatColorPartySelf", "ä¿®æ”¹çµ„éšŠè‡ªå·±ç™¼è¨€æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š çµ„éšŠè‡ªå·±ç™¼è¨€ çš„é¡è‰²ï¼Œé è¨­å€¼ç‚º FFC800 (æ©˜è‰²)", false);
 
-registerPatch( 60, "ChatColorPlayerSelf", "­×§ï¦Û¤vµo¨¥¤å¦rÃC¦â", "ÃC¦â", 0, "Ai4rei/AN, Shakto", "§ïÅÜ ¦Û¤vµo¨¥ ªº²á¤Ñµøµ¡¤å¦rÃC¦â¡A¹w³]­È¬° 00FF00 (ºñ¦â)", false);
+registerPatch( 60, "ChatColorPlayerSelf", "ä¿®æ”¹è‡ªå·±ç™¼è¨€æ–‡å­—é¡è‰²", "é¡è‰²", 0, "Ai4rei/AN, Shakto", "æ”¹è®Š è‡ªå·±ç™¼è¨€ çš„èŠå¤©è¦–çª—æ–‡å­—é¡è‰²ï¼Œé è¨­å€¼ç‚º 00FF00 (ç¶ è‰²)", false);
 
-registerPatch( 61, "DisablePacketEncryption", "Ãö³¬«Ê¥]²V²c", "«Ê¥]", 0, "Ai4rei/AN", "¨ú®ø«Ê¥]²V²c¡A¦¹¥\¯à¨Ã¤£¬O¥[±K¡A¦Ó¬OÅı¨C­Ó«Ê¥]¦³¤@­ÓÀH¾÷¬y¤ô¸¹¡A¥u­n¸ò¦øªAºİ¨S¦³¹ïÀ³´NµLªk³s½u", false);
+registerPatch( 61, "DisablePacketEncryption", "é—œé–‰å°åŒ…æ··æ·†", "å°åŒ…", 0, "Ai4rei/AN", "å–æ¶ˆå°åŒ…æ··æ·†ï¼Œæ­¤åŠŸèƒ½ä¸¦ä¸æ˜¯åŠ å¯†ï¼Œè€Œæ˜¯è®“æ¯å€‹å°åŒ…æœ‰ä¸€å€‹éš¨æ©Ÿæµæ°´è™Ÿï¼Œåªè¦è·Ÿä¼ºæœç«¯æ²’æœ‰å°æ‡‰å°±ç„¡æ³•é€£ç·š", false);
 
-registerPatch( 62, "DisableLoginEncryption", "Ãö³¬µn¤J«Ê¥]¥[±K", "«Ê¥]", 0, "Neo", "Ãö³¬µn¤J«Ê¥]¥[±K¡A«Ê¥] 0x2b0", true);
+registerPatch( 62, "DisableLoginEncryption", "é—œé–‰ç™»å…¥å°åŒ…åŠ å¯†", "å°åŒ…", 0, "Neo", "é—œé–‰ç™»å…¥å°åŒ…åŠ å¯†ï¼Œå°åŒ… 0x2b0", true);
 
-registerPatch( 63, "UseOfficialClothPalette", "¨Ï¥Î©x¤è¥~Æ[¬V¦âÀÉ", "¤¶­±", 0, "Neo", "¨Ï¥Î©x¤è¹w³]ªº¥~Æ[¬V¦âÀÉ", true);
+registerPatch( 63, "UseOfficialClothPalette", "ä½¿ç”¨å®˜æ–¹å¤–è§€æŸ“è‰²æª”", "ä»‹é¢", 0, "Neo", "ä½¿ç”¨å®˜æ–¹é è¨­çš„å¤–è§€æŸ“è‰²æª”", true);
 
-registerPatch( 64, "FixChatAt", "­×´_ @ ²Å¸¹ Bug", "­×´_", 0, "Shinryo", "­×´_²á¤Ñµøµ¡¤£¯à¿é¤J @ ªº­­¨î", true);
+registerPatch( 64, "FixChatAt", "ä¿®å¾© @ ç¬¦è™Ÿ Bug", "ä¿®å¾©", 0, "Shinryo", "ä¿®å¾©èŠå¤©è¦–çª—ä¸èƒ½è¼¸å…¥ @ çš„é™åˆ¶", true);
 
-registerPatch( 65, "ChangeItemInfo", "­×§ïiteminfo*.lub¸ô®|", "¦Û­q", 20, "Neo", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N iteminfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch( 65, "ChangeItemInfo", "ä¿®æ”¹iteminfo*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Neo", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„æˆå°± iteminfo*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", true);
 
-registerPatch( 66, "LoadItemInfoPerServer", "¥Î¦øªA¾¹¦WºÙ¦Û°Ê¿ï¾Üiteminfo", "¸ê®Æ", 0, "Neo", "Åı iteminfo ªº main function ¤Ş¤J¦øªA¾¹¦WºÙ¡A¦Û°Ê§PÂ_»İ­nªº¤º®e¡A¦³¤À¬y¥B»İ­n¤£¦Piteminfo¤~·|¥Î¨ì", false);
+registerPatch( 66, "LoadItemInfoPerServer", "ç”¨ä¼ºæœå™¨åç¨±è‡ªå‹•é¸æ“‡iteminfo", "è³‡æ–™", 0, "Neo", "è®“ iteminfo çš„ main function å¼•å…¥ä¼ºæœå™¨åç¨±ï¼Œè‡ªå‹•åˆ¤æ–·éœ€è¦çš„å…§å®¹ï¼Œæœ‰åˆ†æµä¸”éœ€è¦ä¸åŒiteminfoæ‰æœƒç”¨åˆ°", false);
 
-registerPatch( 67, "DisableQuakeEffect", "¨ú®ø§Ş¯à¾_°Ê®ÄªG", "¤¶­±", 0, "Ai4rei/AN", "¨ú®ø§Ş¯à¾_°Ê®ÄªG¡B¦aµõ¡BÃz®ğµ¥µ¥", false);
+registerPatch( 67, "DisableQuakeEffect", "å–æ¶ˆæŠ€èƒ½éœ‡å‹•æ•ˆæœ", "ä»‹é¢", 0, "Ai4rei/AN", "å–æ¶ˆæŠ€èƒ½éœ‡å‹•æ•ˆæœã€åœ°è£‚ã€çˆ†æ°£ç­‰ç­‰", false);
 
-registerPatch( 68, "Enable64kHairstyle", "¸Ñ°£¾v«¬¼Æ¶q­­¨î", "¤¶­±", 19, "Ai4rei/AN", "¸Ñ°£¾v«¬¼Æ¶q­­¨î¡A¤ä´©64kºØ¾v«¬¡A©x¤è¶È 27 ºØ", true);
+registerPatch( 68, "Enable64kHairstyle", "è§£é™¤é«®å‹æ•¸é‡é™åˆ¶", "ä»‹é¢", 19, "Ai4rei/AN", "è§£é™¤é«®å‹æ•¸é‡é™åˆ¶ï¼Œæ”¯æ´64kç¨®é«®å‹ï¼Œå®˜æ–¹åƒ… 27 ç¨®", true);
 
-registerPatch( 69, "ExtendNpcBox", "ÂX¼Winputªº¦r¼Æ­­¨î", "¤¶­±", 0, "Ai4rei/AN", "ÂX¼W¸}¥» input ªº¦r¼Æ­­¨î(³Ì¤Ö2052¡B³Ì¦h4096)", false);
+registerPatch( 69, "ExtendNpcBox", "æ“´å¢inputçš„å­—æ•¸é™åˆ¶", "ä»‹é¢", 0, "Ai4rei/AN", "æ“´å¢è…³æœ¬ input çš„å­—æ•¸é™åˆ¶(æœ€å°‘2052ã€æœ€å¤š4096)", false);
 
-registerPatch( 70, "CustomExpBarLimits", "¦Û­q¸gÅç±øÅã¥Ü±ø¥ó", "¤¶­±", 0, "Neo", "¥i¥H­×§ï¸gÅç±øÅã¥Üªº±ø¥ó (½d¨ÒÀÉ¦bInput\\expBarSpec.txt)", false);
+registerPatch( 70, "CustomExpBarLimits", "è‡ªè¨‚ç¶“é©—æ¢é¡¯ç¤ºæ¢ä»¶", "ä»‹é¢", 0, "Neo", "å¯ä»¥ä¿®æ”¹ç¶“é©—æ¢é¡¯ç¤ºçš„æ¢ä»¶ (ç¯„ä¾‹æª”åœ¨Input\\expBarSpec.txt)", false);
 
-registerPatch( 71, "IgnoreResourceErrors", "©¿²¤¸É¤BÀÉ®×¿ù»~", "­×´_", 0, "Shinryo", "©¿²¤©Ò¦³¸ê·½¯ÊÀÉ¿ù»~(¥iÀ°§U°£¿ù¡ADeBug®É¤£¥Î¤Ä)", false);
+registerPatch( 71, "IgnoreResourceErrors", "å¿½ç•¥è£œä¸æª”æ¡ˆéŒ¯èª¤", "ä¿®å¾©", 0, "Shinryo", "å¿½ç•¥æ‰€æœ‰è³‡æºç¼ºæª”éŒ¯èª¤(å¯å¹«åŠ©é™¤éŒ¯ï¼ŒDeBugæ™‚ä¸ç”¨å‹¾)", false);
 
-registerPatch( 72, "IgnoreMissingPaletteError", "©¿²¤¬V¦âÀÉ®×¿ù»~", "­×´_", 0, "Shinryo", "©¿²¤¬V¦âÀÉ®×¯ÊÀÉªº¿ù»~(¥iÀ°§U°£¿ù¡ADeBug®É¤£¥Î¤Ä)", false);
+registerPatch( 72, "IgnoreMissingPaletteError", "å¿½ç•¥æŸ“è‰²æª”æ¡ˆéŒ¯èª¤", "ä¿®å¾©", 0, "Shinryo", "å¿½ç•¥æŸ“è‰²æª”æ¡ˆç¼ºæª”çš„éŒ¯èª¤(å¯å¹«åŠ©é™¤éŒ¯ï¼ŒDeBugæ™‚ä¸ç”¨å‹¾)", false);
 
-registerPatch( 73, "RemoveHourlyAnnounce", "Ãö³¬°·±d´£¥Ü", "¤¶­±", 0, "Ai4rei/AN", "Ãö³¬°·±d´£¥Ü¡A´N¬O¨C­Ó¤p®Éªº°İ­Ô»y", true);
+registerPatch( 73, "RemoveHourlyAnnounce", "é—œé–‰å¥åº·æç¤º", "ä»‹é¢", 0, "Ai4rei/AN", "é—œé–‰å¥åº·æç¤ºï¼Œå°±æ˜¯æ¯å€‹å°æ™‚çš„å•å€™èª", true);
 
-registerPatch( 74, "IncreaseScreenshotQuality", "­×§ï·Ó¬ÛºI¹Ïªº«~½è", "¤¶­±", 0, "Ai4rei/AN", "­×§ï·Ó¬ÛºI¹Ï jpeg ªº«~½è (³Ì¤p0%¡A³Ì¤j100%)", false);
+registerPatch( 74, "IncreaseScreenshotQuality", "ä¿®æ”¹ç…§ç›¸æˆªåœ–çš„å“è³ª", "ä»‹é¢", 0, "Ai4rei/AN", "ä¿®æ”¹ç…§ç›¸æˆªåœ– jpeg çš„å“è³ª (æœ€å°0%ï¼Œæœ€å¤§100%)", false);
 
-registerPatch( 75, "EnableFlagEmotes", "±Ò¥ÎºX¤lªí±¡", "¤¶­±", 0, "Neo", "¬O§_±Ò¥ÎºX¤lªí±¡¡A»İ­n¦Û¦æ³]©wºX¤lªº¦Cªí", false);
+registerPatch( 75, "EnableFlagEmotes", "å•Ÿç”¨æ——å­è¡¨æƒ…", "ä»‹é¢", 0, "Neo", "æ˜¯å¦å•Ÿç”¨æ——å­è¡¨æƒ…ï¼Œéœ€è¦è‡ªè¡Œè¨­å®šæ——å­çš„åˆ—è¡¨", false);
 
-registerPatch( 76, "EnforceOfficialLoginBackground", "¨Ï¥Î©x¤èµn¤J­I´º", "¤¶­±", 0, "Shinryo", "±j¨î¨Ï¥Î©x¤èªºµn¤J­I´º¹Ï", false);
+registerPatch( 76, "EnforceOfficialLoginBackground", "ä½¿ç”¨å®˜æ–¹ç™»å…¥èƒŒæ™¯", "ä»‹é¢", 0, "Shinryo", "å¼·åˆ¶ä½¿ç”¨å®˜æ–¹çš„ç™»å…¥èƒŒæ™¯åœ–", false);
 
-registerPatch( 77, "EnableCustom3DBones", "¸ü¤J¦Û»sªº3D¼Ò«¬", "¦Û­q", 0, "Ai4rei/AN", "¬O§_¸ü¤J¦Û»sªº3D¼Ò«¬", false);
+registerPatch( 77, "EnableCustom3DBones", "è¼‰å…¥è‡ªè£½çš„3Dæ¨¡å‹", "è‡ªè¨‚", 0, "Ai4rei/AN", "æ˜¯å¦è¼‰å…¥è‡ªè£½çš„3Dæ¨¡å‹", false);
 
-registerPatch( 78, "MoveCashShopIcon", "²¾°Ê°Ó«°¹Ï¥Ü¦ì¸m", "¤¶­±",  11, "Neo", "²¾°Ê°Ó«°¹Ï¥ÜÅã¥Üªº¦ì¸m", false);
+registerPatch( 78, "MoveCashShopIcon", "ç§»å‹•å•†åŸåœ–ç¤ºä½ç½®", "ä»‹é¢",  11, "Neo", "ç§»å‹•å•†åŸåœ–ç¤ºé¡¯ç¤ºçš„ä½ç½®", false);
 
-registerPatch( 79, "SharedBodyPalettesV2", "ªA¸Ë¦@¥Î¬V¦âÀÉ", "¤¶­±", 6, "Ai4rei/AN, Neo", "©Ò¦³Â¾·~ªA¸Ë¦@¥Î³æ¤@¬V¦âÀÉ¡A®æ¦¡¬°(body_%d.pal)", false);
+registerPatch( 79, "SharedBodyPalettesV2", "æœè£å…±ç”¨æŸ“è‰²æª”", "ä»‹é¢", 6, "Ai4rei/AN, Neo", "æ‰€æœ‰è·æ¥­æœè£å…±ç”¨å–®ä¸€æŸ“è‰²æª”ï¼Œæ ¼å¼ç‚º(body_%d.pal)", false);
 
-registerPatch( 80, "SharedBodyPalettesV1", "ªA¸Ë¦@¥Î¬V¦âÀÉ(¤À¨k¤k)", "¤¶­±", 6, "Ai4rei/AN, Neo", "©Ò¦³Â¾·~ªA¸Ë¦@¥Î³æ¤@¬V¦âÀÉ(¤À¨k¤k)¡A®æ¦¡¬°(body_%s_%d.pal)", false);
+registerPatch( 80, "SharedBodyPalettesV1", "æœè£å…±ç”¨æŸ“è‰²æª”(åˆ†ç”·å¥³)", "ä»‹é¢", 6, "Ai4rei/AN, Neo", "æ‰€æœ‰è·æ¥­æœè£å…±ç”¨å–®ä¸€æŸ“è‰²æª”(åˆ†ç”·å¥³)ï¼Œæ ¼å¼ç‚º(body_%s_%d.pal)", false);
 
-registerPatch( 81, "RenameLicenseTxt", "­×§ï±ÂÅv±ø´Ú¸ô®|", "¸ê®Æ", 0, "Neo", "­×§ï±ÂÅv±ø´Ú licence.txt ªºÀÉ®×¦WºÙ", false);
+registerPatch( 81, "RenameLicenseTxt", "ä¿®æ”¹æˆæ¬Šæ¢æ¬¾è·¯å¾‘", "è³‡æ–™", 0, "Neo", "ä¿®æ”¹æˆæ¬Šæ¢æ¬¾ licence.txt çš„æª”æ¡ˆåç¨±", false);
 
-registerPatch( 82, "SharedHeadPalettesV1", "¾v¦â¦@¥Î¬V¦âÀÉ(¤À¨k¤k)", "¤¶­±", 7, "Ai4rei/AN, Neo", "¾v¦â¦b¬Û¦P¾v«¬¦@¥Î³æ¤@¬V¦âÀÉ(¤À¨k¤k)¡A®æ¦¡¬°(head_%s_%d.pal)", false);
+registerPatch( 82, "SharedHeadPalettesV1", "é«®è‰²å…±ç”¨æŸ“è‰²æª”(åˆ†ç”·å¥³)", "ä»‹é¢", 7, "Ai4rei/AN, Neo", "é«®è‰²åœ¨ç›¸åŒé«®å‹å…±ç”¨å–®ä¸€æŸ“è‰²æª”(åˆ†ç”·å¥³)ï¼Œæ ¼å¼ç‚º(head_%s_%d.pal)", false);
 
-registerPatch( 83, "SharedHeadPalettesV2", "¾v¦â¦@¥Î¬V¦âÀÉ", "¤¶­±", 7, "Ai4rei/AN, Neo", "¾v¦â¦b¬Û¦P¾v«¬¦@¥Î³æ¤@¬V¦âÀÉ¡A®æ¦¡¬°(head_%d.pal)", false);
+registerPatch( 83, "SharedHeadPalettesV2", "é«®è‰²å…±ç”¨æŸ“è‰²æª”", "ä»‹é¢", 7, "Ai4rei/AN, Neo", "é«®è‰²åœ¨ç›¸åŒé«®å‹å…±ç”¨å–®ä¸€æŸ“è‰²æª”ï¼Œæ ¼å¼ç‚º(head_%d.pal)", false);
 
-registerPatch( 84, "RemoveSerialDisplay", "²¾°£¥k¤U¨¤§Ç¸¹Åã¥Ü", "¤¶­±", 0, "Shinryo", "²¾°£¹CÀ¸¤¶­±¥k¤U¨¤ªº§Ç¸¹Åã¥Ü", true);
+registerPatch( 84, "RemoveSerialDisplay", "ç§»é™¤å³ä¸‹è§’åºè™Ÿé¡¯ç¤º", "ä»‹é¢", 0, "Shinryo", "ç§»é™¤éŠæˆ²ä»‹é¢å³ä¸‹è§’çš„åºè™Ÿé¡¯ç¤º", true);
 
-registerPatch( 85, "ShowCancelToServiceSelect","¿ï¾Ü¦øªA¾¹®É¥i¤W¤@¨B", "¤¶­±", 0, "Neo", "µn¤J±b¸¹®É¡A¥i¥HÂI¤W¤@¨B­«·s¿ï¾Ü¦øªA¾¹", false);
+registerPatch( 85, "ShowCancelToServiceSelect","é¸æ“‡ä¼ºæœå™¨æ™‚å¯ä¸Šä¸€æ­¥", "ä»‹é¢", 0, "Neo", "ç™»å…¥å¸³è™Ÿæ™‚ï¼Œå¯ä»¥é»ä¸Šä¸€æ­¥é‡æ–°é¸æ“‡ä¼ºæœå™¨", false);
 
-registerPatch( 86, "OnlyFirstLoginBackground", "¥uÅã¥Ü²Ä¤@ºØ­I´º¹Ï¤ù", "¤¶­±", 8, "Shinryo", "¥uÅã¥Ü²Ä¤@ºØ­I´º¹Ï¤ù", false);
+registerPatch( 86, "OnlyFirstLoginBackground", "åªé¡¯ç¤ºç¬¬ä¸€ç¨®èƒŒæ™¯åœ–ç‰‡", "ä»‹é¢", 8, "Shinryo", "åªé¡¯ç¤ºç¬¬ä¸€ç¨®èƒŒæ™¯åœ–ç‰‡", false);
 
-registerPatch( 87, "OnlySecondLoginBackground", "¥uÅã¥Ü²Ä¤GºØ­I´º¹Ï¤ù", "¤¶­±", 8, "Shinryo", "¥uÅã¥Ü²Ä¤GºØ­I´º¹Ï¤ù", false);
+registerPatch( 87, "OnlySecondLoginBackground", "åªé¡¯ç¤ºç¬¬äºŒç¨®èƒŒæ™¯åœ–ç‰‡", "ä»‹é¢", 8, "Shinryo", "åªé¡¯ç¤ºç¬¬äºŒç¨®èƒŒæ™¯åœ–ç‰‡", false);
 
-registerPatch( 88, "AllowSpaceInGuildName", "¤¹³\¤½·|¦WºÙ¤º¦³ªÅ¥Õ", "¤¶­±", 0, "Shakto", "¤¹³\³Ğ¤½·|®É¡A¤½·|¦W¤¤¨Ï¥ÎªÅ¥Õ (/guild \"´ú ¸Õ\")", false);
+registerPatch( 88, "AllowSpaceInGuildName", "å…è¨±å…¬æœƒåç¨±å…§æœ‰ç©ºç™½", "ä»‹é¢", 0, "Shakto", "å…è¨±å‰µå…¬æœƒæ™‚ï¼Œå…¬æœƒåä¸­ä½¿ç”¨ç©ºç™½ (/guild \"æ¸¬ è©¦\")", false);
 
-registerPatch( 90, "EnableDNSSupport", "IP¤ä´©°ì¦W(DNS)¸ÑªR", "¸ê®Æ", 0, "Shinryo", "¬O§_¤ä´©°ì¦W¸ÑªR¡A±Ò¥Î«á clientinfo.xml §Y¥i¨Ï¥Îºô§}Ãş«¬ªºIP ¨Ò¦p: roip.no-ip.net", true);
+registerPatch( 90, "EnableDNSSupport", "IPæ”¯æ´åŸŸå(DNS)è§£æ", "è³‡æ–™", 0, "Shinryo", "æ˜¯å¦æ”¯æ´åŸŸåè§£æï¼Œå•Ÿç”¨å¾Œ clientinfo.xml å³å¯ä½¿ç”¨ç¶²å€é¡å‹çš„IP ä¾‹å¦‚: roip.no-ip.net", true);
 
-registerPatch( 91, "DCToLoginWindow", "Â_½u«á¦Û°Êªğ¦^µn¤J¤¶­±", "¤¶­±", 0, "Neo", "Â_½u«á¬O§_ªğ¦^µn¤J¤¶­±¡A¹w³]¬Oª½±µÃö³¬¹CÀ¸", false);
+registerPatch( 91, "DCToLoginWindow", "æ–·ç·šå¾Œè‡ªå‹•è¿”å›ç™»å…¥ä»‹é¢", "ä»‹é¢", 0, "Neo", "æ–·ç·šå¾Œæ˜¯å¦è¿”å›ç™»å…¥ä»‹é¢ï¼Œé è¨­æ˜¯ç›´æ¥é—œé–‰éŠæˆ²", false);
 
-registerPatch( 92, "PacketFirstKeyEncryption", "³]©w«Ê¥]²V²c²Ä¤@²Õkey", "«Ê¥]", 9, "Shakto, Neo", "«Ê¥]²V²cªº²Ä¤@²Õkey (¦³¨Ï¥Îªº¸Ü¡A»İ¸ò¼ÒÀÀ¾¹¹ïÀ³)", false);
+registerPatch( 92, "PacketFirstKeyEncryption", "è¨­å®šå°åŒ…æ··æ·†ç¬¬ä¸€çµ„key", "å°åŒ…", 9, "Shakto, Neo", "å°åŒ…æ··æ·†çš„ç¬¬ä¸€çµ„key (æœ‰ä½¿ç”¨çš„è©±ï¼Œéœ€è·Ÿæ¨¡æ“¬å™¨å°æ‡‰)", false);
 
-registerPatch( 93, "PacketSecondKeyEncryption", "³]©w«Ê¥]²V²c²Ä¤G²Õkey", "«Ê¥]", 9, "Shakto, Neo", "«Ê¥]²V²cªº²Ä¤G²Õkey (¦³¨Ï¥Îªº¸Ü¡A»İ¸ò¼ÒÀÀ¾¹¹ïÀ³)", false);
+registerPatch( 93, "PacketSecondKeyEncryption", "è¨­å®šå°åŒ…æ··æ·†ç¬¬äºŒçµ„key", "å°åŒ…", 9, "Shakto, Neo", "å°åŒ…æ··æ·†çš„ç¬¬äºŒçµ„key (æœ‰ä½¿ç”¨çš„è©±ï¼Œéœ€è·Ÿæ¨¡æ“¬å™¨å°æ‡‰)", false);
 
-registerPatch( 94, "PacketThirdKeyEncryption", "³]©w«Ê¥]²V²c²Ä¤T²Õkey", "«Ê¥]", 9, "Shakto, Neo", "«Ê¥]²V²cªº²Ä¤T²Õkey (¦³¨Ï¥Îªº¸Ü¡A»İ¸ò¼ÒÀÀ¾¹¹ïÀ³)", false);
+registerPatch( 94, "PacketThirdKeyEncryption", "è¨­å®šå°åŒ…æ··æ·†ç¬¬ä¸‰çµ„key", "å°åŒ…", 9, "Shakto, Neo", "å°åŒ…æ··æ·†çš„ç¬¬ä¸‰çµ„key (æœ‰ä½¿ç”¨çš„è©±ï¼Œéœ€è·Ÿæ¨¡æ“¬å™¨å°æ‡‰)", false);
 
-registerPatch( 95, "UseSSOLoginPacket", "¨Ï¥ÎSSOµn¤J«Ê¥]", "«Ê¥]", 10, "Ai4rei/AN", "¨Ï¥ÎSSO¤è¦¡µn¤J¡A¥i¥H¨Ï¥Î°Ñ¼Æªº¤è¦¡µn¤J (µn¤JRestore Login Window¤£¯à¤Ä¿ï)", false);
+registerPatch( 95, "UseSSOLoginPacket", "ä½¿ç”¨SSOç™»å…¥å°åŒ…", "å°åŒ…", 10, "Ai4rei/AN", "ä½¿ç”¨SSOæ–¹å¼ç™»å…¥ï¼Œå¯ä»¥ä½¿ç”¨åƒæ•¸çš„æ–¹å¼ç™»å…¥ (ç™»å…¥Restore Login Windowä¸èƒ½å‹¾é¸)", false);
 
-registerPatch( 96, "RemoveGMSprite", "¨ú®øGM¥~Æ[", "¤¶­±", 0, "Neo", "¨ú®øGM¥~Æ[¡A¨Ï¥Î¹w³]ªºÂ¾·~¼Ò²Õ", false);
+registerPatch( 96, "RemoveGMSprite", "å–æ¶ˆGMå¤–è§€", "ä»‹é¢", 0, "Neo", "å–æ¶ˆGMå¤–è§€ï¼Œä½¿ç”¨é è¨­çš„è·æ¥­æ¨¡çµ„", false);
 
-registerPatch( 97, "CancelToLoginWindow", "¿ï¨¤®É¨ú®øªğ¦^µn¤J¤¶­±", "­×´_", 0, "Neo", "¦b¿ï¾Ü¨¤¦â®É¡A¥i¥HÂI¨ú®øªğ¦^µn¤J¤¶­±¡A¦Ó¤£¬Oµ²§ô¹CÀ¸", true);
+registerPatch( 97, "CancelToLoginWindow", "é¸è§’æ™‚å–æ¶ˆè¿”å›ç™»å…¥ä»‹é¢", "ä¿®å¾©", 0, "Neo", "åœ¨é¸æ“‡è§’è‰²æ™‚ï¼Œå¯ä»¥é»å–æ¶ˆè¿”å›ç™»å…¥ä»‹é¢ï¼Œè€Œä¸æ˜¯çµæŸéŠæˆ²", true);
 
-registerPatch( 98, "DisableDCScream", "¤£Åª¨úÅåÁn¦y¥sªºÀÉ®×", "¤¶­±", 0, "Neo", "¤£Åª¨úÅåÁn¦y¥sªºÀÉ®× dc_scream.txt", false);
+registerPatch( 98, "DisableDCScream", "ä¸è®€å–é©šè²å°–å«çš„æª”æ¡ˆ", "ä»‹é¢", 0, "Neo", "ä¸è®€å–é©šè²å°–å«çš„æª”æ¡ˆ dc_scream.txt", false);
 
-registerPatch( 99, "DisableBAFrostJoke", "¤£Åª¨ú§N¯º¸ÜªºÀÉ®×", "¤¶­±", 0, "Neo", "¤£Åª¨ú§N¯º¸ÜªºÀÉ®× ba_frostjoke.txt", false);
+registerPatch( 99, "DisableBAFrostJoke", "ä¸è®€å–å†·ç¬‘è©±çš„æª”æ¡ˆ", "ä»‹é¢", 0, "Neo", "ä¸è®€å–å†·ç¬‘è©±çš„æª”æ¡ˆ ba_frostjoke.txt", false);
 
-registerPatch(100, "DisableMultipleWindows", "¸T¤îµn¤J¾¹Âù¶}", "¤¶­±", 0, "Shinryo, Ai4rei/AN", "¸T¤îµn¤J¾¹Âù¶} (³oµLªk¦³®Ä§ùµ´Âù¶})", false);
+registerPatch(100, "DisableMultipleWindows", "ç¦æ­¢ç™»å…¥å™¨é›™é–‹", "ä»‹é¢", 0, "Shinryo, Ai4rei/AN", "ç¦æ­¢ç™»å…¥å™¨é›™é–‹ (é€™ç„¡æ³•æœ‰æ•ˆæœçµ•é›™é–‹)", false);
 
-registerPatch(101, "SkipCheaterFriendCheck", "Ãö³¬ªB¤Í¦WºÙ¬Û¦ü´£¥Ü", "¤¶­±", 0, "Ai4rei/AN", "¦b±K»y®ÉÃö³¬¬Û¦üªB¤Í¦W¦rªº´£¿ô", false);
+registerPatch(101, "SkipCheaterFriendCheck", "é—œé–‰æœ‹å‹åç¨±ç›¸ä¼¼æç¤º", "ä»‹é¢", 0, "Ai4rei/AN", "åœ¨å¯†èªæ™‚é—œé–‰ç›¸ä¼¼æœ‹å‹åå­—çš„æé†’", false);
 
-registerPatch(102, "SkipCheaterGuildCheck", "Ãö³¬¤½·|ª±®a¦WºÙ¬Û¦ü´£¥Ü", "¤¶­±", 0, "Ai4rei/AN", "¦b±K»y®ÉÃö³¬¬Û¦ü¤u·|ª±®a¦W¦rªº´£¿ô", false);
+registerPatch(102, "SkipCheaterGuildCheck", "é—œé–‰å…¬æœƒç©å®¶åç¨±ç›¸ä¼¼æç¤º", "ä»‹é¢", 0, "Ai4rei/AN", "åœ¨å¯†èªæ™‚é—œé–‰ç›¸ä¼¼å·¥æœƒç©å®¶åå­—çš„æé†’", false);
 
-registerPatch(103, "DisableAutofollow", "Ãö³¬¦Û°Ê¸òÀH¥\¯à", "¦Û­q", 0, "Functor, Neo", "Ãö³¬¦Û°Ê¸òÀHªº¥\¯à [Shift+¥kÁä]", false);
+registerPatch(103, "DisableAutofollow", "é—œé–‰è‡ªå‹•è·Ÿéš¨åŠŸèƒ½", "è‡ªè¨‚", 0, "Functor, Neo", "é—œé–‰è‡ªå‹•è·Ÿéš¨çš„åŠŸèƒ½ [Shift+å³éµ]", false);
 
-registerPatch(104, "IncreaseHairLimits", "ÂX¼W¾v«¬¸ò¬V¦âÀÉ½s¸¹", "¤¶­±", 0, "Neo", "ÂX¼W¾v«¬¸ò¬V¦âÀÉ½s¸¹", true);
+registerPatch(104, "IncreaseHairLimits", "æ“´å¢é«®å‹è·ŸæŸ“è‰²æª”ç·¨è™Ÿ", "ä»‹é¢", 0, "Neo", "æ“´å¢é«®å‹è·ŸæŸ“è‰²æª”ç·¨è™Ÿ", true);
 
-// registerPatch(105, "HideNavButton", "ÁôÂÃ[¾É¯è]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾É¯èªº«ö¶s", false);
+// registerPatch(105, "HideNavButton", "éš±è—[å°èˆª]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—å°èˆªçš„æŒ‰éˆ•", false);
 
-// registerPatch(106, "HideBgButton", "ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¾Ô³õªº«ö¶s", false);
+// registerPatch(106, "HideBgButton", "éš±è—[æˆ°å ´]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—æˆ°å ´çš„æŒ‰éˆ•", false);
 
-// registerPatch(107, "HideBankButton", "ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ»È¦æªº«ö¶s", false);
+// registerPatch(107, "HideBankButton", "éš±è—[éŠ€è¡Œ]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—éŠ€è¡Œçš„æŒ‰éˆ•", false);
 
-// registerPatch(108, "HideBooking", "ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ²Õ¶¤©Û¶Òªº«ö¶s", false);
+// registerPatch(108, "HideBooking", "éš±è—[æ‹›å‹Ÿ]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—çµ„éšŠæ‹›å‹Ÿçš„æŒ‰éˆ•", false);
 
-// registerPatch(109, "HideRodex", "ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ«H½c(RODEX)ªº«ö¶s", false);
+// registerPatch(109, "HideRodex", "éš±è—[ä¿¡ç®±]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—ä¿¡ç®±(RODEX)çš„æŒ‰éˆ•", false);
 
-// registerPatch(110, "HideAchieve", "ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦¨´Nªº«ö¶s", false);
+// registerPatch(110, "HideAchieve", "éš±è—[æˆå°±]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—æˆå°±çš„æŒ‰éˆ•", false);
 
-// registerPatch(111, "HideRecButton", "ÁôÂÃ[¿ı¼v]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¿ı¼vªº«ö¶s", false);
+// registerPatch(111, "HideRecButton", "éš±è—[éŒ„å½±]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—éŒ„å½±çš„æŒ‰éˆ•", false);
 
-// registerPatch(112, "HideMapButton", "ÁôÂÃ[¦a¹Ï]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¦a¹Ïªº«ö¶s", false);
+// registerPatch(112, "HideMapButton", "éš±è—[åœ°åœ–]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—åœ°åœ–çš„æŒ‰éˆ•", false);
 
-// registerPatch(113, "HideQuest", "ÁôÂÃ[¥ô°È]«ö¶s", "¤¶­±", 12, "Neo", "ÁôÂÃ¥ô°Èªº«ö¶s", false);
+// registerPatch(113, "HideQuest", "éš±è—[ä»»å‹™]æŒ‰éˆ•", "ä»‹é¢", 12, "Neo", "éš±è—ä»»å‹™çš„æŒ‰éˆ•", false);
 
-registerPatch(114, "ChangeVendingLimit", "­×§ï¦¬ÁÊ°Ó©±ª÷ÃB­­¨î [´ú¸Õ]", "¸ê®Æ", 0, "Neo", "­×§ï¦¬ÁÊ°Ó©±³Ì¦h100¸Uªº­­¨î", false);
+registerPatch(114, "ChangeVendingLimit", "ä¿®æ”¹æ”¶è³¼å•†åº—é‡‘é¡é™åˆ¶ [æ¸¬è©¦]", "è³‡æ–™", 0, "Neo", "ä¿®æ”¹æ”¶è³¼å•†åº—æœ€å¤š100è¬çš„é™åˆ¶", false);
 
-registerPatch(115, "EnableEffectForAllMaps", "¶}±Ò©Ò¦³¦a¹Ïªº¯S®Ä [´ú¸Õ]", "¸ê®Æ", 0, "Neo", "¦b©Ò¦³¦a¹Ï¶}±Ò¦a¹Ï¯S®Ä (EffectTool)", false);
+registerPatch(115, "EnableEffectForAllMaps", "é–‹å•Ÿæ‰€æœ‰åœ°åœ–çš„ç‰¹æ•ˆ [æ¸¬è©¦]", "è³‡æ–™", 0, "Neo", "åœ¨æ‰€æœ‰åœ°åœ–é–‹å•Ÿåœ°åœ–ç‰¹æ•ˆ (EffectTool)", false);
 
-//registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "¤¶­±", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
+//registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "ä»‹é¢", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 
 //FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
 
@@ -304,185 +308,193 @@ registerPatch(115, "EnableEffectForAllMaps", "¶}±Ò©Ò¦³¦a¹Ïªº¯S®Ä [´ú¸Õ]", "¸ê®Æ"
 // Special Patches by Neo and Curiosity //
 //======================================//
 
-registerPatch(200, "EnableMultipleGRFsV2", "Åª¨ú¦h­Ó GRF [¤º´OÁôÂÃ]", "¦Û­q", 5, "Neo", "¤Ä¿ï®É¸ü¤J¹w¥ı³]©w¦nªº(data.ini)¡A¤º´O¦bµn¤J¾¹¸Ì", false);
+registerPatch(200, "EnableMultipleGRFsV2", "è®€å–å¤šå€‹ GRF [å…§åµŒéš±è—]", "è‡ªè¨‚", 5, "Neo", "å‹¾é¸æ™‚è¼‰å…¥é å…ˆè¨­å®šå¥½çš„(data.ini)ï¼Œå…§åµŒåœ¨ç™»å…¥å™¨è£¡", false);
 
-registerPatch(201, "EnableCustomHomunculus", "¸ü¤J¦Û»sªº¥Í©RÅé", "¦Û­q", 0, "Neo", "¬O§_¸ü¤J¦Û»sªº¥Í©RÅé", false);
+registerPatch(201, "EnableCustomHomunculus", "è¼‰å…¥è‡ªè£½çš„ç”Ÿå‘½é«”", "è‡ªè¨‚", 0, "Neo", "æ˜¯å¦è¼‰å…¥è‡ªè£½çš„ç”Ÿå‘½é«”", false);
 
-registerPatch(202, "EnableCustomJobs", "¸ü¤J¦Û»sªºÂ¾·~¥~Æ[", "¦Û­q", 0, "Neo", "¬O§_¸ü¤J¦Û»sªºÂ¾·~¥~Æ[", false);
+registerPatch(202, "EnableCustomJobs", "è¼‰å…¥è‡ªè£½çš„è·æ¥­å¤–è§€", "è‡ªè¨‚", 0, "Neo", "æ˜¯å¦è¼‰å…¥è‡ªè£½çš„è·æ¥­å¤–è§€", false);
 
-registerPatch(203, "EnableCustomShields", "¸ü¤J¦Û»sªº¬ŞµP¥~Æ[", "¦Û­q", 0, "Neo", "¬O§_¸ü¤J¦Û»sªº¬ŞµP¥~Æ[", false);
+registerPatch(203, "EnableCustomShields", "è¼‰å…¥è‡ªè£½çš„ç›¾ç‰Œå¤–è§€", "è‡ªè¨‚", 0, "Neo", "æ˜¯å¦è¼‰å…¥è‡ªè£½çš„ç›¾ç‰Œå¤–è§€", false);
 
-registerPatch(204, "IncreaseAtkDisplay", "ÂX¼W¶Ë®`Åã¥Ü¦ì¼Æ", "¦Û­q", 0, "Neo", "ÂX¼W¶Ë®`Åã¥Üªº¦ì¼Æ¡A¹w³]¬O6¦ì¼Æ99¸U9999¡A±Ò¥Î«áÅÜ10¦ì", true);
+registerPatch(204, "IncreaseAtkDisplay", "æ“´å¢å‚·å®³é¡¯ç¤ºä½æ•¸", "è‡ªè¨‚", 0, "Neo", "æ“´å¢å‚·å®³é¡¯ç¤ºçš„ä½æ•¸ï¼Œé è¨­æ˜¯6ä½æ•¸99è¬9999ï¼Œå•Ÿç”¨å¾Œè®Š10ä½", true);
 
-registerPatch(205, "EnableMonsterTables", "Åª¨úÅ]ª«¹ï¸ÜÀÉ®×", "¦Û­q", 0, "Ind, Neo", "Åª¨úÅ]ª«¹ï¸ÜÀÉ®×¡AMonsterTalkTable.xml¡BPetTalkTable.xml ©M MonsterSkillInfo.xml", false);
+registerPatch(205, "EnableMonsterTables", "è®€å–é­”ç‰©å°è©±æª”æ¡ˆ", "è‡ªè¨‚", 0, "Ind, Neo", "è®€å–é­”ç‰©å°è©±æª”æ¡ˆï¼ŒMonsterTalkTable.xmlã€PetTalkTable.xml å’Œ MonsterSkillInfo.xml", false);
 
-registerPatch(206, "LoadCustomQuestLua", "¸ü¤J¦Û»sªº¥ô°È lub ÀÉ", "¦Û­q", 0, "Neo", "¸ü¤J¦Û»sªº¥ô°È lub ÀÉ¡A¦b¸É¤B lua files\quest ¸Ì­±", false);
+registerPatch(206, "LoadCustomQuestLua", "è¼‰å…¥è‡ªè£½çš„ä»»å‹™ lub æª”", "è‡ªè¨‚", 0, "Neo", "è¼‰å…¥è‡ªè£½çš„ä»»å‹™ lub æª”ï¼Œåœ¨è£œä¸ lua files\quest è£¡é¢", false);
 
-registerPatch(207, "ResizeFont", "­×§ï¦r«¬¤j¤p", "¤¶­±", 0, "Yommy, Neo", "­×§ï¦r«¬¤j¤p¡A¹w³]¬O10¡A¤¤¤å§ï¤j·|ÅÜ«ÜÁà", false);
+registerPatch(207, "ResizeFont", "ä¿®æ”¹å­—å‹å¤§å°", "ä»‹é¢", 0, "Yommy, Neo", "ä¿®æ”¹å­—å‹å¤§å°ï¼Œé è¨­æ˜¯10ï¼Œä¸­æ–‡æ”¹å¤§æœƒè®Šå¾ˆé†œ", false);
 
-registerPatch(208, "RestoreCashShop", "«ì´_¥k¤W¤è[°Ó«°]¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_¥k¤W¤è°Ó«°ªº«ö¶s¹Ï¥Ü¡ARE ª©¥»¨S¦³°Ó«°¤~­n¤Ä¿ï", false);
+registerPatch(208, "RestoreCashShop", "æ¢å¾©å³ä¸Šæ–¹[å•†åŸ]åœ–ç¤º", "ç‰¹æ®Š", 0, "Neo", "æ¢å¾©å³ä¸Šæ–¹å•†åŸçš„æŒ‰éˆ•åœ–ç¤ºï¼ŒRE ç‰ˆæœ¬æ²’æœ‰å•†åŸæ‰è¦å‹¾é¸", false);
 
-registerPatch(209, "EnableMailBox", "«ì´_«H½c¥\¯à", "¤¶­±", 0, "Neo", "±Ò¥Î«H½c¥\¯à(ÂÂª©«H½c¡A«D RODEX)¡A¹ï©Ò¦³(langtype)³£¤ä´©", false);
+registerPatch(209, "EnableMailBox", "æ¢å¾©ä¿¡ç®±åŠŸèƒ½", "ä»‹é¢", 0, "Neo", "å•Ÿç”¨ä¿¡ç®±åŠŸèƒ½(èˆŠç‰ˆä¿¡ç®±ï¼Œé RODEX)ï¼Œå°æ‰€æœ‰(langtype)éƒ½æ”¯æ´", false);
 
-registerPatch(210, "UseCustomIcon", "¨Ï¥Î¦Û»sªº¹Ï¥Ü", "¤¶­±", 4, "Neo", "¨Ï¥Î¦Û»sªº¹Ï¥Ü 8bpp (256 ¦â) 32x32 ¹Ï¤ù", false);
+registerPatch(210, "UseCustomIcon", "ä½¿ç”¨è‡ªè£½çš„åœ–ç¤º", "ä»‹é¢", 4, "Neo", "ä½¿ç”¨è‡ªè£½çš„åœ–ç¤º 8bpp (256 è‰²) 32x32 åœ–ç‰‡", false);
 
-registerPatch(211, "UseCustomDLL", "¸ü¤J¦Û»sªº DLL", "¦Û­q", 0, "Neo", "±¾¸ü¦Û»sªº DLL¡A¨Ò¦p ±Ò°Ê°Êµe (½d¨ÒÀÉ¦bInput\dlls.txt)", false);
+registerPatch(211, "UseCustomDLL", "è¼‰å…¥è‡ªè£½çš„ DLL", "è‡ªè¨‚", 0, "Neo", "æ›è¼‰è‡ªè£½çš„ DLLï¼Œä¾‹å¦‚ å•Ÿå‹•å‹•ç•« (ç¯„ä¾‹æª”åœ¨Input\dlls.txt)", false);
 
-registerPatch(212, "RestoreRoulette", "«ì´_¥k¤W¤è[Âà½L]¹Ï¥Ü", "¯S®í", 0, "Neo", "«ì´_¥k¤W¤èÂà½L«ö¶s¹Ï¥Ü¡A·sª©¹w³]¤wÃö³¬", false);
+registerPatch(212, "RestoreRoulette", "æ¢å¾©å³ä¸Šæ–¹[è½‰ç›¤]åœ–ç¤º", "ç‰¹æ®Š", 0, "Neo", "æ¢å¾©å³ä¸Šæ–¹è½‰ç›¤æŒ‰éˆ•åœ–ç¤ºï¼Œæ–°ç‰ˆé è¨­å·²é—œé–‰", false);
 
-registerPatch(213, "DisableHelpMsg", "Ãö³¬µn¤J¹CÀ¸ªº±Ğ¾Ç´£¥Ü", "¤¶­±", 0, "Neo", "Ãö³¬µn¤J¹CÀ¸®É¡AÅã¥Üªº±Ğ¾Ç´£¥Ü", true);
+registerPatch(213, "DisableHelpMsg", "é—œé–‰ç™»å…¥éŠæˆ²çš„æ•™å­¸æç¤º", "ä»‹é¢", 0, "Neo", "é—œé–‰ç™»å…¥éŠæˆ²æ™‚ï¼Œé¡¯ç¤ºçš„æ•™å­¸æç¤º", true);
 
-registerPatch(214, "RestoreModelCulling", "«ì´_³zµø¼Ò²Õ", "¯S®í", 0, "Curiosity", "±Ò¥Î³zµø¼Ò²Õ(Culling)¡A·íª±®a¦b©Ğ¤l«á­±·|±N©Ğ¤l³z©ú¤Æ³B²z(¦³¨Ç¦a¹Ï¦³BUG)", false);
+registerPatch(214, "RestoreModelCulling", "æ¢å¾©é€è¦–æ¨¡çµ„", "ç‰¹æ®Š", 0, "Curiosity", "å•Ÿç”¨é€è¦–æ¨¡çµ„(Culling)ï¼Œç•¶ç©å®¶åœ¨æˆ¿å­å¾Œé¢æœƒå°‡æˆ¿å­é€æ˜åŒ–è™•ç†(æœ‰äº›åœ°åœ–æœ‰BUG)", false);
 
-registerPatch(215, "IncreaseMapQuality", "¦a¹Ï¤ä´©32¦ì¤¸¯¾²z", "¦Û­q", 0, "Curiosity", "Åı¦a¹Ï¤ä´©32¦ì¤¸ÃC¦â¯¾²z", false);
+registerPatch(215, "IncreaseMapQuality", "åœ°åœ–æ”¯æ´32ä½å…ƒç´‹ç†", "è‡ªè¨‚", 0, "Curiosity", "è®“åœ°åœ–æ”¯æ´32ä½å…ƒé¡è‰²ç´‹ç†", false);
 
-registerPatch(216, "HideCashShop", "ÁôÂÃ¥k¤W¤è[°Ó«°]¹Ï¥Ü", "¤¶­±", 12, "Neo", "ÁôÂÃ¥k¤W¤è°Ó«°«ö¶s¹Ï¥Ü", false);
+registerPatch(216, "HideCashShop", "éš±è—å³ä¸Šæ–¹[å•†åŸ]åœ–ç¤º", "ä»‹é¢", 12, "Neo", "éš±è—å³ä¸Šæ–¹å•†åŸæŒ‰éˆ•åœ–ç¤º", false);
 
-registerPatch(217, "HideRoulette", "ÁôÂÃ¥k¤W¤è[Âà½L]¹Ï¥Ü", "¤¶­±", 12, "Neo", "ÁôÂÃ¥k¤W¤èÂà½L«ö¶s¹Ï¥Ü", false);
+registerPatch(217, "HideRoulette", "éš±è—å³ä¸Šæ–¹[è½‰ç›¤]åœ–ç¤º", "ä»‹é¢", 12, "Neo", "éš±è—å³ä¸Šæ–¹è½‰ç›¤æŒ‰éˆ•åœ–ç¤º", false);
 
-registerPatch(218, "ShowExpNumbers", "Åã¥Ü¸gÅç±ø", "¤¶­±", 0, "Neo", "¦b¥ª¤W¨¤¨¤¦âª¬ºAÄæÅã¥Ü¸gÅç±ø", false);
+registerPatch(218, "ShowExpNumbers", "é¡¯ç¤ºç¶“é©—å€¼", "ä»‹é¢", 0, "Neo", "åœ¨å·¦ä¸Šè§’è§’è‰²ç‹€æ…‹æ¬„ç¶“é©—æ¢æ—é¡¯ç¤ºç¶“é©—å€¼", false);
 
-registerPatch(219, "ShowResurrectionButton", "Åã¥Ü­ì¦a´_¬¡«ö¶s", "¤¶­±", 15, "Neo", "¨¤¦â¦º¤`®É±j¨îÅã¥Ü­ì¦a´_¬¡«ö¶s(¤£ºŞmapflag³£·|Åã¥Ü)", false);
+registerPatch(219, "ShowResurrectionButton", "é¡¯ç¤ºåŸåœ°å¾©æ´»æŒ‰éˆ•", "ä»‹é¢", 15, "Neo", "è§’è‰²æ­»äº¡æ™‚å¼·åˆ¶é¡¯ç¤ºåŸåœ°å¾©æ´»æŒ‰éˆ•(ä¸ç®¡mapflagéƒ½æœƒé¡¯ç¤º)", false);
 
-registerPatch(220, "DisableMapInterface", "Ãö³¬¥@¬É¦a¹Ï", "¤¶­±", 0, "Neo", "Ãö³¬¥@¬É¦a¹Ï¥\¯à", false);
+registerPatch(220, "DisableMapInterface", "é—œé–‰ä¸–ç•Œåœ°åœ–", "ä»‹é¢", 0, "Neo", "é—œé–‰ä¸–ç•Œåœ°åœ–åŠŸèƒ½", false);
 
-registerPatch(221, "RemoveJobsFromBooking", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", "¤¶­±", 0, "Neo", "²Õ¶¤©Û¶Ò¤£Åã¥ÜÂ¾·~¦WºÙ", false);
+registerPatch(221, "RemoveJobsFromBooking", "çµ„éšŠæ‹›å‹Ÿä¸é¡¯ç¤ºè·æ¥­åç¨±", "ä»‹é¢", 0, "Neo", "çµ„éšŠæ‹›å‹Ÿä¸é¡¯ç¤ºè·æ¥­åç¨±", false);
 
-registerPatch(222, "ShowReplayButton", "Åã¥Ü¿ı¼v¼½©ñ«ö¶s", "¤¶­±", 0, "Neo", "¿ï¾Ü¦øªA¾¹®É¡AÅã¥Ü¿ı¼v¼½©ñªº«ö¶s", false);
+registerPatch(222, "ShowReplayButton", "é¡¯ç¤ºéŒ„å½±æ’­æ”¾æŒ‰éˆ•", "ä»‹é¢", 0, "Neo", "é¸æ“‡ä¼ºæœå™¨æ™‚ï¼Œé¡¯ç¤ºéŒ„å½±æ’­æ”¾çš„æŒ‰éˆ•", false);
 
-registerPatch(223, "MoveItemCountUpwards", "¬ü¤Æ¥ª¤W¨¤ª¬ºAÄæ[´ú¸Õ]", "¤¶­±", 0, "Neo", "¬ü¤Æ¥ª¤W¨¤ªºª¬ºAÄæ", false);
+registerPatch(223, "MoveItemCountUpwards", "ç¾åŒ–å·¦ä¸Šè§’ç‹€æ…‹æ¬„[æ¸¬è©¦]", "ä»‹é¢", 0, "Neo", "ç¾åŒ–å·¦ä¸Šè§’çš„ç‹€æ…‹æ¬„", false);
 
-//registerPatch(224, "IncreaseNpcIDs", "ÂX¥R NPC ½s¸¹¤W­­[´ú¸Õ]", "¦Û­q", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
+//registerPatch(224, "IncreaseNpcIDs", "æ“´å…… NPC ç·¨è™Ÿä¸Šé™[æ¸¬è©¦]", "è‡ªè¨‚", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
 
-registerPatch(225, "ShowRegisterButton", "Åã¥Üµù¥U«ö¶s", "¤¶­±", 0, "Neo", "¦bµn¤J¿é¤J±b¸¹¤¶­±Åã¥Üµù¥U«ö¶s", false);
+registerPatch(225, "ShowRegisterButton", "é¡¯ç¤ºè¨»å†ŠæŒ‰éˆ•", "ä»‹é¢", 0, "Neo", "åœ¨ç™»å…¥è¼¸å…¥å¸³è™Ÿä»‹é¢é¡¯ç¤ºè¨»å†ŠæŒ‰éˆ•", false);
 
-registerPatch(226, "DisableWalkToDelay", "Ãö³¬²¾°Ê©µ¿ğ[¤£«ØÄ³]", "¦Û­q", 16, "MegaByte", "Ãö³¬²¾°Ê©µ¿ğ¡AÅıª±®a¥i¥HµL©µ¿ğ²¾°Ê¡A±Ò¥Î«á·|³y¦¨¦øªA¾¹­t¾á", false);
+registerPatch(226, "DisableWalkToDelay", "é—œé–‰ç§»å‹•å»¶é²[ä¸å»ºè­°]", "è‡ªè¨‚", 16, "MegaByte", "é—œé–‰ç§»å‹•å»¶é²ï¼Œè®“ç©å®¶å¯ä»¥ç„¡å»¶é²ç§»å‹•ï¼Œå•Ÿç”¨å¾Œæœƒé€ æˆä¼ºæœå™¨è² æ“”", false);
 
-registerPatch(227, "SetWalkToDelay", "­×§ï²¾°Ê©µ¿ğ", "¦Û­q", 16, "MegaByte", "­×§ï²¾°Ê©µ¿ğ¡A©µ¿ğ¶V§C²¾°Ê¤ÏÀ³¶V§Ö¡A³]©w¹Lµu·|³y¦¨¦øªA¾¹­t¾á", false);
+registerPatch(227, "SetWalkToDelay", "ä¿®æ”¹ç§»å‹•å»¶é²", "è‡ªè¨‚", 16, "MegaByte", "ä¿®æ”¹ç§»å‹•å»¶é²ï¼Œå»¶é²è¶Šä½ç§»å‹•åæ‡‰è¶Šå¿«ï¼Œè¨­å®šéçŸ­æœƒé€ æˆä¼ºæœå™¨è² æ“”", false);
 
-registerPatch(228, "DisableDoram", "Ãö³¬Øp±Úªº¸}¦â¤¶­±[´ú¸Õ]", "¤¶­±", 0, "Ai4Rei, Secret", "Ãö³¬Øp±Úªº³Ğ¥ß¸}¦â¤¶­± («ØÄ³¦øªAºİ¤]­n­­¨î)", false);
+registerPatch(228, "DisableDoram", "é—œé–‰å–µæ—çš„è…³è‰²ä»‹é¢[æ¸¬è©¦]", "ä»‹é¢", 0, "Ai4Rei, Secret", "é—œé–‰å–µæ—çš„å‰µç«‹è…³è‰²ä»‹é¢ (å»ºè­°ä¼ºæœç«¯ä¹Ÿè¦é™åˆ¶)", false);
 
-registerPatch(229, "EnableEmblemForBG", "Åã¥Ü¤½·|¹Ï¥Ü¦b¾Ô³õ¦a¹Ï", "¤¶­±", 0, "Neo", "¦b¾Ô³õ¦a¹Ï®É¡Aª±®aÀY¤WÅã¥Ü¤½·|¹Ï¥Ü", false);
+registerPatch(229, "EnableEmblemForBG", "é¡¯ç¤ºå…¬æœƒåœ–ç¤ºåœ¨æˆ°å ´åœ°åœ–", "ä»‹é¢", 0, "Neo", "åœ¨æˆ°å ´åœ°åœ–æ™‚ï¼Œç©å®¶é ­ä¸Šé¡¯ç¤ºå…¬æœƒåœ–ç¤º", false);
 
-registerPatch(230, "AlwaysReadKrExtSettings", "¥Ã»·Åª¨úÁúª©luaªºÀÉ®×¦WºÙ", "­×´_", 0, "Secret", "¥Ã»·Åª¨úÁúª© lua ªºÀÉ®×¦WºÙ¡A¦Ó¤£·|¨üµn¤J¾¹ clientinfo ³]©wªº ServiceType ¦Ó§ïÅÜ¸ô®|", false);
+registerPatch(230, "AlwaysReadKrExtSettings", "æ°¸é è®€å–éŸ“ç‰ˆluaçš„æª”æ¡ˆåç¨±", "ä¿®å¾©", 0, "Secret", "æ°¸é è®€å–éŸ“ç‰ˆ lua çš„æª”æ¡ˆåç¨±ï¼Œè€Œä¸æœƒå—ç™»å…¥å™¨ clientinfo è¨­å®šçš„ ServiceType è€Œæ”¹è®Šè·¯å¾‘", false);
 
-registerPatch(231, "RemoveHardcodedAddress", "²¾°£¼g¦º¦bµn¤J¾¹ªºIP¸òPort", "­×´_", 17, "4144", "²¾°£¼g¦º¦bµn¤J¾¹ªºIP¸òPort", false);
+registerPatch(231, "RemoveHardcodedAddress", "ç§»é™¤å¯«æ­»åœ¨ç™»å…¥å™¨çš„IPè·ŸPort", "ä¿®å¾©", 17, "4144", "ç§»é™¤å¯«æ­»åœ¨ç™»å…¥å™¨çš„IPè·ŸPort", false);
 
-registerPatch(232, "RestoreOldLoginPacket", "«ì´_ÂÂª©ªºµn¤J«Ê¥]", "¯S®í", 17, "4144", "«ì´_ÂÂª©ªºµn¤J«Ê¥] 0x64", false);
+registerPatch(232, "RestoreOldLoginPacket", "æ¢å¾©èˆŠç‰ˆçš„ç™»å…¥å°åŒ…", "ç‰¹æ®Š", 17, "4144", "æ¢å¾©èˆŠç‰ˆçš„ç™»å…¥å°åŒ… 0x64", false);
 
-// registerPatch(233, "HideSNSButton", "ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Secret", "ÁôÂÃ TWITTER ªº«ö¶s", false);
+// registerPatch(233, "HideSNSButton", "éš±è—[TWITTER]æŒ‰éˆ•", "ä»‹é¢", 12, "Secret", "éš±è— TWITTER çš„æŒ‰éˆ•", false);
 
-registerPatch(234, "IgnoreLuaErrors", "©¿²¤ Lua ¿ù»~", "­×´_", 0, "4144", "©¿²¤©Ò¦³ Lua/Lub ¿ù»~(¥iÀ°§U°£¿ù¡ADeBug®É¤£¥Î¤Ä)", false);
+registerPatch(234, "IgnoreLuaErrors", "å¿½ç•¥ Lua éŒ¯èª¤", "ä¿®å¾©", 0, "4144", "å¿½ç•¥æ‰€æœ‰ Lua/Lub éŒ¯èª¤(å¯å¹«åŠ©é™¤éŒ¯ï¼ŒDeBugæ™‚ä¸ç”¨å‹¾)", false);
 
-registerPatch(235, "EnableGuildWhenInClan", "±Ò¥Î¦b¤ó±Ú¤¤¤]¥i¥[¤J¤½·|", "¦Û­q", 0, "Functor, Secret", "¦b¦¨¬°¤ó±Ú¦¨­û®É¡A²¾°£³æ¤@¤½·|ªº­­¨î¡A¥i¦P®É¦³¨â­Ó¤u·|", false);
+registerPatch(235, "EnableGuildWhenInClan", "å•Ÿç”¨åœ¨æ°æ—ä¸­ä¹Ÿå¯åŠ å…¥å…¬æœƒ", "è‡ªè¨‚", 0, "Functor, Secret", "åœ¨æˆç‚ºæ°æ—æˆå“¡æ™‚ï¼Œç§»é™¤å–®ä¸€å…¬æœƒçš„é™åˆ¶ï¼Œå¯åŒæ™‚æœ‰å…©å€‹å·¥æœƒ", false);
 
-registerPatch(236, "EnablePlayerSkills", "±Ò¥Î¦Û­qª±®a§Ş¯à[´ú¸Õ]", "¦Û­q", 18, "Neo", "±Ò¥Î¦Û­qª±®a§Ş¯à (¨Ï¥Î Lua ÀÉ®×)", false);
+registerPatch(236, "EnablePlayerSkills", "å•Ÿç”¨è‡ªè¨‚ç©å®¶æŠ€èƒ½[æ¸¬è©¦]", "è‡ªè¨‚", 18, "Neo", "å•Ÿç”¨è‡ªè¨‚ç©å®¶æŠ€èƒ½ (ä½¿ç”¨ Lua æª”æ¡ˆ)", false);
 
-registerPatch(237, "EnableHomunSkills", "±Ò¥Î¦Û­q¥Í©RÅé§Ş¯à[´ú¸Õ]", "¦Û­q", 18, "Neo", "±Ò¥Î¦Û­q¥Í©RÅé§Ş¯à (¨Ï¥Î Lua ÀÉ®×)", false);
+registerPatch(237, "EnableHomunSkills", "å•Ÿç”¨è‡ªè¨‚ç”Ÿå‘½é«”æŠ€èƒ½[æ¸¬è©¦]", "è‡ªè¨‚", 18, "Neo", "å•Ÿç”¨è‡ªè¨‚ç”Ÿå‘½é«”æŠ€èƒ½ (ä½¿ç”¨ Lua æª”æ¡ˆ)", false);
 
-registerPatch(238, "EnableMerceSkills", "±Ò¥Î¦Û­q¶Ä§L§Ş¯à[´ú¸Õ]", "¦Û­q", 18, "Neo", "±Ò¥Î¦Û­q¶Ä§L§Ş¯à (¨Ï¥Î Lua ÀÉ®×)", false);
+registerPatch(238, "EnableMerceSkills", "å•Ÿç”¨è‡ªè¨‚å‚­å…µæŠ€èƒ½[æ¸¬è©¦]", "è‡ªè¨‚", 18, "Neo", "å•Ÿç”¨è‡ªè¨‚å‚­å…µæŠ€èƒ½ (ä½¿ç”¨ Lua æª”æ¡ˆ)", false);
 
-registerPatch(239, "IgnoreAccountArgument", "¸T¤î /account: °Ñ¼Æ", "­×´_", 0, "Secret", "¸T¤î /account: °Ñ¼Æ", false);
+registerPatch(239, "IgnoreAccountArgument", "ç¦æ­¢ /account: åƒæ•¸", "ä¿®å¾©", 0, "Secret", "ç¦æ­¢ /account: åƒæ•¸", false);
 
-registerPatch(240, "LoadCustomClientInfo", "­×§ï clientinfo.xml ¸ô®|", "¦Û­q", 0, "Secret", "­×§ï¦Û­qªº clientinfo.xml ¸ô®|", false);
+registerPatch(240, "LoadCustomClientInfo", "ä¿®æ”¹ clientinfo.xml è·¯å¾‘", "è‡ªè¨‚", 0, "Secret", "ä¿®æ”¹è‡ªè¨‚çš„ clientinfo.xml è·¯å¾‘", false);
 
-registerPatch(241, "AlwaysLoadClientPlugins", "¦Û°Ê¸ü¤J´¡¥ó[´ú¸Õ]", "­×´_", 0, "Secret", "¦Û°Ê¸ü¤J DLL ´¡¥ó", false);
+registerPatch(241, "AlwaysLoadClientPlugins", "è‡ªå‹•è¼‰å…¥æ’ä»¶[æ¸¬è©¦]", "ä¿®å¾©", 0, "Secret", "è‡ªå‹•è¼‰å…¥ DLL æ’ä»¶", false);
 
-registerPatch(242, "DisableKROSiteLaunch", "Ãö³¬Áúª©ºô­¶µn¤Jªº¥\¯à", "­×´_", 0, "mrjnumber1", "Ãö³¬Áúª©(ro.gnjoy.com)ºô­¶µn¤Jªº¥\¯à¡A­Y¥¼Ãö³¬±NµLªk¨Ï¥Î¶Ç²Î¤è¦¡µn¤J", false);
+registerPatch(242, "DisableKROSiteLaunch", "é—œé–‰éŸ“ç‰ˆç¶²é ç™»å…¥çš„åŠŸèƒ½", "ä¿®å¾©", 0, "mrjnumber1", "é—œé–‰éŸ“ç‰ˆ(ro.gnjoy.com)ç¶²é ç™»å…¥çš„åŠŸèƒ½ï¼Œè‹¥æœªé—œé–‰å°‡ç„¡æ³•ä½¿ç”¨å‚³çµ±æ–¹å¼ç™»å…¥", false);
 
-registerPatch(243, "ChangeQuickSwitchDelay", "­×§ï¤@Áä´«¸Ëªº©µ¿ğ®É¶¡", "­×´_", 0, "mrjnumber1", "­×§ï¤@Áä´«¸Ëªº©µ¿ğ®É¶¡", false);
+registerPatch(243, "ChangeQuickSwitchDelay", "ä¿®æ”¹ä¸€éµæ›è£çš„å»¶é²æ™‚é–“", "ä¿®å¾©", 0, "mrjnumber1", "ä¿®æ”¹ä¸€éµæ›è£çš„å»¶é²æ™‚é–“", false);
 
-registerPatch(244, "DisableCDGuard", "²¾°£ Cheat Defender ¹CÀ¸«OÅ@¾¹", "­×´_", 0, "4144", "²¾°£ Cheat Defender ¹CÀ¸«OÅ@¾¹¡A¨S²¾°£µLªk±Ò°Ê¹CÀ¸", true);
+registerPatch(244, "DisableCDGuard", "ç§»é™¤ Cheat Defender éŠæˆ²ä¿è­·å™¨", "ä¿®å¾©", 0, "4144", "ç§»é™¤ Cheat Defender éŠæˆ²ä¿è­·å™¨ï¼Œæ²’ç§»é™¤ç„¡æ³•å•Ÿå‹•éŠæˆ²", true);
 
-registerPatch(245, "FixedCharJobCreate", "­×§ï«Ø¥ß¨¤¦â®Éªº¨¤¦â½s¸¹¿ù»~", "¦Û­q", 0, "4144", "­×§ï«Ø¥ß¨¤¦â®Éªº¨¤¦â½s¸¹¿ù»~", false);
+registerPatch(245, "FixedCharJobCreate", "ä¿®æ”¹å»ºç«‹è§’è‰²æ™‚çš„è§’è‰²ç·¨è™ŸéŒ¯èª¤", "è‡ªè¨‚", 0, "4144", "ä¿®æ”¹å»ºç«‹è§’è‰²æ™‚çš„è§’è‰²ç·¨è™ŸéŒ¯èª¤", false);
 
-// registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "¦Û­q", 19, "4144", "Allow use more hair styles than default limit", false);
+// registerPatch(246, "IncreaseHairSprites", "Increase hair style limit in game", "è‡ªè¨‚", 19, "4144", "Allow use more hair styles than default limit", false);
 
-registerPatch(247, "ChangeNewCharNameHeight", "­×§ï·sªº³Ğ¨¤¤¶­±¦W¦rÄæ¦ìªº°ª«×", "¦Û­q", 0, "4144", "­×§ï·sªº³Ğ¨¤¤¶­±¦W¦rÄæ¦ìªº°ª«×", false);
+registerPatch(247, "ChangeNewCharNameHeight", "ä¿®æ”¹æ–°çš„å‰µè§’ä»‹é¢åå­—æ¬„ä½çš„é«˜åº¦", "è‡ªè¨‚", 0, "4144", "ä¿®æ”¹æ–°çš„å‰µè§’ä»‹é¢åå­—æ¬„ä½çš„é«˜åº¦", false);
 
-registerPatch(248, "RemoveWrongCharFromCashShop", "²¾°£ÂI¼Æ°Ó«°¤¤ÀH¾÷¥X²{ªº¦r¤¸", "¦Û­q", 0, "4144", "²¾°£ÂI¼Æ°Ó«°¤¤ÀH¾÷¥X²{ªº¦r¤¸", false);
+registerPatch(248, "RemoveWrongCharFromCashShop", "ç§»é™¤é»æ•¸å•†åŸä¸­éš¨æ©Ÿå‡ºç¾çš„å­—å…ƒ", "è‡ªè¨‚", 0, "4144", "ç§»é™¤é»æ•¸å•†åŸä¸­éš¨æ©Ÿå‡ºç¾çš„å­—å…ƒ", false);
 
-registerPatch(249, "ChangeMinimalResolutionLimit", "­×§ï¹CÀ¸³Ì¤p¸ÑªR«×­­¨î", "¦Û­q", 0, "4144", "­×§ï¹CÀ¸³Ì¤p¸ÑªR«×­­¨î (¹w³]­È¬° 1024x768", false);
+registerPatch(249, "ChangeMinimalResolutionLimit", "ä¿®æ”¹éŠæˆ²æœ€å°è§£æåº¦é™åˆ¶", "è‡ªè¨‚", 0, "4144", "ä¿®æ”¹éŠæˆ²æœ€å°è§£æåº¦é™åˆ¶ (é è¨­å€¼ç‚º 1024x768", false);
 
-registerPatch(250, "AllowLeavelPartyLeader", "¤¹³\¶¤ªø¦b¨S¦³¶¤­ûªº¦a¹ÏÂ÷¶}²Õ¶¤", "¦Û­q", 0, "4144", "¤¹³\¶¤ªø¦b¨S¦³¶¤­ûªº¦a¹ÏÂ÷¶}²Õ¶¤¡A¦¹¬°·sª©µn¤J¾¹ªº­­¨î", false);
+registerPatch(250, "AllowLeavelPartyLeader", "å…è¨±éšŠé•·åœ¨æ²’æœ‰éšŠå“¡çš„åœ°åœ–é›¢é–‹çµ„éšŠ", "è‡ªè¨‚", 0, "4144", "å…è¨±éšŠé•·åœ¨æ²’æœ‰éšŠå“¡çš„åœ°åœ–é›¢é–‹çµ„éšŠï¼Œæ­¤ç‚ºæ–°ç‰ˆç™»å…¥å™¨çš„é™åˆ¶", false);
 
-registerPatch(251, "AllowCloseCutinByEsc", "¥i¨Ï¥Î Esc Ãö³¬ cutin ¹Ï¤ù", "¦Û­q", 0, "4144", "¥i¨Ï¥Î Esc Ãö³¬ cutin ªº NPC ¹Ï¤ù", false);
+registerPatch(251, "AllowCloseCutinByEsc", "å¯ä½¿ç”¨ Esc é—œé–‰ cutin åœ–ç‰‡", "è‡ªè¨‚", 0, "4144", "å¯ä½¿ç”¨ Esc é—œé–‰ cutin çš„ NPC åœ–ç‰‡", false);
 
-//registerPatch(252, "FixAchievementCounters", "Fix achievement counters for each type of achievement", "¦Û­q", 0, "4144", "Fix achievement counters for each type of achievement for 2017 clients", false);
+registerPatch(252, "FixAchievementCounters", "ä¿®å¾©æˆå°±ç³»çµ±è¨ˆæ•¸å•é¡Œ", "è‡ªè¨‚", 0, "4144", "ä¿®å¾© 2017 ç™»å…¥å™¨æˆå°±ç³»çµ±è¨ˆæ•¸éŒ¯èª¤çš„å•é¡Œ", false);
 
-registerPatch(253, "SkipHiddenMenuButtons", "­×´_¥\¯à¦CªºÁô§Î«ö¶s", "Custom", 12, "4144", "·í±Ò¥ÎÁôÂÃ¥ª¤W¤è¥\¯à¦Cªº«ö¶s®É¡A­×´_Áô§Îªº«ö¶s", false);
+registerPatch(253, "SkipHiddenMenuButtons", "ä¿®å¾©åŠŸèƒ½åˆ—çš„éš±å½¢æŒ‰éˆ•", "Custom", 12, "4144", "ç•¶å•Ÿç”¨éš±è—å·¦ä¸Šæ–¹åŠŸèƒ½åˆ—çš„æŒ‰éˆ•æ™‚ï¼Œä¿®å¾©éš±å½¢çš„æŒ‰éˆ•", false);
 
-registerPatch(268, "RestoreChatFocus", "«ì´_²á¤Ñµøµ¡¥ªÁä¿ï¨ú¤å¦r¥\¯à", "Custom", 0, "4144", "«ì´_²á¤Ñ¿é¤Jµøµ¡¥ªÁä¿ï¨úªº¥\¯à", false);
+registerPatch(268, "RestoreChatFocus", "æ¢å¾©èŠå¤©è¦–çª—å·¦éµé¸å–æ–‡å­—åŠŸèƒ½", "Custom", 0, "4144", "æ¢å¾©èŠå¤©è¼¸å…¥è¦–çª—å·¦éµé¸å–çš„åŠŸèƒ½", false);
 
-registerPatch(280, "ChangeGuildExpLimit", "­×§ï¤½·|¸gÅç©â¦¨¤W­­", "Custom", 0, "4144", "­×§ï¤½·|¸gÅç©â¦¨ªº¦Ê¤À¤ñ­­¨î (¹w³]50%)", false);
+registerPatch(280, "ChangeGuildExpLimit", "ä¿®æ”¹å…¬æœƒç¶“é©—æŠ½æˆä¸Šé™", "Custom", 0, "4144", "ä¿®æ”¹å…¬æœƒç¶“é©—æŠ½æˆçš„ç™¾åˆ†æ¯”é™åˆ¶ (é è¨­50%)", false);
 
+registerPatch(283, "ChangeFadeOutDelay", "ä¿®æ”¹ç¬ç§»çš„å»¶é²æ™‚é–“", "Custom", 0, "4144", "ä¿®æ”¹åœ¨åŒå¼µåœ°åœ–ç¬ç§»çš„å»¶é²æ™‚é–“", false);
 
+registerPatch(284, "CopyCDGuard", "ç§»é™¤ CDClient.dll æª”æ¡ˆæª¢æŸ¥ç³»çµ±", "Fix", 0, "4144", "ç§»é™¤ Cheat Defender éŠæˆ²ä¿è­·å™¨å¾Œï¼Œä¿ç•™çš„ DLL ç”¨ç©ºç™½çš„ CDClient.dll æª”æ¡ˆè¦†è“‹åˆ°ç›®æ¨™è³‡æ–™å¤¾", false);
 
-registerPatch(300, "FixItemDescBug", "­×´_ª««~»¡©ú¶Ã½X Bug", "¤¶­±", 0, "Jchcc", "­×´_ª««~¥kÁä¤º®e '[' ³y¦¨ªº¶Ã½X", false);
+registerPatch(285, "FixActDelay", "ä¿®å¾© Act æœ‰éå¤šå½±æ ¼çš„å»¶é²", "Fix", 0, "Functor, 4144", "ä¿®å¾© Act æœ‰éå¤šå½±æ ¼çš„å»¶é²", false);
 
-registerPatch(301, "SetMaxItemCount", "­×§ï¨¤¦â¹D¨ã¤W­­Åã¥Ü", "¤¶­±", 0, "Jchcc", "­×§ï¨¤¦â¹D¨ã®e¶q³Ì¤j¤W­­Åã¥Üªº¼Æ­È (¥u¬Oµn¤J¾¹Åã¥Ü¡A¸ò¦øªAºİµLÃö)", false);
+registerPatch(286, "HideZeroDateInGuildMembers", "éš±è—å…¬æœƒæˆå“¡ (1969-01-01) æœ€å¾Œä¸Šç·šæ™‚é–“", "Fix", 0, "4144", "éš±è—å…¬æœƒæˆå“¡é è¨­ç„¡æ„ç¾©çš„ (1969-01-01) æœ€å¾Œä¸Šç·šæ™‚é–“", false);
 
-registerPatch(302, "SetAutoFollowDelay", "³]©w¦Û°Ê¸òÀH©µ¿ğ", "¦Û­q", 0, "Jchcc", "Åı¦Û°Ê¸òÀH§óºò±K¡A´î¤Ö¹L¹Ï¸ò¥áªº±¡ªp", false);
 
-registerPatch(303, "DefaultBrowserInCashshop", "¨Ï¥Î¹w³]ÂsÄı¾¹¶}±Ò°Ó«°¤º³sµ²", "¤¶­±", 0, "Jchcc", "¨Ï¥Î¨t²Î¹w³]ªºÂsÄı¾¹¶}±Ò·sª©°Ó«°(2018)¤ºªº³sµ²¡A¤£¨Ï¥Î IE", false);
+registerPatch(300, "FixItemDescBug", "ä¿®å¾©ç‰©å“èªªæ˜äº‚ç¢¼ Bug", "ä»‹é¢", 0, "Jchcc", "ä¿®å¾©ç‰©å“å³éµå…§å®¹ '[' é€ æˆçš„äº‚ç¢¼", false);
 
-registerPatch(304, "UseDefaultBrowser", "¨Ï¥Î¹w³]ÂsÄı¾¹¶}±ÒNPCªº<URL>³sµ²", "¤¶­±", 0, "Jchcc", "¨Ï¥Î¨t²Î¹w³]ªºÂsÄı¾¹¶}±Ò NPC ªº <URL> ³sµ²¡A¤£¦A¨Ï¥ÎRO¤º«ØªºÂsÄı¾¹", false);
+registerPatch(301, "SetMaxItemCount", "ä¿®æ”¹è§’è‰²é“å…·ä¸Šé™é¡¯ç¤º", "ä»‹é¢", 0, "Jchcc", "ä¿®æ”¹è§’è‰²é“å…·å®¹é‡æœ€å¤§ä¸Šé™é¡¯ç¤ºçš„æ•¸å€¼ (åªæ˜¯ç™»å…¥å™¨é¡¯ç¤ºï¼Œè·Ÿä¼ºæœç«¯ç„¡é—œ)", false);
 
-registerPatch(305, "ShortcutAllItem", "¤¹³\©Ò¦³ª««~©ñ§Ö±¶¦C", "­×´_", 0, "Jchcc", "Åı©Ò¦³ª««~³£¯à©ñ¨ì§Ö±¶¦C¡A¤è«K°µ¼Æ¶q°lÂÜ", false);
+registerPatch(302, "SetAutoFollowDelay", "è¨­å®šè‡ªå‹•è·Ÿéš¨å»¶é²", "è‡ªè¨‚", 0, "Jchcc", "è®“è‡ªå‹•è·Ÿéš¨æ›´ç·Šå¯†ï¼Œæ¸›å°‘éåœ–è·Ÿä¸Ÿçš„æƒ…æ³", false);
 
-registerPatch(306, "CustomWindowTitleHex", "­×§ïµn¤J¾¹¼ĞÃD[HEX]", "¤¶­±", 0, "Jian", "­×§ïµn¤J¾¹ªº¼ĞÃD(¤ä´©¤¤¤å¡A½Ğ¿é¤J16¶i¨î)¡A¹w³]¬° '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+registerPatch(303, "DefaultBrowserInCashshop", "ä½¿ç”¨é è¨­ç€è¦½å™¨é–‹å•Ÿå•†åŸå…§é€£çµ", "ä»‹é¢", 0, "Jchcc", "ä½¿ç”¨ç³»çµ±é è¨­çš„ç€è¦½å™¨é–‹å•Ÿæ–°ç‰ˆå•†åŸ(2018)å…§çš„é€£çµï¼Œä¸ä½¿ç”¨ IE", false);
 
-registerPatch(307, "ChangeHealthBarSize", "­×§ï¨¤¦â¤U¤è¥Í©R±øªº¤j¤p", "¤¶­±", 0, "Jchcc", "­×§ï¨¤¦â¤U¤èÂÅºñ¦âªºHP/SPÅã¥Ü¤j¤p", false);
+registerPatch(304, "UseDefaultBrowser", "ä½¿ç”¨é è¨­ç€è¦½å™¨é–‹å•ŸNPCçš„<URL>é€£çµ", "ä»‹é¢", 0, "Jchcc", "ä½¿ç”¨ç³»çµ±é è¨­çš„ç€è¦½å™¨é–‹å•Ÿ NPC çš„ <URL> é€£çµï¼Œä¸å†ä½¿ç”¨ROå…§å»ºçš„ç€è¦½å™¨", false);
 
-registerPatch(308, "ChangeMvpHealthBarSize", "­×§ïMVP¤U¤è¥Í©R±øªº¤j¤p", "¤¶­±", 0, "Jchcc", "­×§ïMVP¤U¤è¥Í©R±øÅã¥Ü¤j¤p", false);
+registerPatch(305, "ShortcutAllItem", "å…è¨±æ‰€æœ‰ç‰©å“æ”¾å¿«æ·åˆ—", "ä¿®å¾©", 0, "Jchcc", "è®“æ‰€æœ‰ç‰©å“éƒ½èƒ½æ”¾åˆ°å¿«æ·åˆ—ï¼Œæ–¹ä¾¿åšæ•¸é‡è¿½è¹¤", false);
 
-registerPatch(309, "MvpItemIdenfifyName", "MVPª««~¥Î¤wÅ²©w¦WºÙÅã¥Ü", "Fix", 0, "Jchcc", "MVPª««~°T®§¥Î¤wÅ²©w¦WºÙÅã¥Ü.", false);
+registerPatch(306, "CustomWindowTitleHex", "ä¿®æ”¹ç™»å…¥å™¨æ¨™é¡Œ[HEX]", "ä»‹é¢", 0, "Jian", "ä¿®æ”¹ç™»å…¥å™¨çš„æ¨™é¡Œ(æ”¯æ´ä¸­æ–‡ï¼Œè«‹è¼¸å…¥16é€²åˆ¶)ï¼Œé è¨­ç‚º '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
 
-registerPatch(310, "SetButtonBooking",	"ÁôÂÃ[©Û¶Ò]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¶¤¥î©Û¶Ò«ö¶s", false);
+registerPatch(307, "ChangeHealthBarSize", "ä¿®æ”¹è§’è‰²ä¸‹æ–¹ç”Ÿå‘½æ¢çš„å¤§å°", "ä»‹é¢", 0, "Jchcc", "ä¿®æ”¹è§’è‰²ä¸‹æ–¹è—ç¶ è‰²çš„HP/SPé¡¯ç¤ºå¤§å°", false);
 
-registerPatch(311, "SetButtonBg",		"ÁôÂÃ[¾Ô³õ]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¾Ô³õ«ö¶s", false);
+registerPatch(308, "ChangeMvpHealthBarSize", "ä¿®æ”¹MVPä¸‹æ–¹ç”Ÿå‘½æ¢çš„å¤§å°", "ä»‹é¢", 0, "Jchcc", "ä¿®æ”¹MVPä¸‹æ–¹ç”Ÿå‘½æ¢é¡¯ç¤ºå¤§å°", false);
 
-registerPatch(312, "SetButtonQuest",	"ÁôÂÃ[¥ô°È]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¥ô°È«ö¶s", false);
+registerPatch(309, "MvpItemIdenfifyName", "MVPç‰©å“ç”¨å·²é‘‘å®šåç¨±é¡¯ç¤º", "Fix", 0, "Jchcc", "MVPç‰©å“è¨Šæ¯ç”¨å·²é‘‘å®šåç¨±é¡¯ç¤º.", false);
 
-registerPatch(313, "SetButtonMap",		"ÁôÂÃ[¦a¹Ï]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¦a¹Ï«ö¶s", false);
+registerPatch(310, "SetButtonBooking",	"éš±è—[æ‹›å‹Ÿ]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„éšŠä¼æ‹›å‹ŸæŒ‰éˆ•", false);
 
-registerPatch(314, "SetButtonNav",		"ÁôÂÃ[¾É¯è]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¾É¯è«ö¶s", false);
+registerPatch(311, "SetButtonBg",		"éš±è—[æˆ°å ´]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„æˆ°å ´æŒ‰éˆ•", false);
 
-registerPatch(315, "SetButtonBank",		"ÁôÂÃ[»È¦æ]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ»È¦æ«ö¶s", false);
+registerPatch(312, "SetButtonQuest",	"éš±è—[ä»»å‹™]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„ä»»å‹™æŒ‰éˆ•", false);
 
-registerPatch(316, "SetButtonRec",		"ÁôÂÃ[¿ı¼v]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¿ı¼v«ö¶s", false);
+registerPatch(313, "SetButtonMap",		"éš±è—[åœ°åœ–]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„åœ°åœ–æŒ‰éˆ•", false);
 
-registerPatch(317, "SetButtonMail",		"ÁôÂÃ[«H½c]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ«H½c«ö¶s", false);
+registerPatch(314, "SetButtonNav",		"éš±è—[å°èˆª]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„å°èˆªæŒ‰éˆ•", false);
 
-registerPatch(318, "SetButtonAchieve",	"ÁôÂÃ[¦¨´N]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ¦¨´N«ö¶s", false);
+registerPatch(315, "SetButtonBank",		"éš±è—[éŠ€è¡Œ]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„éŠ€è¡ŒæŒ‰éˆ•", false);
 
-registerPatch(319, "SetButtonTip",		"ÁôÂÃ[´£¥Ü]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ´£¥Ü«ö¶s", false);
+registerPatch(316, "SetButtonRec",		"éš±è—[éŒ„å½±]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„éŒ„å½±æŒ‰éˆ•", false);
 
-registerPatch(320, "SetButtonAttend",	"ÁôÂÃ[Ã±¨ì]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæÃ±¨ì«ö¶s", false);
+registerPatch(317, "SetButtonMail",		"éš±è—[ä¿¡ç®±]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„ä¿¡ç®±æŒ‰éˆ•", false);
 
-registerPatch(321, "SetButtonSNS",		"ÁôÂÃ[TWITTER]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæTWITTER«ö¶s", false);
+registerPatch(318, "SetButtonAchieve",	"éš±è—[æˆå°±]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„æˆå°±æŒ‰éˆ•", false);
 
-registerPatch(322, "SetButtonCashShop",	"ÁôÂÃ[°Ó«°]«ö¶s", "¤¶­±", 12, "Jchcc", "ÁôÂÃ¥ª¤W¨¤¥\¯àÄæ°Ó«°«ö¶s", false);
+registerPatch(319, "SetButtonTip",		"éš±è—[æç¤º]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„æç¤ºæŒ‰éˆ•", false);
 
+registerPatch(320, "SetButtonAttend",	"éš±è—[ç°½åˆ°]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„ç°½åˆ°æŒ‰éˆ•", false);
 
-registerPatch(350, "ChangeAchievementListPath", "­×§ïAchievementList*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¦¨´N AchievementList*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(321, "SetButtonSNS",		"éš±è—[TWITTER]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„TWITTERæŒ‰éˆ•", false);
 
-registerPatch(351, "ChangeMonsterSizeEffectPath", "­×§ïMonsterSizeEffect*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÅ]ª«³]©w MonsterSizeEffect*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(322, "SetButtonCashShop",	"éš±è—[å•†åŸ]æŒ‰éˆ•", "ä»‹é¢", 12, "Jchcc", "éš±è—å·¦ä¸Šè§’åŠŸèƒ½æ¬„å•†åŸæŒ‰éˆ•", false);
 
-registerPatch(353, "ChangeTowninfoPath", "­×§ïTowninfo*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¹Ï¼Ğ Towninfo*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
 
-registerPatch(354, "ChangePetEvolutionClnPath", "­×§ïPetEvolutionCln*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥Í©RÅé PetEvolutionCln*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(350, "ChangeAchievementListPath", "ä¿®æ”¹AchievementList*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„æˆå°± AchievementList*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(355, "ChangeTipboxPath", "­×§ïTipbox*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº±Ğ¾Ç Tipbox*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(351, "ChangeMonsterSizeEffectPath", "ä¿®æ”¹MonsterSizeEffect*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„é­”ç‰©è¨­å®š MonsterSizeEffect*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(356, "ChangeCheckAttendancePath", "­×§ïCheckAttendance*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªºÃ±¨ì CheckAttendance*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(353, "ChangeTowninfoPath", "ä¿®æ”¹Towninfo*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„åœ–æ¨™ Towninfo*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(357, "ChangeOngoingQuestInfoListPath", "­×§ïOngoingQuestInfoList*¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È OngoingQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(354, "ChangePetEvolutionClnPath", "ä¿®æ”¹PetEvolutionCln*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„ç”Ÿå‘½é«” PetEvolutionCln*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(358, "ChangeRecommendedQuestInfoListPath", "­×§ïRecommendedQuestInfoList*¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº¥ô°È RecommendedQuestInfoList* ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(355, "ChangeTipboxPath", "ä¿®æ”¹Tipbox*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„æ•™å­¸ Tipbox*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(359, "ChangePrivateAirplanePath", "­×§ïPrivateAirplane*.lub¸ô®|", "¦Û­q", 20, "Jian", "¤Ä¿ï«á¥i¥H¿é¤J¦Û­qªº­¸ªÅ¸¥ PrivateAirplane*.lub ÀÉ®×¡A¦pªG¦³©x¤èªº§ó·s¡A¥i¥H¨¾¤î­ì¥»ªº lub ³QÂĞ»\", false);
+registerPatch(356, "ChangeCheckAttendancePath", "ä¿®æ”¹CheckAttendance*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„ç°½åˆ° CheckAttendance*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-registerPatch(360, "ChangeDefaultBGM", "­×§ï¹w³] BGM ¸ô®|", "¦Û­q", 20, "Jian", "­×§ï¹w³] BGM ¸ô®|¡A§ïÅÜµn¤J±b¸¹©Î¥¼³]©w¦a¹Ïªº­I´ºÁn­µ¡A©x¤è¹w³]¬° bgm\\01.mp3", false);
+registerPatch(357, "ChangeOngoingQuestInfoListPath", "ä¿®æ”¹OngoingQuestInfoList*è·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„ä»»å‹™ OngoingQuestInfoList* æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
 
-// registerPatch(700, "NemoSelfTest", "Nemo self test", "Custom", 0, "4144", "Write some testing info into log file'", false);
+registerPatch(358, "ChangeRecommendedQuestInfoListPath", "ä¿®æ”¹RecommendedQuestInfoList*è·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„ä»»å‹™ RecommendedQuestInfoList* æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
+
+registerPatch(359, "ChangePrivateAirplanePath", "ä¿®æ”¹PrivateAirplane*.lubè·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "å‹¾é¸å¾Œå¯ä»¥è¼¸å…¥è‡ªè¨‚çš„é£›ç©ºè‰‡ PrivateAirplane*.lub æª”æ¡ˆï¼Œå¦‚æœæœ‰å®˜æ–¹çš„æ›´æ–°ï¼Œå¯ä»¥é˜²æ­¢åŸæœ¬çš„ lub è¢«è¦†è“‹", false);
+
+registerPatch(360, "ChangeDefaultBGM", "ä¿®æ”¹é è¨­ BGM è·¯å¾‘", "è‡ªè¨‚", 20, "Jian", "ä¿®æ”¹é è¨­ BGM è·¯å¾‘ï¼Œæ”¹è®Šç™»å…¥å¸³è™Ÿæˆ–æœªè¨­å®šåœ°åœ–çš„èƒŒæ™¯è²éŸ³ï¼Œå®˜æ–¹é è¨­ç‚º bgm\\01.mp3", false);
+
+
+GlobalPostInit();

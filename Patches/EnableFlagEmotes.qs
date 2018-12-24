@@ -27,7 +27,7 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
   
   //Step 2a - Get Input file containing the list of Flag Emotes per key
   var f = new TextFile();
-  if (!GetInputFile(f, "$inpFlag", "File Input - Enable Flag Emoticons", "Enter the Flags list file", APP_PATH + "/Input/flags.txt")) {
+  if (!GetInputFile(f, "$inpFlag", _("File Input - Enable Flag Emoticons"), _("Enter the Flags list file"), APP_PATH + "/Input/flags.txt")) {
     return "Patch Cancelled";
   }
   

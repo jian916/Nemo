@@ -35,7 +35,7 @@ function ChangeNewCharNameHeight()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var height = exe.getUserInput("$newCharNameHeight", XTYPE_BYTE, "Number Input", "Enter new char name height (0-255, default is 13):", 13, 0, 255);
+    var height = exe.getUserInput("$newCharNameHeight", XTYPE_BYTE, _("Number Input"), _("Enter new char name height (0-255, default is 13):"), 13, 0, 255);
     if (height === 13)
     {
         return "Patch Cancelled - New value is same as old";

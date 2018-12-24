@@ -253,10 +253,10 @@ function IncreaseHairLimits()
     }
 
     //Step 3a - Get new Hair color limit from user
-    var hCNewLimit = exe.getUserInput("$hairColorLimit", XTYPE_WORD, "Number Input", "Enter new hair color limit", hCLimit, hCLimit, 1000);//Sane Limit of 1000
+    var hCNewLimit = exe.getUserInput("$hairColorLimit", XTYPE_WORD, _("Number Input"), _("Enter new hair color limit"), hCLimit, hCLimit, 1000);//Sane Limit of 1000
 
     //Step 3b - Get new Hair style limit from user
-    var hSNewLimit = exe.getUserInput("$hairStyleLimit", XTYPE_WORD, "Number Input", "Enter new hair style limit", 0x16, 0x16, 1000);//Sane Limit of 1000
+    var hSNewLimit = exe.getUserInput("$hairStyleLimit", XTYPE_WORD, _("Number Input"), _("Enter new hair style limit"), 0x16, 0x16, 1000);//Sane Limit of 1000
 
     //Step 3c - Check if both limits are unchanged by user
     if (hCNewLimit === hCLimit && hSNewLimit === 0x16)

@@ -23,8 +23,8 @@ function ChangeHealthBarSize() {
 		return "Failed in Step 2";
 	offset2 = offset2 + 8;
 
-	var height = exe.getUserInput("$height", XTYPE_BYTE, "¦å±ø°ª«×", "¿é¤J¦Û­qªº¦å±ø°ª«×:(³Ì¤j:127,¹w³]:9 pixel)", "9", 1, 127);
-	var width = exe.getUserInput("$width", XTYPE_BYTE, "¦å±ø¼e«×", "¿é¤J¦Û­qªº¦å±ø¼e«×:(³Ì¤j:127,¹w³]:60 pixel)", "60", 1, 127);
+	var height = exe.getUserInput("$height", XTYPE_BYTE, "è¡€æ¢é«˜åº¦", "è¼¸å…¥è‡ªè¨‚çš„è¡€æ¢é«˜åº¦:(æœ€å¤§:127,é è¨­:9 pixel)", "9", 1, 127);
+	var width = exe.getUserInput("$width", XTYPE_BYTE, "è¡€æ¢å¯¬åº¦", "è¼¸å…¥è‡ªè¨‚çš„è¡€æ¢å¯¬åº¦:(æœ€å¤§:127,é è¨­:60 pixel)", "60", 1, 127);
 
 	exe.replace(offset+1, height.packToHex(1), PTYPE_HEX);
 	exe.replace(offset+3, width.packToHex(1), PTYPE_HEX);

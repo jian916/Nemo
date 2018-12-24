@@ -132,7 +132,7 @@ function CustomExpBarLimits() {
  
   //Step 4a - Get the input file
   var fp = new TextFile();
-  var inpFile = GetInputFile(fp, "$expBarSpec", "File Input - Custom Exp Bar Limits", "Enter the Exp Bar Spec file", APP_PATH + "/Input/expBarSpec.txt");
+  var inpFile = GetInputFile(fp, "$expBarSpec", _("File Input - Custom Exp Bar Limits"), _("Enter the Exp Bar Spec file"), APP_PATH + "/Input/expBarSpec.txt");
   if (!inpFile)
     return "Patch Cancelled";
 

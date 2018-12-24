@@ -36,7 +36,7 @@ function IncreaseScreenshotQuality() {
   var csize = code.hexlength() / 2;//Length of 1 assignment
   
   //Step 2a - Get new quality value from user
-  var newvalue = exe.getUserInput("$uQuality", XTYPE_BYTE, "Number Input", "Enter the new quality factor (0-100)", 50, 0, 100);
+  var newvalue = exe.getUserInput("$uQuality", XTYPE_BYTE, _("Number Input"), _("Enter the new quality factor (0-100)"), 50, 0, 100);
   if (newvalue === 50)
     return "Patch Cancelled - New value is same as old";
   

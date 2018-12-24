@@ -38,7 +38,7 @@ function PacketEncryptionKeys(varname, index) {
     return "Failed in Step 1 - No Packet Key Patterns matched";
   
   //Step 1c - Get new Key from user.
-  var newKey = parseInt( exe.getUserInput(varname, XTYPE_HEXSTRING, "Hex input", "Enter the new key", info.keys[index].toBE()),  16);
+  var newKey = parseInt( exe.getUserInput(varname, XTYPE_HEXSTRING, _("Hex input"), _("Enter the new key"), info.keys[index].toBE()),  16);
   if (newKey === info.keys[index])
     return "Patch Cancelled - Key not changed";
   

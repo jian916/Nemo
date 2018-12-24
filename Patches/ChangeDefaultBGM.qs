@@ -13,7 +13,7 @@ function ChangeDefaultBGM() {
 	if (offset === -1)
 		return "Failed in Step 1b - Default BGM reference not found";
 
-	var myfile = exe.getUserInput("$newBGMPath", XTYPE_STRING, "¿é¤J¤å¦r - ³Ì¦h¥i¿é¤J 100 ­Ó¦r¤¸", "½Ğ¿é¤J·sªº¹w³] BGM ¸ô®| (¹ïÀ³©ó RO ¬Û¹ïªº¥Ø¿ı)", org_name, 1, 100);
+	var myfile = exe.getUserInput("$newBGMPath", XTYPE_STRING, "è¼¸å…¥æ–‡å­— - æœ€å¤šå¯è¼¸å…¥ 100 å€‹å­—å…ƒ", "è«‹è¼¸å…¥æ–°çš„é è¨­ BGM è·¯å¾‘ (å°æ‡‰æ–¼ RO ç›¸å°çš„ç›®éŒ„)", org_name, 1, 100);
 	if (myfile === org_name)
 		return "Patch Cancelled - New value is same as old";
 
