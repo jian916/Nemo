@@ -1,8 +1,14 @@
+# 2018-12-30 Patches update
+
+## Patches
+
+- Add new patch [Change character display time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients) by Functor.
+
 # 2018-12-19 Patches update
 
 ## Patches
 
-- Add new patch [Hide zero date (1969-01-01) in guild members window](HideZeroDateInGuildMembers) by 4144.
+- Add new patch [Hide zero date (1969-01-01) in guild members window](http://nemo.herc.ws/patches/HideZeroDateInGuildMembers/#success-clients) by 4144.
 
 # 2018-11-29 Patches update
 
