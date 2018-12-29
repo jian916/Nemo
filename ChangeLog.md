@@ -2,7 +2,7 @@
 
 ## Patches
 
-- Add new patch [Change character display time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients) by Functor.
+- Add new patch [Change character display deletion time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients) by Functor.
 
 # 2018-12-19 Patches update
 
