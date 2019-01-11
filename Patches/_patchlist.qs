@@ -484,5 +484,7 @@ registerPatch(286, "HideZeroDateInGuildMembers", "Hide zero date (1969-01-01) in
 
 registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deletion time from actual date to relative date", "Custom", 0, "Functor", "Change character display deletion time from actual date to relative date", false);
 
+registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprites", "Custom", 0, "4144", "Move shield sprite closed to camera for draw on top of other player sprites", false);
+
 
 GlobalPostInit();
