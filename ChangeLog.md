@@ -1,3 +1,9 @@
+# 2019-01-17 Patches update
+
+## Patches
+
+- Add new patch [Draw shield on top of other player sprites](http://nemo.herc.ws/patches/MoveShieldToTop/#success-clients) by 4144.
+
 # 2018-12-30 Patches update
 
 ## Patches
