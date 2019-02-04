@@ -96,3 +96,8 @@ Array.prototype.toRvaBE = function() {
   }
   return result;
 }
+
+function floatToHex(value)
+{
+    return floatToDWord(value).packToHex(4);
+}

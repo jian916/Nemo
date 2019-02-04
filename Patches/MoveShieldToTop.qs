@@ -67,8 +67,8 @@ function MoveShieldToTop()
     if (floatAddr === -1)
         return "Not enough free space";
     var code =
-//        "6F 12 03 3A";  // 0.0005
-        "6F 12 83 3A";  // 0.001
+//        floatToHex(0.0005);
+        floatToHex(0.001);
     exe.insert(floatAddr, 4, code, PTYPE_HEX);
     floatAddr = exe.Raw2Rva(floatAddr);
 
