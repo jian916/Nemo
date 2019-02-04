@@ -1,3 +1,11 @@
+# 2019-02-04 Functions update
+
+# For devs
+
+- Add new java script function for print text into stdout: ``print``.
+- Add new java script function for convert float number into dword: ``floatToDWord``.
+- Load qs files from Other directory.
+
 # 2019-01-17 Patches update
 
 ## Patches
