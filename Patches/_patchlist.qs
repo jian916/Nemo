@@ -428,6 +428,10 @@ registerPatch(285, "FixActDelay", "修復 Act 有過多影格的延遲", "Fix", 
 
 registerPatch(286, "HideZeroDateInGuildMembers", "隱藏公會成員 (1969-01-01) 最後上線時間", "Fix", 0, "4144", "隱藏公會成員預設無意義的 (1969-01-01) 最後上線時間", false);
 
+registerPatch(287, "ChangeDisplayCharDelDelay", "修改刪除角色時顯示相對時間", "Custom", 0, "Functor", "修改刪除角色時顯示相對時間", false);
+
+registerPatch(288, "MoveShieldToTop", "修正盾牌永遠在最上層顯示", "Custom", 0, "4144", "修正盾牌永遠在最上層顯示", false);
+
 
 registerPatch(300, "FixItemDescBug", "修復物品說明亂碼 Bug", "介面", 0, "Jchcc", "修復物品右鍵內容 '[' 造成的亂碼", false);
 
@@ -497,10 +501,6 @@ registerPatch(358, "ChangeRecommendedQuestInfoListPath", "修改RecommendedQuest
 registerPatch(359, "ChangePrivateAirplanePath", "修改PrivateAirplane*.lub路徑", "自訂", 20, "Jian", "勾選後可以輸入自訂的飛空艇 PrivateAirplane*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
 
 registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 20, "Jian", "修改預設 BGM 路徑，改變登入帳號或未設定地圖的背景聲音，官方預設為 bgm\\01.mp3", false);
-
-registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deletion time from actual date to relative date", "Custom", 0, "Functor", "Change character display deletion time from actual date to relative date", false);
-
-registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprites", "Custom", 0, "4144", "Move shield sprite closed to camera for draw on top of other player sprites", false);
 
 
 GlobalPostInit();
