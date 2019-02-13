@@ -3,15 +3,15 @@
 //========================================================//
 
 function FixCameraAnglesRecomm() {
-  return FixCameraAngles(" 00 00 28 42"); //little endian hex of 42.00
+  return FixCameraAngles(floatToHex(42.0));
 }
   
 function FixCameraAnglesLess() {
-  return FixCameraAngles(" 00 00 EC 41"); //little endian hex of 29.50
+  return FixCameraAngles(floatToHex(29.50));
 }
 
 function FixCameraAnglesFull() {
-  return FixCameraAngles(" 00 00 82 42"); //little endian hex of 65.00
+  return FixCameraAngles(floatToHex(65.0));
 }
 
 //====================================================================================//

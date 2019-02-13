@@ -498,5 +498,9 @@ registerPatch(359, "ChangePrivateAirplanePath", "修改PrivateAirplane*.lub路�
 
 registerPatch(360, "ChangeDefaultBGM", "修改預設 BGM 路徑", "自訂", 20, "Jian", "修改預設 BGM 路徑，改變登入帳號或未設定地圖的背景聲音，官方預設為 bgm\\01.mp3", false);
 
+registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deletion time from actual date to relative date", "Custom", 0, "Functor", "Change character display deletion time from actual date to relative date", false);
+
+registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprites", "Custom", 0, "4144", "Move shield sprite closed to camera for draw on top of other player sprites", false);
+
 
 GlobalPostInit();
