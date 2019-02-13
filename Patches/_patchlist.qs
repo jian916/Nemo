@@ -368,7 +368,7 @@ registerPatch(228, "DisableDoram", "關閉喵族的腳色介面[測試]", "介�
 
 registerPatch(229, "EnableEmblemForBG", "顯示公會圖示在戰場地圖", "介面", 0, "Neo", "在戰場地圖時，玩家頭上顯示公會圖示", false);
 
-registerPatch(230, "AlwaysReadKrExtSettings", "永遠讀取韓版lua的檔案名稱", "修復", 0, "Secret", "永遠讀取韓版 lua 的檔案名稱，而不會受登入器 clientinfo 設定的 ServiceType 而改變路徑", false);
+registerPatch(230, "AlwaysReadKrExtSettings", "永遠讀取韓版lub的檔案名稱不受語言影響", "修復", 0, "Secret", "永遠讀取韓版 lub 的檔案名稱，而不會受登入器 clientinfo 設定的 ServiceType 而改變路徑", false);
 
 registerPatch(231, "RemoveHardcodedAddress", "移除寫死在登入器的IP跟Port", "修復", 17, "4144", "移除寫死在登入器的IP跟Port", false);
 
@@ -474,6 +474,8 @@ registerPatch(320, "SetButtonAttend",	"隱藏[簽到]按鈕", "介面", 12, "Jch
 registerPatch(321, "SetButtonSNS",		"隱藏[TWITTER]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄TWITTER按鈕", false);
 
 registerPatch(322, "SetButtonCashShop",	"隱藏[商城]按鈕", "介面", 12, "Jchcc", "隱藏左上角功能欄商城按鈕", false);
+
+registerPatch(323, "fixHomunculusAI", "修復生命體AI", "Fix", 0, "Jchcc", "修復20170920之後的登入器生命體AI無法自動攻擊的問題", false);
 
 
 registerPatch(350, "ChangeAchievementListPath", "修改AchievementList*.lub路徑", "自訂", 20, "Jian", "勾選後可以輸入自訂的成就 AchievementList*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
