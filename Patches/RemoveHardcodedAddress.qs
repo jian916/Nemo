@@ -25,13 +25,14 @@ function RemoveHardcodedAddress() {
         " 75 AB" +                // jnz short addr2
         " E8 AB AB 00 00" +       // call override_address_port
         " E9 AB AB 00 00";        // jmp addr3
+    var overrideAddressOffset = 10;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 1";
 
     // step 1b - replace call to nop
-    var overrideAddr = offset + 14 + exe.fetchDWord(offset + 10)
+    var overrideAddr = offset + overrideAddressOffset + 4 + exe.fetchDWord(offset + overrideAddressOffset);  // rva to va
 
     // step 2a - find string "127.0.0.1"
     var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
