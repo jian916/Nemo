@@ -486,5 +486,6 @@ registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deleti
 
 registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprites", "Custom", 0, "4144", "Move shield sprite closed to camera for draw on top of other player sprites", false);
 
+registerPatch(289, "FixHomunculusAI", "Fix Homunculus attack AI", "Fix", 0, "Jchcc", "Fix issue in homunculus AI what prevent automatic attacks after in 20170920 clients and newer", false);
 
 GlobalPostInit();
