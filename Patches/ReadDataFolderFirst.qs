@@ -19,6 +19,7 @@ function ReadDataFolderFirst()
 
     var repl = " 90 90";  //Change JZ SHORT to NOPs
     var gloc = 4;  //relative position from offset2 where g_readFolderFirst is
+    var firstOffset = 0;
 
     var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
@@ -32,7 +33,22 @@ function ReadDataFolderFirst()
 
         repl = " 90 8B";  //change CMOVNZ to NOP + MOV
         gloc = 5;
+        firstOffset = 0;
 
+        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset2 === -1)
+    {   // 2019-02-13+
+        code =
+            "0F B6 0D AB AB AB AB " +     // 0 movzx ecx, g_readFolderFirst
+            "85 C0 " +                    // 7 test eax, eax
+            "68 " + offset.packToHex(4) + // 9 push offset aLoading
+            "0F 45 CE " +                 // 14 cmovnz ecx, esi
+            "88 0D ";                     // 17 mov g_readFolderFirst, cl
+        repl = " 90 8B";  //change CMOVNZ to NOP + MOV
+        gloc = 5;
+        firstOffset = 14;
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -40,7 +56,7 @@ function ReadDataFolderFirst()
         return "Failed in Step 1 - loading reference missing";
 
     //Step 1c - Change conditional instruction to permanent setting - as a failsafe
-    exe.replace(offset2, repl, PTYPE_HEX);
+    exe.replace(offset2 + firstOffset, repl, PTYPE_HEX);
 
     //===================================================================//
     // Client also compares g_readFolderFirst even before it is assigned //
