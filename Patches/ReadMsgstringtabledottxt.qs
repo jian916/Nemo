@@ -41,6 +41,17 @@ function ReadMsgstringtabledottxt()
     }
 
     if (offset === -1)
+    {   // 2019-02-13+
+        code =
+            " 83 3D" + LANGTYPE + " 00" // CMP DWORD PTR DS:[g_serviceType], 0
+          + " 75 26"                    // JNZ SHORT addr
+          + " 56"                       // PUSH ESI
+        ;
+        offset = exe.findCode(code, PTYPE_HEX, false); // 2016 clients [Secret]
+        offset2 = 3;
+    }
+
+    if (offset === -1)
         return "Failed in Step 1";
 
     //Step 2 - Change JNZ to JMP
