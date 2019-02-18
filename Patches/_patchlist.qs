@@ -52,6 +52,8 @@ registerGroup(19, "Hairs", true);
 
 registerGroup(20, "Path", false);
 
+registerGroup(21, "Import", true);
+
 globalVarTest = 123;
 
 //#########################################################################################################################################################
@@ -330,7 +332,7 @@ registerPatch(209, "EnableMailBox", "Enable Mail Box for All LangTypes", "Custom
 
 registerPatch(210, "UseCustomIcon", "Use Custom Icon", "Custom", 4, "Neo", "Makes the hexed client use the User specified icon. Icon file should have an 8bpp (256 color) 32x32 image", false);
 
-registerPatch(211, "UseCustomDLL", "Use Custom DLL", "Custom", 0, "Neo", "Makes the hexed client load the specified DLL and functions", false);
+registerPatch(211, "UseCustomDLL", "Use Custom DLL", "Custom", 21, "Neo", "Makes the hexed client load the specified DLL and functions", false);
 
 registerPatch(212, "RestoreRoulette", "Restore Roulette", "Custom", 0, "Neo", "Brings back the Roulette Icon that was removed in new clients", false);
 
