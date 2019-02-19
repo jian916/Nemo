@@ -1,3 +1,16 @@
+# 2019-02-19 Patches update
+
+## Patches
+
+- Fix patch [Remove hardcoded connection address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for 2019-02-13 by 4144.
+- Fix [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Read msgstringtable.txt](http://nemo.herc.ws/patches/ReadMsgstringtabledottxt/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Enable Multiple GRFs](http://nemo.herc.ws/patches/EnableMultipleGRFs/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Disable Ragexe Filename Check](http://nemo.herc.ws/patches/DisableFilenameCheck/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Disable Cheat Defender Game Guard)(http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-02-13. (fix by 4144)
+- Add new patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
+
+
 # 2019-02-04 Functions update
 
 # For devs
