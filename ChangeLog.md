@@ -1,3 +1,10 @@
+# 2019-02-22 Plugin update
+
+## User interface
+
+- Add link to support page.
+- Add link to donation page.
+
 # 2019-02-19 Patches update
 
 ## Patches
