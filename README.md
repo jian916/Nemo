@@ -40,4 +40,14 @@ For disable game guard Cheat Defender need:
 
 Original code and binary files licensed under unknown free use license.
 
+# Donation
+
+Bitcoin - ``1PBvofqgFj6utHTWgQuxM7SooR2k6hj8yN``
+
+Bitcoin Cash - ``qqgh7dqaf79jq33ty7jujgvkzrxr3qjhgc3vfnehpw``
+
+Donate - [0.001 btc](https://blockchain.com/btc/payment_request?address=1H2nJ6fPz91yxm1ruJYnbpq82wvjT7Hppr&amount=0.001&message=Nemo and patches development),
+[0.002 btc](https://blockchain.com/btc/payment_request?address=1Ahq4ARyADVpqY5tKeGwLrc3r1HPt72err&amount=0.002&message=Nemo and patches development),
+[0.003 btc](https://blockchain.com/btc/payment_request?address=1BqemanYiSzTKqoKtDXvFkag7ztkxFwB7h&amount=0.003&message=Nemo and patches development)
+
 All additional changes licensed under GPL3.
