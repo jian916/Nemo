@@ -1,3 +1,14 @@
+# 2019-02-28 New patches
+
+## Patches
+
+- Add patch [Hide build info in client](http://nemo.herc.ws/patches/HideBuildInfo/#success-clients) by 4144.
+- Add patch [Hide packets from peek](http://nemo.herc.ws/patches/HidePacketsFromPeek/#success-clients) by 4144.
+
+# For devs
+
+- Add javascript function eraseString.
+
 # 2019-02-22 Plugin update
 
 ## User interface
