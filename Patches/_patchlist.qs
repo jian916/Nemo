@@ -490,8 +490,8 @@ registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprite
 
 registerPatch(289, "FixHomunculusAI", "Fix Homunculus attack AI", "Fix", 0, "Jchcc", "Fix issue in homunculus AI what prevent automatic attacks after in 20170920 clients and newer", false);
 
-registerPatch(290, "HideBuildInfo", "Hide build info in client", "Protection", 0, "4144", "Hide actual build info in client by replacing it to useless data", false);
+registerPatch(290, "HideBuildInfo", "Hide build info in client", "Protection", 0, "4144", "Hide actual build info in client by replacing it to useless data", true);
 
-registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection", 0, "4144", "Simple way for hide packets from peek and bpe", false);
+registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection", 0, "4144", "Simple way for hide packets from peek and bpe", true);
 
 GlobalPostInit();
