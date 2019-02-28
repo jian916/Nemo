@@ -492,4 +492,6 @@ registerPatch(289, "FixHomunculusAI", "Fix Homunculus attack AI", "Fix", 0, "Jch
 
 registerPatch(290, "HideBuildInfo", "Hide build info in client", "Protection", 0, "4144", "Hide actual build info in client by replacing it to useless data", false);
 
+registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection", 0, "4144", "Simple way for hide packets from peek and bpe", false);
+
 GlobalPostInit();
