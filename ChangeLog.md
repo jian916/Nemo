@@ -1,3 +1,9 @@
+# 2019-03-05 New translations
+
+## Translations
+
+- Add Turkish translation by BigLord
+
 # 2019-02-28 New patches
 
 ## Patches
