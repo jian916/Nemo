@@ -2,7 +2,7 @@
 //# Purpose: Bypass Homunculus's target select checking #
 //#######################################################
 
-function fixHomunculusAI() {
+function FixHomunculusAI() {
 	
 	//Step 1 - Find the function of checking Homunculus's target select.
 	var code = 
