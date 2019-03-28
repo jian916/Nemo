@@ -1,3 +1,13 @@
+# 2019-03-09 Patches update
+
+## Patches
+
+- Update patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
+
+## License
+
+- Add some missing GPL headers.
+
 # 2019-03-05 New translations
 
 ## Translations
