@@ -47,7 +47,7 @@ function ReadDataFolderFirst()
             "0F 45 CE " +                 // 14 cmovnz ecx, esi
             "88 0D ";                     // 17 mov g_readFolderFirst, cl
         repl = " 90 8B";  //change CMOVNZ to NOP + MOV
-        gloc = 5;
+        gloc = 3;
         firstOffset = 14;
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
