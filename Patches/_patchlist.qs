@@ -494,4 +494,6 @@ registerPatch(290, "HideBuildInfo", "Hide build info in client", "Protection", 0
 
 registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection", 0, "4144", "Simple way for hide packets from peek and bpe", true);
 
+registerPatch(292, "FixShortcutsInWine", "Fix shortcuts in wine", "Wine", 0, "4144", "Allow to use keyboard shortcuts in wine", false);
+
 GlobalPostInit();
