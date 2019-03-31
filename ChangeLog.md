@@ -1,3 +1,10 @@
+# 2019-04-01 Patches update
+
+## Patches
+
+- Fix patch [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-03-20 RE+ by 4144.
+- Add patch [Fix shortcuts in wine](http://nemo.herc.ws/patches/FixShortcutsInWine/#success-clients) by 4144.
+
 # 2019-03-09 Patches update
 
 ## Patches
