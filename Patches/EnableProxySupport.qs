@@ -63,6 +63,13 @@ function EnableProxySupport() {
   + " 89 46 0C"          //MOV DWORD PTR DS:[ESI+C], EAX <- addr
   ;
 
+  //Changing register from "ESI" to "EBX" for 2016+ EXE versions
+  if (exe.find(" 89 43 0C B8 02 00 00 00", PTYPE_HEX, true, "\xAB", offset2 - 0x50, offset2) !== -1)
+  {
+    code = code.replace(" 8B 46 0C", " 8B 43 0C");
+    code = code.replace(" 89 46 0C", " 89 43 0C");
+  }
+
   if (bIndirectCALL)
     code += " FF 25" + connAddr.packToHex(4); //JMP DWORD PTR DS:[<&WS2_32.connect>]
   else
