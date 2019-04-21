@@ -1,3 +1,9 @@
+# 2019-04-22 Patches update
+
+## Patches
+
+- Fix patch [Enable Proxy Support](http://nemo.herc.ws/patches/EnableProxySupport/#success-clients) for 2015+ clients by Functor.
+
 # 2019-04-01 Patches update
 
 ## Patches
