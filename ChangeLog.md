@@ -1,3 +1,9 @@
+# 2019-06-12 Patches update
+
+## Patches
+
+- Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients) for 2019+ clients by 4144.
+
 # 2019-04-22 Patches update
 
 ## Patches
