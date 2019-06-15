@@ -1,3 +1,7 @@
+## Patches
+
+ - Fix patch [Change mvp hp bar size](http://nemo.herc.ws/patches/ChangeMvpHealthBarSize/#success-clients) for 20180919+ clients by Jchcc.
+
 # 2019-06-12 Patches update
 
 ## Patches
