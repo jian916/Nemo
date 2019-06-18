@@ -500,4 +500,6 @@ registerPatch(293, "IncreaseHairSpritesOld", "Increase hair style limit for huma
 
 // 294 reserved
 
+registerPatch(295, "ChangeMaxPartyValue", "Change Max Party Value", "UI", 0, "Jchcc", "Change max party value displayed on Alt+Z", false);
+
 GlobalPostInit();
