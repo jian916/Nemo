@@ -481,6 +481,10 @@ registerPatch(322, "SetButtonCashShop",	"隱藏[商城]按鈕", "介面", 12, "J
 
 registerPatch(323, "fixHomunculusAI", "修復生命體AI", "Fix", 0, "Jchcc", "修復20170920之後的登入器生命體AI無法自動攻擊的問題", false);
 
+registerPatch(324, "ForceLubStateIcon", "強制讀取stateiconimginfo.lub狀態圖示", "Fix", 0, "Jchcc", "強制使用 stateiconimginfo.lub 狀態圖示的檔案名稱，而不是登入器內寫死的檔案名稱", false);
+
+registerPatch(325, "ChangeMaxPartyValue", "修改隊伍最大隊員數顯示", "介面", 0, "Jchcc", "修改隊伍視窗顯示的最大隊員數，此更改需配合模擬器端的設定", false);
+
 
 registerPatch(350, "ChangeAchievementListPath", "修改AchievementList*.lub路徑", "自訂", 20, "Jian", "勾選後可以輸入自訂的成就 AchievementList*.lub 檔案，如果有官方的更新，可以防止原本的 lub 被覆蓋", false);
 
