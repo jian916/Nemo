@@ -498,4 +498,6 @@ registerPatch(292, "FixShortcutsInWine", "Fix shortcuts in wine", "Wine", 0, "41
 
 registerPatch(293, "IncreaseHairSpritesOld", "Increase hair style limit for human only in game (old)", "Custom", 19, "4144", "Allow use more hair styles than default limit", false);
 
+// 294 reserved
+
 GlobalPostInit();
