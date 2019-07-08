@@ -502,4 +502,6 @@ registerPatch(293, "IncreaseHairSpritesOld", "Increase hair style limit for huma
 
 registerPatch(295, "ChangeMaxPartyValue", "Change Max Party Value", "UI", 0, "Jchcc", "Change max party value displayed on Alt+Z", false);
 
+registerPatch(296, "ForceLubStateIcon", "Force use icons only from stateiconimginfo.lub", "Fix", 0, "Jchcc", "Disable hardcoded status icons and read them only from stateiconimginfo.lub", false);
+
 GlobalPostInit();
