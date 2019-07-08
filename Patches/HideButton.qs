@@ -75,6 +75,54 @@ function HideSNSButton() {
 	return HideButton2("sns");
 }
 
+function HideKeyboardButton() {
+	return HideButton2("keyboard");
+}
+
+function HideStatusButton() {
+	return HideButton2("status");
+}
+
+function HideEquipButton() {
+	return HideButton2("equip");
+}
+
+function HideItemButton() {
+	return HideButton2("item");
+}
+
+function HideSkillButton() {
+	return HideButton2("skill");
+}
+
+function HidePartyButton() {
+	return HideButton2("party");
+}
+
+function HideGuildButton() {
+	return HideButton2("guild");
+}
+
+function HideOptionButton() {
+	return HideButton2("option");
+}
+
+function HideTipButton() {
+	return HideButton2("tip");
+}
+
+function HideShopButton() {
+	return HideButton2("shop");
+}
+
+function HideAttendanceButton() {
+	return HideButton2("attendance");
+}
+
+function HideAdventurerAgencyButton() {
+	return HideButton2("adventurerAgency");
+}
+
 //##########################################################
 //# Purpose: Find the first match amongst the src prefixes #
 //#          and replace it with corresponding tgt prefix  #
@@ -172,4 +220,52 @@ function HideAchieve_() {
 
 function HideSNSButton_() {
 	return (exe.findString("sns") !== -1);
+}
+
+function HideKeyboardButton_() {
+	return (exe.findString("keyboard") !== -1);
+}
+
+function HideStatusButton_() {
+	return (exe.findString("status") !== -1);
+}
+
+function HideEquipButton_() {
+	return (exe.findString("equip") !== -1);
+}
+
+function HideItemButton_() {
+	return (exe.findString("item") !== -1);
+}
+
+function HideSkillButton_() {
+	return (exe.findString("skill") !== -1);
+}
+
+function HidePartyButton_() {
+	return (exe.findString("party") !== -1);
+}
+
+function HideGuildButton_() {
+	return (exe.findString("guild") !== -1);
+}
+
+function HideOptionButton_() {
+	return (exe.findString("option") !== -1);
+}
+
+function HideTipButton_() {
+	return (exe.findString("tip") !== -1);
+}
+
+function HideShopButton_() {
+	return (exe.findString("shop") !== -1);
+}
+
+function HideAttendanceButton_() {
+	return (exe.findString("attendance") !== -1);
+}
+
+function HideAdventurerAgencyButton_() {
+	return (exe.findString("adventurerAgency") !== -1);
 }

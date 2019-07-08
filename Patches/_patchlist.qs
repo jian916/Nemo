@@ -504,4 +504,28 @@ registerPatch(295, "ChangeMaxPartyValue", "Change Max Party Value", "UI", 0, "Jc
 
 registerPatch(296, "ForceLubStateIcon", "Force use icons only from stateiconimginfo.lub", "Fix", 0, "Jchcc", "Disable hardcoded status icons and read them only from stateiconimginfo.lub", false);
 
+registerPatch(297, "HideKeyboardButton", "Hide keyboard button", "UI", 12, "4144", "Hide keyboard button", false);
+
+registerPatch(298, "HideStatusButton", "Hide status/stats button", "UI", 12, "4144", "Hide status/stats button", false);
+
+registerPatch(299, "HideEquipButton", "Hide equipment button", "UI", 12, "4144", "Hide equipment button", false);
+
+registerPatch(300, "HideItemButton", "Hide inventory button", "UI", 12, "4144", "Hide inventory button", false);
+
+registerPatch(301, "HideSkillButton", "Hide skills button", "UI", 12, "4144", "Hide skills button", false);
+
+registerPatch(302, "HidePartyButton", "Hide party button", "UI", 12, "4144", "Hide party button", false);
+
+registerPatch(303, "HideGuildButton", "Hide guild button", "UI", 12, "4144", "Hide guild button", false);
+
+registerPatch(304, "HideOptionButton", "Hide options/settings button", "UI", 12, "4144", "Hide options/settings button", false);
+
+registerPatch(305, "HideTipButton", "Hide tip button", "UI", 12, "4144", "Hide tip button", false);
+
+registerPatch(306, "HideShopButton", "Hide shop button", "UI", 12, "4144", "Hide shop button", false);
+
+registerPatch(307, "HideAttendanceButton", "Hide attendance button", "UI", 12, "4144", "Hide attendance button", false);
+
+registerPatch(308, "HideAdventurerAgencyButton", "Hide adventurer agency button", "UI", 12, "4144", "Hide adventurer agency button", false);
+
 GlobalPostInit();
