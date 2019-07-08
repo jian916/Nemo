@@ -528,4 +528,8 @@ registerPatch(307, "HideAttendanceButton", "Hide attendance button", "UI", 12, "
 
 registerPatch(308, "HideAdventurerAgencyButton", "Hide adventurer agency button", "UI", 12, "4144", "Hide adventurer agency button", false);
 
+registerPatch(309, "BookingButton", "Set booking button", "Custom", 0, "4144", "Set booking button hide or show.", false);
+
+registerPatch(310, "AdventurerAgencyButton", "Set adventurer agency button", "Custom", 0, "4144", "Set adventurer agency button hide or show.", false);
+
 GlobalPostInit();
