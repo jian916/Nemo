@@ -1,3 +1,23 @@
+# 2019-07-10 Patches and plugin update
+
+## Patches
+
+ - Copy patch [Increase hair style limit in game](http://nemo.herc.ws/patches/IncreaseHairSprites/#success-clients) into [Increase hair style limit in game (old)](http://nemo.herc.ws/patches/IncreaseHairSpritesOld/#success-clients)
+ - Extend patch [Increase hair style limit in game](http://nemo.herc.ws/patches/IncreaseHairSprites/#success-clients) for support doram hairs by 4144.
+ - Add Thai translation by Kelberwitz Blade's.
+ - Add patch [Change Max Party Value](http://nemo.herc.ws/patches/ChangeMaxPartyValue/#success-clients) by Jchcc.
+ - Add patch [Force use icons only from stateiconimginfo.lub](http://nemo.herc.ws/patches/ForceLubStateIcon/#success-clients) by Jchcc.
+ - Add patches for hide all other buttons by 4144.
+ - Add patches for set hide/show other buttons by 4144.
+ - Add patch [Allow spam skills by hotkey](http://nemo.herc.ws/patches/AllowSpamSkills/#success-clients) by Functor, 4144.
+
+## Plugin
+
+ - Show client version always with UTC locale.
+
+
+# 2019-06-15 Patches update
+
 ## Patches
 
  - Fix patch [Change mvp hp bar size](http://nemo.herc.ws/patches/ChangeMvpHealthBarSize/#success-clients) for 20180919+ clients by Jchcc.
