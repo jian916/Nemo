@@ -532,4 +532,6 @@ registerPatch(309, "BookingButton", "Set booking button", "Custom", 0, "4144", "
 
 registerPatch(310, "AdventurerAgencyButton", "Set adventurer agency button", "Custom", 0, "4144", "Set adventurer agency button hide or show.", false);
 
+registerPatch(311, "AllowSpamSkills", "Allow spam skills by hotkey", "Custom", 0, "Functor, 4144", "If hold key, allow spam skills by hotkey", false);
+
 GlobalPostInit();
