@@ -1,3 +1,9 @@
+# 2019-08-00 Patches update
+
+## Patches
+
+ - Fix typo in patch [Allow spam skills by hotkey](http://nemo.herc.ws/patches/AllowSpamSkills/#success-clients) by Functor.
+
 # 2019-07-10 Patches and plugin update
 
 ## Patches
