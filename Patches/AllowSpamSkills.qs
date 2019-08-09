@@ -48,7 +48,7 @@ function AllowSpamSkills()
 
     consoleLog("step 2");
     code = 
-        "3B D8" +  // cmp ebx, ebx
+        "3B DB" +  // cmp ebx, ebx
         "90 " +    // nop
         "90 " +    // nop
         "90 " +    // nop
