@@ -534,4 +534,6 @@ registerPatch(310, "AdventurerAgencyButton", "Set adventurer agency button", "Cu
 
 registerPatch(311, "AllowSpamSkills", "Allow spam skills by hotkey", "Custom", 0, "Functor, 4144", "If hold key, allow spam skills by hotkey", false);
 
+registerPatch(312, "Intravision", "Always see hidden/cloaked objects", "Custom", 0, "Secret, A.K.M.", "Always see black silhouette of hidden objects as if the player has intravision status", false);
+
 GlobalPostInit();
