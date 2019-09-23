@@ -1,3 +1,9 @@
+# 2019-09-23 Patches update
+
+## Patches
+
+ - Add patch [Always see hidden/cloaked objects](http://nemo.herc.ws/patches/Intravision/#success-clients) by Secret, A.K.M.
+
 # 2019-08-00 Patches update
 
 ## Patches
