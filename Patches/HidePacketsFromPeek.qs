@@ -27,7 +27,7 @@ function HidePacketsFromPeek()
     if (offsets.length === 0)
         return "Failed in search pattern";
 
-    if (offsets.length !== 2)
+    if (offsets.length > 2)
         return "Found wrong number of patterns: " + offsets.length;
 
     for (var f = 0; f < offsets.length; f ++)
