@@ -1,3 +1,9 @@
+# 2019-11-12 Patches update
+
+## Patches
+
+- Fix patch [Hide packets from peek](http://nemo.herc.ws/patches/HidePacketsFromPeek/#success-clients) for old client by 4144.
+
 # 2019-09-23 Patches update
 
 ## Patches
@@ -25,7 +31,7 @@
 
 ## Plugin
 
- - Show client version always with UTC locale.
+ - Show client version always with UTC time zone.
 
 
 # 2019-06-15 Patches update
