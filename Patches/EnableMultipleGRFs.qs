@@ -43,12 +43,13 @@ function EnableMultipleGRFs() {
         setEcxOffset = 5;
         pushOffset = 0;
     }
+
     if (offset === -1)
     {   // 2019-02-13
         var code =
-            "B9 AB AB AB 00 " +           // 0 mov ecx, offset g_FileMgr
+            "B9 AB AB AB AB " +           // 0 mov ecx, offset g_FileMgr
             "85 C0 " +                    // 5 test eax, eax
-            "0F 95 05 AB AB AB 00 " +     // 7 setnz byte ptr g_session+4D8Eh
+            "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
             "68 " + grf +                 // 14 push offset aData_grf
             "E8 ";                        // 19 call CFileMgr_AddPak
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
@@ -57,6 +58,7 @@ function EnableMultipleGRFs() {
         fnoffset = offset;
         addpackOffset = 20;
     }
+
     if (offset === -1)
         return "Failed in Step 1";
 
