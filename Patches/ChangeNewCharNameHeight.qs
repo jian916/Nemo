@@ -33,6 +33,21 @@ function ChangeNewCharNameHeight()
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
+    {
+        code =
+        "C7 45 AB FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
+        "8B C8" +                 // mov ecx, eax
+        "6A 0D" +                 // push 0Dh    <- change here
+        "68 82 00 00 00" +        // push 82h
+        "89 83 AB AB 00 00" +     // mov  [ebx+28Ch], eax
+        "E8 AB AB AB 00" +        // call UIWindow_Create
+        "8B 8B AB AB 00 00";      // mov ecx, [ebx+28Ch]
+
+        heightOffset = 10;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
     var height = exe.getUserInput("$newCharNameHeight", XTYPE_BYTE, _("Number Input"), _("Enter new char name height (0-255, default is 13):"), 13, 0, 255);
