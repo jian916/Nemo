@@ -1,3 +1,9 @@
+# 2020-01-01 Patches update
+
+## Patches
+
+- Fix [Disable Cheat Defender Game Guard)(http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-12-xx. (fix by 4144)
+
 # 2019-12-17 Patches update
 
 ## Patches
