@@ -15,18 +15,41 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
     ;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    if (offset === -1) {
+    var setEcxOffset = 5;
+    var pushOffset = 0;
+    var addpackOffset = -1;
+
+    if (offset === -1)
+    {
         var code =
             " 68" + grf       //PUSH OFFSET addr1; "data.grf"
           + " B9 AB AB AB 01" //MOV ECX, OFFSET g_fileMgr
         ;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        setEcxOffset = 5;
+        pushOffset = 0;
     }
+
+    if (offset === -1)
+    {   // 2019-02-13
+        var code =
+            "B9 AB AB AB AB " +           // 0 mov ecx, offset g_FileMgr
+            "85 C0 " +                    // 5 test eax, eax
+            "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
+            "68 " + grf +                 // 14 push offset aData_grf
+            "E8 ";                        // 19 call CFileMgr_AddPak
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        setEcxOffset = 0;
+        pushOffset = 14;
+        fnoffset = offset;
+        addpackOffset = 20;
+    }
+
     if (offset === -1)
         return "Failed in Step 1";
 
     //Step 2a - Extract the g_FileMgr assignment
-    var setECX = exe.fetchHex(offset + 5, 5);
+    var setECX = exe.fetchHex(offset + setEcxOffset, 5);
 
     //Step 2b - Find the AddPak call after the push
     code =
@@ -34,7 +57,7 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
       + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
       + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
     ;
-    var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 30);
+    var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
 
     if (fnoffset === -1) {//VC9 Client
         code =
