@@ -462,9 +462,9 @@ registerPatch(274, "ChangeTipboxPath", "Change Tipbox*.lub path", "Custom", 20, 
 
 registerPatch(275, "ChangeCheckAttendancePath", "Change CheckAttendance*.lub path", "Custom", 20, "Jian", "Change CheckAttendance*.lub path", false);
 
-registerPatch(276, "ChangeOngoingQuestInfoListPath", "Change OngoingQuestInfoList* path", "Custom", 20, "Jian", "Change OngoingQuestInfoList*.lub path", false);
+registerPatch(276, "ChangeOngoingQuestInfoListPath", "Change OngoingQuestInfoList*.lub path", "Custom", 20, "Jian", "Change OngoingQuestInfoList*.lub path", false);
 
-registerPatch(277, "ChangeRecommendedQuestInfoListPath", "Change RecommendedQuestInfoList* path", "Custom", 20, "Jian", "Change RecommendedQuestInfoList* path", false);
+registerPatch(277, "ChangeRecommendedQuestInfoListPath", "Change RecommendedQuestInfoList*.lub path", "Custom", 20, "Jian", "Change RecommendedQuestInfoList*.lub path", false);
 
 registerPatch(278, "ChangePrivateAirplanePath", "Change PrivateAirplane*.lub path", "Custom", 20, "Jian", "Change PrivateAirplane*.lub path", false);
 
@@ -498,7 +498,7 @@ registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection"
 
 registerPatch(293, "IncreaseHairSpritesOld", "Increase hair style limit for human only in game (old)", "Custom", 19, "4144", "Allow use more hair styles than default limit", false);
 
-// 294 reserved
+registerPatch(294, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20, "X-EcutiOnner", "Change MapInfo*.lub path", false);
 
 registerPatch(295, "ChangeMaxPartyValue", "Change Max Party Value", "UI", 0, "Jchcc", "Change max party value displayed on Alt+Z", false);
 

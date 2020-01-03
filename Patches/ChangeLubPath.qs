@@ -66,6 +66,13 @@ function ChangePrivateAirplanePath() {
             _("Please enter new path for PrivateAirplane*.lub file"), iiName, 1, 100));
 }
 
+function ChangeMapInfoPath() {
+	var iiName = ChangeLubPathGetIIName(10);
+	return ChangeLubPath(iiName, exe.getUserInput("$MapInfoPath", XTYPE_STRING,
+            _("String input - maximum 100 characters"),
+            _("Please enter new path for MapInfo*.lub file"), iiName, 1, 100));
+}
+
 function ChangeLubPathGetIIName(type) {
 	var iiName = "";
 	switch(type){
@@ -131,6 +138,13 @@ function ChangeLubPathGetIIName(type) {
 			iiName = "System\\PrivateAirplane_Sakray.lub";
 			if (exe.findString(iiName, RVA) !== -1) return iiName;
 			iiName = "System\\PrivateAirplane_True.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			return "";
+		}
+		case 10: {
+			iiName = "system\\mapInfo_sak.lub";
+			if (exe.findString(iiName, RVA) !== -1) return iiName;
+			iiName = "system\\mapInfo_true.lub";
 			if (exe.findString(iiName, RVA) !== -1) return iiName;
 			return "";
 		}
@@ -200,4 +214,8 @@ function ChangeRecommendedQuestInfoListPath_() {
 
 function ChangePrivateAirplanePath_() {
     return (ChangeLubPathGetIIName(9) !== "");
+}
+
+function ChangeMapInfoPath_() {
+    return (ChangeLubPathGetIIName(10) !== "");
 }
