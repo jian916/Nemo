@@ -52,12 +52,16 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
     var setECX = exe.fetchHex(offset + setEcxOffset, 5);
 
     //Step 2b - Find the AddPak call after the push
-    code =
-        " E8 AB AB AB AB"    //CALL CFileMgr::AddPak()
-      + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
-      + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
-    ;
-    var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+    if (addpackOffset === -1)
+    {
+        code =
+            " E8 AB AB AB AB"    //CALL CFileMgr::AddPak()
+          + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
+          + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
+        ;
+        var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        var addpackOffset = 1;
+    }
 
     if (fnoffset === -1) {//VC9 Client
         code =
