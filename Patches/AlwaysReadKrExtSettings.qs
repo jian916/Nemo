@@ -18,8 +18,12 @@
 
 function AlwaysReadKrExtSettings()
 {
+    var filePath = "Lua Files\\service_korea\\ExternalSettings_kr";
+    if (IsZero())
+        filePath = "Lua Files\\service_korea\\zero_server\\ExternalSettings_kr";
+
     // Step 1a - Find ExternalSettings_kr path string
-    var offset = exe.findString("Lua Files\\service_korea\\ExternalSettings_kr", RVA);
+    var offset = exe.findString(filePath, RVA);
     if (offset === -1)
     {
         return "Failed in step 1a - Cannot find ExternalSettings_kr path string.";
@@ -87,5 +91,8 @@ function AlwaysReadKrExtSettings()
 //=================================//
 function AlwaysReadKrExtSettings_()
 {
-    return (exe.findString("Lua Files\\service_korea\\ExternalSettings_kr",RAW) !== -1);
+    var filePath = "Lua Files\\service_korea\\ExternalSettings_kr";
+    if (IsZero())
+        filePath = "Lua Files\\service_korea\\zero_server\\ExternalSettings_kr";
+    return (exe.findString(filePath ,RAW) !== -1);
 }
