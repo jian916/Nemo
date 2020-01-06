@@ -2,14 +2,16 @@
 
 ## Patches
 
-- Fix [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients) for zero clients (fix by 4144)
+- Fix [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients) for zero clients (fix by 4144).
+- Fix [Enable Multiple GRFs - Embedded](http://nemo.herc.ws/patches/EnableMultipleGRFsV2/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
+- Add patch [Change MapInfo*.lub path](http://nemo.herc.ws/patches/ChangeMapInfoPath/#success-clients) by @X-EcutiOnner.
 
 
 # 2020-01-01 Patches update
 
 ## Patches
 
-- Fix [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-12-xx. (fix by 4144)
+- Fix [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-12-xx. (fix by 4144).
 
 # 2019-12-17 Patches update
 
