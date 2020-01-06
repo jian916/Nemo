@@ -498,7 +498,7 @@ registerPatch(291, "HidePacketsFromPeek", "Hide packets from peek", "Protection"
 
 registerPatch(293, "IncreaseHairSpritesOld", "Increase hair style limit for human only in game (old)", "Custom", 19, "4144", "Allow use more hair styles than default limit", false);
 
-registerPatch(294, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20, "X-EcutiOnner", "Change MapInfo*.lub path", false);
+// 294 reserved
 
 registerPatch(295, "ChangeMaxPartyValue", "Change Max Party Value", "UI", 0, "Jchcc", "Change max party value displayed on Alt+Z", false);
 
@@ -535,5 +535,7 @@ registerPatch(310, "AdventurerAgencyButton", "Set adventurer agency button", "Cu
 registerPatch(311, "AllowSpamSkills", "Allow spam skills by hotkey", "Custom", 0, "Functor, 4144", "If hold key, allow spam skills by hotkey", false);
 
 registerPatch(312, "Intravision", "Always see hidden/cloaked objects", "Custom", 0, "Secret, A.K.M.", "Always see black silhouette of hidden objects as if the player has intravision status", false);
+
+registerPatch(313, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20, "X-EcutiOnner", "Change MapInfo*.lub path", false);
 
 GlobalPostInit();
