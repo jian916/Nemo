@@ -1,3 +1,13 @@
+# 2020-01-09 Patches update
+
+## Patches
+
+- Fix [Custom Window Title](http://nemo.herc.ws/patches/CustomWindowTitle/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
+
+## Translations
+
+- Update Thai translation by @X-EcutiOnner.
+
 # 2020-01-06 Patches update
 
 ## Patches
