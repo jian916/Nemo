@@ -1,3 +1,10 @@
+# 2020-01-12 Patches update
+
+## Patches
+
+- Fix corruptions in [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients) fix by 4144.
+
+
 # 2020-01-09 Patches update
 
 ## Patches
