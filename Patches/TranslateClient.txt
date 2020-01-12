@@ -37,13 +37,13 @@ R: '%d hour '
 M: Skill Timer Minutes
 -----------------------
 F: 25 64 20 BA D0 20
-R: '%d min '
+R: '%d mi '
 
 -----------------------
 M: Skill Timer Seconds
 -----------------------
 F: 25 64 20 C3 CA
-R: '%d sec'
+R: '%d se'
 
 ---------------------------------
 M: Translate Delete Time - Part 1
@@ -64,7 +64,7 @@ M: Translate Message Box
 --------------------------
 
 F: B8 DE BD C3 C1 F6
-R: 'Message'
+R: 'Messag'
 
 ---------------------------------
 M: Translate Character Slot Usage
@@ -267,7 +267,7 @@ M: Dragon
 ----------------------------------
 
 F: BF EB C1 B7
-R: 'Dragn'
+R: 'Drag'
 
 ----------------------------------
 M: Mob
@@ -295,7 +295,7 @@ M: Using the warp to the next area, please click to go
 ----------------------------------
 
 F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 BF F6 C7 C1 B8 A6 20 C0 CC BF EB C7 CF BF A9 20 B4 D9 C0 BD 20 C1 F6 BF AA C0 B8 B7 CE 20 C0 CC B5 BF C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E
-R: 'Navigation >: Using the warp to the next area, please click to go'
+R: 'Navigation >: Using the warp to the next area, click to go'
 
 ----------------------------------
 M: Arrived at the target map
@@ -351,7 +351,7 @@ M: Guidance to %s (A) By using
 ----------------------------------
 
 F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 BE C8 B3 BB C7 CF B4 C2 20 25 73 28 C0 BB 29 B8 A6 20 C0 CC BF EB C7 CF BF A9
-R: 'Navigation >: Guidance to %s (A) By using'
+R: 'Navigation >: Guidance to %s (A) By usin'
 
 ----------------------------------
 M: Do you want to cancel navigation?
@@ -387,13 +387,6 @@ M: Found
 
 F: B5 B5 C2 F8 2E
 R: 'Found'
-
-----------------------------------
-M: You
-----------------------------------
-
-F: A1 DA
-R: 'You'
 
 ----------------------------------
 M: Path Failure
@@ -1320,4 +1313,4 @@ M: Navigation
 ------------------------------
 
 F: 5B B8 F1 C0 FB C1 F6 5D 20 25 73
-R: '[Destination] %s'
+R: '[Dest] %s'

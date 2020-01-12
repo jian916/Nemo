@@ -13,6 +13,9 @@ function TranslateClient()
     var offset = -1;
     var msg = "";
     var failmsgs = [];  // Array to store all Failure messages
+    var fStr = "";
+    var fStr0 = "";
+    var rStr = "";
 
     // Step 2 - Loop through the text file, get the respective strings & do findString + replace
     var found = false;
@@ -26,25 +29,43 @@ function TranslateClient()
         }
         else if (str.charAt(0) === "F")
         {   // F: = Find string
+            fStr0 = str;
             str = str.substring(2).trim();
 
             if (str.charAt(0) === "'")  // ASCII
-                str = str.substring(1,str.length-1);
+                str = str.substring(1, str.length - 1);
             else  // HEX
                 str = str.toAscii();
-
-            offset = exe.findString(str, RAW);
-            if (offset === -1)
-                failmsgs.push(msg);  // No Match = Collect Failure message
+            fStr = str;
         }
-        else if (str.charAt(0) === "R" && offset !== -1)
+        else if (str.charAt(0) === "R")
         {   // R: = Replace string. At this point we have both location and string to replace with
+            offset = exe.findString(fStr, RAW);
+            if (offset === -1)
+            {
+                failmsgs.push(msg);  // No Match = Collect Failure message
+                continue;
+            }
+
             str = str.substring(2).trim();
 
-            if (str.charAt(0) === "'")  // ASCII
-                exe.replace(offset, str.substring(1, str.length-1) + "\x00", PTYPE_STRING);
-            else  // HEX
+            if (str.charAt(0) === "'")
+            { // ASCII
+                str = str.substring(1, str.length - 1);
+                rStr = str
+                exe.replace(offset, str + "\x00", PTYPE_STRING);
+            }
+            else
+            { // HEX
+                rStr = str.toAscii();
                 exe.replace(offset, str + " 00", PTYPE_HEX);
+            }
+
+            if (rStr.length > fStr.length)
+            {
+                return "Error: translation for '" + fStr0 + "' too long. Lengths: " + rStr.length + " vs " + fStr.length;
+            }
+
             found = true;
             offset = -1;
         }
