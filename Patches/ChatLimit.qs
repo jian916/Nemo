@@ -40,6 +40,14 @@ function ChatLimit(option) {
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   
   if (offset === -1) {
+    code = code.replace(" 0A 74 AB 83 7C 24 04 02 7C", " 0A 74 AB 83 7D 08 02 7C");//Replace ESP+4 with EBP-8
+    
+    isLong = false;
+    
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
+
+  if (offset === -1) {
     code = code.replace(" 0A 74 AB 83", " 0A 0F 84 AB 00 00 00 83" );//Relative offset of the JE is > 7F but < FF. Hence changing to long
     code = code.replaceAt(-3, " 0F 8C");//same reason as above for JL
     
