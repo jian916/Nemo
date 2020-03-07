@@ -1,3 +1,12 @@
+# 2020-03-07 Patches update
+
+## Patches
+
+- Fix [Skip Service Selection Screen](http://nemo.herc.ws/patches/SkipServiceSelect/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix [Chat Flood Remove Limit](http://nemo.herc.ws/patches/RemoveChatLimit/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix [Chat Flood Allow](http://nemo.herc.ws/patches/AllowChatFlood/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+
+
 # 2020-01-24 Patches update
 
 ## Patches
