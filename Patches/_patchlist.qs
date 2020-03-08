@@ -542,4 +542,6 @@ registerPatch(313, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20
 
 registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Color", 0, "Hanashi, 4144", "Changes the highlight skillslot color and sets it to the specified value. Default value is b4ffb4 (Celadon)", false);
 
+registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 12, "Functor, X-EcutiOnner", "Remove equipment swap button on the equipment window", false);
+
 GlobalPostInit();
