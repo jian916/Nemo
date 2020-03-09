@@ -21,35 +21,26 @@
 
 function DefaultBrowserInCashshop () {
 	//Step 1 - Find address of "iexplore.exe"
-	var code = "iexplore.exe";
-	var offset = exe.findString(code, RAW);
+	var offset = exe.findString("iexplore.exe", RAW);
 	
 	if (offset === -1)
 		return "Failed in Step 1 - String not found.";
 	
 	//Step 2 - Find the string reference.
-	var offsets = exe.findCodes("68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+	var offsets = exe.findCodes(" 50 68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
 
 	if (offsets.length === 0)
 		return "Failed in Step 2 - String reference missing.";
 	
-	//Step 3 - Check previous instruction which should be a PUSH EAX.
-	for (var i = 0; i < offsets.length; i++) {
-		offset = offsets[i] - 1 ;
-		if (exe.fetchUByte(offset) !== 0x50)
-			return "Failed in Step 3 - Unknown instruction before reference.";
-	}
-	
-	//Step 4a - Prep code to change arguments of ShellExecuteA
+	//Step 3 - Replace the arguments of ShellExecuteA
 	code =
 	    " 6A 00"	//PUSH 00
 	  + " 50"		//PUSH EAX
 	  + " 90 90 90"	//NOPS
 	  ;
-	  
-	//Step 4b - Replace the arguments of ShellExecuteA
+
 	for (i = 0; i < offsets.length; i++) {
-		offset = offsets[i] - 1 ;
+		offset = offsets[i];
 		exe.replace (offset, code, PTYPE_HEX);
 	}
 	
