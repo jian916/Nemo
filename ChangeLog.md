@@ -1,3 +1,13 @@
+# 2020-03-30 Patches update
+
+## Patches
+
+- Add new line into [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients) (fix by @X-EcutiOnner).
+- Fix [Use Default Web Browser In Cashshop](http://nemo.herc.ws/patches/DefaultBrowserInCashshop/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix [Increase Map Quality](http://nemo.herc.ws/patches/IncreaseMapQuality/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix [Remove Hourly Announce](http://nemo.herc.ws/patches/RemoveHourlyAnnounce/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+
+
 # 2020-03-07 Patches update
 
 ## Patches
