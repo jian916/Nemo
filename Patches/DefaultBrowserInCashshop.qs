@@ -33,13 +33,13 @@ function DefaultBrowserInCashshop () {
 		return "Failed in Step 2 - String reference missing.";
 	
 	//Step 3 - Replace the arguments of ShellExecuteA
-	code =
+	var code =
 	    " 6A 00"	//PUSH 00
 	  + " 50"		//PUSH EAX
 	  + " 90 90 90"	//NOPS
 	  ;
 
-	for (i = 0; i < offsets.length; i++) {
+	for (var i = 0; i < offsets.length; i++) {
 		offset = offsets[i];
 		exe.replace (offset, code, PTYPE_HEX);
 	}
