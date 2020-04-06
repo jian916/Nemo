@@ -1,5 +1,6 @@
 stages:
   - test
+  - triggers
 
 image: debian:unstable
 
@@ -27,3 +28,15 @@ translations:
   - ./updatetranslations.py
   variables:
     PACKAGES: dos2unix moreutils git python git gettext
+
+trigger:
+  stage: triggers
+  only:
+  - branches@4144/Nemo
+  script:
+  - ./.ci/retry.sh apt-get update
+  - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
+  - curl -X POST -F token=$key1 -F ref=$branch1 $host1/$id1/trigger/pipeline
+
+  variables:
+    PACKAGES: curl
