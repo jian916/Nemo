@@ -37,6 +37,5 @@ trigger:
   - ./.ci/retry.sh apt-get update
   - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
   - curl -X POST -F token=$key1 -F ref=$branch1 $host1/$id1/trigger/pipeline
-
   variables:
     PACKAGES: curl
