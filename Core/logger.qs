@@ -598,3 +598,17 @@ function consoleLog(message)
         return;
     console2.log(message);
 }
+
+function logVaVar(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVaVar(name, offset, offset2);
+}
+
+function logRawFunc(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logRawFunc(name, offset, offset2);
+}

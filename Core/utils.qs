@@ -72,6 +72,7 @@ function GetLangType() {
   if (offset === -1)
     return ["g_serviceType assignment missing"];
 
+  logVaVar("g_serviceType", offset, 2);
   //Step 2b - Extract and return
   return exe.fetchHex(offset + 2, 4);
   
@@ -98,6 +99,8 @@ function GetServerType() {
   offset = exe.find(" C7 05 AB AB AB AB 01 00 00 00", PTYPE_HEX, true, "\xAB", offset + 5);
   if (offset === -1)
     throw "g_serverType assignment missing";
+
+  logVaVar("g_serverType", offset, 2);
 
   //Step 2b - Extract and return
   return exe.fetchDWord(offset + 2);
@@ -126,7 +129,10 @@ function GetWinMgrInfo() {
   offset = exe.findCode(code, PTYPE_HEX, false);
   if (offset === -1)
     return "NUMACCOUNT reference missing";
-  
+
+  logVaVar("g_windowMgr", offset, -9);
+  logRawFunc("UIWindowMgr_MakeWindow", offset, -4);
+
   return {
     "gWinMgr": exe.fetchHex(offset-10, 5),
     "makeWin": exe.fetchDWord(offset - 4) + exe.Raw2Rva(offset)

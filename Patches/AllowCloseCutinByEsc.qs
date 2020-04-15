@@ -42,6 +42,8 @@ function AllowCloseCutinByEsc()
     if (offset === -1)
         return "Failed in step 1 - check pattern not found";
 
+    logVaVar("g_modeMgr", offset, gModeMgrOffset);
+    logRawFunc("CModeMgr_GetGameMode", offset, getGameModeOffset);
     var gModeMgrHex = exe.fetchDWord(offset + gModeMgrOffset).packToHex(4);
     var getGameModeHex = exe.Raw2Rva(exe.fetchDWord(offset + getGameModeOffset) + offset + getGameModeOffset + 4).packToHex(4);
     var emptyStrHex = exe.fetchDWord(offset + EmptyStrOffset).packToHex(4);
@@ -68,6 +70,10 @@ function AllowCloseCutinByEsc()
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 2 - check esc pattern not found";
+
+    logRawFunc("UIWindowMgr_check_close", offset, checkFuncOffset);
+    logRawFunc("UIWindowMgr_DeleteWindow", offset, deleteFuncOffset);
+
     checkFuncOffset = offset + checkFuncOffset;
     var deleteFuncAddr = exe.fetchDWord(offset + deleteFuncOffset) + offset + deleteFuncOffset + 4;
     var checkFuncAddr = exe.fetchDWord(checkFuncOffset) + checkFuncOffset + 4;
