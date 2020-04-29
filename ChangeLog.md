@@ -1,3 +1,10 @@
+# 2020-04-30 Translations update
+
+## Translations
+
+- Update PT-BR translations by Frost and factor (@danilloestrela)
+
+
 # 2020-03-30 Patches update
 
 ## Patches
