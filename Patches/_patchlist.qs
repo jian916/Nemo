@@ -538,4 +538,6 @@ registerPatch(312, "Intravision", "Always see hidden/cloaked objects", "Custom",
 
 registerPatch(313, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20, "X-EcutiOnner", "Change MapInfo*.lub path", false);
 
+// 314 reserved
+
 GlobalPostInit();
