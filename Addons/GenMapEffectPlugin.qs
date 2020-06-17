@@ -249,7 +249,7 @@ function GenMapEffectPlugin() {
 	fp.close();
   
 	//Step 12d - Also write out the values to header file (client.h)
-	fp2 = new TextFile();
+	var fp2 = new TextFile();
 	fp2.open(APP_PATH + "/Output/client_" + exe.getClientDate() + ".h", "w");
 	fp2.writeline("#include <WTypes.h>");
 	fp2.writeline("\n// Client Date : " + exe.getClientDate());
