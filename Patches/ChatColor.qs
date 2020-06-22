@@ -194,24 +194,28 @@ function ChatColorPartyOther() {
 //ChatColorMain - is included in ChatColorGM so it makes it pointless
 
 
-function HighlightSkillSlotColor() {
-  
-  //Step 1 - Find the area where color is pushed.
-  var code =
-    " D2 1D"           //PUSH 1
-  + " 68 B4 FF B4 00"  //PUSH B4,FF,B4 (Celadon)
-  ;
-  var offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "Failed in Step 1";
-  
-  //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$HSkillSColor", XTYPE_COLOR, _("Color input"), _("Select new Highlight Skillslot Color"), 0x00B4FFB4);  
-  if (color === 0x00B4FFB4)
-    return "Patch Cancelled - New Color is same as old";
+function HighlightSkillSlotColor()
+{
+    consoleLog("Step 1 - Find the area where color is pushed.");
+    var code =
+        "0F B6 0D AB AB AB AB " +     // 0 movzx ecx, g_session.m_shortcutSlotCnt
+        "6B D2 1D " +                 // 7 imul edx, 1Dh
+        "68 B4 FF B4 00 " +           // 10 push 0B4FFB4h
+        "8B AB " +                    // 15 mov eax, ecx
+        "6A 18 " +                    // 17 push 18h
+        "83 C1 05 ";                  // 19 add ecx, 5
+    var colorOffset = 11;
+    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    if (offset === -1)
+        return "Failed in Step 1";
 
-  //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$HSkillSColor", PTYPE_STRING);
+    consoleLog("Step 2a - Get the new color from user");
+    var color = exe.getUserInput("$HSkillSColor", XTYPE_COLOR, _("Color input"), _("Select new Highlight Skillslot Color"), 0x00B4FFB4);  
+    if (color === 0x00B4FFB4)
+        return "Patch Cancelled - New Color is same as old";
 
-  return true;
+    consoleLog("Step 2b - Replace with new color");
+    exe.replace(offset + colorOffset, "$HSkillSColor", PTYPE_STRING);
+
+    return true;
 }

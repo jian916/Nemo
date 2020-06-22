@@ -540,6 +540,6 @@ registerPatch(313, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20
 
 // 314 reserved
 
-registerPatch( 315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Color", 0, "Hanashi", "Changes the highlight skillslot color and sets it to the specified value. Default value is b4ffb4 (Celadon)", false);
+registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Color", 0, "Hanashi, 4144", "Changes the highlight skillslot color and sets it to the specified value. Default value is b4ffb4 (Celadon)", false);
 
 GlobalPostInit();
