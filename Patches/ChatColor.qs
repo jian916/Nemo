@@ -215,25 +215,3 @@ function HighlightSkillSlotColor() {
 
   return true;
 }
-
-function MainHighlight() {
-  
-  //Step 1 - Find the area where color is pushed.
-  var code =
-    " C7 86 C0 00 00"           //PUSH 1
-  + " 00 CA DF FB 00"  //PUSH B4,FF,B4 (hawkes blue)
-  ;
-  var offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "Failed in Step 1";
-  
-  //Step 2a - Get the new color from user
-  var color = exe.getUserInput("$MHighlight", XTYPE_COLOR, _("Color input"), _("Select new Main Highlight"), 0x00CADFFB);  
-  if (color === 0x00CADFFB)
-    return "Patch Cancelled - New Color is same as old";
-
-  //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$MHighlight", PTYPE_STRING);
-
-  return true;
-}
