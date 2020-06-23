@@ -96,10 +96,13 @@ function ChangeLubPathGetIIName(type)
         }
         case 2:
         {
-            iiName = "System/monster_size_effect_sak_new.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "System/monster_size_effect_sak.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "System/monster_size_effect_sak_new.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                iiName = "System/monster_size_effect_sak.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             iiName = "System/monster_size_effect_new.lub";
             if (exe.findString(iiName, RVA) !== -1) return iiName;
             iiName = "System/monster_size_effect.lub";
@@ -114,10 +117,16 @@ function ChangeLubPathGetIIName(type)
         }
         case 4:
         {
-            iiName = "system\\PetEvolutionCln_sak.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "system\\PetEvolutionCln_true.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "system\\PetEvolutionCln_sak.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
+            else
+            {
+                iiName = "system\\PetEvolutionCln_true.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             iiName = "system\\PetEvolutionCln.lub";
             if (exe.findString(iiName, RVA) !== -1) return iiName;
             return "";
@@ -136,38 +145,62 @@ function ChangeLubPathGetIIName(type)
         }
         case 7:
         {
-            iiName = "system\\OngoingQuestInfoList_Sakray";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "system\\OngoingQuestInfoList_True";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "system\\OngoingQuestInfoList_Sakray";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
+            else
+            {
+                iiName = "system\\OngoingQuestInfoList_True";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             iiName = "system\\OngoingQuestInfoList";
             if (exe.findString(iiName, RVA) !== -1) return iiName;
             return "";
         }
         case 8:
         {
-            iiName = "system\\RecommendedQuestInfoList_Sakray";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "system\\RecommendedQuestInfoList_True";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "system\\RecommendedQuestInfoList_Sakray";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
+            else
+            {
+                iiName = "system\\RecommendedQuestInfoList_True";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             iiName = "system\\RecommendedQuestInfoList";
             if (exe.findString(iiName, RVA) !== -1) return iiName;
             return "";
         }
         case 9:
         {
-            iiName = "System\\PrivateAirplane_Sakray.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "System\\PrivateAirplane_True.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "System\\PrivateAirplane_Sakray.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
+            else
+            {
+                iiName = "System\\PrivateAirplane_True.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             return "";
         }
         case 10:
         {
-            iiName = "system\\mapInfo_sak.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "system\\mapInfo_true.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (IsSakray())
+            {
+                iiName = "system\\mapInfo_sak.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
+            else
+            {
+                iiName = "system\\mapInfo_true.lub";
+                if (exe.findString(iiName, RVA) !== -1) return iiName;
+            }
             return "";
         }
         default:
