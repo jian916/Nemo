@@ -43,5 +43,5 @@ function FixShortcutsInWine()
 
 function FixShortcutsInWine_()
 {
-    return (exe.getClientDate() > 20190306 && IsRenewal()) || exe.getClientDate() >= 20190401;
+    return (exe.getClientDate() > 20190306 && IsSakray()) || exe.getClientDate() >= 20190401;
 }

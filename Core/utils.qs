@@ -37,7 +37,7 @@ function ReplaceVarHex(code, nums, values) {
 //# Purpose: Check whether client is Renewal or Main client # 
 //###########################################################
 
-function IsRenewal() {
+function IsSakray() {
     return(exe.findString("rdata.grf", RAW) !== -1);
 }
 

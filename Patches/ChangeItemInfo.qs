@@ -6,7 +6,7 @@
 function ChangeItemInfo() {
 
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
-    if (IsRenewal()) {
+    if (IsSakray()) {
         var iiName = "System/iteminfo_Sak.lub";
     } else {
         // iteminfo in old clients
@@ -50,7 +50,7 @@ function ChangeItemInfo() {
 // Disable for Unsupported clients //
 //=================================//
 function ChangeItemInfo_() {
-    if (IsRenewal()) {
+    if (IsSakray()) {
         var iiName = "System/iteminfo_Sak.lub";
     } else {
         // iteminfo in old clients
