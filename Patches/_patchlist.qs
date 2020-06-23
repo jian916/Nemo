@@ -544,6 +544,6 @@ registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Colo
 
 registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 12, "Functor, X-EcutiOnner", "Remove equipment swap button on the equipment window", false);
 
-registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
+registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
 
 GlobalPostInit();
