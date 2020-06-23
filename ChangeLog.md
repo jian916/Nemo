@@ -2,7 +2,7 @@
 
 ## Patches
 
-- Add patch [Highlight Skillslot Colo](http://nemo.herc.ws/patches/HighlightSkillSlotColor/#success-clients) (by Hanashi, fix by @4144).
+- Add patch [Highlight Skillslot Color](http://nemo.herc.ws/patches/HighlightSkillSlotColor/#success-clients) (by Hanashi, fix by @4144).
 - Add patch [Remove Equipment Swap Button](http://nemo.herc.ws/patches/RemoveEquipmentSwap/#success-clients) (by @X-EcutiOnner, fix by @4144).
 - Add patch [Ignore Quest Errors](http://nemo.herc.ws/patches/IgnoreQuestErrors/#success-clients) (by @X-EcutiOnner, fix by @4144).
 
