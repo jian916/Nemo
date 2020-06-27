@@ -37,22 +37,39 @@ function FixHomunculusAI() {
 	exe.replace(offset, " B0 01", PTYPE_HEX);
 	
 	//Step 4 - Remove target cursor for all targets.
-	code = 
+	var code = 
 	    " 6A 00"			//PUSH 00
+	  + " 6A 00"			//PUSH 00
+	  + " 6A 00"			//PUSH 00
+	  + " 6A 00"			//PUSH 00
+	  + " 6A 00"			//PUSH 00
+	  + " 6A 00"			//PUSH 00
 	  + " 6A 00"			//PUSH 00
 	  + " 6A 00"			//PUSH 00
 	  + " 6A 00"			//PUSH 00
 	  + " 68 86 00 00 00"	//PUSH 86
 	  ;
-	  
+
 	var offsets = exe.findCodes(code, PTYPE_HEX, false);
-	
+  
+	if (offsets.length !== 2) {
+        code = 
+            " 6A 00"			//PUSH 00
+          + " 6A 00"			//PUSH 00
+          + " 6A 00"			//PUSH 00
+          + " 6A 00"			//PUSH 00
+          + " 68 86 00 00 00"	//PUSH 86
+          ;
+
+        offsets = exe.findCodes(code, PTYPE_HEX, false);
+    }
+
 	if (offsets.length !== 2)
 		return "Failed in Step 4";
 	
 	for (var i = 0; i < offsets.length; i++) {
 		offset = exe.find(" 84 C0 74 AB", PTYPE_HEX, true, "\xAB", offsets[i]-8, offsets[i]);
-		if (offset == -1)
+		if (offset === -1)
 			return "Failed in Step 4.1";
 		offset += 2;
 		exe.replace(offset , " EB", PTYPE_HEX);
