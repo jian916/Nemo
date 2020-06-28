@@ -4,3 +4,18 @@
 .ci/nemo.po
 /Other/
 /Other
+/Output/*.txt
+/Output/*.dll
+/Output/*.asi
+FailedTranslations.txt
+*.exe.secure.txt
+PatchList.log
+InputList.db
+CDClient.dll
+NEMO.ini
+*.exe
+*.log
+*.db
+
+# exception
+!/NEMO.exe
