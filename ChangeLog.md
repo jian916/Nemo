@@ -1,3 +1,21 @@
+# 2020-07-01 Patches update
+
+## Patches
+
+- Fix patch [Increase Headgear ViewID](http://nemo.herc.ws/patches/IncreaseViewID/#success-clients) for 2020 clients. (fix  by @jchcc).
+- Fix patch [Allow space in guild name](http://nemo.herc.ws/patches/AllowSpaceInGuildName/#success-clients) for 2019-2020 clients. (fix  by @jchcc).
+- Fix patch [Enforce Official Login Background](http://nemo.herc.ws/patches/EnforceOfficialLoginBackground/#success-clients) for 2019-2020 clients. (fix  by @jchcc).
+- Fix patch [Show Exp Numbers](http://nemo.herc.ws/patches/ShowExpNumbers/#success-clients) for 2020 clients. (fix  by @jchcc).
+- Fix patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) for 2019-10-30 client and up. (fix by @X-EcutiOnner).
+
+
+# 2020-06-24 Patches update
+
+## Patches
+
+- Fix change lub patches for support sakray and main strings in same binary (fix by @4144).
+
+
 # 2020-06-23 Different updates
 
 ## Patches
