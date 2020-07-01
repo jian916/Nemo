@@ -15,6 +15,11 @@ function AllowSpaceInGuildName() {
   ;
   
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  if (offset === -1) //newer clients
+  {
+	code = code.replace(" FF AB", " E8 AB AB AB AB");   //CALL rel32; MSVCR#.strchr
+	offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
   if (offset === -1)
     return "Failed in Step 1";
 
