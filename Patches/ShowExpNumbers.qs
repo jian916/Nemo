@@ -117,6 +117,10 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   var extraPush = "";
   if (exe.getClientDate() > 20140116)
     extraPush = " 6A 00";
+  //Step 3e - Check if Extra PUSH 0 is there (only for clients > 20200325)
+  var extraPush2 = "";
+  if (exe.getClientDate() > 20200325)
+    extraPush2 = " 6A 00";
   
   //Step 4a - Prep the template code that we use for both type of exp
   var template = 
@@ -133,6 +137,7 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   + " FF 15" + GenVarHex(5)//CALL DWORD PTR DS:[<&MSVCR#.sprintf>]
   + " 83 C4 10"            //ADD ESP, 10
   + " 89 E0"               //MOV EAX, ESP
+  + extraPush2             //PUSH 0   ; Arg9 = Only for new clients (2020+)
   + extraPush              //PUSH 0   ; Arg8 = Only for new clients
   + " 6A 00"               //PUSH 0   ; Arg7 = Color
   + " 6A 0D"               //PUSH 0D  ; Arg6 = Font Height
