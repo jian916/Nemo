@@ -45,25 +45,25 @@
 ## Patches
 
 - Add new line into [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients) (fix by @X-EcutiOnner).
-- Fix [Use Default Web Browser In Cashshop](http://nemo.herc.ws/patches/DefaultBrowserInCashshop/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
-- Fix [Increase Map Quality](http://nemo.herc.ws/patches/IncreaseMapQuality/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
-- Fix [Remove Hourly Announce](http://nemo.herc.ws/patches/RemoveHourlyAnnounce/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Use Default Web Browser In Cashshop](http://nemo.herc.ws/patches/DefaultBrowserInCashshop/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Increase Map Quality](http://nemo.herc.ws/patches/IncreaseMapQuality/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Remove Hourly Announce](http://nemo.herc.ws/patches/RemoveHourlyAnnounce/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
 
 
 # 2020-03-07 Patches update
 
 ## Patches
 
-- Fix [Skip Service Selection Screen](http://nemo.herc.ws/patches/SkipServiceSelect/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
-- Fix [Chat Flood Remove Limit](http://nemo.herc.ws/patches/RemoveChatLimit/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
-- Fix [Chat Flood Allow](http://nemo.herc.ws/patches/AllowChatFlood/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Skip Service Selection Screen](http://nemo.herc.ws/patches/SkipServiceSelect/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Chat Flood Remove Limit](http://nemo.herc.ws/patches/RemoveChatLimit/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
+- Fix patch [Chat Flood Allow](http://nemo.herc.ws/patches/AllowChatFlood/#success-clients) for 2019+ clients. (fix by @X-EcutiOnner).
 
 
 # 2020-01-24 Patches update
 
 ## Patches
 
-- Fix [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2020-01-22. (fix by @4144).
+- Fix patch [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2020-01-22. (fix by @4144).
 
 
 # 2020-01-12 Patches update
@@ -77,7 +77,7 @@
 
 ## Patches
 
-- Fix [Custom Window Title](http://nemo.herc.ws/patches/CustomWindowTitle/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
+- Fix patch [Custom Window Title](http://nemo.herc.ws/patches/CustomWindowTitle/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
 
 ## Translations
 
@@ -87,8 +87,8 @@
 
 ## Patches
 
-- Fix [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients) for zero clients (fix by @4144).
-- Fix [Enable Multiple GRFs - Embedded](http://nemo.herc.ws/patches/EnableMultipleGRFsV2/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
+- Fix patch [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients) for zero clients (fix by @4144).
+- Fix patch [Enable Multiple GRFs - Embedded](http://nemo.herc.ws/patches/EnableMultipleGRFsV2/#success-clients) for 2019 clients (fix by @X-EcutiOnner).
 - Add patch [Change MapInfo*.lub path](http://nemo.herc.ws/patches/ChangeMapInfoPath/#success-clients) by @X-EcutiOnner.
 
 
@@ -96,7 +96,7 @@
 
 ## Patches
 
-- Fix [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-12-xx. (fix by @4144).
+- Fix patch [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-12-xx. (fix by @4144).
 
 # 2019-12-17 Patches update
 
@@ -206,12 +206,12 @@
 ## Patches
 
 - Fix patch [Remove hardcoded connection address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for 2019-02-13 by @4144.
-- Fix [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-02-13. (fix by @4144)
-- Fix [Read msgstringtable.txt](http://nemo.herc.ws/patches/ReadMsgstringtabledottxt/#success-clients) for 2019-02-13. (fix by @4144)
-- Fix [Enable Multiple GRFs](http://nemo.herc.ws/patches/EnableMultipleGRFs/#success-clients) for 2019-02-13. (fix by @4144)
-- Fix [Disable Ragexe Filename Check](http://nemo.herc.ws/patches/DisableFilenameCheck/#success-clients) for 2019-02-13. (fix by @4144)
-- Fix [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-02-13. (fix by @4144)
-- Add new patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
+- Fix patch [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-02-13. (fix by @4144)
+- Fix patch [Read msgstringtable.txt](http://nemo.herc.ws/patches/ReadMsgstringtabledottxt/#success-clients) for 2019-02-13. (fix by @4144)
+- Fix patch [Enable Multiple GRFs](http://nemo.herc.ws/patches/EnableMultipleGRFs/#success-clients) for 2019-02-13. (fix by @4144)
+- Fix patch [Disable Ragexe Filename Check](http://nemo.herc.ws/patches/DisableFilenameCheck/#success-clients) for 2019-02-13. (fix by @4144)
+- Fix patch [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-02-13. (fix by @4144)
+- Add patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
 
 
 # 2019-02-04 Functions update
@@ -226,19 +226,19 @@
 
 ## Patches
 
-- Add new patch [Draw shield on top of other player sprites](http://nemo.herc.ws/patches/MoveShieldToTop/#success-clients) by @4144.
+- Add patch [Draw shield on top of other player sprites](http://nemo.herc.ws/patches/MoveShieldToTop/#success-clients) by @4144.
 
 # 2018-12-30 Patches update
 
 ## Patches
 
-- Add new patch [Change character display deletion time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients) by Functor.
+- Add patch [Change character display deletion time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients) by Functor.
 
 # 2018-12-19 Patches update
 
 ## Patches
 
-- Add new patch [Hide zero date (1969-01-01) in guild members window](http://nemo.herc.ws/patches/HideZeroDateInGuildMembers/#success-clients) by @4144.
+- Add patch [Hide zero date (1969-01-01) in guild members window](http://nemo.herc.ws/patches/HideZeroDateInGuildMembers/#success-clients) by @4144.
 
 # 2018-11-29 Patches update
 
@@ -259,9 +259,9 @@
 ## Patches
 
  - Fix patch [Change PrivateAirplane*.lub path](http://nemo.herc.ws/patches/ChangePrivateAirplanePath/#success-clients)
- - Add new patch [Copy patched Cheat Defender Game Guard](http://nemo.herc.ws/patches/CopyCDGuard/#success-clients) by @4144
- - Add new patch [Fix achievement counters for each type of achievement](http://nemo.herc.ws/patches/FixAchievementCounters/#success-clients) by @4144
- - Add new patch [Fix act delay for act files with many frames](http://nemo.herc.ws/patches/FixActDelay/#success-clients) by Functor, @4144
+ - Add patch [Copy patched Cheat Defender Game Guard](http://nemo.herc.ws/patches/CopyCDGuard/#success-clients) by @4144
+ - Add patch [Fix achievement counters for each type of achievement](http://nemo.herc.ws/patches/FixAchievementCounters/#success-clients) by @4144
+ - Add patch [Fix act delay for act files with many frames](http://nemo.herc.ws/patches/FixActDelay/#success-clients) by Functor, @4144
 
 ## Translations
 
@@ -291,7 +291,7 @@
 
 ## Patches
 
- - Add new patch [Change fade in/out delay](http://nemo.herc.ws/patches/ChangeFadeOutDelay/#success-clients) by @4144
+ - Add patch [Change fade in/out delay](http://nemo.herc.ws/patches/ChangeFadeOutDelay/#success-clients) by @4144
  - Enable patch [Remove hardcoded connection address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for new main and re clients by @4144.
 
 ## Other
