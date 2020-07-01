@@ -16,7 +16,9 @@ function IncreaseViewID() {
     return "Failed in Step 1 - Can't find Function reference";
   
   //Step 1c - Get the current limit in the client - may need update in future
-  if (exe.getClientDate() > 20130000)//increased for newer clients.
+  if (exe.getClientDate() > 20200325)//increased for newer clients.
+	var oldValue = 3000;
+  else if (exe.getClientDate() > 20130000)//increased for newer clients.
     var oldValue = 2000;
   else
     var oldValue = 1000;
