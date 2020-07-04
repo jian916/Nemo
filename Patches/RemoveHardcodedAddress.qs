@@ -21,16 +21,16 @@
 // older than 2019-02-13
 function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 {
-    // step 1b - replace call to nop
+    consoleLog("step 1b - replace call to nop");
     var overrideAddr = offset + overrideAddressOffset + 4 + exe.fetchDWord(offset + overrideAddressOffset);  // rva to va
 
-    // step 2a - find string "127.0.0.1"
+    consoleLog("step 2a - find string 127.0.0.1");
     var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
     offset = exe.Raw2Rva(offset);
 
-    // step 2b - find otp_addr
+    consoleLog("step 2b - find otp_addr");
     var code = " " +
         offset.packToHex(4) + // offset 127.0.0.1
         " 26 1B 00 00"        // 6950
@@ -42,7 +42,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     var clientinfo_addr = otpPort + 4
     var clientinfo_port = clientinfo_addr + 4
 
-    // step 3a - find otp_addr usage
+    consoleLog("step 3a - find otp_addr usage");
     var code =
         " FF 35" + otpAddr.packToHex(4) + // push otp_addr
         " 8B AB AB AB AB 00" +            // mov esi, ds:_snprintf_s
@@ -54,10 +54,10 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     if (offset === -1)
         return "Failed in step 3a (old)";
 
-    // step 3b - replace otp_addr to clientinfo_addr
+    consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
-    // step 4a - find call to atoi
+    consoleLog("step 4a - find call to atoi");
     var code =
         " 75 F4" +                                 // jnz addr1
         " FF 35" + clientinfo_port.packToHex(4) +  // push clientinfo_port
@@ -69,7 +69,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 
     var callAtoi = exe.fetchHex(offset + 8, 6);
 
-    // step 4b - change function override_address_port
+    consoleLog("step 4b - change function override_address_port");
     var newCode =
         "FF 35 " + clientinfo_port.packToHex(4) +  // push clientinfo_port
         callAtoi +                                 // call ds:atoi
@@ -84,13 +84,13 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 // 2019-02-13+
 function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 {
-    // step 2a - find string "127.0.0.1"
+    consoleLog("step 2a - find string 127.0.0.1");
     var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
     offset = exe.Raw2Rva(offset);
 
-    // step 2b - find otp_addr
+    consoleLog("step 2b - find otp_addr");
     var code = " " +
         offset.packToHex(4) + // offset 127.0.0.1
         " 26 1B 00 00"        // 6950
@@ -102,7 +102,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var clientinfo_addr = otpPort + 4
     var clientinfo_port = clientinfo_addr + 4
 
-    // step 3a - find otp_addr usage
+    consoleLog("step 3a - find otp_addr usage");
     var code =
         "FF 35" + otpAddr.packToHex(4) + // 0 push otp_addr
         "8D AB AB AB AB FF " +        // 6 lea eax, [ebp+Dst]
@@ -115,10 +115,10 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     if (offset === -1)
         return "Failed in step 3a (new)";
 
-    // step 3b - replace otp_addr to clientinfo_addr
+    consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
-    // step 4a - find call to atoi
+    consoleLog("step 4a - find call to atoi");
     var code =
         " 75 F3" +                                 // jnz addr1
         " FF 35" + clientinfo_port.packToHex(4) +  // push clientinfo_port
@@ -130,7 +130,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 
     var callAtoi = exe.fetchHex(offset + 8, 6);
 
-    // step 4b - change function override_address_port
+    consoleLog("step 4b - change function override_address_port");
     var jmpOffset = 21;
     var continueAddr = retAddr - overrideAddr - jmpOffset - 4; // va to rva
 
@@ -148,7 +148,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 
 function RemoveHardcodedAddress()
 {
-    // step 1a - Find the code where we will remove call
+    consoleLog("step 1a - Find the code where we will remove call");
     var code =
         " 80 3D AB AB AB AB 00" + // cmp byte_addr1, 0
         " 75 AB" +                // jnz short addr2
@@ -161,10 +161,10 @@ function RemoveHardcodedAddress()
     if (offset !== -1)
         return RemoveHardcodedAddressOld(offset, overrideAddressOffset);
 
-    // search for clients 2019-02-13+
+    consoleLog("search for clients 2019-02-13+");
     var g_serverType = GetServerType();
 
-    // search "6900"
+    consoleLog("search 6900");
     var offset = exe.find("36 39 30 30 00", PTYPE_HEX);
     if (offset === -1)
         return "Failed in search '6900' (new)";
