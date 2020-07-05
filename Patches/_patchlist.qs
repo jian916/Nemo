@@ -546,4 +546,6 @@ registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 
 
 registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
 
+registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 0, "jchcc", "Use correct charset for Official Custom Fonts on all LangType", false);
+
 GlobalPostInit();
