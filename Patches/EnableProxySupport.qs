@@ -69,6 +69,13 @@ function EnableProxySupport() {
     code = code.replace(" 8B 46 0C", " 8B 43 0C");
     code = code.replace(" 89 46 0C", " 89 43 0C");
   }
+  
+  //Changing register from "ESI" to "EDI" for 2019+ EXE versions
+  if (exe.find(" 8D 47 08 ", PTYPE_HEX, true, "\xAB", offset2 - 0x20, offset2) !== -1)
+  {
+    code = code.replace(" 8B 46 0C", " 8B 47 0C");
+    code = code.replace(" 89 46 0C", " 89 47 0C");
+  }
 
   if (bIndirectCALL)
     code += " FF 25" + connAddr.packToHex(4); //JMP DWORD PTR DS:[<&WS2_32.connect>]

@@ -25,6 +25,11 @@ function UsePlainTextDescriptions() {
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
   }
   
+   if (offset === -1) {
+    code = code.replace(" 75 AB 57", " 75 AB 8B 4D 08 56");
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
+  }
+  
   if (offset === -1) {
     code =
       " A1" + LANGTYPE //MOV EAX, DWORD PTR DS:[g_serviceType]

@@ -8,6 +8,11 @@ function ChangeHealthBarSize() {
 	  ;
 
 	var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	if (offset === -1) // new clients
+	{
+		code = code.replace(" 8B 8F", " 8B 8E");   //replace EDI with ESI
+		offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	}
 	if (offset === -1)
 		return "Failed in Step 1";
 	offset = offset + 6;
@@ -19,6 +24,11 @@ function ChangeHealthBarSize() {
 	  ;
 
 	var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	if (offset2 === -1) // new clients
+	{
+		code = code.replace(" 89 45 D4", " 8B BE AB 00 00 00");   //MOV EDI,[ESI+z]
+		offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	}
 	if (offset2 === -1)
 		return "Failed in Step 2";
 	offset2 = offset2 + 8;

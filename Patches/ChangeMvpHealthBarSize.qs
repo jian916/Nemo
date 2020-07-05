@@ -13,6 +13,11 @@ function ChangeMvpHealthBarSize() {
 	  ;
 
 	var offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	if (offset1 === -1) //newer clients
+	{
+	code = code.replace(" 6A 05 6A 3C 8B C8", " 8B C8 6A 05 6A 3C");   
+	offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	}
 	
 	if (offset1 === -1) {
 		code = 
@@ -46,10 +51,10 @@ function ChangeMvpHealthBarSize() {
 	code =
 	    " 8A 87 AB AB 00 00"
 	  + " 88 85 AB AB FF FF"
-	  + " 8B 03"
+	  + " 8B AB"
 	  ;
 
-	offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x90);
+	offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0xB0);
 	if (offset2 === -1)
 		return "Failed in Step 2c";
 

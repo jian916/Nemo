@@ -48,6 +48,16 @@ function ChangeMaxItemCount(value) {
 	   
 	  var offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB");
 	  
+	  if (offsets.length === 0)  //new clients
+	  {
+		code =
+		 " 83 C1 64"          //ADD ECX,64h
+	   + " 51"                //PUSH ECX
+	   + " 68 AB AB AB 00"    //PUSH offset "/%d"
+	   ;
+	   offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB");
+	  }
+	  
 	  if (offsets.length === 0)
         return "Failed in Step 2 - function missing";
 		
