@@ -606,6 +606,13 @@ function logVaVar(name, offset, offset2)
     console2.logVaVar(name, offset, offset2);
 }
 
+function logVaFunc(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVaFunc(name, offset, offset2);
+}
+
 function logRawFunc(name, offset, offset2)
 {
     if (typeof(console2) === "undefined")

@@ -44,30 +44,35 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 
     consoleLog("step 3a - find otp_addr usage");
     var code =
-        " FF 35" + otpAddr.packToHex(4) + // push otp_addr
-        " 8B AB AB AB AB 00" +            // mov esi, ds:_snprintf_s
-        " 68 AB AB AB 00" +               // push offset "%s"
-        " 6A FF" +                        // push 0FFFFFFFFh
-        " 8D AB AB AB FF FF" +            // lea eax, [ebp+buf]
-        " 6A 10"                          // push 10h
+        " FF 35" + otpAddr.packToHex(4) + // 0  push otp_addr
+        " 8B AB AB AB AB 00" +            // 6  mov esi, ds:_snprintf_s
+        " 68 AB AB AB 00" +               // 12 push offset "%s"
+        " 6A FF" +                        // 17 push 0FFFFFFFFh
+        " 8D AB AB AB FF FF" +            // 19 lea eax, [ebp+buf]
+        " 6A 10"                          // 25 push 10h
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var snprintfOffset = 8;
     if (offset === -1)
         return "Failed in step 3a (old)";
+
+    logRawFunc("snprintf_s", offset, snprintfOffset);
 
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
     consoleLog("step 4a - find call to atoi");
     var code =
-        " 75 F4" +                                 // jnz addr1
-        " FF 35" + clientinfo_port.packToHex(4) +  // push clientinfo_port
-        " FF 15 AB AB AB 00" +                     // call ds:atoi
-        " FF 35 AB AB AB 00"                       // push clientinfo_domain
+        " 75 F4" +                                 // 0  jnz addr1
+        " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
+        " FF 15 AB AB AB 00" +                     // 8  call ds:atoi
+        " FF 35 AB AB AB 00"                       // 14 push clientinfo_domain
+    var atoiOffset = 10;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 4a (old)";
 
-    var callAtoi = exe.fetchHex(offset + 8, 6);
+    logVaFunc("atoi", offset, atoiOffset);
+    var callAtoi = exe.fetchHex(offset + atoiOffset - 2, 6);
 
     consoleLog("step 4b - change function override_address_port");
     var newCode =
@@ -112,25 +117,30 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
         "6A FF " +                    // 17 push 0FFFFFFFFh
         "6A 10 " +                    // 19 push 10h
         "50 ";                        // 21 push eax
+    var authAddrOffset = 2;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 3a (new)";
+
+    logVaVar("g_auth_addr", offset, authAddrOffset);
 
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
     consoleLog("step 4a - find call to atoi");
     var code =
-        " 75 F3" +                                 // jnz addr1
-        " FF 35" + clientinfo_port.packToHex(4) +  // push clientinfo_port
-        " FF 15 AB AB AB 00" +                     // call ds:atoi
-        " FF 35 AB AB AB 00"                       // push clientinfo_domain
+        " 75 F3" +                                 // 0  jnz addr1
+        " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
+        " FF 15 AB AB AB 00" +                     // 8  call ds:atoi
+        " FF 35 AB AB AB 00"                       // 14 push clientinfo_domain
+    var atoiOffset = 10;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 4a (new)";
 
-    var callAtoi = exe.fetchHex(offset + 8, 6);
+    logVaFunc("atoi", offset, atoiOffset);
+    var callAtoi = exe.fetchHex(offset + atoiOffset - 2, 6);
 
     consoleLog("step 4b - change function override_address_port");
     var jmpOffset = 21;
@@ -179,6 +189,8 @@ function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, cli
 
     if (offset === -1)
         return "Failed in search snprintf_s call";
+
+    logVaVar("g_auth_host_port", offset, authHostOffset);
 
     var authHostVa = exe.fetchDWord(offset + authHostOffset);
     var snprintfVa = offset + snprintfOffset + 4 + exe.fetchDWord(offset + snprintfOffset);
@@ -251,10 +263,13 @@ function RemoveHardcodedAddress()
         "C7 05 AB AB AB AB " + portStrHex; // 30 mov _off_CCF968, offset a6900
     var overrideAddressOffset = 13;
     var retAddrOffset = 9;
+    var cmdHaveAccountOffset = 2;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in step 1 (new)";
+
+    logVaVar("g_cmd_have_account", offset, cmdHaveAccountOffset);
 
     var retAddr = offset + retAddrOffset + 4 + exe.fetchDWord(offset + retAddrOffset);  // rva to va
 
