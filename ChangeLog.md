@@ -1,11 +1,28 @@
+# 2020-07-06 Patches update
+
+## Patches
+
+- Fix patch [Remove hardcoded address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for 2020-07-01 clients. (fix by @4144).
+- Fix patch [Change hp bar size](http://nemo.herc.ws/patches/ChangeHealthBarSize/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Change Max Items in inventory](http://nemo.herc.ws/patches/SetMaxItemCount/#success-clients) for 2015, 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Change MVP hp bar size](http://nemo.herc.ws/patches/ChangeMvpHealthBarSize/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Enable Proxy Support](http://nemo.herc.ws/patches/EnableProxySupport/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Increase Zoom Out 50%](http://nemo.herc.ws/patches/IncreaseZoomOut50Per/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Increase Zoom Out 75%](http://nemo.herc.ws/patches/IncreaseZoomOut75Per/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Increase Zoom Out Max](http://nemo.herc.ws/patches/IncreaseZoomOutMax/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Use Ascii on All LangTypes](http://nemo.herc.ws/patches/UseAsciiOnAllLangTypes/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Use Plain Text Descriptions](http://nemo.herc.ws/patches/UsePlainTextDescriptions/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Add patch [Fix Charset For Custom Fonts](http://nemo.herc.ws/patches/FixCharsetForFonts/#success-clients) for 2015-2020 clients. (by @jchcc).
+
+
 # 2020-07-01 Patches update
 
 ## Patches
 
-- Fix patch [Increase Headgear ViewID](http://nemo.herc.ws/patches/IncreaseViewID/#success-clients) for 2020 clients. (fix  by @jchcc).
-- Fix patch [Allow space in guild name](http://nemo.herc.ws/patches/AllowSpaceInGuildName/#success-clients) for 2019-2020 clients. (fix  by @jchcc).
-- Fix patch [Enforce Official Login Background](http://nemo.herc.ws/patches/EnforceOfficialLoginBackground/#success-clients) for 2019-2020 clients. (fix  by @jchcc).
-- Fix patch [Show Exp Numbers](http://nemo.herc.ws/patches/ShowExpNumbers/#success-clients) for 2020 clients. (fix  by @jchcc).
+- Fix patch [Increase Headgear ViewID](http://nemo.herc.ws/patches/IncreaseViewID/#success-clients) for 2020 clients. (fix by @jchcc).
+- Fix patch [Allow space in guild name](http://nemo.herc.ws/patches/AllowSpaceInGuildName/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Enforce Official Login Background](http://nemo.herc.ws/patches/EnforceOfficialLoginBackground/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Show Exp Numbers](http://nemo.herc.ws/patches/ShowExpNumbers/#success-clients) for 2020 clients. (fix by @jchcc).
 - Fix patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) for 2019-10-30 client and up. (fix by @X-EcutiOnner).
 
 
