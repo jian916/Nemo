@@ -42,12 +42,11 @@ function IncreaseHairSprites()
     var refOffset = offset;
 
     code = 
-        "85 C9" +              // 0 test ecx, ecx
-        "78 05" +              // 2 js short A
-        "83 F9 AB" +           // 4 cmp eax, 21h
-        "AB AB" +              // 7 jle short B
-        "C7 00 AB 00 00 00 " + // 9 mov dword ptr [esi], 21h
-		"B9 AB 00 00 00";      // 15 mov ecx, 21h
+        "85 C0" +             // 0 test eax, eax
+        "78 05" +             // 2 js short A
+        "83 F8 AB" +          // 4 cmp eax, 1Dh
+        "7E 06" +             // 7 jle short B
+        "C7 06 AB 00 00 00";  // 9 mov dword ptr [esi], 0Dh
     var assignOffset = 9;
     var valueOffset = 6;
 
@@ -56,18 +55,17 @@ function IncreaseHairSprites()
         return "Failed in step 2 - hair limit missing";
 
     var currentLimit = exe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
-    exe.replace(offset + assignOffset, "90 90 90 90 90 90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
+    exe.replace(offset + assignOffset, "90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 3 - search doram jobs hair limit");
     code =
-        "8B 08 " +                    // 0 mov ecx, [eax]
+        "8B 06 " +                    // 0 mov eax, [esi]
         "75 AB " +                    // 2 jnz short loc_8D08A9
-        "83 F9 01 " +                 // 4 cmp ecx, 1
+        "83 F8 01 " +                 // 4 cmp eax, 1
         "7C 05 " +                    // 7 jl short loc_8D0840
-        "83 F9 AB " +                 // 9 cmp ecx, 0Bh
-        "7C AB " +                    // 12 jl short loc_8D0846
-        "C7 00 AB 00 00 00 " +        // 14 mov dword ptr [esi], 0A
-		"B9 AB 00 00 00";             // 20 mov ecx, 0Ah
+        "83 F8 AB " +                 // 9 cmp eax, 7
+        "7C 06 " +                    // 12 jl short loc_8D0846
+        "C7 06 AB 00 00 00 ";         // 14 mov dword ptr [esi], 6
     var assignOffset = 14;
     var valueOffset = 11;
 
@@ -76,7 +74,7 @@ function IncreaseHairSprites()
         return "Failed in step 3 - doram hair limit missing";
 
     var currentLimit = exe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
-    exe.replace(offset + assignOffset, "90 90 90 90 90 90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
+    exe.replace(offset + assignOffset, "90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 4 - search string \"2\" \"3\" \"4\"");
     code = 
@@ -96,16 +94,14 @@ function IncreaseHairSprites()
     consoleLog("step 5 - search male hair table allocations in CSession::InitPcNameTable");
     code = 
         "50 " +                                        // 0 push eax
-		"56 " +                                        // 1 push esi
-        "6A AB " +                                     // 2 push 21h
-		"8B CE " +                                     // 4 mov ecx,esi
-        "E8 AB AB AB AB " +                            // 6 call vector__alloc_mem_and_set_pointer
-        "8B 06 " +                                     // 11 mov eax, [esi]
-        "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // 13 mov dword ptr [ebp+A], offset "2"
-        "C7 00 " + str2Offset.packToHex(4);            // 20 mov dword ptr [eax], offset "2"
+        "6A AB " +                                     // 1 push 1Eh
+        "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // 3 mov dword ptr [ebp+A], offset "2"
+        "E8 AB AB AB AB " +                            // 10 call vector__alloc_mem_and_set_pointer
+        "8B 06 " +                                     // 15 mov eax, [esi]
+        "C7 00 " + str2Offset.packToHex(4);            // 17 mov dword ptr [eax], offset "2"
     var patchOffset = 0;  // from this offset code will be patched
-    var callOffset = 7;  // in this offset relative call address
-    var fetchOffset = 13;  // copy into own code from this address
+    var callOffset = 11;  // in this offset relative call address
+    var fetchOffset = 3;  // copy into own code from this address
     var fetchSize = 7;    // copy this N bytes into own code
 
     var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
@@ -137,27 +133,18 @@ function IncreaseHairSprites()
 
     consoleLog("step 7 - search female hair table and location for jump");
     code =
-        "8B 06" +                          // 0 mov eax, [esi]
-        "8D B7 AB AB 00 00" +              // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
-        "8B CE " +                         // 8 mov ecx, esi
-        "C7 80 AB AB AB AB AB AB AB AB" +  // 10 mov dword ptr [eax+80h], offset a32
-        "8D 45 AB" +                       // 20 lea eax, [ebp+var_10]
-        "50" +                             // 23 push eax
-		"56 " +                            // 24 push esi
-        "6A AB " +                         // 25 push 1Eh
-        "E8 AB AB AB AB ";                 // 27 call vector__alloc_mem_and_set_pointer
-    var patchOffset2 = 23;   // from this offset code will be patched
-    var callOffset2 = 28;    // in this offset relative call address
+        "8B 06" +                 // 0 mov eax, [esi]
+        "8D B7 AB AB 00 00" +     // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
+        "C7 40 AB AB AB AB AB" +  // 8 mov dword ptr [eax+74h], offset a29
+        "8D 45 AB" +              // 15 lea eax, [ebp+var_10]
+        "50" +                    // 18 push eax
+        "6A AB " +                // 19 push 1Eh
+        "8B CE " +                // 21 mov ecx, esi
+        "E8 AB AB AB AB ";        // 23 call vector__alloc_mem_and_set_pointer
+    var patchOffset2 = 18;   // from this offset code will be patched
+    var callOffset2 = 24;    // in this offset relative call address
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
-	
-	if (offset === -1) //newer clients
-	{
-		code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
-		offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
-		patchOffset2 -= 3;
-		callOffset2 -= 3; 
-	}
     if (offset === -1)
         return "Failed in step 7 - jump location not found";
 
@@ -169,15 +156,13 @@ function IncreaseHairSprites()
         return "Failed in step 7 - vector call functions different";
 
     var jmpAddr = exe.Raw2Rva(offset);
-    var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 1 + 5 + varCode.hexlength() + 2 + 5);  // calc offset to call vector function (offsets from next code block)
+    var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 5 + varCode.hexlength() + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("normal job male hair style table loader patch");
     code =
         "50 " +                              // push eax
-		"56 " +                              // push esi
         "68 " + maxHairs.packToHex(4) +      // push maxHairs
         varCode +                            // mov dword ptr [ebp+A], offset "2"
-        "8B CE " +                           // mov ecx, esi
         "E8 " + vectorCallOffset.packToHex(4) +  // call vector__alloc_mem_and_set_pointer
 
         "56 " +                              // push esi
@@ -203,58 +188,27 @@ function IncreaseHairSprites()
 
     exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
 
-    consoleLog("step 8 - search male doram hair table allocations in CSession::InitPcNameTable");
+    consoleLog("step 8 - search location for jump");
     code =
-        "8B 06 " +                             // 0 mov eax, [esi]
-        "8D B7 AB AB AB AB " +                 // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
-        "8B CE " +                             // 8 mov ecx, esi
-        "C7 80 AB AB AB AB AB AB AB AB " +     // 10 mov dword ptr [eax+80h], offset a31
-        "8D 45 AB " +                          // 20 lea eax, [ebp+a3]
-        "50 " +                                // 23 push eax
-		"56 " +                                // 24 push esi
-        "6A AB " +                             // 25 push 7
-        "E8 AB AB AB AB " +                    // 27 call std_vector_char_ptr_resize
-        "8B 06 " +                             // 32 mov eax, [esi]
-        "C7 40 ";                              // 34 mov dword ptr [eax+4], offset a1
-    var str1Offset = 37;
-    var patchOffset = 23;  // from this offset code will be patched
-    var callOffset = 28;  // in this offset relative call address
-    // no fetch code
+        "8B 06" +                 // 0 mov eax, [esi]
+        "8D B7 AB AB 00 00" +     // 2 lea esi, [edi+CSession.doram_sex1_hair_sprite_array]
+        "C7 40 AB AB AB AB AB" +  // 8 mov dword ptr [eax+74h], offset a29
+        "8D 45 F0" +              // 15 lea eax, [ebp+var_10]
+        "50" +                    // 18 push eax
+        "6A AB" +                 // 19 push 7  - doram hair limit
+        "8B CE" +                 // 21 mov ecx, esi
+        "E8 AB AB AB AB";         // 23 call vector__alloc_mem_and_set_pointer
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
+    if (offset === -1)
+        return "Failed in step 8 - jump location not found";
 
-    if (offsets.length === 0)
-	{
-		code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
-		offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-		str1Offset -= 3;
-		patchOffset -= 3; 
-		callOffset -= 3;
-	}
-		
-	if (offsets.length === 0)
-        return "Failed in step 8 - doram hair table not found";
-    if (offsets.length !== 1)
-        return "Failed in step 8 - found wrong number of doram hair tables: " + offsets.length;
-
-    var str1Addr = exe.Rva2Raw(exe.fetchDWord(offsets[0] + str1Offset));
-    if (exe.fetchUByte(str1Addr) != 0x31 || exe.fetchUByte(str1Addr + 1) != 0)
-        return "Failed in step 8 - wrong constant 1 found";
-
-    var tableCodeOffset = offsets[0];
-    var vectorCallAddr = exe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
-    // no varCode
-    var varCode = "";
-    patchOffset = tableCodeOffset + patchOffset;
-	
-	offset = offsets[0];
-	jmpAddr = exe.Raw2Rva(offset);
-    var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + 1 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
+    jmpAddr = exe.Raw2Rva(offset);
+    var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("normal job female hair style table loader patch");
     code =
         "50 " +                              // push eax
-		"56 " +                              // push esi
         "68 " + maxHairs.packToHex(4) +      // push maxHairs
         "8B CE " +                           // mov ecx, esi
         "E8 " + vectorCallOffset2.packToHex(4) +  // call vector__alloc_mem_and_set_pointer
@@ -282,54 +236,80 @@ function IncreaseHairSprites()
 
     exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
 
-
-    consoleLog("step 9 - search female doram hair table and location for jump");
+    consoleLog("step 9 - search male doram hair table allocations in CSession::InitPcNameTable");
     code =
-        "8B 06 " +                    // 0 mov eax, [esi]
-        "8D B7 AB AB 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
-        "8B CE " +                    // 8 mov ecx, esi
-        "C7 40 AB AB AB AB AB " +     // 10 mov dword ptr [eax+18h], offset a6
-        "8D 45 AB " +                 // 17 lea eax, [ebp+a3]
-        "50 " +                       // 20 push eax
-		"56 " +                       // 21 push esi
-        "6A AB " +                    // 22 push 7
-        "E8 AB AB AB AB " +           // 24 call std_vector_char_ptr_resize
-        "8B 06 " +                    // 29 mov eax, [esi]
-        "8D 9F AB AB AB AB " +        // 31 lea ebx, [edi+CSession.ViewID_sprite_array]
-		"8B CB " +                    // 37 mov ecx,ebx
-		"C7 45 AB AB AB AB AB" +      // 39 mov [ebp+var_10], offset "_병아리모자"
-		"C7 40 ";                     // 46 mov dword ptr [eax+4], offset a1
-		
-    var str1Offset = 49;
-    var patchOffset2 = 20;   // from this offset code will be patched
-    var callOffset2 = 25;    // in this offset relative call address
-	var fetchOffset = 31;  // copy into own code from this address
-    var fetchSize = 15;    // copy this N bytes into own code
+        "C7 40 AB AB AB AB AB " +     // 0 mov dword ptr [eax+78h], offset a30
+        "8B 06 " +                    // 7 mov eax, [esi]
+        "8D B7 AB AB AB AB " +        // 9 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
+        "C7 40 AB AB AB AB AB " +     // 15 mov dword ptr [eax+7Ch], offset a31
+        "8D 45 AB " +                 // 22 lea eax, [ebp+a3]
+        "50 " +                       // 25 push eax
+        "6A 07 " +                    // 26 push 7
+        "8B CE " +                    // 28 mov ecx, esi
+        "E8 AB AB AB AB " +           // 30 call std_vector_char_ptr_resize
+        "8B 06 " +                    // 35 mov eax, [esi]
+        "C7 45 ";                     // 37 mov [ebp+a3], offset a1_1
+    var str1Offset = 40;
+    var patchOffset = 25;  // from this offset code will be patched
+    var callOffset = 31;  // in this offset relative call address
+    // no fetch code
+
+    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+
+    if (offsets.length === 0)
+        return "Failed in step 9 - doram hair table not found";
+    if (offsets.length !== 1)
+        return "Failed in step 9 - found wrong number of doram hair tables: " + offsets.length;
+
+    var str1Addr = exe.Rva2Raw(exe.fetchDWord(offsets[0] + str1Offset));
+    if (exe.fetchUByte(str1Addr) != 0x31 || exe.fetchUByte(str1Addr + 1) != 0)
+        return "Failed in step 9 - wrong constant 1 found";
+
+    var tableCodeOffset = offsets[0];
+    var vectorCallAddr = exe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
+    // no varCode
+    var varCode = "";
+    patchOffset = tableCodeOffset + patchOffset;
+
+    consoleLog("step 10 - search female doram hair table and location for jump");
+    code =
+        "C7 40 14 AB AB AB AB " +     // 0 mov dword ptr [eax+14h], offset a5
+        "8B 06 " +                    // 7 mov eax, [esi]
+        "8D B7 AB AB 00 00 " +        // 9 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
+        "C7 40 AB AB AB AB AB " +     // 15 mov dword ptr [eax+18h], offset a6
+        "8D 45 AB " +                 // 22 lea eax, [ebp+a3]
+        "50 " +                       // 25 push eax
+        "6A 07 " +                    // 26 push 7
+        "8B CE " +                    // 28 mov ecx, esi
+        "E8 AB AB AB AB " +           // 30 call std_vector_char_ptr_resize
+        "8B 06 " +                    // 35 mov eax, [esi]
+        "C7 40 ";                     // 37 mov dword ptr [eax+4], offset a1_1
+    var str1Offset = 40;
+    var patchOffset2 = 25;   // from this offset code will be patched
+    var callOffset2 = 31;    // in this offset relative call address
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
     if (offset === -1)
-        return "Failed in step 9 - jump location not found";
+        return "Failed in step 10 - jump location not found";
 
     var tableCodeOffset2 = offset;
     var vectorCallAddr2 = exe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
     patchOffset2 = tableCodeOffset2 + patchOffset2;
-	var varCode = exe.fetchHex(tableCodeOffset2 + fetchOffset, fetchSize);
 
     if (vectorCallAddr !== vectorCallAddr2)
-        return "Failed in step 9 - vector call functions different";
+        return "Failed in step 10 - vector call functions different";
 
     var jmpAddr = exe.Raw2Rva(offset);
-    var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
+    var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("doram job male hair style table loader patch");
 
     code =
         "50 " +                              // push eax
-		"56 " +                              // push esi
         "68 " + maxHairs.packToHex(4) +      // push maxHairs
         "8B CE " +                           // mov ecx, esi
         "E8 " + vectorCallOffset.packToHex(4) +  // call vector__alloc_mem_and_set_pointer
-		
+
         "56 " +                              // push esi
         "57 " +                              // push edi
         "53 " +                              // push ebx
@@ -355,34 +335,41 @@ function IncreaseHairSprites()
 
 
     // ex 8
-    consoleLog("step 10 - search location for jump");
-
-	if (exe.getClientDate() > 20200325)
-		var viewID = 3000;
-	else
-		var viewID = 2000;
-	
+    consoleLog("step 11 - search location for jump");
     var code =
-        "8B 06 " +                           // 0 mov eax, [esi]
-        "C7 40 AB AB AB AB AB " +            // 2 mov dword ptr [eax+28h], offset a10
-        "8D 45 AB " +                        // 9 lea eax, [ebp+var_10]
-        "50 " +                              // 12 push eax
-		"53 " +                              // 13 push ebx
-        "68 " + viewID.packToHex(4) + " " +  // 14 push viewID
-        "E8 ";                               // 19 call std_vector_char_ptr_resize
-    var jumpOffset = 9;    // jump offset
+        "8B 06 " +                    // 0 mov eax, [esi]
+        "8D 8F AB AB 00 00 " +        // 2 lea ecx, [edi+CSession.field_4B84]
+        "C7 40 08 " + str2Offset.packToHex(4) + " " + // 8 mov dword ptr [eax+8], offset a2
+        "8B 06 " +                    // 15 mov eax, [esi]
+        "C7 45 AB AB AB AB AB " +     // 17 mov [ebp+a3], offset a_O
+        "C7 40 0C AB AB AB AB " +     // 24 mov dword ptr [eax+0Ch], offset a3
+        "8B 06 " +                    // 31 mov eax, [esi]
+        "C7 40 10 AB AB AB AB " +     // 33 mov dword ptr [eax+10h], offset a4
+        "8B 06 " +                    // 40 mov eax, [esi]
+        "C7 40 14 AB AB AB AB " +     // 42 mov dword ptr [eax+14h], offset a5
+        "8B 06 " +                    // 49 mov eax, [esi]
+        "C7 40 18 AB AB AB AB " +     // 51 mov dword ptr [eax+18h], offset a6
+        "8D 45 AB " +                 // 58 lea eax, [ebp+a3]
+        "50 " +                       // 61 push eax
+        "68 AB AB 00 00 " +           // 62 push 7D0h
+        "E8 ";                        // 67 call std_vector_char_ptr_resize
+    var fetchOffset1 = 2;   // copy into own code from this address
+    var fetchSize1 = 6;     // copy this N bytes into own code
+    var fetchOffset2 = 17;  // copy into own code from this address
+    var fetchSize2 = 7;     // copy this N bytes into own code
+    var jumpOffset = 58;    // jump offset
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
     if (offset === -1)
-        return "Failed in step 10 - jump location not found";
+        return "Failed in step 8 - jump location not found";
 
+    var varCode = exe.fetchHex(offset + fetchOffset1, fetchSize1) + exe.fetchHex(offset + fetchOffset2, fetchSize2);
     jmpAddr = exe.Raw2Rva(offset + jumpOffset);
-    var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + 1 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
+    var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("doram job female hair style table loader patch");
     code =
         "50 " +                              // push eax
-		"53 " +                              // push esi
         "68 " + maxHairs.packToHex(4) +      // push maxHairs
         "8B CE " +                           // mov ecx, esi
         "E8 " + vectorCallOffset2.packToHex(4) +  // call vector__alloc_mem_and_set_pointer
@@ -403,9 +390,8 @@ function IncreaseHairSprites()
         "5B " +                              // pop ebx
         "5F " +                              // pop edi
         "5E " +                              // pop esi
-        varCode +                            // lea ebx, [edi+CSession.ViewID_sprite_array]
-                                             // mov ecx,ebx
-											 // mov [ebp+var_10], offset "_병아리모자"
+        varCode +                            // lea ecx, [edi+CSession.field_4B84]
+                                             // mov [ebp+a3], offset a_O
         "E9 ";                               // jmp jmpAddr
 
     jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset2) + code.hexlength() + 4);
