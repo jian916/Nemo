@@ -23,49 +23,45 @@ function FixCharsetForFonts()
 {
     //Find the code inside DrawDC::SetFont function
     var code =
-      " 85 FF"             //TEST EDI,EDI
-    + " 75 0A"             //JNE 0A
-    + " A1 AB AB AB AB"    //MOV EAX,g_fontCharSet
-    + " 83 FA 14"          //CMP EDX,14
-    + " 7D 07"             //JNL 07
-    ;
+        "89 56 AB " +                 // 0 mov [esi+DrawDC.m_fontType], edx
+        "89 4E AB " +                 // 3 mov [esi+DrawDC.m_fontHeight], ecx
+        "85 FF " +                    // 6 test edi, edi
+        "75 0A " +                    // 8 jnz short loc_479E75
+        "A1 AB AB AB AB " +           // 10 mov eax, g_fontCharSet
+        "83 FA 14 " +                 // 15 cmp edx, 14h
+        "7D 07 ";                     // 18 jge short loc_479E7C
+    var gfontCharSetOfsset = 11;
+    var fontTypeOffset = [2, 1];
+    var fontHeightOffset = [5, 1];
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1) //Old Clients
     {
         code =
-          " 85 FF"               //TEST EDI,EDI
-        + " 0F 85 AB 00 00 00"   //JNZ short
-        + " 83 FA 14"            //CMP EDX,14
-        + " 0F 8C AB 00 00 00"   //JL short
-        + " 89 56 AB"            //MOV [ESI+x],EDX
-        + " 89 4E AB"            //MOV [ESI+y],ECX
-        ;
+            "85 FF " +                    // 0 test edi, edi
+            "0F 85 AB 00 00 00 " +        // 2 jnz loc_42CBF0
+            "83 FA 14 " +                 // 8 cmp edx, 14h
+            "0F 8C AB 00 00 00 " +        // 11 jl loc_42CBF0
+            "89 56 AB " +                 // 17 mov [esi+DrawDC.m_fontType], edx
+            "89 4E AB " +                 // 20 mov [esi+DrawDC.m_fontHeight], ecx
+            "A1 AB AB AB AB ";            // 23 mov eax, g_fontCharSet
+        var gfontCharSetOfsset = 24;
+        var fontTypeOffset = [19, 1];
+        var fontHeightOffset = [22, 1];
 
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-        if (offset === -1)
-            return "Failed in Step 1";
+    }
+    if (offset === -1)
+        return "Failed in Step 1";
 
-        var oldclient = true;
-    }
-    else
-    {
-        var oldclient = false;
-    }
+    logField("DrawDC::m_fontType", offset, fontTypeOffset);
+    logField("DrawDC::m_fontHeight", offset, fontHeightOffset);
+    logVaVar("g_fontCharSet", offset, gfontCharSetOfsset);
 
     // fetch address of g_fontCharSet
-    if (oldclient)
-    {
-        offset += code.hexlength();
-        var cTable = exe.fetchHex(offset+1,4);
+    var cTable = exe.fetchHex(offset + gfontCharSetOfsset, 4);
 
-    }
-    else
-    {
-        var cTable = exe.fetchHex(offset+5,4);
-
-    }
     // Find the patch point, should be MOV EAX,[EDX*4+g_fontCharSet]
     offset = exe.findCode(" 8B 04 95" + cTable, PTYPE_HEX, false);
 
