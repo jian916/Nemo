@@ -90,7 +90,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
         return "Failed in search 127.0.0.1 (old)";
     offset = exe.Raw2Rva(offset);
 
-    consoleLog("step 2b - find otp_addr");
+    consoleLog("step 2b - find loop addr");
     var code = " " +
         offset.packToHex(4) + // offset 127.0.0.1
         " 26 1B 00 00"        // 6950
@@ -102,6 +102,8 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var clientinfo_addr = otpPort + 4
     var clientinfo_port = clientinfo_addr + 4
 
+    if (exe.getClientDate() >= 20200630)
+        return RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, clientinfo_port)
     consoleLog("step 3a - find otp_addr usage");
     var code =
         "FF 35" + otpAddr.packToHex(4) + // 0 push otp_addr
@@ -146,6 +148,74 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     return true;
 }
 
+// 2020-07-01+
+function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, clientinfo_port)
+{
+    consoleLog("search kro-agency.ragnarok.co.kr");
+    var offset = exe.findString("kro-agency.ragnarok.co.kr", RVA);
+    if (offset === -1)
+        return "kro-agency.ragnarok.co.kr not found";
+    var hostHex = offset.packToHex(4);
+
+    consoleLog("search %s:%d");
+    offset = exe.findString("%s:%d", RVA);
+    if (offset === -1)
+        return "string '%s:%d' not found";
+    var sdHex = offset.packToHex(4);
+
+    consoleLog("search snprintf_s call");
+    var code =
+        "52 " +                       // 0 push edx
+        "68 " + hostHex +             // 1 push offset aKroAgency_ragn
+        "68 " + sdHex +               // 6 push offset aSD_6
+        "6A FF " +                    // 11 push 0FFFFFFFFh
+        "68 81 00 00 00 " +           // 13 push 81h
+        "68 AB AB AB AB " +           // 18 push offset g_auth_host_port
+        "E8 AB AB AB AB " +           // 23 call snprintf_s
+        "83 C4 18 ";                  // 28 add esp, 18h
+    var authHostOffset = 19;
+    var snprintfOffset = 24;
+    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", overrideAddr, overrideAddr + 0x300);
+
+    if (offset === -1)
+        return "Failed in search snprintf_s call";
+
+    var authHostVa = exe.fetchDWord(offset + authHostOffset);
+    var snprintfVa = offset + snprintfOffset + 4 + exe.fetchDWord(offset + snprintfOffset);
+
+    consoleLog("create format string %s:%s");
+
+    var free = exe.findZeros(6);
+    if (free === -1)
+        return "Not enough free space";
+    exe.insert(free, 6, "%s:%s", PTYPE_STRING);
+    var formatVaHex = exe.Raw2Rva(free).packToHex(4);
+
+    consoleLog("create code for build new connection string");
+
+    var jmpOffset = 38;
+    var sprintfOffset = 30;
+
+    var continueAddr = retAddr - overrideAddr - jmpOffset - 4; // va to rva
+    var sprintfAddr = snprintfVa - overrideAddr - sprintfOffset - 4; // va to rva
+//    var authHostPortAddr = authHostVa - overrideAddr - authHostOffset - 4; // va to rva
+
+    var newCode =
+        "FF 35 " + clientinfo_port.packToHex(4) +  // 0 push clientinfo_port
+        "FF 35 " + clientinfo_addr.packToHex(4) +  // 6 push offset clientinfo_addr
+        "68 " + formatVaHex +                      // 12 push offset aSD_6
+        "6A FF " +                                 // 17 push 0FFFFFFFFh
+        "68 81 00 00 00 " +                        // 19 push 81h
+        "68 " + authHostVa.packToHex(4) +          // 24 push offset g_auth_host_port
+        "E8 " + sprintfAddr.packToHex(4) +         // 29 call snprintf_s
+        "83 C4 18 " +                              // 34 add esp, 18h
+        "E9 " + continueAddr.packToHex(4)          // 37 jmp continue
+
+    exe.replace(overrideAddr, newCode, PTYPE_HEX);
+
+    return true;
+}
+
 function RemoveHardcodedAddress()
 {
     consoleLog("step 1a - Find the code where we will remove call");
@@ -169,6 +239,8 @@ function RemoveHardcodedAddress()
     if (offset === -1)
         return "Failed in search '6900' (new)";
     var portStrHex = exe.Raw2Rva(offset).packToHex(4);
+
+    consoleLog("search override address");
 
     var code =
         "80 3D AB AB AB AB 00 " +     // 0 cmp byte_F64F5B, 0
