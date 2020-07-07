@@ -1,3 +1,9 @@
+# 2020-07-07 Patches update
+
+## Patches
+
+- Fix patch [Increase hair style limit in game](http://nemo.herc.ws/patches/IncreaseHairSprites/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+
 # 2020-07-06 Patches update
 
 ## Patches
