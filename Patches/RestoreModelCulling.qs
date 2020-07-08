@@ -35,6 +35,18 @@
  */
 
 function RestoreModelCulling() {
+	
+	//New clients - find 2 m_isHideCheck and skip.
+	var offsets = exe.findCodes(" 80 BE 54 01 00 00 01", PTYPE_HEX, false);
+
+	if (offsets.length === 2) {                      
+		for (var i = 0; i < offsets.length; i++) {   
+			if (exe.fetchUByte(offsets[i] + 7) != 0x75)  //Check JNZ follow by m_isHideCheck
+				return "Failed in Step 1a - No JNZ found.";
+			exe.replace(offsets[i] + 7, " 90 90", PTYPE_HEX); 
+		}
+		return true;
+	}
   
 	//Step 1a - Locate C3dActor::CullByOBB (should be first instance in exe)
   // LEA EAX, [ESI+130h] (eax = &m_oBoundingBox)
