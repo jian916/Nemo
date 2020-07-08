@@ -22,6 +22,8 @@ Reports for all patches and all clients http://nemo.herc.ws/
 
 Forum topic: http://herc.ws/board/topic/15523-another-nemo-patcher-fork/
 
+Discord server: https://discord.com/invite/ByEQHDf
+
 You can create bug reports here: https://gitlab.com/4144/Nemo/issues/new?issue%5Bassignee_id%5D=&issue%5Bmilestone_id%5D=
 
 or vote on any existing issue here: https://gitlab.com/4144/Nemo/issues
