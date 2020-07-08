@@ -40,15 +40,39 @@ function ChangeMinimalResolutionLimit()
     var widthLimit = 1024;
     var heightLimit = 768;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	
+	if (offset === -1)  //Newer clients only compare screen_height
+	{
+		code =
+		" A3 AB AB AB AB" +     // mov screen_old_height, eax
+		" A1 AB AB AB AB" +     // mov eax, screen_height
+		" 3D 98 02 00 00" +     // cmp eax, 298h
+		" 73 17" +              // jnb short B
+        " B9 00 04 00 00" +     // mov ecx, 400h
+        " B8 00 03 00 00" +     // mov eax, 300h
+        " 89 0D AB AB AB AB" +  // mov screen_width, ecx
+        " A3" ;                 // mov screen_height, eax
+		
+		var newClient = true;
+		var widthOffset1 = -1;
+		var widthOffset2 = 18;
+		var heightOffset1 = 11;
+		var heightOffset2 = 23;
+		var widthLimit = 1024;
+		var heightLimit = 768;
+		var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+	}
 
     if (offset === -1)
         return "Failed in step 1 - resolution limit not found";
-
-    if (exe.fetchDWord(offset + widthOffset1) !== widthLimit || exe.fetchDWord(offset + widthOffset1) !== exe.fetchDWord(offset + widthOffset2))
-        return "Failed in step 1 - wrong width limit found";
-
-    if (exe.fetchDWord(offset + heightOffset1) !== heightLimit || exe.fetchDWord(offset + heightOffset1) !== exe.fetchDWord(offset + heightOffset2))
-        return "Failed in step 1 - wrong height limit found";
+	
+	if (!newClient) {
+		if (exe.fetchDWord(offset + widthOffset1) !== widthLimit || exe.fetchDWord(offset + widthOffset1) !== exe.fetchDWord(offset + widthOffset2))
+			return "Failed in step 1 - wrong width limit found";
+	
+		if (exe.fetchDWord(offset + heightOffset1) !== heightLimit || exe.fetchDWord(offset + heightOffset1) !== exe.fetchDWord(offset + heightOffset2))
+			return "Failed in step 1 - wrong height limit found";
+	}
 
     var width = exe.getUserInput("$newScreenWidth", XTYPE_DWORD, _("Number Input"), _("Enter new minimal width:"), widthLimit, 0, 100000);
     var height = exe.getUserInput("$newScreenHeight", XTYPE_DWORD, _("Number Input"), _("Enter new minimal height:"), heightLimit, 0, 100000);
@@ -60,7 +84,9 @@ function ChangeMinimalResolutionLimit()
     width = width.packToHex(4);
     height = height.packToHex(4);
 
-    exe.replace(offset + widthOffset1, width, PTYPE_HEX);
+	if (!newClient) {
+		exe.replace(offset + widthOffset1, width, PTYPE_HEX);
+	}
     exe.replace(offset + widthOffset2, width, PTYPE_HEX);
     exe.replace(offset + heightOffset1, height, PTYPE_HEX);
     exe.replace(offset + heightOffset2, height, PTYPE_HEX);
