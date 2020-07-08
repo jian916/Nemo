@@ -1,3 +1,10 @@
+# 2020-07-08 Patches update
+
+## Patches
+
+- Fix patch [Restore Model Culling](http://nemo.herc.ws/patches/RestoreModelCulling/#success-clients) for 2019-2020 clients. (fix by @jchcc).
+- Fix patch [Change minimal screen resolution limit](http://nemo.herc.ws/patches/ChangeMinimalResolutionLimit/#success-clients) for 2019-2020 clients. (fix by @jchcc, @4144).
+
 # 2020-07-07 Patches update
 
 ## Patches
