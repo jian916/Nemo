@@ -626,3 +626,10 @@ function logField(name, offset, offset2)
         return;
     console2.logField(name, offset, offset2[0], offset2[1]);
 }
+
+function logVal(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVal(name, offset, offset2);
+}
