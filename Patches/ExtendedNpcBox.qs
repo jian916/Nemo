@@ -4,30 +4,30 @@
 //####################################################################
 
 function ExtendNpcBox() {
-  
+
   //Step 1a - Find offset of '|%02x'
   var offset = exe.findString("|%02x", RVA);
   if (offset === -1)
     return "Failed in Step 1 - Format string missing";
- 
+
   //Step 1b - Find its references
   var offsets = exe.findCodes("68" + offset.packToHex(4), PTYPE_HEX, false);
   if (offsets.length === 0)
     return "Failed in Step 1 - String reference missing";
-  
+
   //Step 1c - Find the Stack allocation address => SUB ESP, 804+x . Only 1 of the offsets matches
   for (var i = 0; i < offsets.length; i++) {
     offset = exe.find("81 EC AB 08 00 00", PTYPE_HEX, true, "\xAB", offsets[i] - 0x80, offsets[i]);
     if (offset !== -1)
       break;
   }
-  
+
   if (offset === -1)
     return "Failed in Step 1 - Function not found";
-  
+
   //Step 1d - Extract the x in SUB ESP,x
   var stackSub = exe.fetchDWord(offset + 2);
-  
+
   //Step 1e - Find the End of the Function.
   var fpEnb = HasFramePointer();
   var code;
@@ -44,7 +44,7 @@ function ExtendNpcBox() {
     + " C2 04 00"                      //RETN 4
     ;
   }
-  
+
   var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 5, offset + 0x200);//i is from the for loop
   if (offset2 === -1)
     return "Failed in Step 1 - Function end missing";
@@ -53,12 +53,12 @@ function ExtendNpcBox() {
   var value = exe.getUserInput("$npcBoxLength", XTYPE_DWORD, _("Number Input"), _("Enter new NPC Dialog box length (2052 - 4096)"), 0x804, 0x804, 0x1000);
   if (value === 0x804)
     return "Patch Cancelled - New value is same as old";
-  
+
   //Step 2b - Change the Stack Allocation with new values
   exe.replaceDWord(offset + 2, value + stackSub - 0x804);//Change x in SUB ESP, x
   if (!fpEnb)
     exe.replaceDWord(offset2 + 2, value + stackSub - 0x804);//Change x in ADD ESP, x
-  
+
   if (fpEnb) {
     //Step 2c - Update all EBP-x+i Stack references, for now we are limiting i to (0 - 3)
     for (var i = 0; i <= 3; i++) {

@@ -10,11 +10,11 @@ function CustomExpBarLimits() {
     " 6A 4E"          //PUSH 4E
   + " 68 38 FF FF FF" //PUSH -0C8
   ;
-  
+
   var refOffsets = exe.findCodes(code, PTYPE_HEX, false);
   if (refOffsets.length === 0)
     return "Failed in Step 1 - Reference PUSHes missing";
-  
+
   //Step 1b - Find the Job ID getter before the first reference
   code =
     " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
@@ -22,25 +22,25 @@ function CustomExpBarLimits() {
   + " 50"             //PUSH EAX
   + " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
   + " E8 AB AB AB 00" //CALL CSession::isThirdJob
-  
-  var suffix = 
+
+  var suffix =
     " 85 C0"          //TEST EAX, EAX
   + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[g_level]
   + " BF 63 00 00 00" //MOV EDI, 63
   ;
   var type = 1;//VC6 style
   var offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
-  
+
   if (offset === -1) {
     suffix =
       " 8B 8E AB 00 00 00" //MOV ECX, DWORD PTR DS:[ESI+const]
-    + " BF 63 00 00 00"    //MOV EDI, 63 
+    + " BF 63 00 00 00"    //MOV EDI, 63
     + " 85 C0"             //TEST EAX, EAX
     ;
     type = 2;//VC9 style 1
     offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
   }
-  
+
   if (offset === -1) {
     suffix = suffix.replace(" 8B 8E AB 00 00 00", "");
     type = 3;//VC9 style 2
@@ -50,29 +50,29 @@ function CustomExpBarLimits() {
   if (offset === -1)
     return "Failed in Step 1 - Comparison setup missing";
 
-  //Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable  
+  //Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable
   var gSession = exe.fetchDWord(offset + 1);
   var jobIdFunc = exe.Raw2Rva(offset + 10) + exe.fetchDWord(offset + 6);
   var baseBegin = offset;
-  
+
   offset += code.hexlength() + suffix.hexlength();
-  
+
   //Step 1d - Extract the base level comparison (for VC9+ clients we need to find the comparison after offset)
   if (type === 1) {
     var gLevel = exe.fetchDWord(offset - 9);
   }
   else {
     var offset2 = exe.find(" 81 3D AB AB AB 00 AB 00 00 00", PTYPE_HEX, true, "\xAB", offset, refOffsets[0]); //CMP DWORD PTR DS:[g_level], value
-    
+
     if (offset2 === -1)
       offset2 = exe.find(" 39 3D AB AB AB 00 75", PTYPE_HEX, true, "\xAB", offset, refOffsets[0]);//CMP DWORD PTR DS:[g_level], EDI
-    
+
     if (offset2 === -1)
       return "Failed in Step 1 - First comparison missing";
 
     var gLevel = exe.fetchDWord(offset2 + 2);
   }
-  
+
   //Step 2a - Find the ESI+const movement to ECX between baseBegin and first reference offset
   offset = exe.find(" 8B 8E AB 00 00 00", PTYPE_HEX, true, "\xAB", baseBegin, refOffsets[0]);//MOV ECX, DWORD PTR DS:[ESI+const]
   if (offset === -1)
@@ -82,7 +82,7 @@ function CustomExpBarLimits() {
   var gNoBase = exe.fetchDWord(offset + 2);
   var gNoJob = gNoBase + 4;
   var gBarOn = gNoBase + 8;
-  
+
   //Step 2c - Extract ESI offset and baseEnd
   if (exe.fetchUByte(refOffsets[1] + 8) >= 0xD0) {
     var funcOff = exe.fetchByte(refOffsets[1] - 1);
@@ -92,27 +92,27 @@ function CustomExpBarLimits() {
     var funcOff = exe.fetchByte(refOffsets[1] + 9);
     var baseEnd = (refOffsets[1] + 12) + exe.fetchByte(refOffsets[1] + 11);
   }
-  
+
   //Step 2d - jobBegin is same as baseEnd
   var jobBegin = baseEnd;
-  
+
   //Step 3a - Find the PUSHes for Job Exp bar
   code =
     " 6A 58"          //PUSH 58
   + " 68 38 FF FF FF" //PUSH -0C8
   ;
-  
+
   var refOffsets2 = exe.findAll(code, PTYPE_HEX, true, "\xAB", jobBegin, jobBegin + 0x120);
   if (refOffsets2.length === 0)
     return "Failed in Step 3 - 2nd Reference PUSHes missing";
-  
+
   //Step 3b - Find jobEnd (JMP after the last PUSH will lead to jobEnd)
   offset = refOffsets2[refOffsets2.length - 1] + code.hexlength();
-  
+
   if (exe.fetchUByte(offset) === 0xEB) {
     offset = (offset + 2) + exe.fetchByte(offset + 1);
   }
-  
+
   if (exe.fetchUByte(offset + 1) >= 0xD0) {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
     var jobEnd = offset + 2;
   }
@@ -120,31 +120,31 @@ function CustomExpBarLimits() {
     var jobEnd = offset + 3;
   }
 
-  //Step 3c - Find g_jobLevel reference between the 2nd reference set  
+  //Step 3c - Find g_jobLevel reference between the 2nd reference set
   code = " 83 3D AB AB AB 00 0A"; //CMP DWORD PTR DS:[g_jobLevel], 0A
-  
+
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffsets2[0], refOffsets2[refOffsets2.length - 1]);
   if (offset === -1)
     return "Failed in Step 3 - g_jobLevel reference missing";
-  
+
   //Step 3d - Extract g_jobLevel
   var gJobLevel = exe.fetchDWord(offset + 2);
- 
+
   //Step 4a - Get the input file
   var fp = new TextFile();
   var inpFile = GetInputFile(fp, "$expBarSpec", _("File Input - Custom Exp Bar Limits"), _("Enter the Exp Bar Spec file"), APP_PATH + "/Input/expBarSpec.txt");
   if (!inpFile)
     return "Patch Cancelled";
 
-  //Step 4b - Extract table from the file  
+  //Step 4b - Extract table from the file
   var idLvlTable = [];
   var tblSize = 0;
   var index = -1;
-  
+
   while (!fp.eof()) {
     var line = fp.readline().trim();
     if (line === "") continue;
-    
+
     if (matches = line.match(/^([\d\-,\s]+):$/)) {
       index++;
       var idSet = matches[1].split(",");
@@ -152,23 +152,23 @@ function CustomExpBarLimits() {
         "idTable":"",
         "lvlTable":[" FF 00", " FF 00"]
       };
-      
+
       for (var i = 0; i < idSet.length; i++) {
         var limits = idSet[i].split("-");
         if (limits.length === 1)
           limits[1] = limits[0];
-        
-        idLvlTable[index].idTable += parseInt(limits[0]).packToHex(2) 
+
+        idLvlTable[index].idTable += parseInt(limits[0]).packToHex(2)
         idLvlTable[index].idTable += parseInt(limits[1]).packToHex(2);
         tblSize += 4;
       }
-      
+
       idLvlTable[index].idTable += " FF FF";
       tblSize += 2;
     }
     else if (matches = line.match(/^([bj])\s*=>\s*(\d+)\s*,/)) {
       var limit = parseInt(matches[2]).packToHex(2);
-      
+
       if (matches[1] === "b") {
         idLvlTable[index].lvlTable[0] = limit;
       }
@@ -178,7 +178,7 @@ function CustomExpBarLimits() {
     }
   }
   fp.close();
-  
+
   //Step 5a - Prep code to replace at baseBegin
   code =
     " 52"                     //PUSH EDX
@@ -236,50 +236,50 @@ function CustomExpBarLimits() {
   + " FF 50 XX"               //CALL DWORD PTR DS:[EAX + funcOff]
   + " E9" + GenVarHex(11)     //JMP jobEnd
   ;
-  
+
   //Step 5b - Allocate space for the table to use in the above code
   var free = exe.findZeros(tblSize);
   if (free === -1)
     return "Failed in Step 5 - Not enough free space";
-  
+
   //Step 5c - Setup tblAddr
   var freeRva = exe.Raw2Rva(free);
   var tblAddr = baseBegin + code.hexlength() + 4;
-  
+
   //Step 5d - Fill in the blanks
   code = code.replace(/ XX/g, funcOff.packToHex(1));
-  
+
   code = ReplaceVarHex(code, 1, gSession);
   code = ReplaceVarHex(code, 2, jobIdFunc - exe.Raw2Rva(baseBegin + 12));
-  
+
   code = ReplaceVarHex(code, 3, exe.Raw2Rva(tblAddr));
   code = ReplaceVarHex(code, 4, exe.Raw2Rva(tblAddr - 4));//defAddr = tblAddr - 4
-  
+
   code = ReplaceVarHex(code, 5, gLevel);
   code = ReplaceVarHex(code, [6,7] , [gNoBase, gBarOn]);
-  
+
   code = ReplaceVarHex(code, 8, gJobLevel);
   code = ReplaceVarHex(code, [9,10], [gNoJob , gBarOn]);
- 
+
   code = ReplaceVarHex(code, 11, jobEnd - (baseBegin + code.hexlength()));
-  
+
   //Step 6a - Construct the table pointers & limits to insert
   var tblAddrData = "";
   var tblData = "";
-  
+
   for (var i = 0, addr = 0; i < idLvlTable.length; i++) {
     tblAddrData += (freeRva + addr).packToHex(4);
     tblData += idLvlTable[i].idTable;
     addr += idLvlTable[i].idTable.hexlength();
-    
-    tblAddrData += idLvlTable[i].lvlTable.join("");    
+
+    tblAddrData += idLvlTable[i].lvlTable.join("");
   }
-  
+
   //Step 6b - Replace the function at baseBegin
   exe.replace(baseBegin, code + " FF 00 FF 00" + tblAddrData, PTYPE_HEX);
-  
+
   //Step 6c - Insert the table at allocated location.
   exe.insert(free, tblSize, tblData, PTYPE_HEX);
-  
+
   return true;
 }

@@ -21,7 +21,7 @@ function ChangeDefaultBGM() {
     if (free === -1)
         return "Failed in Step 2 - Not enough free space";
 
-    exe.insert(free, myfile.length, "$newBGMPath", PTYPE_STRING);    
+    exe.insert(free, myfile.length, "$newBGMPath", PTYPE_STRING);
     exe.replace(offset+1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
 
     return true;

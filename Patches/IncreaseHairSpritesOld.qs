@@ -39,7 +39,7 @@ function IncreaseHairSpritesOld()
 
     var refOffset = offset;
 
-    code = 
+    code =
         "85 C0" +             // test eax, eax
         "78 05" +             // js short A
         "83 F8 AB" +          // cmp eax, 1Dh
@@ -57,7 +57,7 @@ function IncreaseHairSpritesOld()
     exe.replace(offset + assignOffset, "90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
 
     // step 3 - search string "2" "3" "4"
-    code = 
+    code =
         "32 00" + // "2"
         "00 00" + //
         "33 00" + // "3"
@@ -72,7 +72,7 @@ function IncreaseHairSpritesOld()
     currentLimit = currentLimit.packToHex(1);
 
     // step 4 - search male hair table allocations in CSession::InitPcNameTable
-    code = 
+    code =
         "50 " +                                        // push eax
         "6A AB " +                                     // push 1Eh
         "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // mov dword ptr [ebp+A], offset "2"

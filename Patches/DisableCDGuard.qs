@@ -21,7 +21,7 @@
 function DisableCDGuard()
 {
     //Step 1 - find call CCheatDefenderMgr_init and g_CCheatDefenderMgr->enc_enabled = 1
-    var code = 
+    var code =
         "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
         "E8 AB AB AB FF" +     // call CCheatDefenderMgr_init
         "3c 01" +              // cmp al, 1    <-- change here
@@ -36,7 +36,7 @@ function DisableCDGuard()
     var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     if (offsets.length === 0)
     {
-        var code = 
+        var code =
             "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB FF" +     // call CCheatDefenderMgr_init
             "3c 01" +              // cmp al, 1    <-- change here
@@ -52,7 +52,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {
-        var code = 
+        var code =
             "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB 00" +     // call CCheatDefenderMgr_init
             "3c 01" +              // cmp al, 1    <-- change here
@@ -170,5 +170,5 @@ function DisableCDGuard()
 //============================//
 function DisableCDGuard_()
 {
-    return (exe.findString("CDClient.dll", RAW) !== -1);  
+    return (exe.findString("CDClient.dll", RAW) !== -1);
 }

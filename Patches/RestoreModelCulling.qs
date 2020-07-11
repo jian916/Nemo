@@ -4,9 +4,9 @@
 
 /**
  * This seems to be yet another features that never got completed.
- * 
+ *
  * Source:
- * 
+ *
  * void C3dActor::CullByOBB(lineSegment3d *ray)
  * {
  *   if (this->m_isHideCheck)
@@ -15,14 +15,14 @@
  *       this->m_node->SetAlpha();
  *   }
  * }
- * 
- * C3dActor instances are always initialized with m_isHideCheck = false. 
- * C3dNode::SetAlpha sets C3dNode::m_isAlphaForPlayer, but this variable 
- * only affects lighting and not opacity. We can instead use 
+ *
+ * C3dActor instances are always initialized with m_isHideCheck = false.
+ * C3dNode::SetAlpha sets C3dNode::m_isAlphaForPlayer, but this variable
+ * only affects lighting and not opacity. We can instead use
  * C3dActor::m_isHalfAlpha, which affects C3dActor::m_fadeAlphaCnt.
- * 
+ *
  * Our desired result:
- * 
+ *
  * void C3dActor::CullByOBB(lineSegment3d *ray)
  * {
  *   if (1)
@@ -31,27 +31,27 @@
  *       this->m_isHalfAlpha = 1;
  *   }
  * }
- * 
+ *
  */
 
 function RestoreModelCulling() {
-    
+
     //New clients - find 2 m_isHideCheck and skip.
     var offsets = exe.findCodes(" 80 BE 54 01 00 00 01", PTYPE_HEX, false);
 
-    if (offsets.length === 2) {                      
-        for (var i = 0; i < offsets.length; i++) {   
+    if (offsets.length === 2) {
+        for (var i = 0; i < offsets.length; i++) {
             if (exe.fetchUByte(offsets[i] + 7) != 0x75)  //Check JNZ follow by m_isHideCheck
                 return "Failed in Step 1a - No JNZ found.";
-            exe.replace(offsets[i] + 7, " 90 90", PTYPE_HEX); 
+            exe.replace(offsets[i] + 7, " 90 90", PTYPE_HEX);
         }
         return true;
     }
-  
+
     //Step 1a - Locate C3dActor::CullByOBB (should be first instance in exe)
   // LEA EAX, [ESI+130h] (eax = &m_oBoundingBox)
   // PUSH EAX
-    var pBase = exe.findCode(" 8D 86 30 01 00 00 50", PTYPE_HEX, false); 
+    var pBase = exe.findCode(" 8D 86 30 01 00 00 50", PTYPE_HEX, false);
     if (pBase === -1)
         return "Failed in Step 1 - No match for C3dActor::CullByOBB!";
 
@@ -69,7 +69,7 @@ function RestoreModelCulling() {
         return "Failed in Step 2 - Missing jump condition for m_isHideCheck";
 
     //Step 2b - Change the JZ to NOP
-    exe.replace(pJmpHideCheck, " 90 90", PTYPE_HEX); 
+    exe.replace(pJmpHideCheck, " 90 90", PTYPE_HEX);
 
     //Step 3a - Find call to C3dNode::SetToAlpha
   // MOV ECX, DWORD PTR DS:[ESI]

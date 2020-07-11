@@ -13,7 +13,7 @@ function ChangeDisplayCharDelDelay() {
 
   // Step 1 - Find the code which prepare character deletion time data
 
-  var code = 
+  var code =
     " 83 EC 24"          //SUB ESP, 24
   + " 33 C0"             //XOR EAX, EAX
   + " 56"                //PUSH ESI
@@ -40,7 +40,7 @@ function ChangeDisplayCharDelDelay() {
 
   // Step 3 - Replace the code which prepare character deletion time data
 
-  code = 
+  code =
     " 53"                     //PUSH EBX
   + " 56"                     //PUSH ESI
   + " 51"                     //PUSH ECX

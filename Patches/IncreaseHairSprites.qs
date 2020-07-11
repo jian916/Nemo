@@ -43,7 +43,7 @@ function IncreaseHairSprites()
     var newclient = 0;
     var addNops = "";
 
-    code = 
+    code =
         "85 C0" +             // 0 test eax, eax
         "78 05" +             // 2 js short A
         "83 F8 AB" +          // 4 cmp eax, 1Dh
@@ -54,15 +54,15 @@ function IncreaseHairSprites()
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
     if (offset === -1)
-    {    
-        code = 
+    {
+        code =
             "85 C9" +              // 0 test ecx, ecx
             "78 05" +              // 2 js short A
             "83 F9 AB" +           // 4 cmp ecx, 21h
             "AB AB" +              // 7 jle short B
             "C7 00 AB 00 00 00 " + // 9 mov dword ptr [eax], 21h
             "B9 AB 00 00 00";      // 15 mov ecx, 21h
-            
+
             offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
             addNops = " 90 90 90 90 90"
             newclient = 1;
@@ -98,7 +98,7 @@ function IncreaseHairSprites()
     }
     var assignOffset = 14;
     var valueOffset = 11;
-    
+
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
     if (offset === -1)
@@ -108,7 +108,7 @@ function IncreaseHairSprites()
     exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 4 - search string \"2\" \"3\" \"4\"");
-    code = 
+    code =
         "32 00" + // "2"
         "00 00" + //
         "33 00" + // "3"
@@ -124,7 +124,7 @@ function IncreaseHairSprites()
 
     consoleLog("step 5 - search male hair table allocations in CSession::InitPcNameTable");
     if(!newclient) {
-        code = 
+        code =
             "50 " +                                        // 0 push eax
             "6A AB " +                                     // 1 push 1Eh
             "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // 3 mov dword ptr [ebp+A], offset "2"
@@ -137,7 +137,7 @@ function IncreaseHairSprites()
         var fetchSize = 7;    // copy this N bytes into own code
     }
     else {
-        code = 
+        code =
             "50 " +                                        // 0 push eax
             "56 " +                                        // 1 push esi
             "6A AB " +                                     // 2 push 21h
@@ -181,7 +181,7 @@ function IncreaseHairSprites()
 
     consoleLog("step 7 - search female hair table and location for jump");
     var esi1 = "";
-    
+
     if(!newclient) {
         code =
             "8B 06" +                 // 0 mov eax, [esi]
@@ -213,16 +213,16 @@ function IncreaseHairSprites()
         esi1 = "56 ";
 
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
-        
+
         if (offset === -1) //newer clients
         {
             code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
             offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
             patchOffset2 -= 3;
-            callOffset2 -= 3; 
+            callOffset2 -= 3;
         }
     }
-    
+
     if (offset === -1)
         return "Failed in step 7 - jump location not found";
 
@@ -313,7 +313,7 @@ function IncreaseHairSprites()
             code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
             offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
             str1Offset -= 3;
-            patchOffset -= 3; 
+            patchOffset -= 3;
             callOffset -= 3;
         }
     }
@@ -331,7 +331,7 @@ function IncreaseHairSprites()
     // no varCode
     var varCode = "";
     patchOffset = tableCodeOffset + patchOffset;
-    
+
     offset = offsets[0];
     jmpAddr = exe.Raw2Rva(offset);
     var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + newclient + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
@@ -368,7 +368,7 @@ function IncreaseHairSprites()
     exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
 
     consoleLog("step 9 - search female doram hair table and location for jump");
-    
+
     if(!newclient) {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
@@ -409,7 +409,7 @@ function IncreaseHairSprites()
             "8B CB " +                    // 37 mov ecx,ebx
             "C7 45 AB AB AB AB AB" +      // 39 mov [ebp+var_10], offset "_병아리모자"
             "C7 40 ";                     // 46 mov dword ptr [eax+4], offset a1
-            
+
         var str1Offset = 49;
         var patchOffset2 = 20;   // from this offset code will be patched
         var callOffset2 = 25;    // in this offset relative call address
@@ -468,12 +468,12 @@ function IncreaseHairSprites()
 
     // ex 8
     consoleLog("step 10 - search location for jump");
-    
+
     if (exe.getClientDate() > 20200325)
         var viewID = 3000;
     else
         var viewID = 2000;
-    
+
     var code =
         "8B 06 " +                           // 0 mov eax, [esi]
         "C7 40 AB AB AB AB AB " +            // 2 mov dword ptr [eax+28h], offset a10
@@ -481,11 +481,11 @@ function IncreaseHairSprites()
         "50 " +                              // 12 push eax
         "68 " + viewID.packToHex(4) + " " +  // 14 push viewID
         "E8 ";                               // 19 call std_vector_char_ptr_resize
-    
+
     if(newclient) {
         code = code.replace("8D 45 AB 50 ", " 8D 45 AB 50 53 ");   //add "push ebx"
     }
-        
+
     var jumpOffset = 9;    // jump offset
 
 

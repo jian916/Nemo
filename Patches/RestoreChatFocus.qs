@@ -25,7 +25,7 @@ function RestoreChatFocus()
         return "Failed in search g_windowMgr - " + mgrInfo;
 
     // search UIWindowMgr::SetFocusEdit call in CGameMode static member
-    var code = 
+    var code =
         "83 3D AB AB AB AB 01 " +  // cmp g_CMouse.button, 1
         "75 AB " +                 // jnz addr1
         "6A 00 " +                 // push 0
@@ -40,7 +40,7 @@ function RestoreChatFocus()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    code = 
+    code =
         "90 90 " +
         "90 90 90 90 90" +
         "90 90 90 90 90";

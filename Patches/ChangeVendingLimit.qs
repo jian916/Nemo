@@ -4,21 +4,21 @@
 //######################################################################
 
 function ChangeVendingLimit() {
-  
+
   //Step 1a - Find the address of 1,000,000,000
   var offset = exe.findString("1,000,000,000", RVA);
   if (offset === -1)
     return "Failed in Step 1 - OneB string missing";
-  
+
   var oneb = exe.Rva2Raw(offset);//Needed later to change the string
-  
+
   //Step 1b - Find its reference
   var offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
   if (offset === -1)
     return "Failed in Step 1 - OneB reference missing";
-  
+
   //Step 1c - Find the comparison with 1B or 1B+1 before it
-  var code = 
+  var code =
     " 00 CA 9A 3B" //CMP reg32_A, 3B9ACA00 (1B in hex)
   + " 7E"          //JLE SHORT addr
   ;
@@ -33,12 +33,12 @@ function ChangeVendingLimit() {
     newstyle = false;
     offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
   }
-  
+
   if (offset2 === -1)
     return "Failed in Step 1 - Comparison missing";
-  
+
   //Step 2a - Find the MsgString call to 0 zeny message
-  code = 
+  code =
     " 6A 01"          //PUSH 1
   + " 6A 02"          //PUSH 2
   + " 68 5C 02 00 00" //PUSH 25C ;Line no. 605
@@ -63,15 +63,15 @@ function ChangeVendingLimit() {
     ;
   }
   var offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
-  
+
   if (offset1 === -1 && newstyle) {
     code = code.replace("7E", "76");//Recent clients use JBE instead of JLE
     offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
   }
-  
+
   if (offset1 === -1)
     return "Failed in Step 2 - Comparison missing";
-  
+
   //Step 2c - Find the Extra comparison for oldstyle clients
   if (!newstyle)
   {
@@ -79,11 +79,11 @@ function ChangeVendingLimit() {
     offset = exe.find(code, PTYPE_HEX, false, '\xAB', offset - 0x60, offset);
     if (offset === -1)
       return "Failed in Step 2 - Extra Comparison missing";
-    
+
     //Step 2d - Change the JNE to JMP
     exe.replace(offset + 4, "EB", PTYPE_HEX);
   }
-  
+
   //Step 3a - Get the new value from user
   var newValue = exe.getUserInput("$vendingLimit", XTYPE_DWORD, _("Number Input"), _("Enter new Vending Limit (0 - 2,147,483,647):"), 1000000000);
   if (newValue === 1000000000)
@@ -96,10 +96,10 @@ function ChangeVendingLimit() {
   //Step 3c - Replace the compared value
   if (!newstyle)
     newValue++;
-  
+
   exe.replaceDWord(offset1, newValue);
   exe.replaceDWord(offset2, newValue);
-  
+
   return true;
 }
 

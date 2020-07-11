@@ -16,21 +16,21 @@ function ExtractMsgTable() {
         throw "Error: msgStringTable.txt reference missing";
 
     //Step 1c - Find the msgstring push after it
-    var code = 
+    var code =
         " 73 05"                //JAE SHORT addr1 -> after JMP below
       + " 8B AB AB"             //MOV reg32_A, DWORD PTR DS:[reg32_B*4 + reg32_C]
       + " EB AB"                //JMP SHORT addr2
       + " 8B AB AB AB AB AB 00" //MOV reg32_D, DWORD PTR DS:[reg32_B*8 + tblAddr]
-      ;  
+      ;
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+80);
 
     if (offset2 === -1) {//Newest Clients
-        code = code.replace(" AB 8B AB", " AB FF AB");//Change MOV reg32_D with PUSH 
+        code = code.replace(" AB 8B AB", " AB FF AB");//Change MOV reg32_D with PUSH
         offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+80);
     }
 
     if (offset2 === -1) {
-        code = 
+        code =
             " 56"                // push esi
           + " 33 AB"             // xor R,R
           + " 33 AB"             // xor R,R
@@ -80,7 +80,7 @@ function ExtractMsgTable() {
     msgStr = "";
     var index = 0;
     var engMap = {};
-  
+
     fp.open(APP_PATH + "/Input/msgStringEng.txt", "r");
     while (!fp.eof()) {
         var parts = fp.readline().split('#');

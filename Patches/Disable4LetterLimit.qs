@@ -27,32 +27,32 @@ function Disable4LetterLimit(index) {//Some old clients dont have the ID Check
   + " 83 F8 04"       //CMP EAX, 4
   + " 7C"             //JL SHORT addr
   ;
-  
+
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  
+
   code = code.replaceAt(-3, " 0F 8C AB AB 00 00"); //JL addr
   offsets = offsets.concat(exe.findCodes(code, PTYPE_HEX, true, "\xAB"));
-  
+
   if (offsets.length < 3)
     return "Failed in Step 1 - Not enough matches found";
-  
-  
+
+
   //Step 1b - Find which of the offsets belong to Password & ID Check
-  code = 
+  code =
     " E8 AB AB AB FF"  //CALL UIEditCtrl::GetTextSize
   + " 83 F8 04"        //CMP EAX, 4
   ;
-  
+
   var csize = code.hexlength();
 
   for (var idp = 0; idp < offsets.length; idp++) {
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[idp] + csize, offsets[idp] + csize + 30 + csize);
     if (offset2 !== -1) break;
   }
-  
+
   if (offset2 === -1)
     return "Failed in Step 1 - ID+Pass check not found";
-  
+
   //Step 2 - Replace 4 with 0 in CMP EAX,4 in appropriate offsets
   switch(index) {
     case 0: {

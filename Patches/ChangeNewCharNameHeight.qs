@@ -63,5 +63,5 @@ function ChangeNewCharNameHeight()
 
 function ChangeNewCharNameHeight_()
 {
-    return (exe.findString(".?AVUINewMakeCharWnd@@", RAW) !== -1);  
+    return (exe.findString(".?AVUINewMakeCharWnd@@", RAW) !== -1);
 }

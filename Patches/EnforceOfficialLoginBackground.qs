@@ -33,11 +33,11 @@ function EnforceOfficialLoginBackground() {
   }
   if (offsets.length === 0)
     return "Failed in Step 1";
-  
+
   //Step 2 - Replace first JZ to JMP for all the matches
   for (var i = 0; i < offsets.length; i++) {
-    exe.replace(offsets[i], "EB", PTYPE_HEX); 
+    exe.replace(offsets[i], "EB", PTYPE_HEX);
   }
-  
+
   return true;
 }

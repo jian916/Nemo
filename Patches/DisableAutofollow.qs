@@ -4,7 +4,7 @@
 //########################################################################
 
 function DisableAutofollow() {
-  
+
   //Step 1 - Find the assignment statement
   var code =
     " 6A 01"             //PUSH 1
@@ -15,22 +15,22 @@ function DisableAutofollow() {
   + " A3 AB AB AB 00"    //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], EAX ;in this instance reg32_B = EAX
   ;
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  
+
   if (offsets.length === 0) {
     code = code.replace(" FF AB", " FF AB AB"); //CALL DWORD PTR DS:[reg32_C + x]
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offsets.length === 0) { // 2017 clients [Secret]
     code = code.replace(" A3 AB AB AB 00", " A3 AB AB AB AB");
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offsets.length === 0) {
     code = code.replace(" A3", " 89 AB"); //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], reg32_B
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offsets.length === 0)
     return "Failed in Step 1";
 

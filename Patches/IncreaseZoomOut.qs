@@ -55,7 +55,7 @@ function IncreaseZoomOut(newvalue)
         {
             exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
         }
-        
+
 
         // search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
         var code2 = " C7 05 " + zoom2 + " 00 00 C8 43"; // mov zoom2, 480.0

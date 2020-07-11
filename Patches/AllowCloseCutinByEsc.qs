@@ -90,7 +90,7 @@ function AllowCloseCutinByEsc()
     // step 3
     // patch at location found at step 2
 
-    var newCode = 
+    var newCode =
         "51" +                  // PUSH ECX
         "68" + widHex +         // PUSH wid
         "B8" + deleteHex +      // MOV EAX, deleteFunc

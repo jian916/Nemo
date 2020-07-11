@@ -10,13 +10,13 @@ function Intravision() {
     +   " 3B C1"                // CMP EAX, ECX
     +   " 75"                   // JNZ loop_start
     ;
-    
+
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    
+
     if (offset === -1)
         return "Failed in Step 1";
-    
+
     exe.replace(offset, " 90 E9", PTYPE_HEX);
-    
+
     return true;
 }

@@ -47,7 +47,7 @@ function AllowSpamSkills()
     }
 
     consoleLog("step 2");
-    code = 
+    code =
         "3B DB" +  // cmp ebx, ebx
         "90 " +    // nop
         "90 " +    // nop

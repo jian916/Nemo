@@ -62,26 +62,26 @@ Number.prototype.packToHex = function(size) {
     var number = this;
     if (number < 0)
         number = 0xFFFFFFFF + number + 1;
-    
+
     if (typeof(size) === "undefined" || size > 4)
         size = 4;
-    
+
     var hex = number.toString(16);
     size  = size * 2;
-    
+
     if (hex.length > size)
         hex = hex.substr( hex.length - size);
-    
+
     while (hex.length < size) {
         hex = "0" + hex;
     }
-    
+
     var result = "";
     while (hex !== "") {
         result = " " + hex.substr(0,2) + result;
         hex = hex.substr(2);
     }
-    
+
     return result;
 }
 

@@ -29,7 +29,7 @@ function EnableGuildWhenInClan() {
     exe.replace(offset - 2, " EB", PTYPE_HEX);
 
     // Step 2 - Find the jump followed by push 0x168
-    var code = 
+    var code =
         " 0F 85 AB AB FF FF" // JNZ addr
     +   " B8 68 01 00 00"    // MOV EAX, 168
     ;

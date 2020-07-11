@@ -15,8 +15,8 @@
 # Want an example? just check any of the patterns below. you will see almost
 # all of my find strings are HEX but replace strings are ASCII :D
 #
-# Patcher does not stop when it fails to find any of the strings. Instead 
-# it will be reported in a text file called FailedTranslations.txt 
+# Patcher does not stop when it fails to find any of the strings. Instead
+# it will be reported in a text file called FailedTranslations.txt
 # with the message specified using M:#
 #
 ###########################################################################
@@ -953,7 +953,7 @@ M: non moving process
 ----------------------------------
 F: BA F1 B0 F8 C1 A4 20 C0 CC B5 BF
 R: 'Non-Moving'
- 
+
 ----------------------------------
 M: Move
 ----------------------------------

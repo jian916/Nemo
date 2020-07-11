@@ -12,23 +12,23 @@ function IncreaseMapQuality() {
   + " B9 AB AB AB 00" //MOV ECX, OFFSET g_texMgr
   + " E8 AB AB AB FF" //CALL CTexMgr::CreateTexture
   ;
-  
+
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-  
+
   if (offset === -1) {
     code = code.replace(" 51", " 50");//PUSH EAX ; imgData
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offset === -1) {
     code = code.replace(" 00 B9 AB AB AB 00 E8", " 00 E8"); // Remove MOV ECX
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     var ecxRemove = true;
   }
-  
+
   if (offset === -1)
     return "Failed in Step 1 - CreateTexture call missing";
-  
+
   //Step 1b - Find the pf argument push before it.
   if (exe.fetchByte(offset - 1) === 0x01) {//PUSH 1 is right before PUSH E*X
     offset--;
@@ -43,12 +43,12 @@ function IncreaseMapQuality() {
 
     if (offset === -1)
       return "Failed in Step 1 - pf push missing";
-    
+
     offset++;
   }
-  
+
   //Step 2 - Change PUSH 1 to PUSH 4
   exe.replace(offset, " 04", PTYPE_HEX);
-  
+
   return true;
 }

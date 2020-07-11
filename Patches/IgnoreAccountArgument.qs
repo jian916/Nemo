@@ -25,13 +25,13 @@ function IgnoreAccountArgument() {
     var offset = exe.findString("/account:", RVA);
     if (offset === -1)
         return "Failed in Step 1 - /account: not found.";
-    
+
     // Step 1b - Find its reference
     var code = " 68" + offset.packToHex(4);
     offset = exe.findCode(code, PTYPE_HEX, false);
     if (offset === -1)
         return "Failed in Step 1 - Reference not found.";
-    
+
     // Step 2 - Find the comparison after strstr call
     code =
         //" FF D3"   // CALL EBX ; strstr
@@ -42,11 +42,11 @@ function IgnoreAccountArgument() {
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
     if (offset === -1)
         return "Failed in Step 2 - Comparison not found.";
-    
+
     // Step 3 - Replace JZ with JMP
     offset += 5; // 3 from ADD and 2 from TEST
-    
+
     exe.replace(offset, " EB", PTYPE_HEX);
-    
+
     return true;
 }

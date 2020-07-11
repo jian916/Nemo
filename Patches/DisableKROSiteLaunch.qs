@@ -7,9 +7,9 @@ function DisableKROSiteLaunch() {
   var offset = exe.findString("ro.gnjoy.com", RAW);
   if (offset === -1)
     return "Failed in Step 1";
-  
+
   //Step 2 - Replace with Zero
   exe.replace(offset, "00", PTYPE_HEX);
-  
+
   return true;
 }

@@ -36,11 +36,11 @@ function ChangeAutoFollowDelay(value) {
   + " 2B 05 AB AB AB AB"    //SUB EAX, DWORD PRT DS:[addr] ;  lastFollowTime
   + " 3D E8 03 00 00"       //CMP EAX, 3E8h                ;  1000ms
   ;
-  
+
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in Step 1 - AutoFollow Delay Code not found.";
-  
+
   //Step 2 - Replace the value
   exe.replace(offset + 9, value.packToHex(4) , PTYPE_HEX);
 

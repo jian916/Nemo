@@ -133,10 +133,10 @@ function HideButtonOld(src, tgt) {
     //Step 1a - Ensure both are lists/arrays
     if (typeof(src) === "string")
         src = [src];
-    
+
     if (typeof(tgt) === "string")
         tgt = [tgt];
-    
+
     //Step 1b - Loop through and find first match
     var offset = -1;
     for (var i = 0; i < src.length; i++) {
@@ -144,13 +144,13 @@ function HideButtonOld(src, tgt) {
         if (offset !== -1)
             break;
     }
-    
+
     if (offset === -1)
         return "Failed in Step 1";
-    
+
     //Step 2 - Replace with corresponding value in tgt
     exe.replace(offset, tgt[i], PTYPE_STRING);
-    
+
     return true;
 }
 
@@ -170,32 +170,32 @@ function HideButtonNew(reference, prefix) {
     var refAddr = exe.findString(reference, RVA);
     if (refAddr === -1)
         return "Failed in Step 1 - info missing";
-    
+
     //Step 1b - Find the address of the string
     var strAddr = exe.findString(prefix, RVA);
     if (strAddr === -1)
         return "Failed in Step 1 - Prefix missing";
-    
+
     //Step 2a - Find assignment of "info" inside UIBasicWnd::OnCreate
     var suffix = " C7";
     var offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
-    
+
     if (offset === -1) {
-        suffix = " 8D"; 
+        suffix = " 8D";
         offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
     }
- 
+
     if (offset === -1)
         return "Failed in Step 2 - info assignment missing";
-    
+
     //Step 2b - Find the assignment of prefix after "info" assignment
     offset = exe.find(strAddr.packToHex(4) + suffix, PTYPE_HEX, false, "\xAB", offset + 5, offset + 0x500);
     if (offset === -1)
         return "Failed in Step 2 - Prefix assignment missing";
-    
+
     //Step 2c - Update the address to point to NULL
     exe.replaceDWord(offset, strAddr + prefix.length);
-    
+
     return true;
 }
 

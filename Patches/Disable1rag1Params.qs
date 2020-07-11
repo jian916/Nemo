@@ -8,7 +8,7 @@ function Disable1rag1Params() {
   var offset = exe.findString("1rag1", RVA);
   if (offset === -1)
     return "Failed in Step 1 - 1rag1 not found";
-  
+
   //Step 1b - Find its reference
   var code =
     " 68" + offset.packToHex(4) //PUSH OFFSET addr ; ASCII "1rag1"
@@ -19,17 +19,17 @@ function Disable1rag1Params() {
   + " 75"                       //JNZ SHORT addr2
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
- 
+
   if (offset === -1) {
     code = code.replace("FF AB 83 C4", "E8 AB AB AB AB 83 C4");
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offset === -1)
     return "Failed in Step 1";
-  
+
   //Step 2 - Replace JNZ/JNE with JMP
   exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX);
-  
+
   return true;
 }

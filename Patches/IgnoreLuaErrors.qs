@@ -22,7 +22,7 @@
 function IgnoreLuaErrors() {
 
     //Step 1a - Prep code for finding the LuaErrorMsg
-    var code = 
+    var code =
         "FF AB AB AB AB 00" +  // call vsprintf
         "83 AB AB" +           // add esp, 0Ch
         "8D AB AB AB FF FF" +  // lea eax, [ebp + text] <-- replace from here
@@ -38,7 +38,7 @@ function IgnoreLuaErrors() {
         return "Failed in Step 1";
 
     //Step 2 - Replace with xor eax, eax followed by nops.
-    var newCode = 
+    var newCode =
         "33 C0 90 90 90 90" +  // xor eax, eax + nops
         "90 90" +
         "90" +

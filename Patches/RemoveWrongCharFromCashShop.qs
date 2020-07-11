@@ -57,5 +57,5 @@ function RemoveWrongCharFromCashShop()
 
 function RemoveWrongCharFromCashShop_()
 {
-    return (exe.findString(".?AVUICashShopWnd@@", RAW) !== -1);  
+    return (exe.findString(".?AVUICashShopWnd@@", RAW) !== -1);
 }

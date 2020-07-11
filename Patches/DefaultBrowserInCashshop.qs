@@ -22,16 +22,16 @@
 function DefaultBrowserInCashshop () {
     //Step 1 - Find address of "iexplore.exe"
     var offset = exe.findString("iexplore.exe", RAW);
-    
+
     if (offset === -1)
         return "Failed in Step 1 - String not found.";
-    
+
     //Step 2 - Find the string reference.
     var offsets = exe.findCodes(" 50 68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
 
     if (offsets.length === 0)
         return "Failed in Step 2 - String reference missing.";
-    
+
     //Step 3 - Replace the arguments of ShellExecuteA
     var code =
         " 6A 00"    //PUSH 00
@@ -43,7 +43,7 @@ function DefaultBrowserInCashshop () {
         offset = offsets[i];
         exe.replace (offset, code, PTYPE_HEX);
     }
-    
+
     return true;
 }
 

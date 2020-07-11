@@ -71,12 +71,12 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         var code = oldPatn; //VC6
     else
         var code = newPatn; //VC9+
-    
+
     //Step 1.2 - Find the code inside the function
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in Step 1 - ID checker missing";
-    
+
     //Step 1.3 - Get the Function Address (will be a few bytes before offset)
     if (HasFramePointer())
         var fnBegin = offset - 6;//Account for PUSH EBP; MOV EBP, ESP and MOV EAX, DWORD PTR SS:[EBP+8]
@@ -88,10 +88,10 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         LoadSkillTypeLua(patchID, fnBegin + 0x100);
     else
         LoadSkillTypeLua(patchID);
-    
+
     if (typeof(SKL.Error) === "string")
         return "Failed in Step 2 - " + SKL.Error;
-    
+
     if (isPlayerFn)
     {
         //Step 3.1 - Prep Lua Function caller
@@ -103,7 +103,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         +   result
         +   " C3"           //RETN ; AL is already set
         ;
-        
+
         //Step 3.2 - Overwrite function with our code
         exe.replace(fnBegin, code, PTYPE_HEX);
 
@@ -116,7 +116,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         var free = exe.findZeros(funcName.length + 0x3D + 1);//for RETN
         if (free === -1)
             return "Failed in Step 4 - Not enough free space";
-        
+
         //Step 4.2 - Prep function which calls the Lua function
           var result = GenLuaCaller(free, funcName, exe.Raw2Rva(fnBegin + 0x10), "d>d", " 52");
           if (result.indexOf("LUA:") !== -1)
@@ -126,12 +126,12 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         +   result
         +   " C3" //RETN
         ;
-        
+
         //Step 4.3 - Insert at free space
         exe.insert(free, code.hexlength(), code, PTYPE_HEX);
-        
+
         //Step 4.4 - Prep code which calls the above
-        code = 
+        code =
             " 52"                //PUSH EDX
         +   " 8B 54 24 08"       //MOV EDX, DWORD PTR SS:[ESP+8]
         +   " E8" + GenVarHex(1) //CALL ourFunc
@@ -195,7 +195,7 @@ function LoadSkillTypeLua(id, offset)
         if (exe.getClientDate() >= 20100817)
             SKL.Prefix += "z";
     }
-    
+
     if (!SKL.PatchID)
     {
         SKL.Offset = InjectLuaFiles(

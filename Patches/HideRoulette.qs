@@ -3,12 +3,12 @@
 //###################################################################################
 
 function HideRoulette() {
-  
+
   //Step 1a - Get Window Manager Info
   var mgrInfo = GetWinMgrInfo();
   if (typeof(mgrInfo) === "string")
-    return "Failed in Step 1 - " + mgrInfo;  
-  
+    return "Failed in Step 1 - " + mgrInfo;
+
   //Step 1b - Find the UIWindow creation before Roulette (which is always present - 0xB5)
   var code =
     " 74 0F"           //JE SHORT addr
@@ -16,13 +16,13 @@ function HideRoulette() {
   + mgrInfo['gWinMgr'] //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
-  
+
   var offset = exe.findCode(code, PTYPE_HEX, false);
   if (offset === -1)
     return "Failed in Step 1 - Reference Code missing";
-  
+
   offset += code.hexlength() + 4;
-  
+
   //Step 2a - Check if the Succeding operation is Roulette UIWindow creation or not
   if (exe.fetchDWord(offset+1) !== 0x11D)
     return "Patch Cancelled - Roulette is already hidden";

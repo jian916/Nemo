@@ -3,7 +3,7 @@
 # Msg String Line Numbers 1630-1688 are the Job Names.
 # As an example we have skipped over the entire Archer branch
 
-1632 //Archer 
+1632 //Archer
 1640 //Hunter
 1647 //Bard
 1648 //Dancer
