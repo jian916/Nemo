@@ -81,7 +81,8 @@ function MoveCashShopIcon()
     + " 81 E9" + (-yCoord).packToHex(4) //SUB ECX, -yCoord
     ;
   }
-  else {
+  else
+  {
     code += " B9" + yCoord.packToHex(4)  //MOV ECX, yCoord
   }
 
@@ -95,7 +96,8 @@ function MoveCashShopIcon()
     + " 81 E9" + (-xCoord).packToHex(4) //SUB ECX, -xCoord
     ;
   }
-  else {
+  else
+  {
     code += " B9" + xCoord.packToHex(4)  //MOV ECX, xCoord
   }
 

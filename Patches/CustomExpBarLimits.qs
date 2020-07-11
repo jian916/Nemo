@@ -65,7 +65,8 @@ function CustomExpBarLimits()
   {
     var gLevel = exe.fetchDWord(offset - 9);
   }
-  else {
+  else
+  {
     var offset2 = exe.find(" 81 3D AB AB AB 00 AB 00 00 00", PTYPE_HEX, true, "\xAB", offset, refOffsets[0]); //CMP DWORD PTR DS:[g_level], value
 
     if (offset2 === -1)
@@ -93,7 +94,8 @@ function CustomExpBarLimits()
     var funcOff = exe.fetchByte(refOffsets[1] - 1);
     var baseEnd = (refOffsets[1] + 11) + exe.fetchByte(refOffsets[1] + 10);
   }
-  else {
+  else
+{
     var funcOff = exe.fetchByte(refOffsets[1] + 9);
     var baseEnd = (refOffsets[1] + 12) + exe.fetchByte(refOffsets[1] + 11);
   }
@@ -123,7 +125,8 @@ function CustomExpBarLimits()
   {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
     var jobEnd = offset + 2;
   }
-  else {
+  else
+  {
     var jobEnd = offset + 3;
   }
 
@@ -184,7 +187,8 @@ function CustomExpBarLimits()
       {
         idLvlTable[index].lvlTable[0] = limit;
       }
-      else {
+      else
+      {
         idLvlTable[index].lvlTable[1] = limit;
       }
     }

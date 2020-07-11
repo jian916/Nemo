@@ -75,7 +75,8 @@ function IncreaseAtkDisplay()
   {
     var offByte = exe.fetchByte(offset + code.hexlength() - 5);
   }
-  else {
+  else
+  {
     //Step 2b.2 - If its a register assignment extract the register and see if it assigns to stack later
     var offByte = exe.fetchUByte(offset + 2) - 0xB8;
 
@@ -138,7 +139,8 @@ function IncreaseAtkDisplay()
 
     offByte2 -= 16;//Lowest digit is at 4 locations later.
   }
-  else {
+  else
+  {
     if (typeof(offByte) === "number" && offByte >= (offByte2 + 4*6)) //Location is below digit set in stack
       offByte += 16;
   }
@@ -174,7 +176,8 @@ function IncreaseAtkDisplay()
     else
       code = code.replace(" MovEsi", offByte); //MOV reg32_B, ESI
   }
-  else {
+  else
+  {
     code = code.replace(" MovDigit", " 89 0C 34 90"); //MOV DWORD PTR SS:[ESI+ESP],ECX ; followed by NOP to fit 4 byte
     code = code.replace(" MovEsi", " 89 74 24" + offByte.packToHex(1)); //MOV DWORD PTR SS:[ESP+offByte], ESI
   }
@@ -281,7 +284,8 @@ function IncreaseAtkDisplay()
       offsetStack(offset + 2);
     }
   }
-  else {
+  else
+  {
     //Step 5c - Update the stack offset at offset3 + 2 (change x in ADD ESP, x)
     offsetStack(offset3 + 2, 1);
 

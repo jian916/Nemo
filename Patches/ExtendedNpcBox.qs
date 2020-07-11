@@ -41,7 +41,8 @@ function ExtendNpcBox()
     + " C2 04 00" //RETN 4
     ;
   }
-  else {
+  else
+  {
     code =
       " 81 C4" + stackSub.packToHex(4) //ADD ESP, 804+x
     + " C2 04 00"                      //RETN 4
@@ -75,7 +76,8 @@ function ExtendNpcBox()
       }
     }
   }
-  else {
+  else
+  {
     //Step 2d - Update all ESP+i Stack references, where i is in (0x804 - 0x820)
     for (var i = 0x804; i <= 0x820; i += 4 )
     {

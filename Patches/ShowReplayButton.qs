@@ -197,7 +197,8 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   { //VC11
     exe.replace(retAddr - size, code, PTYPE_HEX);
   }
-  else {//VC9 & VC10
+  else
+  { //VC9 & VC10
     //Step .5a - For previous client there is not enough space so we allocate space for our code
     var free = exe.findZeros(size);
     if (free === -1)

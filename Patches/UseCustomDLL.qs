@@ -92,7 +92,8 @@ function UseCustomDLL()
       { //By Ordinal
         fnNames[i][j].offset = 0x80000000 | parseInt(name.substr(1));
       }
-      else {//By Name
+      else
+      { //By Name
         fnNames[i][j].offset = strSize;
         strData = strData + j.packToHex(2) + name.toHex() + " 00";
         strSize = strSize + 2 + name.length + 1;//Space for name

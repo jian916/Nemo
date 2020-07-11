@@ -58,7 +58,8 @@ function MoveItemCountUpwards()
   { //VC9
     code = " 80 7C 24 3C 00"; //CMP DWORD PTR SS:[ESP+3C], 0
   }
-  else {//VC10 & VC11
+  else
+  { //VC10 & VC11
     code = " 80 7D 18 00"; //CMP DWORD PTR SS:[EBP+18], 0
   }
 

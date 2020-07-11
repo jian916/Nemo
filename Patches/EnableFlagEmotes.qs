@@ -88,7 +88,8 @@ function EnableFlagEmotes()
       exe.replace(offset, " 90 E9", PTYPE_HEX);
       offset += exe.fetchDWord(offset + 2) + 6;
     }
-    else {//Short
+    else
+    { //Short
       exe.replace(offset, " EB", PTYPE_HEX);
       offset += exe.fetchByte(offset + 1) + 2;
     }

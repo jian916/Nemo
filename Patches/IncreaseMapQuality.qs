@@ -37,12 +37,14 @@ function IncreaseMapQuality()
   { //PUSH 1 is right before PUSH E*X
     offset--;
   }
-  else {
+  else
+  {
     if (ecxRemove)
     {
       offset = exe.find("6A 01 ", PTYPE_HEX, false, "\xAB", offset - 15, offset); // PUSH 1
     }
-    else {
+    else
+    {
       offset = exe.find("6A 01 ", PTYPE_HEX, false, "\xAB", offset - 10, offset); // PUSH 1
     }
 

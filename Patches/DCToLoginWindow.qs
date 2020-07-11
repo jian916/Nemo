@@ -101,7 +101,8 @@ function DCToLoginWindow()
   {
     offset = offsets[0] + 2 + exe.fetchByte(offsets[0] + 1);
   }
-  else {
+  else
+  {
     //Step 4b - If not look for a Long Jump after the PUSH
     offset = exe.find(" E9 AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[0], offsets[0] + 0x100);
     if (offset === -1)

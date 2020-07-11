@@ -15,7 +15,8 @@ function IncreaseScreenshotQuality()
     + " C7 85 AB AB FF FF 02 00 00 00" //MOV DWORD PTR SS:[EBP-y], 2 ; DIBColor = 2
     ;
   }
-  else {
+  else
+  {
     var code =
       " C7 44 24 AB 03 00 00 00" //MOV DWORD PTR SS:[ESP+x], 3 ; DIBChannels = 3
     + " C7 44 24 AB 02 00 00 00" //MOV DWORD PTR SS:[ESP+y], 2 ; DIBColor = 2
@@ -63,7 +64,8 @@ function IncreaseScreenshotQuality()
     else
       code = " C7 84 24" + offset2.packToHex(4) + newvalue.packToHex(4); //MOV DWORD PTR SS:[ESP+offset2], newvalue
   }
-  else {//offset2 is 1 byte
+  else
+  { //offset2 is 1 byte
     if (fpEnb)
       code = " C7 45" + offset2.packToHex(1) + newvalue.packToHex(4); //MOV DWORD PTR SS:[EBP+offset2], newvalue ;offset2 is negative
     else

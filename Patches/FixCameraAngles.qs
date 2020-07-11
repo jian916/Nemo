@@ -86,7 +86,8 @@ function FixCameraAngles(newvalue)
     //Step 3b - Replace angleAddr reference with the allocated address
     exe.replace(offset2, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
   }
-  else {//Older clients
+  else
+  { //Older clients
     //Step 4a - Find all locations where the current angle = 20.00 (0x41A0000) is assigned
     code =
       " C7 45 AB 00 00 A0 41" //MOV DWORD PTR SS:[EBP+const1], 41A00000 ; FLOAT 20.00000

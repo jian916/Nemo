@@ -64,7 +64,8 @@ function DumpImportTable()
                     + ", Function Name = " + exe.fetch(offset3+2, offset4 - (offset3+2))
                     );
       }
-      else {
+      else
+      {
         funcData = funcData & 0xFFFF;
         fp.writeline( "  Thunk Address (RVA) = 0x" + exe.Raw2Rva(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()

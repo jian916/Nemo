@@ -74,7 +74,9 @@ function ChatLimit(option)
 
         // Step 2b1 - Replace 02 with new value
         exe.replace(offset, "$allowChatFlood", PTYPE_STRING);
-    } else {
+    }
+    else
+    {
         // Step 2a2 - Replace JL with JMP
         if (isLong)
             exe.replace(offset + 1, "90 E9 ", PTYPE_HEX);

@@ -26,7 +26,8 @@ function FixChatAt()
     //Step 1b - Change 0 to 1
     exe.replace(offset + 5, "01", PTYPE_HEX);
   }
-  else {//Older clients
+  else
+  { //Older clients
     //Step 2a - Find the call inside UIWindowMgr::ProcessPushButton
     code =
       " 8B CE"             //MOV ECX, ESI

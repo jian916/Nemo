@@ -44,7 +44,8 @@ function EnableProxySupport()
 
     var bIndirectCALL = false;
   }
-  else {
+  else
+  {
     var bIndirectCALL = true;
     exe.replace(offset2, " 90 E8", PTYPE_HEX);//Replace with direct call opcode (address will be changed afterwards)
     offset2++;

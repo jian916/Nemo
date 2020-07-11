@@ -68,7 +68,8 @@ function ShowRegisterButton()
     exe.replace(offset2 - 2, "EB", PTYPE_HEX);
     offset2 += exe.fetchByte(offset2 - 1);
   }
-  else {
+  else
+  {
     exe.replace(offset2 - 6, "90 E9", PTYPE_HEX);
     offset2 += exe.fetchDWord(offset2 - 4);
   }

@@ -8,13 +8,15 @@ function ChangeItemInfo()
 
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
     if (IsSakray())
-{
+    {
         var iiName = "System/iteminfo_Sak.lub";
-    } else {
+    }
+    else
+    {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
         if (exe.findString(iiName, RVA) === -1)
-{
+        {
             // iteminfo in new clients
             iiName = "System/iteminfo_true.lub";
         }
@@ -55,9 +57,11 @@ function ChangeItemInfo()
 function ChangeItemInfo_()
 {
     if (IsSakray())
-{
+    {
         var iiName = "System/iteminfo_Sak.lub";
-    } else {
+    }
+    else
+    {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
         if (exe.findString(iiName, RAW) !== -1)

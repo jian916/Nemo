@@ -32,7 +32,8 @@ function EnableCustomHomunculus()
     var modrm = exe.fetchByte(hookLoc - 5);
     var refOff = exe.fetchDWord(hookLoc - 4);
   }
-  else {//refOff = 0
+  else
+  { //refOff = 0
     var modrm = exe.fetchByte(hookLoc - 1);
     var refOff = 0;
   }

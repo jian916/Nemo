@@ -45,7 +45,8 @@ function LoadCustomClientInfo()
         if (offset2 === -1)
             return "Failed in Step 1c - clientinfo reference 2 not found";
     }
-    else {
+    else
+    {
         var offset2 = exe.find(" A1" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1 - 10, offset1);
         if (offset2 === -1)
             return "Failed in Step 1c - clientinfo reference 2 not found";
@@ -78,7 +79,8 @@ function LoadCustomClientInfo()
     {
         exe.replace(offset2+4, exe.Raw2Rva(free+8).packToHex(4), PTYPE_HEX);
     }
-    else {
+    else
+    {
         exe.replace(offset2+1, exe.Raw2Rva(free+8).packToHex(4), PTYPE_HEX);
         exe.replace(offset3+2, exe.Raw2Rva(free+0xC).packToHex(4), PTYPE_HEX);
         exe.replace(offset4+1, exe.Raw2Rva(free+0xE).packToHex(4), PTYPE_HEX);

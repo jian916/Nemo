@@ -86,7 +86,8 @@ function IncreaseHairSprites()
             "7C 06 " +                    // 12 jl short loc_8D0846
             "C7 06 AB 00 00 00 ";         // 14 mov dword ptr [esi], 6
     }
-    else {
+    else
+    {
         code =
             "8B 08 " +                    // 0 mov ecx, [eax]
             "75 AB " +                    // 2 jnz short loc_8D08A9
@@ -138,7 +139,8 @@ function IncreaseHairSprites()
         var fetchOffset = 3;  // copy into own code from this address
         var fetchSize = 7;    // copy this N bytes into own code
     }
-    else {
+    else
+    {
         code =
             "50 " +                                        // 0 push eax
             "56 " +                                        // 1 push esi
@@ -200,7 +202,8 @@ function IncreaseHairSprites()
 
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
     }
-    else {
+    else
+    {
         code =
             "8B 06" +                          // 0 mov eax, [esi]
             "8D B7 AB AB 00 00" +              // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
@@ -292,7 +295,8 @@ function IncreaseHairSprites()
 
         var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
-    else {
+    else
+    {
         code =
             "8B 06 " +                             // 0 mov eax, [esi]
             "8D B7 AB AB AB AB " +                 // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
@@ -398,7 +402,8 @@ function IncreaseHairSprites()
             var fetchOffset = 37;  // copy into own code from this address
             var fetchSize = 24;    // copy this N bytes into own code
     }
-    else {
+    else
+    {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
             "8D B7 AB AB 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]

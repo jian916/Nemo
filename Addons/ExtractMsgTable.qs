@@ -126,7 +126,9 @@ function ExtractMsgTable()
             if (engMap[msgStr])
             {
                 fp.writeline(engMap[msgStr] + '#');
-            } else {
+            }
+            else
+            {
                 msgStr = msgStr.replace(/\r/g, "\\r");
                 msgStr = msgStr.replace(/\n/g, "\\n");
                 msgStr = msgStr.replace("#", "_");
@@ -134,7 +136,9 @@ function ExtractMsgTable()
             }
             offset += 8;
             id++;
-        } else {
+        }
+        else
+        {
             done = true;
         }
     }

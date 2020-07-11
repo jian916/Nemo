@@ -156,7 +156,8 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
   {
     code = code.replace(" PrePush", " 6A" + name.length.packToHex(1)); //PUSH length
   }
-  else {
+  else
+  {
     code = code.replace(" PrePush", "");
   }
 
@@ -177,7 +178,8 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
     + " 6A" + name.length.packToHex(1) //PUSH length
     );
   }
-  else {
+  else
+  {
     code = code.replace(" StrAllocPrep", "");
   }
 
@@ -258,7 +260,8 @@ function InjectLuaFiles(origFile, nameList, free)
 
     var argPresent = false;
   }
-  else {
+  else
+  {
     var argPresent = true;
   }
 

@@ -84,7 +84,8 @@ function RemoveJobsFromBooking()
         ;
         var jmpOff = 6;
       }
-      else {//VC11
+      else
+      { //VC11
         code =
           " 83 C4 04"             //ADD ESP, 4
         + " AB"                   //INC reg32_A

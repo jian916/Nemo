@@ -127,7 +127,8 @@ function CustomAuraLimits()
     //Step 3g - Setup ZeroAssign
     var zeroAssign = " EB 08 8D 24 24 8D 6D 00 89 C0"; //JMP and some Dummy operations
   }
-  else {//MOV reg16, WORD PTR DS:[g_level] ; New Style - comparisons are done inside a seperate function
+  else
+  { //MOV reg16, WORD PTR DS:[g_level] ; New Style - comparisons are done inside a seperate function
 
     var directComparison = false;
 
@@ -357,7 +358,8 @@ function CustomAuraLimits()
 
     exe.replace(cmpBegin, code, PTYPE_HEX);
   }
-  else {
+  else
+  {
     //Step 7c - Find the function call... again and replace it with a CALL to our Function
     offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x30);
     exe.replaceDWord(offset + 1, freeRva - exe.Raw2Rva(offset + 5));

@@ -66,7 +66,8 @@ function PacketEncryptionKeys(varname, index)
       exe.replace(offsets[i] + code.hexlength() - (index + 1) * 5, varname, PTYPE_STRING);
     }
   }
-  else {
+  else
+  {
     //--- Code Preparation ---//
     code = "";
 

@@ -11,7 +11,8 @@ function RemoveGravityAds()
   {
     //Step 1b - Replace with NULL
     exe.replace(offset + 1, "00", PTYPE_HEX);
-  } else if (!IsZero())
+  }
+  else if (!IsZero())
   {
     return "Failed in Step 1";
   }

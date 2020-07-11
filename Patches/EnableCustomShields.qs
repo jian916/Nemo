@@ -40,7 +40,8 @@ function EnableCustomShields()
   {
     var regPush = " 83 E8 04 50";//SUB EAX, 4 and PUSH EAX
   }
-  else {
+  else
+  {
     var regPush = exe.fetchHex(hookReq + 1, 1).replace("4", "5");//PUSH reg32_A
   }
 
@@ -210,7 +211,8 @@ function EnableCustomShields()
   {
     exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
   }
-  else {
+  else
+  {
     //Step 5b - Find Register assignment to 5 and replace with MaxShield
     code =
       " 05 00 00 00" //MOV reg32_A, 5

@@ -162,7 +162,8 @@ function DisableHShield()
       exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, Import_Info.tblSize);
     }
   }
-  else {
+  else
+  {
     //Step 4f - If Custom DLL is not present then we need to traverse the Import table and remove the aossdk entry.
     //          First we get the Import Table address and prep variables
     var dir = GetDataDirectory(1);

@@ -85,7 +85,8 @@ function UseCustomIcon(nomod)
     var newvalue = exe.fetchDWord(offset + 0x4);
     exe.replaceDWord(offset + 0x8 + 0x4, newvalue);
   }
-  else {
+  else
+  {
     var newvalue = exe.fetchDWord(offset + 0x8 + 0x4);
     exe.replaceDWord(offset + 0x4, newvalue);
   }
