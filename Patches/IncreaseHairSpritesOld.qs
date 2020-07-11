@@ -101,7 +101,7 @@ function IncreaseHairSpritesOld()
     if (free === -1)
         return "Failed in step 5 - not enough free space";
     var data = "";
-    for(var i = 0; i < maxHairs; i++)
+    for (var i = 0; i < maxHairs; i++)
     {
         data = data + str2Hex(i, bytesPerString);
     }
@@ -223,7 +223,7 @@ function str2Hex(val, sz)
 {
     var str = val.toString();
     var hex = "";
-    for(var i = 0; i < str.length; i++)
+    for (var i = 0; i < str.length; i++)
     {
         hex = hex + (parseInt(str[i]) + 0x30).packToHex(1);
     }

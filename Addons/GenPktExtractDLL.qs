@@ -122,7 +122,7 @@ function GenPktExtractDLL()
   //Step 4a - Now comes the tricky part. We need to get all the functions called till a repeat is found.
   //          Last unrepeated call is the std::map function we need
   var funcs = [];
-  while(1)
+  while (1)
   {
     offset = exe.find(" E8 AB AB FF FF", PTYPE_HEX, true, "\xAB", offset+1);//CALL std::map
     if (offset === -1) break;

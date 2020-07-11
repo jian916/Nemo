@@ -29,7 +29,7 @@ function CustomWindowTitle()
 
     //Step 2b - Find its reference
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    if( offset === -1)
+    if ( offset === -1)
         return "Failed in Step 2";
 
     //Step 3 - Replace the original reference with the URL offset.

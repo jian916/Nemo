@@ -22,7 +22,7 @@ function ReadIconFile(fname)
   pos += 6;
 
   //Step 2b - Read all the image entry + data
-  for(var i = 0; i < icondir.idCount; i++)
+  for (var i = 0; i < icondir.idCount; i++)
   {
     var icondirentry = new Object();
     icondirentry.bWidth        = fp.readHex(pos,1).unpackToInt();

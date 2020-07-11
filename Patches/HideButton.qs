@@ -4,7 +4,7 @@
 
 function HideNavButton()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("navigation");
     return HideButtonOld(
         ["navigation_interface\\btn_Navigation", "RO_menu_icon\\navigation"],
@@ -14,7 +14,7 @@ function HideNavButton()
 
 function HideBgButton()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("battle");
     return HideButtonOld(
         ["basic_interface\\btn_battle_field", "RO_menu_icon\\battle"],
@@ -24,7 +24,7 @@ function HideBgButton()
 
 function HideBankButton()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("bank");
     return HideButtonOld(
         ["basic_interface\\btn_bank", "RO_menu_icon\\bank"],
@@ -34,7 +34,7 @@ function HideBankButton()
 
 function HideBooking()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("booking");
     return HideButtonOld(
         ["basic_interface\\booking", "RO_menu_icon\\booking"],
@@ -44,21 +44,21 @@ function HideBooking()
 
 function HideRodex()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("mail");
     return HideButtonOld("RO_menu_icon\\mail", "\x00");
 }
 
 function HideAchieve()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("achievement");
     return HideButtonOld("RO_menu_icon\\achievement", "\x00");
 }
 
 function HideRecButton()
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButton2("rec");
     return HideButtonOld(
         ["replay_interface\\rec", "RO_menu_icon\\rec"],
@@ -180,7 +180,7 @@ function HideButtonOld(src, tgt)
 
 function HideButton2(prefix)
 {
-    if(UseNewIcons())
+    if (UseNewIcons())
         return HideButtonNew("equip", prefix);
     else
         return HideButtonNew("info", prefix);

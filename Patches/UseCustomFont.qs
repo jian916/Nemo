@@ -40,7 +40,7 @@ function UseCustomFont()
   {
     exe.replaceDWord(offset, freeRva);
     offset += 4;
-  } while((exe.fetchDWord(offset) & goffset) === goffset);
+  } while ((exe.fetchDWord(offset) & goffset) === goffset);
 
   /*==================================================================
   NOTE: this might not be entirely fool-proof, but we cannot depend
