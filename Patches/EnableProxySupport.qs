@@ -3,7 +3,8 @@
 //#          the first IP used and use it for any following connection attempts #
 //###############################################################################
 
-function EnableProxySupport() {
+function EnableProxySupport()
+{
 
   //Step 1a - Find the String's address.
   var offset = exe.findString("Failed to setup select mode", RVA);
@@ -26,7 +27,8 @@ function EnableProxySupport() {
   ;
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x50, offset);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     //Step 2b - Find connect call (Direct call pattern should be within 0x90 bytes before offset) - Older clients
     code =
       " E8 AB AB AB AB" //CALL <&WS2_32.connect>

@@ -2,25 +2,29 @@
 // Patch Functions wrapping over SharedPalettes function //
 //=======================================================//
 
-function SharedBodyPalettesV1() {
+function SharedBodyPalettesV1()
+{
   // "몸\%s_%s_%d.pal" => "몸\body%.s_%s_%d.pal"
 
   return SharedPalettes("\xB8\xF6\\", "\xB8\xF6\\body%.s_%s_%d.pal\x00"); //%.s is required. Skips jobname
 }
 
-function SharedBodyPalettesV2() {
+function SharedBodyPalettesV2()
+{
   // "몸\%s_%s_%d.pal" => "몸\body%.s%.s_%d.pal"
 
   return SharedPalettes("\xB8\xF6\\", "\xB8\xF6\\body%.s%.s_%d.pal\x00"); //%.s is required. Skips jobname & gender
 }
 
-function SharedHeadPalettesV1() {
+function SharedHeadPalettesV1()
+{
   // "머리\머리%s_%s_%d.pal" => "머리\head%.s_%s_%d.pal"
 
   return SharedPalettes("\xB8\xD3\xB8\xAE\\\xB8\xD3\xB8\xAE", "\xB8\xD3\xB8\xAE\\head%.s_%s_%d.pal\x00");// %.s is required. Skips jobname
 }
 
-function SharedHeadPalettesV2() {
+function SharedHeadPalettesV2()
+{
   // "머리\머리%s_%s_%d.pal" => "머리\head%.s%.s_%d.pal"
 
   return SharedPalettes("\xB8\xD3\xB8\xAE\\\xB8\xD3\xB8\xAE", "\xB8\xD3\xB8\xAE\\head%.s%.s_%d.pal\x00");// %.s is required. Skips jobname & gender
@@ -31,7 +35,8 @@ function SharedHeadPalettesV2() {
 //#          or CSession::GetHeadPaletteName (for Head) to skip some arguments        #
 //#####################################################################################
 
-function SharedPalettes(prefix, newString) {
+function SharedPalettes(prefix, newString)
+{
 
   //Step 1a - Find address of original Format String
   var offset = exe.findString(prefix + "%s%s_%d.pal", RVA);//<prefix>%s%s_%d.pal - Old Format

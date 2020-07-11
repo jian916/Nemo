@@ -9,7 +9,8 @@
 //#         will be able to delete character             #
 //########################################################
 
-function ChangeDisplayCharDelDelay() {
+function ChangeDisplayCharDelDelay()
+{
 
   // Step 1 - Find the code which prepare character deletion time data
 
@@ -90,6 +91,7 @@ function ChangeDisplayCharDelDelay() {
   return true;
 }
 
-function ChangeDisplayCharDelDelay_() {
+function ChangeDisplayCharDelDelay_()
+{
   return (exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false)  !== -1);
 }

@@ -3,7 +3,8 @@
 //#       to always use gr2 from 3dmob_bone folder                    #
 //#####################################################################
 
-function EnableCustom3DBones() {
+function EnableCustom3DBones()
+{
 
   //Step 1a - Find location of the sprintf control string for 3d mob bones
   var offset = exe.findString("model\\3dmob_bone\\%d_%s.gr2", RVA);
@@ -22,7 +23,8 @@ function EnableCustom3DBones() {
   ;
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace("09", "0A"); //Change the 09h to 0Ah for VC6 clients
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
   }
@@ -39,7 +41,8 @@ function EnableCustom3DBones() {
   ;
   offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace("27", "28"); //VC10 and older has 28 instead of 27
     offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
   }
@@ -51,7 +54,8 @@ function EnableCustom3DBones() {
   exe.replace(offset2, " 90 90 EB", PTYPE_HEX);
 
   //Step 3b - Modify the JA/JGE instruction at offset to just skip the Jump.
-  switch(exe.fetchUByte(offset)) {
+  switch(exe.fetchUByte(offset))
+  {
     case 0x77:
     case 0x7D: {// Short JA/JGE
       exe.replace(offset, " 90 90", PTYPE_HEX);

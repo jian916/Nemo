@@ -18,7 +18,8 @@
 // Patch Functions wrapping over ChangeMaxItemCount function   //
 //=============================================================//
 
-function SetMaxItemCount() {
+function SetMaxItemCount()
+{
   return ChangeMaxItemCount(exe.getUserInput("$MaxItemCount", XTYPE_STRING, _("Number Input"), _("Enter the max item count (0-999)"), 100, 0, 3));
 }
 
@@ -26,7 +27,8 @@ function SetMaxItemCount() {
 //# Purpose: Find the max item count display and replace it with the value specified #
 //####################################################################################
 
-function ChangeMaxItemCount(value) {
+function ChangeMaxItemCount(value)
+{
       //Step 1a - Prep String
       var newString = "/" + value  ;
 

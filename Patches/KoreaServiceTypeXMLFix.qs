@@ -3,7 +3,8 @@
 //#          to make sure both SelectKoreaClientInfo and SelectClientInfo are called.     #
 //#########################################################################################
 
-function KoreaServiceTypeXMLFix() {
+function KoreaServiceTypeXMLFix()
+{
 
   //Step 1a - Find offset of error string.
   var offset = exe.findString("Unknown ServiceType !!!", RVA);
@@ -15,7 +16,8 @@ function KoreaServiceTypeXMLFix() {
   if (offsets.length === 0)
     return "Failed in Step 1 - No references found";
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     //Step 2a - Find the Select calls before each PUSH
     var code =
       " FF 24 AB AB AB AB 00" //JMP DWORD PTR DS:[reg32_A*4 + refAddr]
@@ -29,14 +31,16 @@ function KoreaServiceTypeXMLFix() {
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x30, offsets[i]);
 
-    if (offset === -1) {
+    if (offset === -1)
+    {
       code = code.replace(" E9 AB AB AB AB", " EB AB");//Change JMP addr2 to JMP SHORT addr2
       repl = " 90 90";//Since JMP is short, Only 2 NOPs are needed
 
       offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x30, offsets[i]);
     }
 
-    if (offset === -1) { // 2017 clients [Secret]
+    if (offset === -1)
+    { // 2017 clients [Secret]
       code =
           " 75 AB"                //JNZ SHORT addr
         + " E8 AB AB AB AB"       //CALL SelectKoreaClientInfo

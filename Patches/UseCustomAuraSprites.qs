@@ -3,7 +3,8 @@
  //#          ring_blue.tga -> aurafloat.tga , pikapika2.bmp -> auraring.bmp #
  //###########################################################################
 
-function UseCustomAuraSprites() {
+function UseCustomAuraSprites()
+{
 
   //Step 1a - Find address of ring_blue.tga
   var offset = exe.findString("effect\\ring_blue.tga", RVA, false);//false for not prefixing zero.
@@ -44,7 +45,8 @@ function UseCustomAuraSprites() {
   var roff = code1.hexlength() + 2;
 
   offset = exe.findCode(code1 + " AB" + code2, PTYPE_HEX, true, "\xAB");//PUSH reg32_B in between
-  if (offset === -1) {
+  if (offset === -1)
+  {
     offset = exe.findCode(code1 + " 6A 00" + code2, PTYPE_HEX, true, "\xAB");//PUSH 0 in between
     roff++;
   }
@@ -77,7 +79,8 @@ function UseCustomAuraSprites() {
 
   //Step 3b - Find the pattern that calls pikapika2 effect followed by ring_blue.
   //          (addr1 should pikapika2 reference & addr2 should contain ring_blue reference)
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = offsets[i] + 8 +  exe.fetchDWord(offsets[i] + 4);
     offsetP = exe.find(ppika2, PTYPE_HEX, false, "\xAB", offset, offset + 0x100);
 
@@ -88,7 +91,8 @@ function UseCustomAuraSprites() {
   }
 
   //Step 3c - Replace the two string addresses.
-  if (offsetP !== -1 && offsetR !== -1) {
+  if (offsetP !== -1 && offsetR !== -1)
+  {
     exe.replace(offsetP + 1, aring, PTYPE_HEX);
     exe.replace(offsetR + 1, afloat, PTYPE_HEX);
   }

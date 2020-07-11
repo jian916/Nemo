@@ -3,7 +3,8 @@
 //#          PUSH 'questID2display.txt') in ITEM_INFO::InitItemInfoTables function #
 //##################################################################################
 
-function ReadQuestid2displaydottxt() {
+function ReadQuestid2displaydottxt()
+{
 
     //Step 1a - Find address of questID2display.txt
     var offset = exe.findString("questID2display.txt", RVA);
@@ -17,7 +18,8 @@ function ReadQuestid2displaydottxt() {
     ;
     offset = exe.findCode(code, PTYPE_HEX, false);//VC9+ Clients
 
-    if (offset === -1) {
+    if (offset === -1)
+    {
         code = code.replace(" 00", " 00 8D AB AB");//Insert LEA reg32, [LOCAL.x] after PUSH 0
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Older Clients
     }
@@ -34,6 +36,7 @@ function ReadQuestid2displaydottxt() {
     return true;
 }
 
-function ReadQuestid2displaydottxt_() {
+function ReadQuestid2displaydottxt_()
+{
     return !IsZero() && (exe.findString("questID2display.txt", RAW) !== -1);
 }

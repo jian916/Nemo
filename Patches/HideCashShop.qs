@@ -2,7 +2,8 @@
 //# Purpose: Make client skip over the Cash Shop Icon UIWindow creation (ID = 0xBE) #
 //###################################################################################
 
-function HideCashShop() {
+function HideCashShop()
+{
 
   //Step 1a - Get Window Manager Info
   var mgrInfo = GetWinMgrInfo();
@@ -28,6 +29,7 @@ function HideCashShop() {
 //======================================================//
 // Disable for Unsupported Clients - Check for Icon bmp //
 //======================================================//
-function HideCashShop_() {
+function HideCashShop_()
+{
   return (exe.findString("NC_CashShop", RAW) !== -1);
 }

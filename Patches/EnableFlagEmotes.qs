@@ -3,7 +3,8 @@
 //#          function called from UIWindowMgr::ProcessPushButton  #
 //#################################################################
 
-function EnableFlagEmotes() {//The function is not present in pre-2010 clients
+function EnableFlagEmotes()
+{ //The function is not present in pre-2010 clients
 
   //Step 1a - Find the switch case selector for all the flag Emote callers
   var code =
@@ -14,7 +15,8 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 05 2E FF FF FF", " 83 C0 AB");//change ADD EAX, -D2 with ADD EAX, -54
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -27,17 +29,21 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
 
   //Step 2a - Get Input file containing the list of Flag Emotes per key
   var f = new TextFile();
-  if (!GetInputFile(f, "$inpFlag", _("File Input - Enable Flag Emoticons"), _("Enter the Flags list file"), APP_PATH + "/Input/flags.txt")) {
+  if (!GetInputFile(f, "$inpFlag", _("File Input - Enable Flag Emoticons"), _("Enter the Flags list file"), APP_PATH + "/Input/flags.txt"))
+  {
     return "Patch Cancelled";
   }
 
   //Step 2b - Read all the entries into an array
   var consts = [];
-  while (!f.eof()) {
+  while (!f.eof())
+  {
     var str = f.readline().trim();
-    if (str.charAt(1) === "=") {
+    if (str.charAt(1) === "=")
+    {
       var key = parseInt(str.charAt(0));
-      if (!isNaN(key)) {
+      if (!isNaN(key))
+      {
         var value = parseInt(str.substr(2));//full length is retrieved.
         if (!isNaN(value)) consts[key] = value;
       }
@@ -64,7 +70,8 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
   ;
 
   var oldOffsets = [];
-  for (var i = 1; i < 10; i++) {
+  for (var i = 1; i < 10; i++)
+  {
     //Step 3b - Get the starting address of the case
     var offset = exe.Rva2Raw(exe.fetchDWord(refAddr + (i - 1)*4));
 
@@ -76,7 +83,8 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
     offset += code.hexlength();
 
     //Step 3d - Change the JZ to JMP & Get the JMPed address
-    if (exe.fetchByte(offset) === 0x0F) {//Long
+    if (exe.fetchByte(offset) === 0x0F)
+    {//Long
       exe.replace(offset, " 90 E9", PTYPE_HEX);
       offset += exe.fetchDWord(offset + 2) + 6;
     }
@@ -85,7 +93,8 @@ function EnableFlagEmotes() {//The function is not present in pre-2010 clients
       offset += exe.fetchByte(offset + 1) + 2;
     }
 
-    if (consts[i]) {
+    if (consts[i])
+    {
       //Step 3e - Find the second code.
       offset = exe.find(code2, PTYPE_HEX, true, "\xAB", offset);
       if (offset === -1)

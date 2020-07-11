@@ -3,7 +3,8 @@
 //#         On Login callback which skips loading HelpMsgStr        #
 //###################################################################
 
-function DisableHelpMsg() {//Some Pre-2010 client doesnt have this PUSHes or HelpMsgStr reference.
+function DisableHelpMsg()
+{ //Some Pre-2010 client doesnt have this PUSHes or HelpMsgStr reference.
 
   //Step 1a - Find the Unique PUSHes after the comparison . This is same for all clients
   var code =
@@ -12,7 +13,8 @@ function DisableHelpMsg() {//Some Pre-2010 client doesnt have this PUSHes or Hel
   ;
   var offset = exe.findCode(code, PTYPE_HEX, false);
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace("6A 2A", "8B 01 6A 2A"); //Insert a MOV EAX, DWORD PTR DS:[ECX] after PUSH 0E
     offset = exe.findCode(code, PTYPE_HEX, false);
   }
@@ -31,7 +33,8 @@ function DisableHelpMsg() {//Some Pre-2010 client doesnt have this PUSHes or Hel
   ;
   var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" 75", " 00 75");//directly compared to 0
     offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
   }

@@ -4,7 +4,8 @@
 //#          Also modifies the CModeMgr::Quit CALL to actually close the client. #
 //################################################################################
 
-function ShowRegisterButton() {
+function ShowRegisterButton()
+{
   //Step 1a - Find the alternate URL string
   var offset = exe.findString("http://ro.hangame.com/login/loginstep.asp?prevURL=/NHNCommon/NHN/Memberjoin.asp", RVA);
   if (offset === -1)
@@ -33,7 +34,8 @@ function ShowRegisterButton() {
   var type = 1;
 
   var offset2 = exe.find(code + codeSuffix, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
 
     if (offset2 === -1)
     {
@@ -61,7 +63,8 @@ function ShowRegisterButton() {
   offset2 += code.hexlength();
 
   //Step 2c - Change the first JNE (LangType JNE) to JMP and goto the Jumped address
-  if (type == 1) {
+  if (type == 1)
+  {
     exe.replace(offset2 - 2, "EB", PTYPE_HEX);
     offset2 += exe.fetchByte(offset2 - 1);
   }

@@ -19,7 +19,8 @@
 //#          order to open URL with default browser  #
 //####################################################
 
-function DefaultBrowserInCashshop () {
+function DefaultBrowserInCashshop ()
+{
     //Step 1 - Find address of "iexplore.exe"
     var offset = exe.findString("iexplore.exe", RAW);
 
@@ -39,7 +40,8 @@ function DefaultBrowserInCashshop () {
       + " 90 90 90"    //NOPS
       ;
 
-    for (var i = 0; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++)
+    {
         offset = offsets[i];
         exe.replace (offset, code, PTYPE_HEX);
     }
@@ -51,6 +53,7 @@ function DefaultBrowserInCashshop () {
 // Disable for Unsupported Clients - Check for string "iexplore.exe"     //
 //=======================================================================//
 
-function DefaultBrowserInCashshop_() {
+function DefaultBrowserInCashshop_()
+{
     return (exe.findString("iexplore.exe") !== -1);
 }

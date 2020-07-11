@@ -3,7 +3,8 @@
  * Author: Secret <secret@rathena.org>
  * version: 2017-12-31
  **/
-function Intravision() {
+function Intravision()
+{
     var code =
         " 0F 84 AB AB AB AB"    // JZ a
     +   " 83 C0 AB"             // ADD EAX, offset  ; Vary, 14 in 2017 clients

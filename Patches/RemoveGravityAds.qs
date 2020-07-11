@@ -2,14 +2,17 @@
 //# Purpose: Zero out all Gravity Ad Images #
 //###########################################
 
-function RemoveGravityAds() {
+function RemoveGravityAds()
+{
 
   //Step 1a - Find address of 1st Pic -> \T_중력성인.tga
   var offset = exe.findString("\\T_\xC1\xDF\xB7\xC2\xBC\xBA\xC0\xCE.tga", RAW, false);
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     //Step 1b - Replace with NULL
     exe.replace(offset + 1, "00", PTYPE_HEX);
-  } else if (!IsZero()) {
+  } else if (!IsZero())
+  {
     return "Failed in Step 1";
   }
 

@@ -3,7 +3,8 @@
 //#          CGameMode::Zc_guild_chat        #
 //############################################
 
-function ChatColorGuild() {
+function ChatColorGuild()
+{
 
   //Step 1 - Find the area where color is pushed
   var code =
@@ -12,7 +13,8 @@ function ChatColorGuild() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, false);
 
-  if (offset === -1) {
+  if (offset === -1)
+{
     code = code.replace(" 6A 04", " 6A 04 8D AB AB AB FF FF");//insert LEA reg32_A, [EBP-x] after PUSH 4
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -36,7 +38,8 @@ function ChatColorGuild() {
 //#          inside CGameMode::Zc_Notify_Chat       #
 //###################################################
 
-function ChatColorGM() {
+function ChatColorGM()
+{
 
   //Step 1a - Find the unique color FF, 8D, 1D (Orange) PUSH for langtype 11
   var offset1 = exe.findCode("68 FF 8D 1D 00", PTYPE_HEX, false);
@@ -71,7 +74,8 @@ function ChatColorGM() {
 //#          inside CGameMode::Zc_Notify_PlayerChat #
 //###################################################
 
-function ChatColorPlayerSelf() {//N.B. - Check if it holds good for old client. Till 2010 no issue is there.
+function ChatColorPlayerSelf()
+{ //N.B. - Check if it holds good for old client. Till 2010 no issue is there.
 
   //Step 1a - Find PUSH 00,78,00 (Dark Green) offsets (the required Green color PUSH is within the vicinity of one of these)
   var offsets = exe.findCodes(" 68 00 78 00 00", PTYPE_HEX, false);
@@ -79,7 +83,8 @@ function ChatColorPlayerSelf() {//N.B. - Check if it holds good for old client. 
     return "Failed in Step 1 - Dark Green missing";
 
   //Step 1b - Find the Green color push.
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     var offset = exe.find(" 68 00 FF 00 00", PTYPE_HEX, false, "\xAB", offsets[i] + 5, offsets[i] + 40);
     if (offset !== -1) break;
   }
@@ -103,7 +108,8 @@ function ChatColorPlayerSelf() {//N.B. - Check if it holds good for old client. 
 //#          CGameMode::Zc_Notify_Chat for received messages #
 //############################################################
 
-function ChatColorPlayerOther() {
+function ChatColorPlayerOther()
+{
 
   //Step 1 - Find the area where color is pushed.
   var code =
@@ -130,7 +136,8 @@ function ChatColorPlayerOther() {
 //#          inside CGameMode::Zc_Notify_Chat_Party #
 //###################################################
 
-function ChatColorPartySelf() {
+function ChatColorPartySelf()
+{
 
   //Step 1 - Find the area where color is pushed
   var code =
@@ -139,7 +146,8 @@ function ChatColorPartySelf() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 6A 03", " 6A 03 8D AB AB AB FF FF");//insert LEA reg32_A, [EBP-x] after PUSH 3
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -163,7 +171,8 @@ function ChatColorPartySelf() {
 //#          CGameMode::Zc_Notify_Chat_Party for Member messages #
 //################################################################
 
-function ChatColorPartyOther() {
+function ChatColorPartyOther()
+{
 
   //Step 1a - Find the area where color is pushed
   var code =
@@ -172,7 +181,8 @@ function ChatColorPartyOther() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 6A 03", " 6A 03 8D AB AB AB FF FF"); //insert LEA reg32_A, [EBP-x] after PUSH 3
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }

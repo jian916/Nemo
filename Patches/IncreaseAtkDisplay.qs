@@ -3,7 +3,8 @@
 //#          in CGameActor::Am_Make_Number. To avoid redundannt code we will use loop   #
 //#######################################################################################
 
-function IncreaseAtkDisplay() {
+function IncreaseAtkDisplay()
+{
 
   //Step 1a - Find the location where 999999 is checked
   var code =
@@ -13,7 +14,8 @@ function IncreaseAtkDisplay() {
   ;
   var refOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (refOffset === -1) {
+  if (refOffset === -1)
+  {
     code = code.replace(" 7E", " AB 7E");//Insert Byte before JLE to represent PUSH reg32
     refOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -31,7 +33,8 @@ function IncreaseAtkDisplay() {
   ;
   var offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x40, refOffset);
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 50", " 50 64 89 25 00 00 00 00"); //Insert MOV DWORD PTR FS:[0], ESP after PUSH EAX
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x40, refOffset);
   }
@@ -54,7 +57,8 @@ function IncreaseAtkDisplay() {
 
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset + 0x10, refOffset + 0x28);
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code =
       " 7E 07"          //JLE SHORT addr
     + " AB 06 00 00 00" //MOV reg32_B, 6
@@ -67,7 +71,8 @@ function IncreaseAtkDisplay() {
     return "Failed in Step 2 - Digit Counter missing";
 
   //Step 2b.1 - Extract the stack offset from the instruction if it is a stack assignment
-  if (exe.fetchUByte(offset) === 0xC7) {
+  if (exe.fetchUByte(offset) === 0xC7)
+  {
     var offByte = exe.fetchByte(offset + code.hexlength() - 5);
   }
   else {
@@ -126,7 +131,8 @@ function IncreaseAtkDisplay() {
     return "Failed in Step 2 - GetGameMode call missing";
 
   //Step 3a - Adjust the extracted stack offsets based on FPO
-  if (fpEnb) {
+  if (fpEnb)
+  {
     if (typeof(offByte) === "number" && offByte < offByte2) //Location is above digit set in stack (offByte and offByte2 are negative)
       offByte -= 16;
 
@@ -160,7 +166,8 @@ function IncreaseAtkDisplay() {
   ;
 
   //Step 3c - Fill in the blanks
-  if (fpEnb) {
+  if (fpEnb)
+  {
     code = code.replace(" MovDigit", " 89 4C 35 00"); //MOV DWORD PTR SS:[ESI+EBP],ECX
     if (typeof(offByte) === "number")
       code = code.replace(" MovEsi", " 89 75" + offByte.packToHex(1)); //MOV DWORD PTR SS:[EBP-offByte], ESI
@@ -195,7 +202,8 @@ function IncreaseAtkDisplay() {
   else
     var soff = 4*6;
 
-  while (offset2 < offset3) {
+  while (offset2 < offset3)
+  {
     //Step 4b - Get current opcode and modrm
     var opcode = exe.fetchUByte(offset2);
     var modrm = exe.fetchUByte(offset2 + 1);
@@ -204,7 +212,8 @@ function IncreaseAtkDisplay() {
     var details = GetOpDetails(opcode, modrm, offset2);//contains length of instruction, distance to next offset, optional destination operand, optional source operand. Usually index 0 and 1 are same
 
     //Step 4d - Change stack offsets for relevant locations
-    switch(opcode) {
+    switch(opcode)
+    {
       case 0x89:
       case 0x8B:
       case 0x8D:
@@ -215,15 +224,19 @@ function IncreaseAtkDisplay() {
         if (opcode === 0xFF && !fpEnb && details.ro === 2)
           soff = 6*4;
 
-        if (fpEnb && details.mode === 1) {
-          if (details.rm === 5 && exe.fetchByte(offset2 + 2) <= (offByte2 + soff) ) {
+        if (fpEnb && details.mode === 1)
+        {
+          if (details.rm === 5 && exe.fetchByte(offset2 + 2) <= (offByte2 + soff) )
+          {
             offsetStack(offset2 + 2);
           }
-          else if (details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 5 &&  exe.fetchByte(offset2 + 3) <= (offByte2 + soff)) {
+          else if (details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 5 &&  exe.fetchByte(offset2 + 3) <= (offByte2 + soff))
+          {
             offsetStack(offset2 + 3);
           }
         }
-        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 4 && exe.fetchByte(offset2 + 3) >= (offByte2 + soff) ) {
+        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 4 && exe.fetchByte(offset2 + 3) >= (offByte2 + soff) )
+        {
           offsetStack(offset2 + 3, 1);
         }
 
@@ -251,7 +264,8 @@ function IncreaseAtkDisplay() {
     offset2 = details.nextOff;
   }
 
-  if (fpEnb) {
+  if (fpEnb)
+  {
     if (typeof(offByte) === "number")//Only saw it in VC10+ clients
     {
       //Step 5a - Look for MOV instruction to stack that occurs before refOffset
@@ -295,7 +309,8 @@ function IncreaseAtkDisplay() {
 //# Purpose: Add/Sub stack offset value at location by 16 #
 //#########################################################
 
-function offsetStack(loc, sign) {
+function offsetStack(loc, sign)
+{
   if (typeof(sign) === "undefined") sign = -1;
   var obyte = exe.fetchByte(loc) + sign * 16;
   exe.replace(loc, obyte.packToHex(1), PTYPE_HEX);

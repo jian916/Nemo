@@ -3,7 +3,8 @@
 //#          Conditional Jump after it. Also ignore nProtect tests #
 //##################################################################
 
-function DisableGameGuard() {
+function DisableGameGuard()
+{
 
   //Step 1a - Find the Error String
   var offset = exe.findString("GameGuard Error: %lu", RVA);
@@ -44,9 +45,11 @@ function DisableGameGuard() {
   //Step 2b - Replace the CALL with a JMP skipping the CALL, TEST and JE
   code = " EB 07 90 90 90"; //JMP addr2
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     var offset2 = exe.fetchDWord(offsets[i] + 1) + exe.Raw2Rva(offsets[i] + 5);
-    if (offset2 === offset) {
+    if (offset2 === offset)
+    {
       exe.replace(offsets[i], code, PTYPE_HEX);
       break;
     }
@@ -80,7 +83,8 @@ function DisableGameGuard() {
   + " E8"             //CALL addr3
   ;
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x50, offsets[i]);
 
     //Step 4b - Replace JE with JMP
@@ -94,6 +98,7 @@ function DisableGameGuard() {
 //============================//
 // Disable Unsupported client //
 //============================//
-function DisableGameGuard_() {
+function DisableGameGuard_()
+{
   return (exe.findString("GameGuard Error: %lu", RAW) !== -1);
 }

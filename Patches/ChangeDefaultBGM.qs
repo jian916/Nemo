@@ -3,7 +3,8 @@
 //#          to custom file specified by user  #
 //##############################################
 
-function ChangeDefaultBGM() {
+function ChangeDefaultBGM()
+{
     var org_name = "bgm\\01.mp3";
     var offset = exe.findString(org_name, RVA);
     if (offset === -1)
@@ -30,6 +31,7 @@ function ChangeDefaultBGM() {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function ChangeDefaultBGM_() {
+function ChangeDefaultBGM_()
+{
     return (exe.findString("bgm\\01.mp3", RAW) !== -1);
 }

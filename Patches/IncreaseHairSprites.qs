@@ -75,7 +75,8 @@ function IncreaseHairSprites()
     exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 3 - search doram jobs hair limit");
-    if(!newclient) {
+    if(!newclient)
+    {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
             "75 AB " +                    // 2 jnz short loc_8D08A9
@@ -123,7 +124,8 @@ function IncreaseHairSprites()
     currentLimit = currentLimit.packToHex(1);
 
     consoleLog("step 5 - search male hair table allocations in CSession::InitPcNameTable");
-    if(!newclient) {
+    if(!newclient)
+    {
         code =
             "50 " +                                        // 0 push eax
             "6A AB " +                                     // 1 push 1Eh
@@ -182,7 +184,8 @@ function IncreaseHairSprites()
     consoleLog("step 7 - search female hair table and location for jump");
     var esi1 = "";
 
-    if(!newclient) {
+    if(!newclient)
+{
         code =
             "8B 06" +                 // 0 mov eax, [esi]
             "8D B7 AB AB 00 00" +     // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
@@ -269,7 +272,8 @@ function IncreaseHairSprites()
     exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
 
     consoleLog("step 8 - search male doram hair table allocations in CSession::InitPcNameTable");
-    if(!newclient) {
+    if(!newclient)
+    {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
             "8D B7 AB AB AB AB " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
@@ -369,7 +373,8 @@ function IncreaseHairSprites()
 
     consoleLog("step 9 - search female doram hair table and location for jump");
 
-    if(!newclient) {
+    if(!newclient)
+    {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
             "8D B7 AB AB 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
@@ -482,7 +487,8 @@ function IncreaseHairSprites()
         "68 " + viewID.packToHex(4) + " " +  // 14 push viewID
         "E8 ";                               // 19 call std_vector_char_ptr_resize
 
-    if(newclient) {
+    if(newclient)
+    {
         code = code.replace("8D 45 AB 50 ", " 8D 45 AB 50 53 ");   //add "push ebx"
     }
 

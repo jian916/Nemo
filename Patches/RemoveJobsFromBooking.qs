@@ -4,7 +4,8 @@
 //#          our list and skip iteration if present.                     #
 //########################################################################
 
-function RemoveJobsFromBooking() {
+function RemoveJobsFromBooking()
+{
 
   //Step 1a - Find the MsgStr call used for Job Name loading.
   var code =
@@ -19,7 +20,8 @@ function RemoveJobsFromBooking() {
   var type = 1; //VC6
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code =
       " 8D 49 00"          //LEA ECX, [ECX]
     + " 8D AB 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
@@ -30,7 +32,8 @@ function RemoveJobsFromBooking() {
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code =
       " 8B AB AB"          //MOV reg32_A, DWORD PTR SS:[EBP-const]
     + " 81 AB 5D 06 00 00" //ADD reg32_A, 65D
@@ -50,7 +53,8 @@ function RemoveJobsFromBooking() {
   var MsgStr = exe.Raw2Rva(offset + 4) + exe.fetchDWord(offset);
 
   //Step 1c - Get Pattern for finding end of the loop (We need to RETN to location before Loop counter increment which is what jmpOff is for)
-  switch (type) {
+  switch (type)
+  {
     case 1: {
       code =
         " 83 C4 04"          //ADD ESP, 4
@@ -70,7 +74,8 @@ function RemoveJobsFromBooking() {
     }
 
     case 2: {
-      if (exe.getClientDate() < 20140000) {//VC9
+      if (exe.getClientDate() < 20140000)
+      { //VC9
         code =
           " FF 15 AB AB AB 00" //CALL DWORD PTR DS:[<&MSVCP#.$basic*>]
         + " AB"                //INC reg32_A
@@ -124,9 +129,11 @@ function RemoveJobsFromBooking() {
 
   //Step 2b - Extract all the IDs from List file to an Array
   var idSet = [];
-  while (!fp.eof()) {
+  while (!fp.eof())
+  {
     var line = fp.readline().trim();
-    if (line.match(/^\d+/)) {
+    if (line.match(/^\d+/))
+    {
       var id = parseInt(line);
       if (id < 0x65D) continue;
       idSet.push(id.packToHex(2));

@@ -3,7 +3,8 @@
 //#          the Monster talk loader function                   #
 //###############################################################
 
-function EnableMonsterTables() {//Comparison is different for pre-2010 clients.
+function EnableMonsterTables()
+{ //Comparison is different for pre-2010 clients.
 
   //Step 1 - Find the Comparison - Hint: Case 2723 of switch and it appears before PUSH "uae\"
   var LANGTYPE = GetLangType();//Langtype value overrides Service settings hence they use the same variable - g_serviceType

@@ -167,13 +167,15 @@ function EnableCustomJobs()
     var gJobName = 5;
     var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
 
-    if (offset2 === -1) {//Older clients
+    if (offset2 === -1)
+    { //Older clients
         code = code.replace(" A1", " 8B AB");//Change EAX to reg32_A and update the JNZ
         gJobName = 6;
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
-    if (offset2 === -1) {//Latest Clients
+    if (offset2 === -1)
+    { //Latest Clients
         code =
           " 85 C0"                    //TEST EAX, EAX
         + " A1 AB AB AB 00"           //MOV EAX, DWORD PTR DS:[g_jobName]
@@ -183,7 +185,8 @@ function EnableCustomJobs()
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
-    if (offset2 === -1) {//Latest Clients
+    if (offset2 === -1)
+    { //Latest Clients
         code =
           " 85 C0"                                   //TEST EAX, EAX
         + " 75 AB"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
@@ -194,7 +197,8 @@ function EnableCustomJobs()
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
     }
 
-    if (offset2 === -1) {  // 2017+
+    if (offset2 === -1)
+    {  // 2017+
         code =
           " 85 AB"                       //TEST EDI, EDI
         + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"
@@ -207,7 +211,8 @@ function EnableCustomJobs()
         offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
     }
 
-    if (offset2 === -1) {  // 2018-05-30+
+    if (offset2 === -1)
+    {  // 2018-05-30+
         code =
           " 85 AB"                       //TEST EDI, EDI
         + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"

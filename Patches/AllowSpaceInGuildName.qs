@@ -3,7 +3,8 @@
 //#          space in Guild names inside CGameMode::SendMsg   #
 //#############################################################
 
-function AllowSpaceInGuildName() {
+function AllowSpaceInGuildName()
+{
 
   //Step 1 - Find the comparison code
   var code =
@@ -27,7 +28,8 @@ function AllowSpaceInGuildName() {
 
   //Step 2 - Overwrite Conditional Jump after TEST. Skip JNEs and change JZ to JMP
   code = "";
-  switch (exe.fetchUByte(offset)) {
+  switch (exe.fetchUByte(offset))
+{
     case 0x74: {
       code = "EB"; //Change JE SHORT to JMP SHORT
       break;
@@ -37,7 +39,8 @@ function AllowSpaceInGuildName() {
       break;
     }
     case 0x0F: {
-      switch(exe.fetchUByte(offset+1)) {
+      switch(exe.fetchUByte(offset+1))
+{
         case 0x84: {
           code = "90 E9"; //JE to JMP
           break;
@@ -61,6 +64,7 @@ function AllowSpaceInGuildName() {
 //==============================//
 // Disable for Unsupported date //
 //==============================//
-function AllowSpaceInGuildName_() {
+function AllowSpaceInGuildName_()
+{
   return (exe.getClientDate() >= 20120207);
 }

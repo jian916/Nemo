@@ -3,7 +3,8 @@
 //#          related function (dont have name for it atm)              #
 //######################################################################
 
-function ChangeVendingLimit() {
+function ChangeVendingLimit()
+{
 
   //Step 1a - Find the address of 1,000,000,000
   var offset = exe.findString("1,000,000,000", RVA);
@@ -64,7 +65,8 @@ function ChangeVendingLimit() {
   }
   var offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
 
-  if (offset1 === -1 && newstyle) {
+  if (offset1 === -1 && newstyle)
+{
     code = code.replace("7E", "76");//Recent clients use JBE instead of JLE
     offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
   }
@@ -106,6 +108,7 @@ function ChangeVendingLimit() {
 //===================================================================//
 // Disable for Unneeded Clients - Only 2013+ Clients have this check //
 //===================================================================//
-function ChangeVendingLimit_() {
+function ChangeVendingLimit_()
+{
   return (exe.findString("1,000,000,000", RAW) !== -1);
 }

@@ -1,26 +1,32 @@
-String.prototype.replaceAt = function(index, rstring) {
+String.prototype.replaceAt = function(index, rstring)
+{
     if (index < 0)
     index = this.length + index;
   return (this.substring(0,index) + rstring + this.substring(index + rstring.length));
 }
 
-String.prototype.repeat = function(num) {
+String.prototype.repeat = function(num)
+{
   var result = '';
-  for (var i = 0; i < num; i++) {
+  for (var i = 0; i < num; i++)
+  {
     result += this.toString();
   }
   return result;
 }
 
-String.prototype.hexlength = function() {
+String.prototype.hexlength = function()
+{
     var l = this.replace(/ /g, "").length;
     if (l%2 !== 0) l++;
     return l/2;
 }
 
-String.prototype.toHex = function() {
+String.prototype.toHex = function()
+{
   var result = '';
-  for (var i = 0; i < this.length; i++) {
+  for (var i = 0; i < this.length; i++)
+  {
       var h = this.charCodeAt(i).toString(16);
     if (h.length === 1)
           h = '0' + h;
@@ -29,9 +35,11 @@ String.prototype.toHex = function() {
   return result;
 }
 
-String.prototype.toHexUC = function() {
+String.prototype.toHexUC = function()
+{
   var result = '';
-  for (var i = 0; i < this.length; i++) {
+  for (var i = 0; i < this.length; i++)
+  {
     var h = this.charCodeAt(i).toString(16);
     if (h.length === 1)
         h = '0' + h;
@@ -40,25 +48,30 @@ String.prototype.toHexUC = function() {
   return result;
 }
 
-String.prototype.toAscii = function() {
+String.prototype.toAscii = function()
+{
   var result = '';
   var splits = this.trim().split(' ');
-  for (var i = 0; i < splits.length; i++) {
+  for (var i = 0; i < splits.length; i++)
+  {
     var h = parseInt(splits[i], 16);
     result += String.fromCharCode(h);
   }
   return result;
 }
 
-String.prototype.unpackToInt = function() {
+String.prototype.unpackToInt = function()
+{
     return (-1 & parseInt("0x" + this.toBE(),16));
 }
 
-String.prototype.toBE = function() {
+String.prototype.toBE = function()
+{
   return this.split(" ").reverse().join("");
 }
 
-Number.prototype.packToHex = function(size) {
+Number.prototype.packToHex = function(size)
+{
     var number = this;
     if (number < 0)
         number = 0xFFFFFFFF + number + 1;
@@ -72,12 +85,14 @@ Number.prototype.packToHex = function(size) {
     if (hex.length > size)
         hex = hex.substr( hex.length - size);
 
-    while (hex.length < size) {
+    while (hex.length < size)
+    {
         hex = "0" + hex;
     }
 
     var result = "";
-    while (hex !== "") {
+    while (hex !== "")
+    {
         result = " " + hex.substr(0,2) + result;
         hex = hex.substr(2);
     }
@@ -85,13 +100,16 @@ Number.prototype.packToHex = function(size) {
     return result;
 }
 
-Number.prototype.toBE = function(size) {
+Number.prototype.toBE = function(size)
+{
   return this.packToHex(size).toBE();
 }
 
-Array.prototype.toRvaBE = function() {
+Array.prototype.toRvaBE = function()
+{
   var result = [];
-  for (var i = 0; i < this.length; i++) {
+  for (var i = 0; i < this.length; i++)
+  {
     result.push(exe.Raw2Rva(this[i]).toBE());
   }
   return result;

@@ -3,7 +3,8 @@
 //#          of grfs directly. The list of files is read by the patch from INI  #
 //###############################################################################
 
-function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleGRFs. Maybe we can make it shared?
+function EnableMultipleGRFsV2()
+{ //The initial steps are same as EnableMultipleGRFs. Maybe we can make it shared?
 
     //Step 1a - Find data.grf location
     var grf = exe.findString("data.grf", RVA).packToHex(4);
@@ -63,7 +64,8 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
         var addpackOffset = 1;
     }
 
-    if (fnoffset === -1) {//VC9 Client
+    if (fnoffset === -1)
+    { //VC9 Client
         code =
             " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
           + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[addr2]
@@ -71,7 +73,8 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
         fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
     }
 
-    if (fnoffset === -1) {//Older Clients
+    if (fnoffset === -1)
+    { //Older Clients
         code =
             " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
           + " BF AB AB AB 00" //MOV EDI, OFFSET addr2
@@ -95,9 +98,11 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
 
     //Step 3b - Read the GRF filenames from the INI
     var temp = [];
-    while (!f.eof()) {
+    while (!f.eof())
+    {
         var str = f.readline().trim();
-        if (str.charAt(1) === "=") {
+        if (str.charAt(1) === "=")
+        {
             var key = parseInt(str.charAt(0));
             if (!isNaN(key))
                 temp[key] = str.substr(2);//full length is retrieved.
@@ -108,7 +113,8 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
 
     //Step 3c - Put into an array in order.
     var grfs = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 10; i++)
+    {
         if (temp[i])
             grfs.push(temp[i]);
     }
@@ -139,7 +145,8 @@ function EnableMultipleGRFsV2() {//The initial steps are same as EnableMultipleG
 
     //Step 4e - Create the full code from template for each grf & add strings
     var code = "";
-    for (var j = 0; j < grfs.length; j++) {
+    for (var j = 0; j < grfs.length; j++)
+    {
         code = ReplaceVarHex(template, [1, 2], [o2, fn]) + code;
         o2 += grfs[j].length + 1; //Extra 1 for NULL byte
         fn += template.hexlength();

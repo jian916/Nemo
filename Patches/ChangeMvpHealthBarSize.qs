@@ -1,4 +1,5 @@
-function ChangeMvpHealthBarSize() {
+function ChangeMvpHealthBarSize()
+{
     var code =
         " 6A 05"
       + " 6A 3C"
@@ -19,7 +20,8 @@ function ChangeMvpHealthBarSize() {
     offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
-    if (offset1 === -1) {
+    if (offset1 === -1)
+{
         code =
           " 6A 05"
         + " 6A 3C"

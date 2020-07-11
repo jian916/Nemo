@@ -3,7 +3,8 @@
 //#          If not present, insert custom code to do the check + disable     #
 //#############################################################################
 
-function DisableMultipleWindows() {
+function DisableMultipleWindows()
+{
 
   //Step 1a - Find Address of ole32.CoInitialize function
   var offset = GetFunction("CoInitialize", "ole32.dll");
@@ -18,7 +19,8 @@ function DisableMultipleWindows() {
   ;
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" FF AB", " FF 6A 00");//Change PUSH reg32 with PUSH 0
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -28,7 +30,8 @@ function DisableMultipleWindows() {
 
   //Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,
   //          Replace the statement with MOV EAX, 00FFFFFF
-  if (exe.fetchUByte(offset + code.hexlength()) === 0xA1) {
+  if (exe.fetchUByte(offset + code.hexlength()) === 0xA1)
+  {
     exe.replace(offset + code.hexlength(), " B8 FF FF FF 00");
     return true;
   }

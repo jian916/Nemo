@@ -2,7 +2,8 @@
 //# Purpose: Overwrite all entries in the Font Name Array with user specified name #
 //##################################################################################
 
-function UseCustomFont() {
+function UseCustomFont()
+{
 
   //Step 1a - Find offset of "Gulim" - Korean language font which serves as the first entry of the array
   var goffset = exe.findString("Gulim", RVA, false);
@@ -21,7 +22,8 @@ function UseCustomFont() {
   var free = exe.findString(newFont, RAW);
 
   //Step 2c - Otherwise Insert the font in the xdiff section
-  if (free === -1) {
+  if (free === -1)
+  {
     free = exe.findZeros(newFont.length + 1);
 
     if (free === -1)

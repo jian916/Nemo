@@ -21,7 +21,8 @@ function EnableEmblemForBG()
     var IsBgModeOffset = 20;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-    if (offset === -1) {
+    if (offset === -1)
+    {
         var code =
             " B9 AB AB AB 01" //MOV ECX, OFFSET g_session
         +   " E8 AB AB AB 00" //CALL CSession::IsSiegeMode

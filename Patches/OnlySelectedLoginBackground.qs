@@ -2,11 +2,13 @@
 // Patch Functions wrapping over OnlySelectedBackground function //
 //===============================================================//
 
-function OnlyFirstLoginBackground() {//Change 2 to 1
+function OnlyFirstLoginBackground()
+{ //Change 2 to 1
   return OnlySelectedBackground("2", "");
 }
 
-function OnlySecondLoginBackground() {//Change 1 to 2
+function OnlySecondLoginBackground()
+{ //Change 1 to 2
   return OnlySelectedBackground("", "2");
 }
 
@@ -15,7 +17,8 @@ function OnlySecondLoginBackground() {//Change 1 to 2
 //#          to the other (s2)                                      #
 //###################################################################
 
-function OnlySelectedBackground(s1, s2) {
+function OnlySelectedBackground(s1, s2)
+{
 
   //Step 1a - Prep Strings to Find and Replace using s1 and s2 respectively. ( 유저인터페이스\T_배경%d-%d.bmp & 유저인터페이스\T2_배경%d-%d.bmp )
   var fnd = "\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\T" + s1 + "_\xB9\xE8\xB0\xE6" + "%d-%d.bmp";

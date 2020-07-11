@@ -4,7 +4,8 @@
 //#           make it return to Select Service window.                   #
 //########################################################################
 
-function ShowReplayButton() {
+function ShowReplayButton()
+{
 
   //Step 1 - Move Select Server Button to visible area
   var result = _SRB_FixupButton("replay_interface\\btn_selectserver_b", " C7", " 89");
@@ -103,7 +104,8 @@ function ShowReplayButton() {
 // Helper Function for Fixing the coordinates of the specified button //
 //====================================================================//
 
-function _SRB_FixupButton(btnImg, suffix, suffix2) {
+function _SRB_FixupButton(btnImg, suffix, suffix2)
+{
 
   //Step .0 - Find the Button Image address
   var offset = exe.findString(btnImg, RVA, false);
@@ -135,13 +137,15 @@ function _SRB_FixupButton(btnImg, suffix, suffix2) {
   ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
   var jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
 
-  if (jmpAddr === -1) {
+  if (jmpAddr === -1)
+  {
     type = 2;//VC10
     code = code.replace(/ 89 AB 24/g, " 89 AB");//change ESP + to EBP -
     jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
   }
 
-  if (jmpAddr === -1) {
+  if (jmpAddr === -1)
+  {
     type = 3; //VC11
     code = code.replace(/ 89 AB AB/g, " C7 45 AB 9C FF FF FF");//change ESI to -64
     jmpAddr = exe.find(code + suffix2, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
@@ -154,7 +158,8 @@ function _SRB_FixupButton(btnImg, suffix, suffix2) {
   var retAddr = jmpAddr + code.hexlength();
 
   //Step .4a - Prep code to replace/insert
-  switch (type) {
+  switch (type)
+  {
     case 1: {
       offset2 = exe.fetchByte(jmpAddr + 3);
       code =
@@ -188,7 +193,8 @@ function _SRB_FixupButton(btnImg, suffix, suffix2) {
 
   //Step .4b - For VC11 we can simply replace at appropriate area after the match
   var size = code.hexlength();
-  if (type === 3) {//VC11
+  if (type === 3)
+  { //VC11
     exe.replace(retAddr - size, code, PTYPE_HEX);
   }
   else {//VC9 & VC10
@@ -213,6 +219,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2) {
 //=====================================================================//
 // Disable for Unneeded Clients - Only Clients with the string need it //
 //=====================================================================//
-function ShowReplayButton_() {
+function ShowReplayButton_()
+{
   return (exe.findString("replay_interface\\btn_replay_b", RAW, false) !== -1);
 }

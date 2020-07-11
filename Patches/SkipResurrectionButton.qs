@@ -3,7 +3,8 @@
 //#          to skip showing the Resurrection Button.         #
 //#############################################################
 
-function SkipResurrectionButton() {
+function SkipResurrectionButton()
+{
 
   //Step 1 - Find the "Token of Siegfried" id PUSH in CGameMode::HaveSiegfriedItem function.
   var offset = exe.findCode(" 68 C5 1D 00 00", PTYPE_HEX, false); //PUSH 1D5C

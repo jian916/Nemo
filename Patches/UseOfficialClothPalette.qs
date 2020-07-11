@@ -3,7 +3,8 @@
 //#          prefixes into Palette Table in CSession::InitJobTable         #
 //##########################################################################
 
-function UseOfficialClothPalette() {
+function UseOfficialClothPalette()
+{
 
   //Step 1a - Check if Custom Job patch is being used. Does not work with it
   if (getActivePatches().indexOf(202) !== -1)
@@ -20,18 +21,21 @@ function UseOfficialClothPalette() {
   //Step 2b - Find the JNE before one of the references - only 1 will have it for sure
   var offset2 = -1;
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset2 = exe.find(" 0F 85 AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[i] - 0x20, offsets[i]);
     if (offset2 !== -1)
       break;
   }
 
   //Step 2c - If no match came up then its probably a 2010 client which used function calls to get the mem location
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     offsets = exe.findCodes(" C7 00" + offset.packToHex(4) + " E8", PTYPE_HEX, false);
 
     //Step 2d - Repeat Step 2b for these offsets
-    for (var i = 0; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++)
+    {
       offset2 = exe.find(" 0F 85 AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[i] - 0x20, offsets[i]);
       if (offset2 !== -1)
         break;

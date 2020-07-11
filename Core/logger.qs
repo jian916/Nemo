@@ -15,9 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-String.prototype.toHex1 = function() {
+String.prototype.toHex1 = function()
+{
   var result = '';
-  for (var i = 0; i < this.length; i++) {
+  for (var i = 0; i < this.length; i++)
+  {
     var h = this.charCodeAt(i).toString(16);
     if (h.length === 1)
       h = '0' + h;

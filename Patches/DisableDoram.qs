@@ -3,7 +3,8 @@
 //#          special thanks to @Ai4Rei for the original hex sequences.                    #
 //#########################################################################################
 
-function DisableDoram() {
+function DisableDoram()
+{
 
   // Step 1
   var code =
@@ -67,6 +68,7 @@ function DisableDoram() {
   return true;
 }
 
-function DisableDoram_() {
+function DisableDoram_()
+{
     return exe.getClientDate() <= 20170614;
 }

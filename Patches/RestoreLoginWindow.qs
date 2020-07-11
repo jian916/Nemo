@@ -4,7 +4,8 @@
 //#          to make it work                                                #
 //###########################################################################
 
-function RestoreLoginWindow() {
+function RestoreLoginWindow()
+{
 
   //Step 1a - Find the code where we need to make client call the login window
   var code =
@@ -95,12 +96,14 @@ function RestoreLoginWindow() {
   ;
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" A1", " 8B AB"); //MOV reg32_A, DWORD PTR DS:[g_serviceType]
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
       code =
         " 80 3D AB AB AB 01 00"   //CMP BYTE PTR DS:[g_passwordencrypt], 0
       + " 0F 85 AB AB 00 00"      //JNE addr1
@@ -196,7 +199,8 @@ function RestoreLoginWindow() {
 
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {//For recent client g_hMainWnd is directly pushed instead of assigning to ECX first
+  if (offset === -1)
+  { //For recent client g_hMainWnd is directly pushed instead of assigning to ECX first
 
     code = code.replace(" 75 1D 8B 0D AB AB AB 00", " 75 1C"); //remove the ECX assignment and fix the JNE address accordingly
     code = code.replace(" 51 FF 15 AB", " FF 35 AB AB AB 00 FF 15 AB"); //replace PUSH ECX with PUSH DWORD PTR DS:[g_hMainWnd]
@@ -239,7 +243,8 @@ function RestoreLoginWindow() {
   // Extra for certain 2013 - 2014 clients. Need to fix a function to return 1//
   //==========================================================================//
 
-  if (exe.getClientDate() >= 20130320 && exe.getClientDate() <= 20140226) {
+  if (exe.getClientDate() >= 20130320 && exe.getClientDate() <= 20140226)
+  {
 
     //Step 6a - Find offset of "ID"
     offset = exe.findString("ID", RVA);
@@ -294,6 +299,7 @@ function RestoreLoginWindow() {
 //==============================================================//
 // Disable for Unneeded Clients - Only VC9+ Client dont have it //
 //==============================================================//
-function RestoreLoginWindow_() {
+function RestoreLoginWindow_()
+{
   return (exe.getClientDate() > 20100803 && !IsZero());
 }

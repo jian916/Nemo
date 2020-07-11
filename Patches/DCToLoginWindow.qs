@@ -3,7 +3,8 @@
 //#          to make it return to login window instead of exiting client.                        #
 //################################################################################################
 
-function DCToLoginWindow() {
+function DCToLoginWindow()
+{
 
   //Step 1a - Sanity Check. Make Sure Restore Login Window is enabled.
   if (getActivePatches().indexOf(40) === -1)
@@ -54,7 +55,8 @@ function DCToLoginWindow() {
 
   var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" D0", " 50 18");
     offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
   }
@@ -95,7 +97,8 @@ function DCToLoginWindow() {
   //******* Next we will work on DC during Gameplay *******//
 
   //Step 4a - Check if there is a short Jump after the MsgString ID PUSH . If its there go to the address
-  if (exe.fetchUByte(offsets[0]) === 0xEB) {
+  if (exe.fetchUByte(offsets[0]) === 0xEB)
+  {
     offset = offsets[0] + 2 + exe.fetchByte(offsets[0] + 1);
   }
   else {
@@ -130,12 +133,14 @@ function DCToLoginWindow() {
 
   offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" 50 18", " D0");
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
   }
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" D0", " D2").replace(" 8B CF", "");
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
   }
@@ -174,6 +179,7 @@ function DCToLoginWindow() {
 //==========================================================================//
 // Disable for Unneeded Clients - Only Certain Client onwards tries to quit //
 //==========================================================================//
-function DCToLoginWindow_() {
+function DCToLoginWindow_()
+{
   return (exe.getClientDate() > 20100730);
 }

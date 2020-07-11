@@ -3,7 +3,8 @@
 //#          using the template DLL (rdll2.asi) along with header file #
 //######################################################################
 
-function GenMapEffectPlugin() {
+function GenMapEffectPlugin()
+{
 
     //Step 1 - Open the Template file (making sure it exists before anything else)
   var fp = new BinFile();
@@ -30,7 +31,8 @@ function GenMapEffectPlugin() {
     ;
 
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
-  if (offset === -1) {
+  if (offset === -1)
+  {
     var code =
         " B9 AB AB AB 01" //MOV ECX, g_Weather
       + " E8"             //CALL CWeather::ScriptProcess
@@ -141,7 +143,8 @@ function GenMapEffectPlugin() {
 
   //Step 7d - Check if its really after the last map - new clients have more
   opcode = exe.fetchByte(offset) & 0xFF;
-  if (opcode != 0xA1 && (opcode !== 0x8B || (exe.fetchByte(offset+1) & 0xC7) !== 5)) {//not MOV EAX, [addr] or MOV reg32_A, [addr]
+  if (opcode != 0xA1 && (opcode !== 0x8B || (exe.fetchByte(offset+1) & 0xC7) !== 5))
+  { //not MOV EAX, [addr] or MOV reg32_A, [addr]
     code =
         gRenderer               //MOV reg32_A, g_renderer
       + " C7 AB" + gR_clrColor  //MOV DWORD PTR DS:[reg32_A+const], colorvalue

@@ -5,7 +5,8 @@
 //#          loader function to include 1 argument - server name      #
 //#####################################################################
 
-function LoadItemInfoPerServer() {
+function LoadItemInfoPerServer()
+{
   //Step 1a - Find the pattern before Server Name is pushed to StringAllocator Function
   var code =
     " C1 AB 05"                   //SHL EDI,5
@@ -27,7 +28,8 @@ function LoadItemInfoPerServer() {
   var directCall = true;
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" E8", " FF 15");//CALL DWORD PTR DS:[StringAllocator]
     directCall = false;
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
@@ -90,7 +92,8 @@ function LoadItemInfoPerServer() {
   ;
   offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace(" FF FF AB E8", "FF FF FF 75 AB E8");
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
   }
@@ -137,7 +140,8 @@ function LoadItemInfoPerServer() {
   ;
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 8B AB 8B AB", " FF AB");//PUSH DWORD PTR DS:[reg32_B]
     code = code.replace(" AB AB E8", " FF AB E8");//PUSH DWORD PTR DS:[reg32_D]
 
@@ -245,6 +249,7 @@ function LoadItemInfoPerServer() {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function LoadItemInfoPerServer_() {
+function LoadItemInfoPerServer_()
+{
   return (exe.findString("System/iteminfo.lub", RAW) !== -1);
 }

@@ -19,7 +19,8 @@
 //# Author : Secret                                                 #
 //###################################################################
 
-function IgnoreAccountArgument() {
+function IgnoreAccountArgument()
+{
 
     // Step 1a - Find /account:
     var offset = exe.findString("/account:", RVA);

@@ -3,7 +3,8 @@
 //#          case of switch to JMP inside WinMain                    #
 //####################################################################
 
-function ShowLicenseScreen() {
+function ShowLicenseScreen()
+{
 
   //Step 1a - Find guildflag90_1 string address
   var offset = exe.findString("model\\3dmob\\guildflag90_1.gr2", RVA);

@@ -3,7 +3,8 @@
 //#          skip transfering to License Screen creation code      #
 //##################################################################
 
-function SkipLicenseScreen() {
+function SkipLicenseScreen()
+{
 
   //Step 1a - Find offset of "btn_disagree"
   var offset = exe.findString("btn_disagree", RVA);

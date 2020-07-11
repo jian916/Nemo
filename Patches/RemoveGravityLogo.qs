@@ -2,7 +2,8 @@
 //# Purpose: Zero out Gravity Logo Image #
 //########################################
 
-function RemoveGravityLogo() {
+function RemoveGravityLogo()
+{
 
   //Step 1a - Find the image
   var offset = exe.findString("\\T_R%d.tga", RAW, false);

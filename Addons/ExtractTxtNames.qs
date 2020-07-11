@@ -2,7 +2,8 @@
 //# Purpose: Extract all .txt filenames used in the loaded client #
 //#################################################################
 
-function ExtractTxtNames() {
+function ExtractTxtNames()
+{
 
   //Step 1 - Find all strings ending in .txt
   var offset = exe.getROffset(DATA);
@@ -16,7 +17,8 @@ function ExtractTxtNames() {
     fp.writeline("Extracted with NEMO");
     fp.writeline("-------------------");
 
-    for (var i = 0; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++)
+    {
     //Step 2b - Iterate backwards till the start of the string is found for each offset
         offset = offsets[i];
         var end = offset + 3;

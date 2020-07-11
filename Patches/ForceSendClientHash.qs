@@ -3,7 +3,8 @@
 //#          CLoginMode::CheckExeHashFromAccServer function         #
 //###################################################################
 
-function ForceSendClientHash() {
+function ForceSendClientHash()
+{
 
   //Step 1a - Find the 1st LangType comparison
   var LANGTYPE = GetLangType();//Langtype value overrides Service settings hence they use the same variable - g_serviceType

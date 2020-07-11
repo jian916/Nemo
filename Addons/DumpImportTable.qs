@@ -2,7 +2,8 @@
 //# Purpose: Dump the Entire Import Table Hierarchy in the loaded client to a text file #
 //#######################################################################################
 
-function DumpImportTable() {
+function DumpImportTable()
+{
 
   //Step 1a - Get the Import Data Directory Offset
   var offset = GetDataDirectory(1).offset;
@@ -15,7 +16,8 @@ function DumpImportTable() {
   //Step 2a - Write the import address to file
   fp.writeline("IMPORT TABLE (RAW) = 0x" + offset.toBE());
 
-  for ( ;true; offset += 20) {
+  for ( ;true; offset += 20)
+  {
     //Step 2b - Iterate through each IMAGE_IMPORT_DESCRIPTOR
     var ilt = exe.fetchDWord(offset); //Lookup Table address
     var ts = exe.fetchDWord(offset + 4);//TimeStamp
@@ -40,16 +42,19 @@ function DumpImportTable() {
     //Step 2e - Get the Raw offset of First Thunk
     offset2 = exe.Rva2Raw(iatRva+exe.getImageBase());
 
-    for ( ;true; offset2 += 4) {
+    for ( ;true; offset2 += 4)
+    {
       //Step 2f - Iterate through each IMAGE_THUNK_DATA
       var funcData = exe.fetchDWord(offset2);//Ordinal Number or Offset of Function Name
 
       //Step 2e - Check which type it is accordingly Write out the info to file
-      if (funcData === 0) {//End of Functions
+      if (funcData === 0)
+      { //End of Functions
         fp.writeline("");
         break;
       }
-      else if (funcData > 0) { //First Bit (Sign) shows whether this functions is imported by Name (0) or Ordinal (1)
+      else if (funcData > 0)
+      { //First Bit (Sign) shows whether this functions is imported by Name (0) or Ordinal (1)
         funcData = funcData & 0x7FFFFFFF;//Address pointing to IMAGE_IMPORT_BY_NAME struct (First 2 bytes is Hint, remaining is the Function Name)
         var offset3 = exe.Rva2Raw(funcData + exe.getImageBase());
         var offset4 = exe.find("00", PTYPE_HEX, false, "\xAB", offset3+2);

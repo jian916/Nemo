@@ -3,7 +3,8 @@
 //           Headgear Prefix table.
 //#############################################################
 
-function IncreaseViewID() {
+function IncreaseViewID()
+{
 
   //Step 1a - Find "ReqAccName" offset
   var offset = exe.findString("ReqAccName", RVA);
@@ -38,7 +39,8 @@ function IncreaseViewID() {
     return "Failed in Step 2 - Extra matches found";
 
   //Step 2c - Replace old with new for all
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     exe.replace(offsets[i], "$newValue", PTYPE_STRING);
   }
 
@@ -48,6 +50,7 @@ function IncreaseViewID() {
 //=============================//
 // Disable Unsupported Clients //
 //=============================//
-function IncreaseViewID_() {
+function IncreaseViewID_()
+{
   return(exe.findString("ReqAccName", RAW) !== -1);
 }

@@ -2,7 +2,8 @@
 //# Purpose: Skip over all instances of World View Window creation #
 //##################################################################
 
-function DisableMapInterface() {
+function DisableMapInterface()
+{
 
   //Step 1a - Find the creation pattern 1 - There should be exactly 2 matches (map button, shortcut)
   var code =
@@ -21,7 +22,8 @@ function DisableMapInterface() {
     return "Failed in Step 1 - No matches found";
 
   //Step 1b - Change the First PUSH to a JMP to the JNE location and  change the JNE to JMP
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+{
     exe.replace(offsets[i], "EB 0F", PTYPE_HEX);
     exe.replace(offsets[i] + 17, "90 E9", PTYPE_HEX);
   }
@@ -32,7 +34,8 @@ function DisableMapInterface() {
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
 
   //Step 2b - Repeat 1b for this set
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+{
     exe.replace(offsets[i], "EB 0F", PTYPE_HEX);
     exe.replace(offsets[i] + 17, "EB", PTYPE_HEX);
   }
@@ -47,7 +50,8 @@ function DisableMapInterface() {
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
   //Step 3b - Replace PUSH with a JMP to the POP ESI
-  if (offset !== -1) {
+  if (offset !== -1)
+{
     exe.replace(offset, "EB 0A", PTYPE_HEX);
   }
 

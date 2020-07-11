@@ -2,11 +2,13 @@
 // Patch Functions wrapping over DisableChatInSkill function //
 //===========================================================//
 
-function DisableBAFrostJoke() {
+function DisableBAFrostJoke()
+{
   return DisableChatInSkill("BA_frostjoke.txt");
 }
 
-function DisableDCScream() {
+function DisableDCScream()
+{
   return DisableChatInSkill("DC_scream.txt");
 }
 
@@ -15,7 +17,8 @@ function DisableDCScream() {
 //#          random Chat skills - Frost Joke/Scream #
 //###################################################
 
-function DisableChatInSkill(txtname) {
+function DisableChatInSkill(txtname)
+{
 
   //Step 1a - Find the 1st text file offset
   var offset = exe.findString("english\\" + txtname, RAW);

@@ -3,7 +3,8 @@
 //#          from loading to compare against                          #
 //#####################################################################
 
-function DisableSwearFilter() {
+function DisableSwearFilter()
+{
 
   //Step 1 - Find offset of manner.txt
   var offset = exe.findString("manner.txt", RAW);

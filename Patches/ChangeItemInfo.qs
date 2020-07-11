@@ -3,15 +3,18 @@
 //#          to custom file specified by user  #
 //##############################################
 
-function ChangeItemInfo() {
+function ChangeItemInfo()
+{
 
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
-    if (IsSakray()) {
+    if (IsSakray())
+{
         var iiName = "System/iteminfo_Sak.lub";
     } else {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
-        if (exe.findString(iiName, RVA) === -1) {
+        if (exe.findString(iiName, RVA) === -1)
+{
             // iteminfo in new clients
             iiName = "System/iteminfo_true.lub";
         }
@@ -49,8 +52,10 @@ function ChangeItemInfo() {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function ChangeItemInfo_() {
-    if (IsSakray()) {
+function ChangeItemInfo_()
+{
+    if (IsSakray())
+{
         var iiName = "System/iteminfo_Sak.lub";
     } else {
         // iteminfo in old clients

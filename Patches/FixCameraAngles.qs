@@ -2,15 +2,18 @@
 // Patch Functions wrapping over FixCameraAngles function //
 //========================================================//
 
-function FixCameraAnglesRecomm() {
+function FixCameraAnglesRecomm()
+{
   return FixCameraAngles(floatToHex(42.0));
 }
 
-function FixCameraAnglesLess() {
+function FixCameraAnglesLess()
+{
   return FixCameraAngles(floatToHex(29.50));
 }
 
-function FixCameraAnglesFull() {
+function FixCameraAnglesFull()
+{
   return FixCameraAngles(floatToHex(65.0));
 }
 
@@ -23,7 +26,8 @@ function FixCameraAnglesFull() {
 //# Purpose: Find the Camera Angle and replace with new angle #
 //#############################################################
 
-function FixCameraAngles(newvalue) {
+function FixCameraAngles(newvalue)
+{
 
   //Step 1a - Find the common pattern after the function call we need.
   var code =
@@ -33,7 +37,8 @@ function FixCameraAngles(newvalue) {
     ;
   var offset = exe.findCode(code, PTYPE_HEX, false);
 
-  if (offset !== -1) {//VC9+ clients
+  if (offset !== -1)
+  { //VC9+ clients
     //Step 1b - Now find the function call we need (should be within 0x50 bytes before)
     code =
         " 8B CE"          //MOV ECX, ESI
@@ -56,7 +61,8 @@ function FixCameraAngles(newvalue) {
       ;
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x800);
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
       code =
         " 74 AB"                   //JZ SHORT addr
       + " F3 0F 10 AB AB AB AB 00" //MOVSS XMM#, DWORD PTR DS:[angleAddr]
@@ -92,7 +98,8 @@ function FixCameraAngles(newvalue) {
       return "Failed in Step 4 - No or Too Many matches";
 
     //Step 4b - Change the angle value for all in offsets
-    for (var i = 0; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++)
+    {
       exe.replace(offsets[i] + 3, newvalue, PTYPE_HEX);
     }
 

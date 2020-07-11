@@ -3,11 +3,13 @@
 //#          XOR EAX, EAX                                                #
 //########################################################################
 
-function DisablePacketEncryption() {
+function DisablePacketEncryption()
+{
 
   //Step 1a - Check if any of the Packet Key patches are ON
   var patches = getActivePatches();
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 3; i++)
+  {
     if (patches.indexOf(92 + i) !== -1)
       return "Patch Cancelled - One or more of the Packet Key Patches are ON";
   }

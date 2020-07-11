@@ -3,7 +3,8 @@
 //#          inside CPc::SetSprNameList and CPc::SetActNameList functions   #
 //###########################################################################
 
-function RemoveGMSprite() {
+function RemoveGMSprite()
+{
 
   //Step 1a - Find the location where both functions are called
   var code =
@@ -21,7 +22,8 @@ function RemoveGMSprite() {
 
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 8B AB"); //Remove the first MOV ECX, reg32_A . It might have been assigned earlier
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
@@ -44,7 +46,8 @@ function RemoveGMSprite() {
   + " 0F 84"          //JNE addr2
   ;
 
-  for (var i = 0; i < funcs.length; i++) {
+  for (var i = 0; i < funcs.length; i++)
+  {
     //Step 2b - Find the Call
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", funcs[i]);
     if (offset === -1)

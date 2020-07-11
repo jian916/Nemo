@@ -2,7 +2,8 @@
 //# Purpose: Fixup all the Langtype comparison Jumps in Mailbox function #
 //########################################################################
 
-function EnableMailBox() {
+function EnableMailBox()
+{
 
   //Step 1a - Prep codes for finding short jumps
   var code  =
@@ -22,7 +23,8 @@ function EnableMailBox() {
     return "Failed in Step 1 - First pattern not found";
 
   //Step 1c - Change the first JE to JMP
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 3; i++)
+  {
     exe.replace(offsets[i] - 2, " EB 0C", PTYPE_HEX);
   }
 
@@ -55,12 +57,14 @@ function EnableMailBox() {
   if (offsets.length < 3 || offsets.length > 4)
     return "Failed in Step 2 - LangType comparisons missing";
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+{
     exe.replace(offsets[i] + 5, " EB 18", PTYPE_HEX);
   }
 
   //Step 3 - If the count is 3 then there is an additional JE we missed
-  if (offsets.length === 3) {
+  if (offsets.length === 3)
+  {
     var pat2 = " 6A 23"; //PUSH 23
 
     var offset = exe.findCode(code + pat2, PTYPE_HEX, true, "\xAB");
@@ -76,6 +80,7 @@ function EnableMailBox() {
 //================================================//
 // Disable Patch for Unsupported/Unneeded clients //
 //================================================//
-function EnableMailBox_() {
+function EnableMailBox_()
+{
   return (exe.getClientDate() >= 20130320 || exe.getClientDate() <= 20140800);
 }

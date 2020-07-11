@@ -2,7 +2,8 @@
 //# Purpose: Restore the Cash Shop Icon UIWindow creation (ID = 0xBE) #
 //#####################################################################
 
-function RestoreCashShop() {
+function RestoreCashShop()
+{
 
   //Step 1 - Get the Window Manager Info we need
   var mgrInfo = GetWinMgrInfo();
@@ -60,6 +61,7 @@ function RestoreCashShop() {
 //======================================================//
 // Disable for Unsupported Clients - Check for Icon bmp //
 //======================================================//
-function RestoreCashShop_() {
+function RestoreCashShop_()
+{
   return (exe.findString("NC_CashShop", RAW) !== -1);
 }

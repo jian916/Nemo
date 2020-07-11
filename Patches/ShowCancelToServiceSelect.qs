@@ -3,7 +3,8 @@
 //#          to show both of them in Login Screen.              #
 //###############################################################
 
-function ShowCancelToServiceSelect() {
+function ShowCancelToServiceSelect()
+{
   //Step 1a - Find address of "btn_intro_b"
   var offset = exe.findString("btn_intro_b", RVA);
   if (offset === -1)
@@ -26,7 +27,8 @@ function ShowCancelToServiceSelect() {
 
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
 
-  if (offset2 === -1) {//x > 0x7F
+  if (offset2 === -1)
+  { //x > 0x7F
     if (HasFramePointer())
       code = " C7 85 AB FF FF FF  BD 00 00 00"; //MOV DWORD PTR SS:[EBP-x], 0BD
     else
@@ -61,6 +63,7 @@ function ShowCancelToServiceSelect() {
 //==============================================================================//
 // Disable for Unneeded Clients - Only Certain Client onwards shows Exit button //
 //==============================================================================//
-function ShowCancelToServiceSelect_() {
+function ShowCancelToServiceSelect_()
+{
   return (exe.getClientDate() > 20100803 && !IsZero());
 }

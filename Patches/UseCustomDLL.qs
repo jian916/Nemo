@@ -6,7 +6,8 @@
 delete Import_Info;//Removing any stray values before Patches are selected
 var dllFile = false;
 
-function UseCustomDLL() {
+function UseCustomDLL()
+{
 
   //Step 1a - Flag for "Disable HShield" patch is ON
   var hasHShield = (getActivePatches().indexOf(15) !== -1);
@@ -24,7 +25,8 @@ function UseCustomDLL() {
   var dirData = "";
   var offset = dir.offset;
 
-  for ( ; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20) {
+  for ( ; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+  {
 
     //Step 1e - Get the DLL Name for the import entry
     var offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
@@ -54,10 +56,12 @@ function UseCustomDLL() {
   var fnNames = [];
   var dptr = -1;
 
-  while (!fp.eof()) {
+  while (!fp.eof())
+  {
     var line = fp.readline().trim();
     if (line === "" || line.indexOf("//") == 0) continue;
-    if (line.length > 4 && (line.indexOf(".dll") - line.length) == -4) {
+    if (line.length > 4 && (line.indexOf(".dll") - line.length) == -4)
+    {
       dptr++;
       dllNames.push({"offset":0, "value":line});
       fnNames[dptr] = [];
@@ -72,17 +76,20 @@ function UseCustomDLL() {
   var strData = "";
   var strSize = 0;//Holds the size of dll names and function names
 
-  for (var i = 0; i < dllNames.length; i++) {
+  for (var i = 0; i < dllNames.length; i++)
+  {
     var name = dllNames[i].value;
     dllNames[i].offset = strSize;
     strData = strData + name.toHex() + " 00";
     strSize = strSize + name.length + 1;//Space for name
     dirSize = dirSize + 20 ;//IDIR Entry Size
 
-    for (var j = 0; j < fnNames[i].length; j++) {
+    for (var j = 0; j < fnNames[i].length; j++)
+    {
       var name = fnNames[i][j].value;
 
-      if (name.charAt(0) === ':') {//By Ordinal
+      if (name.charAt(0) === ':')
+      { //By Ordinal
         fnNames[i][j].offset = 0x80000000 | parseInt(name.substr(1));
       }
       else {//By Name
@@ -90,7 +97,8 @@ function UseCustomDLL() {
         strData = strData + j.packToHex(2) + name.toHex() + " 00";
         strSize = strSize + 2 + name.length + 1;//Space for name
 
-        if (name.length % 2 != 0) {//Even the Odds xD
+        if (name.length % 2 != 0)
+        { //Even the Odds xD
           strData = strData + " 00";
           strSize++;
         }
@@ -114,11 +122,13 @@ function UseCustomDLL() {
   var dirTableData = "";
 
   var dptr = 0;
-  for (var i = 0; i < dllNames.length; i++) {
+  for (var i = 0; i < dllNames.length; i++)
+  {
     if (fnNames[i].length == 0) continue;
     dirTableData = dirTableData + prefix + (baseAddr + dllNames[i].offset).packToHex(4) + (baseAddr + strSize + dptr).packToHex(4);
 
-    for (var j = 0; j < fnNames[i].length; j++) {
+    for (var j = 0; j < fnNames[i].length; j++)
+    {
       if ((fnNames[i][j].offset & 0x80000000) === 0)
         dirEntryData = dirEntryData + (baseAddr + fnNames[i][j].offset).packToHex(4);
       else
@@ -155,8 +165,10 @@ function UseCustomDLL() {
 //# Purpose: Rerun the DisableHShield function if the HShield patch is #
 //#          selected so that it doesnt accomodate for Custom DLL      #
 //######################################################################
-function _UseCustomDLL() {
-  if (getActivePatches().indexOf(15) !== -1) {
+function _UseCustomDLL()
+{
+  if (getActivePatches().indexOf(15) !== -1)
+  {
     exe.setCurrentPatch(15);
     exe.emptyPatch(15);
     DisableHShield();

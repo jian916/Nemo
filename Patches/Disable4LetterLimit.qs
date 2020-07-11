@@ -2,15 +2,18 @@
 // Patch Functions wrapping over Disable4LetterLimit function //
 //============================================================//
 
-function Disable4LetterCharnameLimit() {
+function Disable4LetterCharnameLimit()
+{
   return Disable4LetterLimit(0);
 }
 
-function Disable4LetterPasswordLimit() {
+function Disable4LetterPasswordLimit()
+{
   return Disable4LetterLimit(1);
 }
 
-function Disable4LetterUsernameLimit() {
+function Disable4LetterUsernameLimit()
+{
   return Disable4LetterLimit(2);
 }
 
@@ -19,7 +22,8 @@ function Disable4LetterUsernameLimit() {
 //#          and replace it with 0 so any non-empty string is valid         #
 //###########################################################################
 
-function Disable4LetterLimit(index) {//Some old clients dont have the ID Check
+function Disable4LetterLimit(index)
+{ //Some old clients dont have the ID Check
 
   //Step 1a - Find all Text Size comparisons with 4 chars.
   var code =
@@ -45,7 +49,8 @@ function Disable4LetterLimit(index) {//Some old clients dont have the ID Check
 
   var csize = code.hexlength();
 
-  for (var idp = 0; idp < offsets.length; idp++) {
+  for (var idp = 0; idp < offsets.length; idp++)
+  {
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[idp] + csize, offsets[idp] + csize + 30 + csize);
     if (offset2 !== -1) break;
   }
@@ -54,10 +59,12 @@ function Disable4LetterLimit(index) {//Some old clients dont have the ID Check
     return "Failed in Step 1 - ID+Pass check not found";
 
   //Step 2 - Replace 4 with 0 in CMP EAX,4 in appropriate offsets
-  switch(index) {
+  switch(index)
+  {
     case 0: {
       //Step 2a - For Index 0 i.e. Char Name, all offsets other than offset2 and offsets[idp] will get the replace
-      for (var i = 0; i < offsets.length; i++) {
+      for (var i = 0; i < offsets.length; i++)
+      {
         if (i === idp || offsets[i] === offset2) continue;
         exe.replace(offsets[i] + csize - 1, " 00", PTYPE_HEX);
       }

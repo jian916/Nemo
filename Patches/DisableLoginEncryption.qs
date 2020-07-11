@@ -4,7 +4,8 @@
 //#          of Encrypted Password                                            #
 //#############################################################################
 
-function DisableLoginEncryption() {
+function DisableLoginEncryption()
+{
 
   //Step 1 - Find Encryptor function call.
   var code =
@@ -35,6 +36,7 @@ function DisableLoginEncryption() {
 //=================================//
 // Disable for Unsupported Clients //
 //=================================//
-function DisableLoginEncryption_() {
+function DisableLoginEncryption_()
+{
   return (exe.getClientDate() < 20100803);
 }

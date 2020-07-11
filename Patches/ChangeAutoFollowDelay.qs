@@ -20,7 +20,8 @@
 
 
 
-function SetAutoFollowDelay() {
+function SetAutoFollowDelay()
+{
   return ChangeAutoFollowDelay(exe.getUserInput("$followDelay", XTYPE_WORD, _("Number Input"), _("Enter the new autofollow delay(0-1000) - snaps to closest valid value"), 200, 0, 1000));
 }
 
@@ -28,7 +29,8 @@ function SetAutoFollowDelay() {
 //# Purpose: Find the autofollow delay and replace it with the value specified #
 //##############################################################################
 
-function ChangeAutoFollowDelay(value) {
+function ChangeAutoFollowDelay(value)
+{
 
   //Step 1a - Find the delay comparison
   var code =

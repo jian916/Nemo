@@ -5,7 +5,8 @@
 
 delete Import_Info;//Removing any stray values before Patches are selected
 
-function DisableHShield() {
+function DisableHShield()
+{
 
   //Step 1a - Find address of 'webclinic.ahnlab.com'
   var offset = exe.findString("webclinic.ahnlab.com", RVA);
@@ -35,12 +36,14 @@ function DisableHShield() {
   //Step 2a - Find Failure message - this is there in newer clients (maybe all ragexe too?)
   offset = exe.findString("CHackShieldMgr::Monitoring() failed", RVA);
 
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     //Step 2b - Find reference to Failure message
     offset = exe.findCode(" 68" + offset.packToHex(4) + " FF 15", PTYPE_HEX, false);
 
     //Step 2c - Find Pattern before the referenced location within 0x40 bytes
-    if (offset !== -1) {
+    if (offset !== -1)
+    {
       code =
         " E8 AB AB AB AB"  //CALL func1
       + " 84 C0"           //TEST AL, AL
@@ -52,7 +55,8 @@ function DisableHShield() {
     }
 
     //Step 2d - Replace the First call with code to return 1 and cleanup stack
-    if (offset !== -1) {
+    if (offset !== -1)
+    {
       code =
         " 90"    //NOP
       + " B0 01" //MOV AL, 1
@@ -86,12 +90,14 @@ function DisableHShield() {
   ;
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" AB AB FF 15", " AB 6A 00 FF 15");//Change PUSH reg32_B with PUSH 0
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     //Step 3c - Find the JNE after it that skips the HShield calls
     code =
       " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[addr1], 0
@@ -99,7 +105,8 @@ function DisableHShield() {
     ;
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
       code =
         " 39 AB AB AB AB 00" //CMP DWORD PTR DS:[addr1], reg32_A
       + " 75"                //JNE SHORT addr2
@@ -130,19 +137,22 @@ function DisableHShield() {
   //Step 4c - Check for Use Custom DLL patch - needed since it modifies the import table location
   var hasCustomDLL = (getActivePatches().indexOf(211) !== -1);
 
-  if (hasCustomDLL && typeof(Import_Info) !== "undefined") {
+  if (hasCustomDLL && typeof(Import_Info) !== "undefined")
+  {
     //Step 4d - If it is used, it means the table has been shifted and all related data is available in Import_Info.
     //          First we will remove the asssdk import entry from the table saved in Import_Info
     var tblData = Import_Info.valueSuf;
     var newTblData = "";
 
-    for (var i = 0; i < tblData.length; i += 20*3) {
+    for (var i = 0; i < tblData.length; i += 20*3)
+    {
       var curValue = tblData.substr(i, 20*3);
       if (curValue.indexOf(aOffset) === 3*4) continue;//Skip aossdk import rest all are copied
       newTblData = newTblData + curValue;
     }
 
-    if (newTblData !== tblData) {
+    if (newTblData !== tblData)
+    {
       //Step 4e - If the removal was not already done then Empty the Custom DLL patch and make the changes here instead.
       exe.emptyPatch(211);
 
@@ -164,7 +174,8 @@ function DisableHShield() {
 
     code = "";//will contain the import table
 
-    for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20) {
+    for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+    {
       //Step 4e - Get the DLL Name for the import entry
       offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
       var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
@@ -190,7 +201,8 @@ function DisableHShield() {
 //============================//
 // Disable Unsupported client //
 //============================//
-function DisableHShield_() {
+function DisableHShield_()
+{
   return (exe.findString("aossdk.dll", RAW) !== -1);
 }
 
@@ -199,7 +211,8 @@ function DisableHShield_() {
 //#          selected so that it doesnt accomodate for HShield patch    #
 //#######################################################################
 
-function _DisableHShield() {
+function _DisableHShield()
+{
   if (getActivePatches().indexOf(211) !== -1)
   {
     exe.setCurrentPatch(211);

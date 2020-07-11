@@ -3,7 +3,8 @@
 //#          UIFrameWnd::DrawItemWithCount function            #
 //##############################################################
 
-function MoveItemCountUpwards() {
+function MoveItemCountUpwards()
+{
 
   //Step 1 - Find the pattern after the comparison inside DrawItemWithCount function
   var code =
@@ -13,7 +14,8 @@ function MoveItemCountUpwards() {
   var type = 1;//VC6 & Early VC9
   var offsets = exe.findCodes(code, PTYPE_HEX, false);
 
-  if (offsets.length === 0) {
+  if (offsets.length === 0)
+  {
     code =
       " 68 FF FF FF 00" //PUSH 0FFFFFF
     + " 6A 0B"          //PUSH 0B
@@ -27,7 +29,8 @@ function MoveItemCountUpwards() {
     offsets = exe.findCodes(code, PTYPE_HEX, false);
   }
 
-  if (offsets.length === 0) {
+  if (offsets.length === 0)
+  {
     code =
       " 68 FF FF FF 00" //PUSH 0FFFFFF
     + " B8 0E 00 00 00" //MOV EAX, 0E
@@ -43,14 +46,16 @@ function MoveItemCountUpwards() {
     return "Failed in Step 1 - No Patterns matched";
 
   //Step 2a - Get the comparison pattern
-  if (type === 1) {//VC6 & Early VC9
+  if (type === 1)
+  { //VC6 & Early VC9
     code =
       " 8A 45 18" //MOV AL, BYTE PTR SS:[EBP+18]
     + " 83 C4 0C" //ADD ESP, 0C
     + " 84 C0"    //TEST AL, AL
     ;
   }
-  else if (type === 2) {//VC9
+  else if (type === 2)
+  { //VC9
     code = " 80 7C 24 3C 00"; //CMP DWORD PTR SS:[ESP+3C], 0
   }
   else {//VC10 & VC11
@@ -64,7 +69,8 @@ function MoveItemCountUpwards() {
 
   //Step 2b - Find the comparison within 0x50 bytes before one of the patterns
   var offset = -1;
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] - 0x50, offsets[i]);
     if (offset !== -1)
       break;

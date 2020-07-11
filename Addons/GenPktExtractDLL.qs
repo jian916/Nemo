@@ -3,7 +3,8 @@
 //#          (ws2_pe.dll). Along with the Packet Keys for new clients                      #
 //##########################################################################################
 
-function GenPktExtractDLL() {//Planning to shift this into PEEK instead of here
+function GenPktExtractDLL()
+{ //Planning to shift this into PEEK instead of here
 
   //To Do - Really Old clients have some variations in some of the patterns
 
@@ -33,7 +34,8 @@ function GenPktExtractDLL() {//Planning to shift this into PEEK instead of here
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x100, offset);
   var KeyFetcher = 0;
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code =
         " 8B 0D AB AB AB 00" //MOV ecx, DS:[ADDR1] dont care what
       + " 6A 01"             //PUSH 1
@@ -43,7 +45,8 @@ function GenPktExtractDLL() {//Planning to shift this into PEEK instead of here
     KeyFetcher = -1;
   }
 
-  if (offset2 !== -1 && KeyFetcher === -1) {
+  if (offset2 !== -1 && KeyFetcher === -1)
+  {
     offset2 += code.hexlength();
     KeyFetcher = exe.Raw2Rva(offset2+4) + exe.fetchDWord(offset2);
   }
@@ -119,7 +122,8 @@ function GenPktExtractDLL() {//Planning to shift this into PEEK instead of here
   //Step 4a - Now comes the tricky part. We need to get all the functions called till a repeat is found.
   //          Last unrepeated call is the std::map function we need
   var funcs = [];
-  while(1) {
+  while(1)
+  {
     offset = exe.find(" E8 AB AB FF FF", PTYPE_HEX, true, "\xAB", offset+1);//CALL std::map
     if (offset === -1) break;
     var func = offset + exe.fetchDWord(offset+1) + 5;

@@ -2,7 +2,8 @@
 //# Purpose: Restore the Roulette Icon UIWindow creation (ID = 0x11D) #
 //#####################################################################
 
-function RestoreRoulette() {
+function RestoreRoulette()
+{
 
   //Step 1 - Get the Window Manager Info we need
   var mgrInfo = GetWinMgrInfo();
@@ -68,6 +69,7 @@ function RestoreRoulette() {
 //======================================================//
 // Disable for Unsupported Clients - Check for Icon bmp //
 //======================================================//
-function RestoreRoulette_() {
+function RestoreRoulette_()
+{
   return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\roullette\\RoulletteIcon.bmp", RAW) !== -1);
 }

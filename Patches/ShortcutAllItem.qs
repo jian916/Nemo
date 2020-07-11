@@ -16,7 +16,8 @@
 //
 
 
-function ShortcutAllItem() {
+function ShortcutAllItem()
+{
     //Step 1 - Find the item type table fetchers
     var code =
         " 0F B6 80 AB AB AB 00"    //MOVZX EAX,BYTE PTR [EAX+offsetA]
@@ -30,7 +31,8 @@ function ShortcutAllItem() {
 
     //Step 2 - Remove the EAX*4 from JMP instruction
     var offset = 0;
-    for (var i = 0; i < offsets.length; i++) {
+    for (var i = 0; i < offsets.length; i++)
+    {
         offset = offsets[i] + 7;
         code = "90 FF 25"        //NOP
                                 //JMP DWORD PTR [offsetB]
@@ -40,5 +42,3 @@ function ShortcutAllItem() {
 
     return true;
 }
-
-

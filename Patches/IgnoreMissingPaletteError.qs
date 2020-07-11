@@ -3,7 +3,8 @@
 //#         in CPaletteRes::Load function                        #
 //################################################################
 
-function IgnoreMissingPaletteError() {
+function IgnoreMissingPaletteError()
+{
 
   //Step 1a - Find the Error message string's offset
   var offset = exe.findString("CPaletteRes :: Cannot find File : ", RVA);
@@ -17,7 +18,8 @@ function IgnoreMissingPaletteError() {
   ;
   var offset2 = exe.findCode(code, PTYPE_HEX, false);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = "BF" + offset.packToHex(4); //MOV EDI, OFFSET addr; ASCII "CPaletteRes :: Cannot find File : "
     offset2 = exe.findCode(code, PTYPE_HEX, false);
   }

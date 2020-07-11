@@ -4,7 +4,8 @@
 //#          inside the "Basic Info" window when not minimized     #
 //##################################################################
 
-function ShowExpNumbers() {//To Do - Make color and coords configurable
+function ShowExpNumbers()
+{ //To Do - Make color and coords configurable
 
   //Step 1a - Find the address of the Alt String
   var offset = exe.findString("Alt+V, Ctrl+V", RVA, false);
@@ -101,7 +102,8 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   //          else extract reg code from the MOV ECX, reg32 and update offset
   var rcode = " CE";//for MOV ECX, ESI
 
-  if (exe.fetchUByte(offset) !== 0xE8) {//MOV ECX, reg32 comes in between
+  if (exe.fetchUByte(offset) !== 0xE8)
+  { //MOV ECX, reg32 comes in between
     rcode = exe.fetchHex(offset + 1, 1);
     offset += 2;
   }

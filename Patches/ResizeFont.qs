@@ -3,7 +3,8 @@
 //#          height before Jumping to actual CreateFontA                 #
 //########################################################################
 
-function ResizeFont() {
+function ResizeFont()
+{
 
   //Step 1a - Find CreateFontA function address
   var offset = GetFunction("CreateFontA", "GDI32.dll");
@@ -44,7 +45,8 @@ function ResizeFont() {
   //Step 3a - Insert it
   exe.insert(free, csize, code, PTYPE_HEX);
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+{
     //Step 3b - Replace CreateFontA calls with call to freeRva
     exe.replaceDWord(offsets[i] + 2, freeRva);
   }

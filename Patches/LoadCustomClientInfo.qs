@@ -20,12 +20,14 @@
 //#          to custom file specified by user    #
 //################################################
 
-function LoadCustomClientInfo() {
+function LoadCustomClientInfo()
+{
     //Step 1a - Check if the client is Sakray (clientinfo file name is "sclientinfo.xml" for some Sakray clients)
     var ciName = "sclientinfo.xml";
     var offset = exe.findString(ciName, RVA);
 
-    if (offset === -1) { // if sclientinfo.xml does not exist then it is a main server exe
+    if (offset === -1)
+    { // if sclientinfo.xml does not exist then it is a main server exe
         ciName = "clientinfo.xml";
         offset = exe.findString(ciName, RVA);
     }
@@ -37,7 +39,8 @@ function LoadCustomClientInfo() {
     if (offset1 === -1)
         return "Failed in Step 1 - clientinfo reference not found";
 
-    if (ciName == "sclientinfo.xml") {
+    if (ciName == "sclientinfo.xml")
+    {
         var offset2 = exe.find(" F3 0F AB AB" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
         if (offset2 === -1)
             return "Failed in Step 1c - clientinfo reference 2 not found";
@@ -71,7 +74,8 @@ function LoadCustomClientInfo() {
     //Step 3 - Insert the new name and replace the clientinfo reference
     exe.insert(free, myfile.length, "$newclientinfo", PTYPE_STRING);
     exe.replace(offset1+4, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
-    if (ciName == "sclientinfo.xml") {
+    if (ciName == "sclientinfo.xml")
+    {
         exe.replace(offset2+4, exe.Raw2Rva(free+8).packToHex(4), PTYPE_HEX);
     }
     else {
@@ -86,6 +90,7 @@ function LoadCustomClientInfo() {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function LoadCustomClientInfo_() {
+function LoadCustomClientInfo_()
+{
     return (exe.findString("sclientinfo.xml", RAW) !== -1 || exe.findString("clientinfo.xml", RAW) !== -1);
 }

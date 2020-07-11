@@ -3,7 +3,8 @@
 //#          and thereby skip showing the serial number      #
 //############################################################
 
-function RemoveSerialDisplay() {
+function RemoveSerialDisplay()
+{
 
   //Step 1a - Prep comparison code
   var code1 =
@@ -36,6 +37,7 @@ function RemoveSerialDisplay() {
 //=================================//
 // Disable for Unsupported Clients //
 //=================================//
-function RemoveSerialDisplay_() {
+function RemoveSerialDisplay_()
+{
   return (exe.getClientDate() > 20101116);
 }

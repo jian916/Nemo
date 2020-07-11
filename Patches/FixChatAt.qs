@@ -4,7 +4,8 @@
 //#          hijack a call inside UIWindowMgr::ProcessPushButton.             #
 //#############################################################################
 
-function FixChatAt() {
+function FixChatAt()
+{
 
   //Step 1a - Find the JZ after '@' Comparison
   var code =
@@ -15,7 +16,8 @@ function FixChatAt() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset !== -1) {//VC9+ Clients
+  if (offset !== -1)
+  { //VC9+ Clients
     //==============================================//
     // Note: The above will be followed by MOV AL,1 //
     //       and POP EBP/EBX statements             //

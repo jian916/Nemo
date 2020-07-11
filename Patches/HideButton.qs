@@ -2,7 +2,8 @@
 // Patch Functions wrapping over HideButton function //
 //===================================================//
 
-function HideNavButton() {
+function HideNavButton()
+{
     if(UseNewIcons())
         return HideButton2("navigation");
     return HideButtonOld(
@@ -11,7 +12,8 @@ function HideNavButton() {
     );
 }
 
-function HideBgButton() {
+function HideBgButton()
+{
     if(UseNewIcons())
         return HideButton2("battle");
     return HideButtonOld(
@@ -20,7 +22,8 @@ function HideBgButton() {
     );
 }
 
-function HideBankButton() {
+function HideBankButton()
+{
     if(UseNewIcons())
         return HideButton2("bank");
     return HideButtonOld(
@@ -29,7 +32,8 @@ function HideBankButton() {
     );
 }
 
-function HideBooking() {
+function HideBooking()
+{
     if(UseNewIcons())
         return HideButton2("booking");
     return HideButtonOld(
@@ -38,19 +42,22 @@ function HideBooking() {
     );
 }
 
-function HideRodex() {
+function HideRodex()
+{
     if(UseNewIcons())
         return HideButton2("mail");
     return HideButtonOld("RO_menu_icon\\mail", "\x00");
 }
 
-function HideAchieve() {
+function HideAchieve()
+{
     if(UseNewIcons())
         return HideButton2("achievement");
     return HideButtonOld("RO_menu_icon\\achievement", "\x00");
 }
 
-function HideRecButton() {
+function HideRecButton()
+{
     if(UseNewIcons())
         return HideButton2("rec");
     return HideButtonOld(
@@ -63,63 +70,78 @@ function HideRecButton() {
 // Patch Functions wrapping over HideButton2 function //
 //===================================================//
 
-function HideMapButton() {
+function HideMapButton()
+{
     return HideButton2("map");
 }
 
-function HideQuest() {
+function HideQuest()
+{
     return HideButton2("quest");
 }
 
-function HideSNSButton() {
+function HideSNSButton()
+{
     return HideButton2("sns");
 }
 
-function HideKeyboardButton() {
+function HideKeyboardButton()
+{
     return HideButton2("keyboard");
 }
 
-function HideStatusButton() {
+function HideStatusButton()
+{
     return HideButton2("status");
 }
 
-function HideEquipButton() {
+function HideEquipButton()
+{
     return HideButton2("equip");
 }
 
-function HideItemButton() {
+function HideItemButton()
+{
     return HideButton2("item");
 }
 
-function HideSkillButton() {
+function HideSkillButton()
+{
     return HideButton2("skill");
 }
 
-function HidePartyButton() {
+function HidePartyButton()
+{
     return HideButton2("party");
 }
 
-function HideGuildButton() {
+function HideGuildButton()
+{
     return HideButton2("guild");
 }
 
-function HideOptionButton() {
+function HideOptionButton()
+{
     return HideButton2("option");
 }
 
-function HideTipButton() {
+function HideTipButton()
+{
     return HideButton2("tip");
 }
 
-function HideShopButton() {
+function HideShopButton()
+{
     return HideButton2("shop");
 }
 
-function HideAttendanceButton() {
+function HideAttendanceButton()
+{
     return HideButton2("attendance");
 }
 
-function HideAdventurerAgencyButton() {
+function HideAdventurerAgencyButton()
+{
     return HideButton2("adventurerAgency");
 }
 
@@ -128,7 +150,8 @@ function HideAdventurerAgencyButton() {
 //#          and replace it with corresponding tgt prefix  #
 //##########################################################
 
-function HideButtonOld(src, tgt) {
+function HideButtonOld(src, tgt)
+{
 
     //Step 1a - Ensure both are lists/arrays
     if (typeof(src) === "string")
@@ -139,7 +162,8 @@ function HideButtonOld(src, tgt) {
 
     //Step 1b - Loop through and find first match
     var offset = -1;
-    for (var i = 0; i < src.length; i++) {
+    for (var i = 0; i < src.length; i++)
+    {
         offset = exe.findString(src[i], RAW, false);
         if (offset !== -1)
             break;
@@ -154,7 +178,8 @@ function HideButtonOld(src, tgt) {
     return true;
 }
 
-function HideButton2(prefix) {
+function HideButton2(prefix)
+{
     if(UseNewIcons())
         return HideButtonNew("equip", prefix);
     else
@@ -165,7 +190,8 @@ function HideButton2(prefix) {
 //# Purpose: Find the prefix assignment inside UIBasicWnd::OnCreate and #
 //#          assign address of NULL after the prefix instead            #
 //#######################################################################
-function HideButtonNew(reference, prefix) {
+function HideButtonNew(reference, prefix)
+{
     //Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
     var refAddr = exe.findString(reference, RVA);
     if (refAddr === -1)
@@ -180,7 +206,8 @@ function HideButtonNew(reference, prefix) {
     var suffix = " C7";
     var offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
 
-    if (offset === -1) {
+    if (offset === -1)
+    {
         suffix = " 8D";
         offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
     }
@@ -202,7 +229,8 @@ function HideButtonNew(reference, prefix) {
 //#######################################################################
 //# Purpose: Determine whether this client uses new menu icons          #
 //#######################################################################
-function UseNewIcons() {
+function UseNewIcons()
+{
     return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\menu_icon\\bt_%s.bmp") !== -1);
 }
 
@@ -210,62 +238,77 @@ function UseNewIcons() {
 // Disable for Unsupported Clients - Check for Button bmp //
 //========================================================//
 
-function HideRodex_() {
+function HideRodex_()
+{
     return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\mail", RAW) !== -1 || (UseNewIcons() && exe.findString("navigation") !== -1));
 }
 
-function HideAchieve_() {
+function HideAchieve_()
+{
     return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\achievement", RAW) !== -1 || (UseNewIcons() && exe.findString("achievement") !== -1));
 }
 
-function HideSNSButton_() {
+function HideSNSButton_()
+{
     return (exe.findString("sns") !== -1);
 }
 
-function HideKeyboardButton_() {
+function HideKeyboardButton_()
+{
     return (exe.findString("keyboard") !== -1);
 }
 
-function HideStatusButton_() {
+function HideStatusButton_()
+{
     return (exe.findString("status") !== -1);
 }
 
-function HideEquipButton_() {
+function HideEquipButton_()
+{
     return (exe.findString("equip") !== -1);
 }
 
-function HideItemButton_() {
+function HideItemButton_()
+{
     return (exe.findString("item") !== -1);
 }
 
-function HideSkillButton_() {
+function HideSkillButton_()
+{
     return (exe.findString("skill") !== -1);
 }
 
-function HidePartyButton_() {
+function HidePartyButton_()
+{
     return (exe.findString("party") !== -1);
 }
 
-function HideGuildButton_() {
+function HideGuildButton_()
+{
     return (exe.findString("guild") !== -1);
 }
 
-function HideOptionButton_() {
+function HideOptionButton_()
+{
     return (exe.findString("option") !== -1);
 }
 
-function HideTipButton_() {
+function HideTipButton_()
+{
     return (exe.findString("tip") !== -1);
 }
 
-function HideShopButton_() {
+function HideShopButton_()
+{
     return (exe.findString("shop") !== -1);
 }
 
-function HideAttendanceButton_() {
+function HideAttendanceButton_()
+{
     return (exe.findString("attendance") !== -1);
 }
 
-function HideAdventurerAgencyButton_() {
+function HideAdventurerAgencyButton_()
+{
     return (exe.findString("adventurerAgency") !== -1);
 }

@@ -3,7 +3,8 @@
 //#          DataTxtDecode function                             #
 //###############################################################
 
-function UsePlainTextDescriptions() {
+function UsePlainTextDescriptions()
+{
 
   //Step 1a - Get the Langtype
   var LANGTYPE = GetLangType();//Langtype value overrides Service settings hence they use the same variable - g_serviceType
@@ -20,17 +21,20 @@ function UsePlainTextDescriptions() {
   var repLoc = 7;//Position of JNZ relative to offset
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9+ Clients
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace(" 75 AB 56 57", " 75 AB 57");//remove PUSH ESI
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
   }
 
-   if (offset === -1) {
+   if (offset === -1)
+   {
     code = code.replace(" 75 AB 57", " 75 AB 8B 4D 08 56");
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code =
       " A1" + LANGTYPE //MOV EAX, DWORD PTR DS:[g_serviceType]
     + " 56"            //PUSH ESI

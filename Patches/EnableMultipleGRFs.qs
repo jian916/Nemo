@@ -18,7 +18,8 @@ If you only have 3 GRF files, you would only need to use: 0=first.grf, 1=second.
 //#          INI file and loads the grf names specified in order          #
 //#########################################################################
 
-function EnableMultipleGRFs() {
+function EnableMultipleGRFs()
+{
 
     //Step 1a - Find data.grf location
     var grf = exe.findString("data.grf", RVA).packToHex(4);
@@ -77,7 +78,8 @@ function EnableMultipleGRFs() {
         var addpackOffset = 1;
     }
 
-    if (fnoffset === -1) {//VC9 Client
+    if (fnoffset === -1)
+    { //VC9 Client
         code =
           " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
         + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[addr2]
@@ -86,7 +88,8 @@ function EnableMultipleGRFs() {
         addpackOffset = 1;
     }
 
-    if (fnoffset === -1) {//Older Clients
+    if (fnoffset === -1)
+    { //Older Clients
         code =
             " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
           + " BF AB AB AB 00" //MOV EDI, OFFSET addr2
@@ -179,7 +182,8 @@ function EnableMultipleGRFs() {
 
     //Step 5b - Calculate size of free space that the code & strings will need
     var size = code.hexlength();
-    for (var i = 0; i < strings.length; i++) {
+    for (var i = 0; i < strings.length; i++)
+    {
         size = size + strings[i].length + 1;//1 for NULL
     }
 
@@ -217,7 +221,8 @@ function EnableMultipleGRFs() {
     code = ReplaceVarHex(code, 8, (AddPak - (freeRva + 115) - 5));//AddPak function
 
     //Step 5f - Add the strings into our code as well
-    for (var i=0; strings[i]; i++) {
+    for (var i=0; strings[i]; i++)
+    {
         code = code + strings[i].toHex() + " 00";
     }
     code = code + " 00".repeat(8);

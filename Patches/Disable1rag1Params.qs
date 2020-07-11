@@ -2,7 +2,8 @@
 //# Purpose: Find the 1rag1 comparison and change the JNZ after it to JMP #
 //#########################################################################
 
-function Disable1rag1Params() {
+function Disable1rag1Params()
+{
 
   //Step 1a - Find offset of '1rag1'
   var offset = exe.findString("1rag1", RVA);
@@ -20,7 +21,8 @@ function Disable1rag1Params() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace("FF AB 83 C4", "E8 AB AB AB AB 83 C4");
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }

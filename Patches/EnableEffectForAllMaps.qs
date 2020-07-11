@@ -3,7 +3,8 @@
 //#          skip the Jump for specific maps                        #
 //###################################################################
 
-function EnableEffectForAllMaps() {
+function EnableEffectForAllMaps()
+{
   //Step 1a - Find the address of Lua file prefix string
   var offset = exe.findString("Lua Files\\EffectTool\\", RVA);
   if (offset === -1)

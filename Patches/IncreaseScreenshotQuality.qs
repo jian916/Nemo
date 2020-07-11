@@ -3,11 +3,13 @@
 //#          function to set jquality member to user specified value.                       #
 //###########################################################################################
 
-function IncreaseScreenshotQuality() {
+function IncreaseScreenshotQuality()
+{
 
   //Step 1 - Find the JPEG_CORE_PROPERTIES member assignments (DIBChannels & DIBColor)
   var fpEnb = HasFramePointer();
-  if (fpEnb) {
+  if (fpEnb)
+  {
     var code =
       " C7 85 AB AB FF FF 03 00 00 00" //MOV DWORD PTR SS:[EBP-x], 3 ; DIBChannels = 3
     + " C7 85 AB AB FF FF 02 00 00 00" //MOV DWORD PTR SS:[EBP-y], 2 ; DIBColor = 2
@@ -21,7 +23,8 @@ function IncreaseScreenshotQuality() {
   }
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     if (fpEnb)
       code = code.replace(/ 85 AB AB FF FF/g, " 45 AB");
     else
@@ -53,7 +56,8 @@ function IncreaseScreenshotQuality() {
 
   //Step 2c - Prep code to change DIBChannels member assignment to jquality member assignment.
   //          By default DIBChannels is 3 and DIBColor is 2 already, so overwriting their assignments doesnt matter
-  if (offset2 < -128 || offset2 > 127) {//offset2 is 4 byte
+  if (offset2 < -128 || offset2 > 127)
+  { //offset2 is 4 byte
     if (fpEnb)
       code = " C7 85" + offset2.packToHex(4) + newvalue.packToHex(4); //MOV DWORD PTR SS:[EBP+offset2], newvalue ;offset2 is negative
     else

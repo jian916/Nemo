@@ -19,7 +19,8 @@
 //#          without showing the MessageBox        #
 //##################################################
 
-function IgnoreLuaErrors() {
+function IgnoreLuaErrors()
+{
 
     //Step 1a - Prep code for finding the LuaErrorMsg
     var code =

@@ -22,7 +22,8 @@ function IgnoreResourceErrors()
     //Step 1b - Find the function
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-    if (offset === -1) {//New Client - direct PUSHes ugh
+    if (offset === -1)
+    { //New Client - direct PUSHes ugh
         code =
             " E8 AB AB AB FF" //CALL GDIFlip
           + " 6A 00"          //PUSH 0

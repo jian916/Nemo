@@ -20,7 +20,8 @@
 //#          ROWebBrowser                             #
 //#####################################################
 
-function UseDefaultBrowser() {
+function UseDefaultBrowser()
+{
     //Step 1a - Find the location where client parsing <URL>
     var code =
         " 50"        //PUSH EAX

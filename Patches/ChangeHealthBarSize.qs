@@ -1,5 +1,6 @@
 
-function ChangeHealthBarSize() {
+function ChangeHealthBarSize()
+{
     var code =
         " 8B 8F AB AB AB AB"    //MOV ECX,[EDI+x]
       + " 6A 09"                //PUSH 09

@@ -2,7 +2,8 @@
 //# Purpose: Change the Style parameter used for CreateWindowExA call to include WS_SYSMENU #
 //###########################################################################################
 
-function EnableTitleBarMenu() {
+function EnableTitleBarMenu()
+{
 
   //Step 1a - Find the function's address
   var offset = GetFunction("CreateWindowExA", "USER32.dll");
@@ -18,9 +19,11 @@ function EnableTitleBarMenu() {
   //Step 1c - Find which one precedes Function call
   code = " FF 15" + offset.packToHex(4); //CALL DWORD PTR DS:[<&USER32.CreateWindowExA>]
 
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 8, offsets[i] + 29);//5 + 3 for minimum operand pushes, 5 + 18 for maximum operand pushes + 6 for function call
-    if (offset !== -1) {
+    if (offset !== -1)
+    {
       offset = offsets[i];//Get the corresponding Style push offset
       break;
     }

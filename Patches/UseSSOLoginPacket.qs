@@ -3,7 +3,8 @@
 //#          Login Packet inside CLoginMode::OnChangeState function.            #
 //###############################################################################
 
-function UseSSOLoginPacket() {
+function UseSSOLoginPacket()
+{
 
   //Step 1a - Find the LangType comparison
   var LANGTYPE = GetLangType();//Langtype value overrides Service settings hence they use the same variable - g_serviceType
@@ -21,7 +22,8 @@ function UseSSOLoginPacket() {
   ;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     var code =
       " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
     + " 0F 85 AB AB 00 00"    //JNE addr1
@@ -34,7 +36,8 @@ function UseSSOLoginPacket() {
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     var code =
       " 80 3D AB AB AB 01 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
     + " 0F 85 AB AB 00 00"    //JNE addr1
@@ -47,7 +50,8 @@ function UseSSOLoginPacket() {
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     //Step 1b - Change first JZ to JMP
     exe.replace(offset + code.hexlength() - 15, " 90 E9", PTYPE_HEX);
     return true;

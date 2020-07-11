@@ -18,7 +18,8 @@
 // Author: Secret <secret@rathena.org>
 // To-do: See if it has any undesirable side effect
 
-function AlwaysLoadClientPlugins() {
+function AlwaysLoadClientPlugins()
+{
     // Step 1a - Find SOUNDMODE
     var offset = exe.findString("SOUNDMODE", RVA);
     if (offset === -1)

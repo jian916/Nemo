@@ -2,15 +2,18 @@
 // Patch Functions wrapping over PacketEncryptionKeys function //
 //=============================================================//
 
-function PacketFirstKeyEncryption() {
+function PacketFirstKeyEncryption()
+{
   return PacketEncryptionKeys("$firstkey", 0);
 }
 
-function PacketSecondKeyEncryption() {
+function PacketSecondKeyEncryption()
+{
   return PacketEncryptionKeys("$secondkey", 1);
 }
 
-function PacketThirdKeyEncryption() {
+function PacketThirdKeyEncryption()
+{
   return PacketEncryptionKeys("$thirdkey", 2);
 }
 
@@ -23,7 +26,8 @@ PEncKeys = [];//Initialize array to blank before Packet Key Patches are selected
 delete PEncInsert;//Removing any stray values before Packet Key Patches are selected. Only needed for Obfuscate2
 delete PEncActive;
 
-function PacketEncryptionKeys(varname, index) {
+function PacketEncryptionKeys(varname, index)
+{
 
   //Step 1a - Sanity Check. Check if Packet Encryption is Disabled.
   if (getActivePatches().indexOf(61) !== -1)
@@ -57,7 +61,8 @@ function PacketEncryptionKeys(varname, index) {
       return "Failed in Step 2";
 
     //Step 2b - Replace the PUSHed argument for the index in all of them
-    for ( var i = 0; i < offsets.length; i++) {
+    for ( var i = 0; i < offsets.length; i++)
+    {
       exe.replace(offsets[i] + code.hexlength() - (index + 1) * 5, varname, PTYPE_STRING);
     }
   }
@@ -66,7 +71,8 @@ function PacketEncryptionKeys(varname, index) {
     code = "";
 
     //Step 3a - Fill PEncKeys with existing values if it is empty
-    if (PEncKeys.length === 0) {
+    if (PEncKeys.length === 0)
+    {
       PEncKeys = info.keys;
     }
 
@@ -81,7 +87,8 @@ function PacketEncryptionKeys(varname, index) {
     suffix += " C2 04 00"; //RETN 4
 
     //Step 3d - First add encryption & zero assigner codes for Type 2 (function is Virtualized so we need to write the entire function not just part of it)
-    if (info.type === 2) {
+    if (info.type === 2)
+    {
 
       if (HasFramePointer())
         code += " 8B 45 08";    //MOV EAX, DWORD PTR SS:[EBP+8]
@@ -107,7 +114,8 @@ function PacketEncryptionKeys(varname, index) {
       + suffix
       ;
 
-      if (suffix.hexlength() !== 4) {//adjust the JE & JNE
+      if (suffix.hexlength() !== 4)
+      { //adjust the JE & JNE
         code = code.replace(" 75 19", "75 18").replace(" 74 0F", " 74 0E");
       }
     }
@@ -123,8 +131,10 @@ function PacketEncryptionKeys(varname, index) {
 
 
     //Step 4a - Check if PEncInsert is already defined. If it is we need to empty the other Patches.
-    if (typeof(PEncInsert) !== "undefined") {
-      for (var i = 0; i < 3; i++) {
+    if (typeof(PEncInsert) !== "undefined")
+    {
+      for (var i = 0; i < 3; i++)
+      {
         if (i === index) continue;
         exe.emptyPatch(92 + i);
       }
@@ -156,15 +166,18 @@ function PacketEncryptionKeys(varname, index) {
 // Patch Destructor Functions wrapping over _PacketEncryptionKeys //
 //================================================================//
 
-function _PacketFirstKeyEncryption() {
+function _PacketFirstKeyEncryption()
+{
   return _PacketEncryptionKeys(0);
 }
 
-function _PacketSecondKeyEncryption() {
+function _PacketSecondKeyEncryption()
+{
   return _PacketEncryptionKeys(1);
 }
 
-function _PacketThirdKeyEncryption() {
+function _PacketThirdKeyEncryption()
+{
   return _PacketEncryptionKeys(2);
 }
 
@@ -172,17 +185,21 @@ function _PacketThirdKeyEncryption() {
 //# Purpose: Move the insert operation to any of the other active patches #
 //#########################################################################
 
-function _PacketEncryptionKeys(index) {
+function _PacketEncryptionKeys(index)
+{
 
   //Step 1a - Check if PEncInsert is defined. Remaining steps are needed only if it is
   if (typeof(PEncInsert) === "undefined")
     return;
 
   //Step 1b - Assign PEncActive to an active Packet Key Patch that is not associated with index
-  if (PEncActive === index) {
+  if (PEncActive === index)
+  {
     var patches = getActivePatches();
-    for (var i = 0; i < 3; i++) {
-      if (patches.indexOf(92 + i) !== -1) {
+    for (var i = 0; i < 3; i++)
+    {
+      if (patches.indexOf(92 + i) !== -1)
+      {
         PEncActive = i;
         break;
       }
@@ -190,7 +207,8 @@ function _PacketEncryptionKeys(index) {
   }
 
   //Step 1c - Clear Everything if no other patch is active
-  if (PEncActive === index) {
+  if (PEncActive === index)
+  {
     delete PEncActive;
     delete PEncInsert;
     PEncKeys = [];

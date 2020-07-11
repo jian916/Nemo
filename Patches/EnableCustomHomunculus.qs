@@ -4,7 +4,8 @@
 //###################################################################
 
 MaxHomun = 7000;
-function EnableCustomHomunculus() {//Work In Progress
+function EnableCustomHomunculus()
+{ //Work In Progress
 
   //Step 1a - Find offset of LIF
   var offset = exe.findString("LIF", RVA);
@@ -26,7 +27,8 @@ function EnableCustomHomunculus() {//Work In Progress
   //Step 2a - Extract reference Register, reference Offset and current Register from the instruction before hookLoc
   //          MOV curReg, DWORD PTR DS:[refReg + refOff]
 
-  if (exe.fetchByte(hookLoc - 2) === 0) {//refOff != 0
+  if (exe.fetchByte(hookLoc - 2) === 0)
+  { //refOff != 0
     var modrm = exe.fetchByte(hookLoc - 5);
     var refOff = exe.fetchDWord(hookLoc - 4);
   }
@@ -93,7 +95,8 @@ function EnableCustomHomunculus() {//Work In Progress
   ;
 
   offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     //Step 4b - Replace the 33 with MaxHomun - 6001
     exe.replace(offset + 6, (MaxHomun - 6001).packToHex(4), PTYPE_HEX);
     return true;
@@ -121,7 +124,8 @@ function EnableCustomHomunculus() {//Work In Progress
 //#          at the supplied offset. Used as argument to FetchTillEnd           #
 //###############################################################################
 
-function CheckHomunEoT(opcode, modrm, offset) {
+function CheckHomunEoT(opcode, modrm, offset)
+{
   //SUB reg32_A, reg32_B
   //SAR reg32_A, 2
   if (opcode === 0x2B && exe.fetchUByte(offset + 2) === 0xC1 && exe.fetchUByte(offset + 4) === 0x02 )

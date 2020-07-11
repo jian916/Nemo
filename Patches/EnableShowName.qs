@@ -3,7 +3,8 @@
 //#          '/showname' inside CSession::SetTextType function    #
 //#################################################################
 
-function EnableShowName() {
+function EnableShowName()
+{
 
   //Step 1 - Find the Comparison
   var code =

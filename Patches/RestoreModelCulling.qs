@@ -34,13 +34,16 @@
  *
  */
 
-function RestoreModelCulling() {
+function RestoreModelCulling()
+{
 
     //New clients - find 2 m_isHideCheck and skip.
     var offsets = exe.findCodes(" 80 BE 54 01 00 00 01", PTYPE_HEX, false);
 
-    if (offsets.length === 2) {
-        for (var i = 0; i < offsets.length; i++) {
+    if (offsets.length === 2)
+    {
+        for (var i = 0; i < offsets.length; i++)
+        {
             if (exe.fetchUByte(offsets[i] + 7) != 0x75)  //Check JNZ follow by m_isHideCheck
                 return "Failed in Step 1a - No JNZ found.";
             exe.replace(offsets[i] + 7, " 90 90", PTYPE_HEX);
@@ -59,7 +62,8 @@ function RestoreModelCulling() {
     var jmpCodes = [" 74 1D", " 74 1E", " 74 1F"]; //JZ LOC_END
     var pJmpHideCheck = -1;
 
-    for (var i = 0; i < jmpCodes.length; i++) {
+    for (var i = 0; i < jmpCodes.length; i++)
+    {
         pJmpHideCheck = exe.find(jmpCodes[i], PTYPE_HEX, false, "\xAB", pBase - 10, pBase);
         if (pJmpHideCheck !== -1)
             break;

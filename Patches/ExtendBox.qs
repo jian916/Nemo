@@ -2,15 +2,18 @@
 // Patch Functions wrapping over ExtendBox function //
 //==================================================//
 
-function ExtendChatBox() {
+function ExtendChatBox()
+{
   return ExtendBox(3);
 }
 
-function ExtendChatRoomBox() {
+function ExtendChatRoomBox()
+{
   return ExtendBox(0);
 }
 
-function ExtendPMBox() {
+function ExtendPMBox()
+{
   return ExtendBox(2);
 }
 
@@ -18,7 +21,8 @@ function ExtendPMBox() {
 //# Purpose: Change the Box Limit from 70 (0x46) to 234 (0xEA) #
 //##############################################################
 
-function ExtendBox(index) {
+function ExtendBox(index)
+{
 
   var offset_for_patch = 3;
 

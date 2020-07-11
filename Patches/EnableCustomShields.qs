@@ -4,7 +4,8 @@
 //######################################################################
 
 MaxShield = 10;
-function EnableCustomShields() {//Pre-VC9 Client support not completed
+function EnableCustomShields()
+{ //Pre-VC9 Client support not completed
 
   //===========================================================//
   // Find first inject & return locations - table loading area //
@@ -21,7 +22,8 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
 
   var hookReq = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9+ Clients
 
-  if (hookReq === -1) {
+  if (hookReq === -1)
+  {
     code = code.replace("C7 AB 04", " 6A 03 8B AB C7 00");//PUSH 3 ;
                                                           //MOV ECX, reg32_A
                                                           //MOV DWORD PTR DS:[EAX], OFFSET <guard suffix>
@@ -34,7 +36,8 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     return "Failed in Step 1 - Guard reference missing";
 
   //Step 1c - Extract the register that points to the location to store the suffix.
-  if (type === 1) {
+  if (type === 1)
+  {
     var regPush = " 83 E8 04 50";//SUB EAX, 4 and PUSH EAX
   }
   else {
@@ -141,7 +144,8 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
     return "Failed in Step 3 - GetShieldType call missing";
 
   //Step 3b - Find call to CSession::GetWeaponType before one of the locations.
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = exe.find("E8 AB AB AB AB 85 C0", PTYPE_HEX, true, "\xAB", offsets[i] - 0x40, offsets[i]);//CALL CSession::GetWeaponType followed by TEST EAX, EAX
 
     if (offset === -1)
@@ -202,7 +206,8 @@ function EnableCustomShields() {//Pre-VC9 Client support not completed
   ;
   offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x30, hookReq);
 
-  if (offset !== -1) {
+  if (offset !== -1)
+  {
     exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
   }
   else {

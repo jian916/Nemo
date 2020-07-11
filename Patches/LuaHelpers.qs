@@ -11,7 +11,8 @@ delete AllocType;
 delete LuaState;
 delete LuaFnCaller;
 
-function _GetLuaAddrs() {
+function _GetLuaAddrs()
+{
   //Step 1a - d>s
   var offset = exe.findString("d>s", RVA);
   if (offset === -1)
@@ -48,7 +49,8 @@ function _GetLuaAddrs() {
   EspAlloc = exe.fetchByte(offset2 + 2);
 
   //Step 2d - Extract String Allocator Function Address based on which opcode follows the PUSH
-  switch (exe.fetchUByte(offset + 5)) {
+  switch (exe.fetchUByte(offset + 5))
+  {
     case 0xFF: {//CALL DWORD PTR DS:[func] -> VC9 Clients
       offset += 11;
       StrAlloc = exe.fetchHex(offset - 4, 4);
@@ -76,12 +78,14 @@ function _GetLuaAddrs() {
   code = "8B AB AB AB AB 00"; //MOV reg32_A, DWORD PTR DS:[lua_state]
   offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10); //VC9 - VC10
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = "FF 35 AB AB AB 00"; //PUSH DWORD PTR DS:[lua_state]
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//VC11
   }
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = "A1 AB AB AB 00"; //MOV EAX, DWORD PTR DS:[lua_state]
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//Older Clients
   }
@@ -107,10 +111,12 @@ function _GetLuaAddrs() {
 //# Purpose: Generate code to call Lua Function #
 //###############################################
 
-function GenLuaCaller(addr, name, nameAddr, format, inReg) {
+function GenLuaCaller(addr, name, nameAddr, format, inReg)
+{
 
   //Step 1a - Get the Global Addresses if not already obtained
-  if (typeof(LuaFnCaller) === "undefined") {
+  if (typeof(LuaFnCaller) === "undefined")
+  {
     var result = _GetLuaAddrs();
     if (typeof(result) === "string")
       return result;
@@ -146,7 +152,8 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg) {
   ;
 
   //Step 2b - Fill PrePush ( Older clients )
-  if (AllocType === 1) {
+  if (AllocType === 1)
+  {
     code = code.replace(" PrePush", " 6A" + name.length.packToHex(1)); //PUSH length
   }
   else {
@@ -154,13 +161,15 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg) {
   }
 
   //Step 2c - Fill StrAllocPrep (Older & VC10+ Clients )
-  if (AllocType === 1) {
+  if (AllocType === 1)
+  {
     code = code.replace(" StrAllocPrep",
       " 8D 44 24" + (EspAlloc + 16).packToHex(1) //LEA EAX, [ESP + const2]; const2 = const + 0x18
     + " 50"                                      //PUSH EAX
     );
   }
-  else if (AllocType === 2) {
+  else if (AllocType === 2)
+  {
     code = code.replace(" StrAllocPrep",
       " C7 41 14 0F 00 00 00" //MOV DWORD PTR DS:[ECX+14], 0F
     + " C7 41 10 00 00 00 00" //MOV DWORD PTR DS:[ECX+10], 0
@@ -185,7 +194,8 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg) {
   + " 58"                                   //POP EAX
   ;
 
-  if (AllocType === 1) {//For Older clients
+  if (AllocType === 1)
+  { //For Older clients
     code += " 83 C4 04"; //ADD ESP, 4
   }
 
@@ -196,7 +206,8 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg) {
 //# Purpose: Inject code to load Lua Files #
 //##########################################
 
-function InjectLuaFiles(origFile, nameList, free) {
+function InjectLuaFiles(origFile, nameList, free)
+{
 
   //Step 1a - Find offset of origFile
   var origOffset = exe.findString(origFile, RVA);
@@ -211,7 +222,8 @@ function InjectLuaFiles(origFile, nameList, free) {
   //Step 1c - Find the ECX assignment before it - which is where we will jmp to our code
   var hookLoader = exe.find(" 8B 8E AB AB 00 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
 
-  if (hookLoader === -1) {
+  if (hookLoader === -1)
+  {
     hookLoader = exe.find(" 8B 0D AB AB AB 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
   }
 
@@ -236,7 +248,8 @@ function InjectLuaFiles(origFile, nameList, free) {
 
   //Step 2c - Allocate space if free space is not provided.
   //          Size of code needed = size of String offsets + size of Loaders
-  if (typeof(free) === "undefined" || free === -1) {
+  if (typeof(free) === "undefined" || free === -1)
+  {
     var csize = (nameList.length + 1) * tSize + 6 + nCode.hexlength(); //6 is for the return JMP + a gap
 
     var free = exe.findZeros(csize);
@@ -259,7 +272,8 @@ function InjectLuaFiles(origFile, nameList, free) {
   loaderFunc -= (offset + tSize);//Relative offset to CLua::LoadFile
   offset += (nameList.length + 1) * tSize + 6;//Offset of first string
 
-  for (var i = 0; i < nameList.length; i++) {
+  for (var i = 0; i < nameList.length; i++)
+  {
     lCode += ReplaceVarHex(template, [1, 2], [offset, loaderFunc]);
     offset += nameList[i].length + 1;//1 for NULL
     loaderFunc -= tSize;

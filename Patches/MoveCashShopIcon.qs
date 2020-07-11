@@ -3,7 +3,8 @@
 //#          for Cash Shop Button to the user specified ones               #
 //##########################################################################
 
-function MoveCashShopIcon() {
+function MoveCashShopIcon()
+{
 
   //Step 1a - Find the XCoord calculation pattern
   var code =
@@ -13,17 +14,20 @@ function MoveCashShopIcon() {
   var tgtReg = 2;
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace("81 EA", "2D").replace("52", "50");//change EDX to EAX
     tgtReg = 0;
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     code = code.replace("50", "6A 10 50");//PUSH 10 before PUSH EAX
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-    if (offset !== -1) {//put the PUSH 10 before the CALL
+    if (offset !== -1)
+    { //put the PUSH 10 before the CALL
       exe.replace(offset, " 6A 10", PTYPE_HEX);
       offset += 2;
     }
@@ -33,7 +37,8 @@ function MoveCashShopIcon() {
     return "Failed in Step 1 - Coord calculation missing";
 
   //Step 1b - Accomodate for extra bytes by NOPing those
-  if (tgtReg === 2) {//EDX
+  if (tgtReg === 2)
+  { //EDX
     exe.replace(offset, "90", PTYPE_HEX);
     offset++;
   }
@@ -46,7 +51,8 @@ function MoveCashShopIcon() {
 
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
 
-  if (offset2 === -1) {
+  if (offset2 === -1)
+  {
     code = code.replace("8B 0D", "A1");
     offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
   }
@@ -67,7 +73,8 @@ function MoveCashShopIcon() {
   //Step 2b - Prep code to insert based on the sign of each coordinate (negative values are relative to width and height respectively)
   code = "";
 
-  if (yCoord < 0) {
+  if (yCoord < 0)
+  {
     code +=
       " 8B 0D" + g_ScreenStats          //MOV ECX, DWORD PTR DS:[g_ScreenStats]
     + " 8B 49 28"                       //MOV ECX, DWORD PTR DS:[ECX+28]
@@ -80,7 +87,8 @@ function MoveCashShopIcon() {
 
   code += " 89 4C 24 04";               //MOV DWORD PTR DS:[ESP+4], ECX
 
-  if (xCoord < 0) {
+  if (xCoord < 0)
+  {
     code +=
       " 8B 0D" + g_ScreenStats          //MOV ECX, DWORD PTR DS:[g_ScreenStats]
     + " 8B 49 24"                       //MOV ECX, DWORD PTR DS:[ECX+24]
@@ -113,6 +121,7 @@ function MoveCashShopIcon() {
 //=====================================================//
 // Only Enable for Clients that actually have the icon //
 //=====================================================//
-function MoveCashShopIcon_() {
+function MoveCashShopIcon_()
+{
   return (exe.findString("NC_CashShop", RAW) !== -1);
 }

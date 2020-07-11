@@ -2,7 +2,8 @@
 //# Purpose: Skips the check that requires the player to not be in a clan #
 //# Author : Functor                                                      #
 //#########################################################################
-function EnableGuildWhenInClan() {
+function EnableGuildWhenInClan()
+{
 
     // Step 1 - Find Message ID #2605 reference
     var code =
@@ -46,6 +47,7 @@ function EnableGuildWhenInClan() {
 }
 
 // Disable for unsupported clients
-function EnableGuildWhenInClan_() {
+function EnableGuildWhenInClan_()
+{
     return exe.findString("/clanchat", RAW) !== -1;
 }

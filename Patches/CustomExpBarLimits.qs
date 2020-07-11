@@ -3,7 +3,8 @@
 //#          to display Job & Base Exp Bars based on user specified limits      #
 //###############################################################################
 
-function CustomExpBarLimits() {
+function CustomExpBarLimits()
+{
   var matches;
   //Step 1a - Find the reference PUSHes (coord PUSHes ?)
   var code =
@@ -31,7 +32,8 @@ function CustomExpBarLimits() {
   var type = 1;//VC6 style
   var offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     suffix =
       " 8B 8E AB 00 00 00" //MOV ECX, DWORD PTR DS:[ESI+const]
     + " BF 63 00 00 00"    //MOV EDI, 63
@@ -41,7 +43,8 @@ function CustomExpBarLimits() {
     offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
   }
 
-  if (offset === -1) {
+  if (offset === -1)
+  {
     suffix = suffix.replace(" 8B 8E AB 00 00 00", "");
     type = 3;//VC9 style 2
     offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
@@ -58,7 +61,8 @@ function CustomExpBarLimits() {
   offset += code.hexlength() + suffix.hexlength();
 
   //Step 1d - Extract the base level comparison (for VC9+ clients we need to find the comparison after offset)
-  if (type === 1) {
+  if (type === 1)
+  {
     var gLevel = exe.fetchDWord(offset - 9);
   }
   else {
@@ -84,7 +88,8 @@ function CustomExpBarLimits() {
   var gBarOn = gNoBase + 8;
 
   //Step 2c - Extract ESI offset and baseEnd
-  if (exe.fetchUByte(refOffsets[1] + 8) >= 0xD0) {
+  if (exe.fetchUByte(refOffsets[1] + 8) >= 0xD0)
+  {
     var funcOff = exe.fetchByte(refOffsets[1] - 1);
     var baseEnd = (refOffsets[1] + 11) + exe.fetchByte(refOffsets[1] + 10);
   }
@@ -109,11 +114,13 @@ function CustomExpBarLimits() {
   //Step 3b - Find jobEnd (JMP after the last PUSH will lead to jobEnd)
   offset = refOffsets2[refOffsets2.length - 1] + code.hexlength();
 
-  if (exe.fetchUByte(offset) === 0xEB) {
+  if (exe.fetchUByte(offset) === 0xEB)
+  {
     offset = (offset + 2) + exe.fetchByte(offset + 1);
   }
 
-  if (exe.fetchUByte(offset + 1) >= 0xD0) {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
+  if (exe.fetchUByte(offset + 1) >= 0xD0)
+  {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
     var jobEnd = offset + 2;
   }
   else {
@@ -141,11 +148,13 @@ function CustomExpBarLimits() {
   var tblSize = 0;
   var index = -1;
 
-  while (!fp.eof()) {
+  while (!fp.eof())
+  {
     var line = fp.readline().trim();
     if (line === "") continue;
 
-    if (matches = line.match(/^([\d\-,\s]+):$/)) {
+    if (matches = line.match(/^([\d\-,\s]+):$/))
+    {
       index++;
       var idSet = matches[1].split(",");
       idLvlTable[index] = {
@@ -153,7 +162,8 @@ function CustomExpBarLimits() {
         "lvlTable":[" FF 00", " FF 00"]
       };
 
-      for (var i = 0; i < idSet.length; i++) {
+      for (var i = 0; i < idSet.length; i++)
+      {
         var limits = idSet[i].split("-");
         if (limits.length === 1)
           limits[1] = limits[0];
@@ -166,10 +176,12 @@ function CustomExpBarLimits() {
       idLvlTable[index].idTable += " FF FF";
       tblSize += 2;
     }
-    else if (matches = line.match(/^([bj])\s*=>\s*(\d+)\s*,/)) {
+    else if (matches = line.match(/^([bj])\s*=>\s*(\d+)\s*,/))
+    {
       var limit = parseInt(matches[2]).packToHex(2);
 
-      if (matches[1] === "b") {
+      if (matches[1] === "b")
+      {
         idLvlTable[index].lvlTable[0] = limit;
       }
       else {
@@ -267,7 +279,8 @@ function CustomExpBarLimits() {
   var tblAddrData = "";
   var tblData = "";
 
-  for (var i = 0, addr = 0; i < idLvlTable.length; i++) {
+  for (var i = 0, addr = 0; i < idLvlTable.length; i++)
+  {
     tblAddrData += (freeRva + addr).packToHex(4);
     tblData += idLvlTable[i].idTable;
     addr += idLvlTable[i].idTable.hexlength();

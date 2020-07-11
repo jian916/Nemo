@@ -1,6 +1,7 @@
 // Change hardcoded quick item switch delay
 // Author: mrjnumber1
-function ChangeQuickSwitchDelay() {
+function ChangeQuickSwitchDelay()
+{
   var tick = 10;
   var tick_ms = tick*1000;
   var code =
@@ -11,7 +12,8 @@ function ChangeQuickSwitchDelay() {
 
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
 
-  if (offsets.length === 0) {
+  if (offsets.length === 0)
+  {
     code = code.replace(" 8B AB AB AB AB 00", " 8B AB AB AB AB 01");
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
@@ -69,6 +71,7 @@ function ChangeQuickSwitchDelay() {
 //==============================//
 // Disable for Unsupported date //
 //==============================//
-function ChangeQuickSwitchDelay_() {
+function ChangeQuickSwitchDelay_()
+{
   return (exe.getClientDate() >= 20170517);
 }

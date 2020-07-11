@@ -2,7 +2,8 @@
 //# Purpose: Extract Packet Keys from loaded client and dump to file #
 //####################################################################
 
-function GetPacketKeys() {
+function GetPacketKeys()
+{
   //Step 1a - Get the Packet Key Info using fetchPacketKeyInfo function
   var info = FetchPacketKeyInfo();
 
