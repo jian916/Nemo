@@ -1,3 +1,10 @@
+# 2020-07-11 Patches update
+
+## Patches
+
+- Fix patch [Change minimal screen resolution limit](http://nemo.herc.ws/patches/ChangeMinimalResolutionLimit/#success-clients). (fix by @jchcc).
+
+
 # 2020-07-09 Patches update
 
 ## Patches
