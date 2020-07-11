@@ -245,10 +245,10 @@ function CustomAuraLimits() {
   + " B9" + GenVarHex(1)      //MOV ECX, g_session
   + " E8" + GenVarHex(2)      //CALL jobIdFunc
   + " BB" + GenVarHex(3)      //MOV EBX, tblAddr
-  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];	addr6
+  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];    addr6
   + " 85 C9"                  //TEST ECX, ECX
   + " 74 49"                  //JE SHORT addr1
-  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];	addr5
+  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];    addr5
   + " 85 D2"                  //TEST EDX, EDX
   + " 78 15"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX, EDX
@@ -258,15 +258,15 @@ function CustomAuraLimits() {
   + " 78 09"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX,EDX
   + " 7E 0A"                  //JLE SHORT addr4
-  + " 83 C1 04"               //ADD ECX, 4;	addr3
+  + " 83 C1 04"               //ADD ECX, 4;    addr3
   + " EB E4"                  //JMP SHORT addr5
-  + " 83 C3 08"               //ADD EBX, 8;	addr2
+  + " 83 C3 08"               //ADD EBX, 8;    addr2
   + " EB D9"                  //JMP SHORT addr6
-  + " A1" + GenVarHex(4)      //MOV EAX, DWORD PTR DS:[g_level];	addr4
+  + " A1" + GenVarHex(4)      //MOV EAX, DWORD PTR DS:[g_level];    addr4
   + " 8B 4B 04"               //MOV ECX, DWORD PTR DS:[EBX+4]
   + " 85 C9"                  //TEST ECX, ECX
   + " 74 1C"                  //JE SHORT addr1
-  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];	addr9
+  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];    addr9
   + " 85 D2"                  //TEST EDX, EDX
   + " 78 15"                  //JS SHORT addr1
   + " 39 D0"                  //CMP EAX, EDX
@@ -276,7 +276,7 @@ function CustomAuraLimits() {
   + " 78 09"                  //JS SHORT addr1
   + " 39 D0"                  //CMP EAX, EDX
   + " 7E 14"                  //JLE SHORT addr8
-  + " 83 C1 05"               //ADD ECX, 5;	addr7
+  + " 83 C1 05"               //ADD ECX, 5;    addr7
   + " EB E4"                  //JMP SHORT addr9
   + " 5B"                     //POP EBX; addr1
   + " 5A"                     //POP EDX

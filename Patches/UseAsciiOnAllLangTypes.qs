@@ -10,7 +10,7 @@ function UseAsciiOnAllLangTypes() {
   //         JNZ SHORT addr
   var offset = exe.findCode("F6 04 AB 80 75", PTYPE_HEX, true, "\xAB");
   if (offset === -1)
-	var offset = exe.findCode("80 3C AB 00 7C", PTYPE_HEX, true, "\xAB");
+    var offset = exe.findCode("80 3C AB 00 7C", PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in Step 1";
   

@@ -28,8 +28,8 @@ function EnforceOfficialLoginBackground() {
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   if (offsets.length === 0) //newer clients
   {
-	code = code.replace(" 83 F8 0E 74 AB", "");   //remove CMP EAX, 0E and JZ SHORT addr
-	offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 83 F8 0E 74 AB", "");   //remove CMP EAX, 0E and JZ SHORT addr
+    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
   if (offsets.length === 0)
     return "Failed in Step 1";

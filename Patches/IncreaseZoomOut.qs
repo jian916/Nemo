@@ -52,10 +52,10 @@ function IncreaseZoomOut(newvalue)
         if (offsets.length !== 2 && offsets.length !== 3)
             return "Failed in Step 3. Found wrong number of enabled /zoom usage count.";
         for (var i = 0; i < offsets.length; i++)
-		{
-			exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
-		}
-		
+        {
+            exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
+        }
+        
 
         // search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
         var code2 = " C7 05 " + zoom2 + " 00 00 C8 43"; // mov zoom2, 480.0
@@ -65,9 +65,9 @@ function IncreaseZoomOut(newvalue)
         if (offsets.length !== 2 && offsets.length !== 3)
             return "Failed in Step 3. Found wrong number of disabled /zoom usage count.";
         for (i = 0; i < offsets.length; i++)
-		{
-			exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
-		}
+        {
+            exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
+        }
 
         //Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)
         var code =
@@ -81,21 +81,21 @@ function IncreaseZoomOut(newvalue)
         var enabledOffset = 4;
         var disabledOffset = 14;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-		if (offset === -1)
-		{
-			code =
+        if (offset === -1)
+        {
+            code =
             "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_enabled
-			code1 +                      // mov zoom2, 480.0
+            code1 +                      // mov zoom2, 480.0
             "EB 12" +                    // jmp +12
             "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_disabled
-			code2 +                      // mov zoom2, 480.0
+            code2 +                      // mov zoom2, 480.0
             "F3 0F 10 05 AB AB AB AB" +  // movss xmm0, ADDR1
             "F3 0F 10 15 AB AB AB AB" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2";                  // comiss xmm0, xmm2
-			enabledOffset = 4;
-			disabledOffset = 24;
-			offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-		}
+            enabledOffset = 4;
+            disabledOffset = 24;
+            offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        }
         if (offset === -1)
             return "Failed in Step 4";
 

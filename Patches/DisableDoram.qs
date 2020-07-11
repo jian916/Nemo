@@ -17,7 +17,7 @@ function DisableDoram() {
   
   if (offset === -1)
     return "Failed in step 1";
-	
+    
   exe.replace(offset, "90 6A 00", PTYPE_HEX);
 
   // Step 2a - MOV pattern
@@ -62,11 +62,11 @@ function DisableDoram() {
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in step 3";
-	
+    
   exe.replace(offset + code.hexlength(), "90 90 90 90 90 90", PTYPE_HEX);
   return true;
 }
 
 function DisableDoram_() {
-	return exe.getClientDate() <= 20170614;
+    return exe.getClientDate() <= 20170614;
 }

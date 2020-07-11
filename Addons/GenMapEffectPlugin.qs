@@ -5,24 +5,24 @@
 
 function GenMapEffectPlugin() {
   
-	//Step 1 - Open the Template file (making sure it exists before anything else)
+    //Step 1 - Open the Template file (making sure it exists before anything else)
   var fp = new BinFile();
-	if (!fp.open(APP_PATH + "/Input/rdll2.asi"))
-		throw "Error: Base File - rdll2.asi is missing from Input folder";
-	
+    if (!fp.open(APP_PATH + "/Input/rdll2.asi"))
+        throw "Error: Base File - rdll2.asi is missing from Input folder";
+    
   //Step 2a - Find offset of xmas_fild01.rsw
-	var offset = exe.findString("xmas_fild01.rsw", RVA);
-	if (offset === -1)
-		throw "Error: xmas_fild01 missing";
-	
+    var offset = exe.findString("xmas_fild01.rsw", RVA);
+    if (offset === -1)
+        throw "Error: xmas_fild01 missing";
+    
   //Step 2b - Find the CGameMode_Initialize_EntryPtr using the offset
-	offset = exe.findCode(offset.packToHex(4) + " 8A", PTYPE_HEX, false);
-	if (offset === -1)
-		throw "Error: xmas_fild01 reference missing";
-	
+    offset = exe.findCode(offset.packToHex(4) + " 8A", PTYPE_HEX, false);
+    if (offset === -1)
+        throw "Error: xmas_fild01 reference missing";
+    
   //Step 2c - Save the EntryPtr address.
-	var CI_Entry = offset - 1;
-	
+    var CI_Entry = offset - 1;
+    
   //Step 3a - Look for g_Weather assignment before EntryPtr
   var code = 
       " B9 AB AB AB 00" //MOV ECX, g_Weather
@@ -218,8 +218,8 @@ function GenMapEffectPlugin() {
   var CW_LSakura = exe.Raw2Rva(offset2).packToHex(4);
   
   //Step 12a - Read the input dll file
-	var dll = fp.readHex(0,0x2000);
-	fp.close();
+    var dll = fp.readHex(0,0x2000);
+    fp.close();
   
   //Step 12b - Fill in the values
   dll = dll.replace(/ C1 C1 C1 C1/i, gWeather);
@@ -244,35 +244,35 @@ function GenMapEffectPlugin() {
   dll = dll.replace(/ 6C 5D C3/i, gR_clrColor + " 5D C3");
  
   //Step 12c - Write to output dll file.
-	fp.open(APP_PATH + "/Output/rdll2_" + exe.getClientDate() + ".asi", "w");
-	fp.writeHex(0,dll);
-	fp.close();
+    fp.open(APP_PATH + "/Output/rdll2_" + exe.getClientDate() + ".asi", "w");
+    fp.writeHex(0,dll);
+    fp.close();
   
-	//Step 12d - Also write out the values to header file (client.h)
-	var fp2 = new TextFile();
-	fp2.open(APP_PATH + "/Output/client_" + exe.getClientDate() + ".h", "w");
-	fp2.writeline("#include <WTypes.h>");
-	fp2.writeline("\n// Client Date : " + exe.getClientDate());
-	fp2.writeline("\n// Client offsets - some are #define because they were appearing in multiple locations unnecessarily");
-	fp2.writeline("#define G_WEATHER 0x" + gWeather.toBE() + ";");
-	fp2.writeline("#define G_RENDERER 0x" + gRenderer.toBE() + ";");
-	fp2.writeline("#define G_USEEFFECT 0x" + gUseEffect.toBE() + ";");
-	fp2.writeline("\nDWORD CWeather_EffectId2LaunchFuncAddr[] = {\n\tNULL, //CEFFECT_NONE");
-	fp2.writeline("\t0x" + CW_LCloud.toBE() + ", // CEFFECT_SKY -> void CWeather::LaunchCloud(CWeather this<ecx>, char param)");
-	fp2.writeline("\t0x" + CW_LSnow.toBE() + ", // CEFFECT_SNOW -> void CWeather::LaunchSnow(CWeather this<ecx>)");
-	fp2.writeline("\t0x" + CW_LMaple.toBE() + ", // CEFFECT_MAPLE -> void CWeather::LaunchMaple(CWeather this<ecx>)");
-	fp2.writeline("\t0x" + CW_LSakura.toBE() + ", // CEFFECT_SAKURA -> void CWeather::LaunchSakura(CWeather this<ecx>)");
-	fp2.writeline("\t0x" + CW_LPokJuk.toBE() + ", // CEFFECT_POKJUK -> void CWeather::LaunchPokJuk(CWeather this<ecx>)");
-	fp2.writeline("\t0x" + CW_LNight.toBE() + ", // CEFFECT_NIGHT -> void CWeather::LaunchNight(CWeather this<ecx>)");
-	fp2.writeline("};\n");
-	
-	fp2.writeline("#define CGameMode_Initialize_EntryPtr (void*)0x" + exe.Raw2Rva(CI_Entry ).toBE(4) + ";");
-	fp2.writeline("#define CGameMode_OnInit_EntryPtr (void*)0x"     + exe.Raw2Rva(CO_Entry ).toBE(4) + ";");
-	fp2.writeline("void* CGameMode_Initialize_RetPtr = (void*)0x"   + exe.Raw2Rva(CI_Return).toBE(4) + ";");
-	fp2.writeline("void* CGameMode_OnInit_RetPtr = (void*)0x"       + exe.Raw2Rva(CO_Return).toBE(4) + ";");
+    //Step 12d - Also write out the values to header file (client.h)
+    var fp2 = new TextFile();
+    fp2.open(APP_PATH + "/Output/client_" + exe.getClientDate() + ".h", "w");
+    fp2.writeline("#include <WTypes.h>");
+    fp2.writeline("\n// Client Date : " + exe.getClientDate());
+    fp2.writeline("\n// Client offsets - some are #define because they were appearing in multiple locations unnecessarily");
+    fp2.writeline("#define G_WEATHER 0x" + gWeather.toBE() + ";");
+    fp2.writeline("#define G_RENDERER 0x" + gRenderer.toBE() + ";");
+    fp2.writeline("#define G_USEEFFECT 0x" + gUseEffect.toBE() + ";");
+    fp2.writeline("\nDWORD CWeather_EffectId2LaunchFuncAddr[] = {\n\tNULL, //CEFFECT_NONE");
+    fp2.writeline("\t0x" + CW_LCloud.toBE() + ", // CEFFECT_SKY -> void CWeather::LaunchCloud(CWeather this<ecx>, char param)");
+    fp2.writeline("\t0x" + CW_LSnow.toBE() + ", // CEFFECT_SNOW -> void CWeather::LaunchSnow(CWeather this<ecx>)");
+    fp2.writeline("\t0x" + CW_LMaple.toBE() + ", // CEFFECT_MAPLE -> void CWeather::LaunchMaple(CWeather this<ecx>)");
+    fp2.writeline("\t0x" + CW_LSakura.toBE() + ", // CEFFECT_SAKURA -> void CWeather::LaunchSakura(CWeather this<ecx>)");
+    fp2.writeline("\t0x" + CW_LPokJuk.toBE() + ", // CEFFECT_POKJUK -> void CWeather::LaunchPokJuk(CWeather this<ecx>)");
+    fp2.writeline("\t0x" + CW_LNight.toBE() + ", // CEFFECT_NIGHT -> void CWeather::LaunchNight(CWeather this<ecx>)");
+    fp2.writeline("};\n");
+    
+    fp2.writeline("#define CGameMode_Initialize_EntryPtr (void*)0x" + exe.Raw2Rva(CI_Entry ).toBE(4) + ";");
+    fp2.writeline("#define CGameMode_OnInit_EntryPtr (void*)0x"     + exe.Raw2Rva(CO_Entry ).toBE(4) + ";");
+    fp2.writeline("void* CGameMode_Initialize_RetPtr = (void*)0x"   + exe.Raw2Rva(CI_Return).toBE(4) + ";");
+    fp2.writeline("void* CGameMode_OnInit_RetPtr = (void*)0x"       + exe.Raw2Rva(CO_Return).toBE(4) + ";");
 
   fp2.writeline("\r\n#define GR_CLEAR " + (parseInt(gR_clrColor, 16)/4) + ";");
-	fp2.close();
-	
-	return "MapEffect plugin for the loaded client has been generated in Output folder";
+    fp2.close();
+    
+    return "MapEffect plugin for the loaded client has been generated in Output folder";
 }

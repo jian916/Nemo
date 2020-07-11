@@ -186,10 +186,10 @@ function CustomExpBarLimits() {
   + " B9" + GenVarHex(1)      //MOV ECX, g_session
   + " E8" + GenVarHex(2)      //CALL CSession::jobIdFunc
   + " BB" + GenVarHex(3)      //MOV EBX, tblAddr
-  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];	addr6
+  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];    addr6
   + " 85 C9"                  //TEST ECX, ECX
   + " 74 26"                  //JE SHORT addr1
-  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];	addr5
+  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];    addr5
   + " 85 D2"                  //TEST EDX, EDX
   + " 78 15"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX, EDX
@@ -199,9 +199,9 @@ function CustomExpBarLimits() {
   + " 78 09"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX, EDX
   + " 7E 0A"                  //JLE SHORT addr4
-  + " 83 C1 04"               //ADD ECX, 4;	addr3
+  + " 83 C1 04"               //ADD ECX, 4;    addr3
   + " EB E4"                  //JMP SHORT addr5
-  + " 83 C3 08"               //ADD EBX, 8;	addr2
+  + " 83 C3 08"               //ADD EBX, 8;    addr2
   + " EB D9"                  //JMP SHORT addr6
   + " 8D 7B 04"               //LEA EDI, [EBX+4]; addr4
   + " EB 05"                  //JMP SHORT addr7

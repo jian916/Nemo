@@ -727,7 +727,7 @@ function GetOpDetails(opcode, modrm, offset) {
     //Step 2a - Split the required parts
     details.mode = (modrm & 0xC0) >> 6;
     details.ro   = (modrm & 0x38) >> 3;
-	  details.rm   = (modrm & 0x07);
+      details.rm   = (modrm & 0x07);
     
     //Step 2b - Start with 2 (Opcode + ModRM)
     details.codesize = 2;

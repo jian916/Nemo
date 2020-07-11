@@ -34,14 +34,14 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
   if (offset2 === -1)
   {  //new clients
-	code = 
-	  " 8B AB AB 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
-	+ " FF 35 AB AB AB AB"    //PUSH totExp
-	+ " FF 35 AB AB AB AB"    //PUSH curExp.sign bit	
-	+ " FF 35 AB AB AB AB"    //PUSH curExp
-	+ " E8"                //CALL loaderFunc
+    code = 
+      " 8B AB AB 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
+    + " FF 35 AB AB AB AB"    //PUSH totExp
+    + " FF 35 AB AB AB AB"    //PUSH curExp.sign bit    
+    + " FF 35 AB AB AB AB"    //PUSH curExp
+    + " E8"                //CALL loaderFunc
     ;
-	offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
+    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
     var newclient = 1;
   }
     
@@ -61,7 +61,7 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   {
   var curExpBase = exe.fetchDWord(offset2 - 9);
   var totExpBase = exe.fetchDWord(offset2 - 21);
-  }	  
+  }      
   //Step 2c - Look for the double PUSH pattern again after the first one.
   offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset2, offset + 0x300);
   if (offset2 === -1)
@@ -79,7 +79,7 @@ function ShowExpNumbers() {//To Do - Make color and coords configurable
   {
   var curExpJob = exe.fetchDWord(offset2 - 9);
   var totExpJob = exe.fetchDWord(offset2 - 21);
-  }	  
+  }      
   
   //Step 3a - Find address of "SP"
   offset = exe.findString("SP", RVA);

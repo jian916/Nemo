@@ -19,10 +19,10 @@ function GetPacketKeys() {
   keys[2] = "0x" + info.keys[2].toBE();
   
   //Step 2 - Write them to file.
-	var fp = new TextFile();
-	fp.open(APP_PATH + "/Output/PacketKeys_" + exe.getClientDate() + ".txt", "w");
-	fp.writeline("Packet Keys : (" + keys.join(",") + ")");
-	fp.close();
+    var fp = new TextFile();
+    fp.open(APP_PATH + "/Output/PacketKeys_" + exe.getClientDate() + ".txt", "w");
+    fp.writeline("Packet Keys : (" + keys.join(",") + ")");
+    fp.close();
 
-	return "Packet Keys have been written to Output folder";
+    return "Packet Keys have been written to Output folder";
 }

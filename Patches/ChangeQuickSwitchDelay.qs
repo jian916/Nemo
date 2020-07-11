@@ -13,7 +13,7 @@ function ChangeQuickSwitchDelay() {
   
   if (offsets.length === 0) {
     code = code.replace(" 8B AB AB AB AB 00", " 8B AB AB AB AB 01");
-	offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
   
   var size = offsets.length;
@@ -28,19 +28,19 @@ function ChangeQuickSwitchDelay() {
     return "Patch Cancelled - New value is same as old";
 
   var new_tick_ms = new_tick * 1000;
-	
+    
   for (var i = 0; i < size; ++i)
   {
     // replace the first found values
-	exe.replace(offsets[i]+1, new_tick_ms.packToHex(4), PTYPE_HEX);
-	
-	// replace the later values that are shown in the chat window
-	// "n seconds to next quick switch ..."
+    exe.replace(offsets[i]+1, new_tick_ms.packToHex(4), PTYPE_HEX);
+    
+    // replace the later values that are shown in the chat window
+    // "n seconds to next quick switch ..."
     var start = offsets[i]+17;
-	var end = start + 50;
-	code = " B8" + tick.packToHex(4); // MOV eax, 10 
+    var end = start + 50;
+    code = " B8" + tick.packToHex(4); // MOV eax, 10 
     var offset = exe.find(code, PTYPE_HEX, true, "\xAB", start, end);
-	if (offset === -1) 
+    if (offset === -1) 
       return "Failed in Step 2 - Find delay subtraction for spot " + i;
     exe.replace(offset+1, new_tick.packToHex(4), PTYPE_HEX);
   

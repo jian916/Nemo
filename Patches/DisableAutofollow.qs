@@ -23,7 +23,7 @@ function DisableAutofollow() {
   
   if (offsets.length === 0) { // 2017 clients [Secret]
     code = code.replace(" A3 AB AB AB 00", " A3 AB AB AB AB");
-	offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
   
   if (offsets.length === 0) {

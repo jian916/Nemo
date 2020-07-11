@@ -120,69 +120,69 @@ function ChangeMinimalResolutionLimit()
     exe.replace(offset + widthOffset2, width, PTYPE_HEX);
     exe.replace(offset + heightOffset1, height, PTYPE_HEX);
     exe.replace(offset + heightOffset2, height, PTYPE_HEX);
-	
-	
-	//Fix potential crash when access the Advanced Settings
-	var screenWidthAdd = exe.fetchHex(offset + screenWidth1Offset, 4);
-	var screenHeightAdd = exe.fetchHex(offset + screenHeight1Offset, 4);
-	
-	code =
-	    "3B 3D " + screenWidthAdd +    //cmp edi, screenWidth
-		"8B BD AB AB AB AB " +         //mov edi, [ebp-x]
-		"75 AB " +                     //jne short
-		"3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-		"75 AB ";                      //jne short
-	
-	offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-	if (offset === -1) //Newer clients
-	{
-		code =
-			"3B AB " + screenWidthAdd +    //cmp reg, screenWidth
-			"75 AB " +                     //jne short
-			"3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-			"75 AB " +                     //jne short
-			"3B ";                         //cmp reg, screenColor
-			
-		offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    
+    
+    //Fix potential crash when access the Advanced Settings
+    var screenWidthAdd = exe.fetchHex(offset + screenWidth1Offset, 4);
+    var screenHeightAdd = exe.fetchHex(offset + screenHeight1Offset, 4);
+    
+    code =
+        "3B 3D " + screenWidthAdd +    //cmp edi, screenWidth
+        "8B BD AB AB AB AB " +         //mov edi, [ebp-x]
+        "75 AB " +                     //jne short
+        "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
+        "75 AB ";                      //jne short
+    
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    if (offset === -1) //Newer clients
+    {
+        code =
+            "3B AB " + screenWidthAdd +    //cmp reg, screenWidth
+            "75 AB " +                     //jne short
+            "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
+            "75 AB " +                     //jne short
+            "3B ";                         //cmp reg, screenColor
+            
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-	}
-	if (offset === -1)
-		return "Failed in step 2a";
-		
-	code = 
-	    "A3 AB AB AB AB " +              //mov resolutionListIndex, eax
-		"89 AB AB 00 00 00 ";            //mov [reg+y], eax
-	
-	offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
-	if (offset === -1)
-		return "Failed in step 2b";
-	
-	code = exe.fetchHex(offset, 5);
-	var retAdd = offset + 5;
-	
-	var ins =
-	    "83 F8 00 " +                               //cmp eax,0
-		"7D 02 " +                                  //jnl 02
-		"31 C0 " +                                  //xor eax,eax
-		code +                                      //mov resolutionListIndex, eax
-		+ " 68" + exe.Raw2Rva(retAdd).packToHex(4)  //push retAdd
-		+ " C3";                                    //ret
-		
-	var size = ins.hexlength();
-	var free = exe.findZeros(size + 4);
-	if (free === -1)
-		return "Failed in Step 3 - No enough free space";
-	
-		
-	var jump = exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5);
-	
-	code = " E9" + jump.packToHex(4);
-	
-	
-	exe.insert(free, size + 4, ins, PTYPE_HEX);
-	exe.replace(offset, code, PTYPE_HEX);
-		
-	
+    }
+    if (offset === -1)
+        return "Failed in step 2a";
+        
+    code = 
+        "A3 AB AB AB AB " +              //mov resolutionListIndex, eax
+        "89 AB AB 00 00 00 ";            //mov [reg+y], eax
+    
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+    if (offset === -1)
+        return "Failed in step 2b";
+    
+    code = exe.fetchHex(offset, 5);
+    var retAdd = offset + 5;
+    
+    var ins =
+        "83 F8 00 " +                               //cmp eax,0
+        "7D 02 " +                                  //jnl 02
+        "31 C0 " +                                  //xor eax,eax
+        code +                                      //mov resolutionListIndex, eax
+        + " 68" + exe.Raw2Rva(retAdd).packToHex(4)  //push retAdd
+        + " C3";                                    //ret
+        
+    var size = ins.hexlength();
+    var free = exe.findZeros(size + 4);
+    if (free === -1)
+        return "Failed in Step 3 - No enough free space";
+    
+        
+    var jump = exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5);
+    
+    code = " E9" + jump.packToHex(4);
+    
+    
+    exe.insert(free, size + 4, ins, PTYPE_HEX);
+    exe.replace(offset, code, PTYPE_HEX);
+        
+    
 
     return true;
 }
