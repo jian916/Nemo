@@ -17,7 +17,7 @@ fi
 
 export DATA=$(git diff)
 if [[ -n "${DATA}" ]]; then
-    echo "Found wrong end lines or BOM chars in files"
+    echo "Found wrong end lines or tabs or BOM chars in files"
     git diff
     exit 1
 fi
