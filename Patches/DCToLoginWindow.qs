@@ -7,11 +7,11 @@ function DCToLoginWindow()
 {
 
   //Step 1a - Sanity Check. Make Sure Restore Login Window is enabled.
-  if (getActivePatches().indexOf(40) === -1)
+  if (getActivePatches().indexOf(40) === -1 && exe.getClientDate() < 20181113)
     return "Patch Cancelled - Restore Login Window patch is necessary but not enabled";
 
   //Step 1b - Find the MsgString ID references of "Sorry the character you are trying to use is banned for testing connection." - common in Login/Char & Map server DC
-  var code = " 68 35 06 00 00"; //PUSH 635
+  var code = " 68 E5 07 00 00 E8"; //PUSH 7E5
 
   var offsets = exe.findCodes(code, PTYPE_HEX, false);
   if (offsets.length !== 2)//1 for Login/Char & 1 for Map
@@ -28,7 +28,7 @@ function DCToLoginWindow()
     return "Failed in Part 2 - Format string missing";
 
   //Step 2b - Find its reference after the MsgString ID PUSH
-  offset = exe.find(" 68" + offset.packToHex(4), PTYPE_HEX, false, "\xAB", offsets[1], offsets[1] + 0x120);
+  var soffset = exe.find(" 68" + offset.packToHex(4), PTYPE_HEX, false, "\xAB", offsets[1], offsets[1] + 0x120);
   if (offset === -1)
     return "Failed in Part 2 - Format reference missing";
 
@@ -37,12 +37,24 @@ function DCToLoginWindow()
     " E8 AB AB AB FF"    //CALL addr
   + " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
   ;
+  var refOffset = 5;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 0x5, offset + 0x80);
+  offset = exe.find(code, PTYPE_HEX, true, "\xAB", soffset + 0x5, soffset + 0x80);
+  if (offset === -1)
+  {
+    code =
+      " C2 04 00"           //RETN 4
+    + " 8B 0D AB AB AB 00"  //MOV ECX, DWORD PTR DS:[refAddr]
+    + " 6A 00"              //PUSH 0
+    ;
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", soffset + 0x5, soffset + 0xB0);
+    refOffset = 3;
+  }
+
   if (offset === -1)
     return "Failed in Part 2 - Reference Address missing";
 
-  offset += 5;
+  offset += refOffset;
 
   //Step 2d - Extract the ECX assignment which we will need twice later on.
   var movEcx = exe.fetchHex(offset, 6);
@@ -117,13 +129,25 @@ function DCToLoginWindow()
     " B9 AB AB AB 00" //MOV ECX, OFFSET g_windowMgr
   + " E8 AB AB AB FF" //CALL UIWindowMgr::ErrorMsg
   ;
+  var jumpOffset = 10;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
-  if (offset === -1)
+  var joffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
+  if (joffset === -1)
+  {
+    code =
+      " E8 AB AB AB FF" //CALL UIWindowMgr::ErrorMsg
+    + " 8B 07"          //MOV EAX, [EDI]
+    ;
+    joffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
+    jumpOffset = 5;
+  ;
+
+  }
+  if (joffset === -1)
     return "Failed in Part 4 - ErrorMsg call missing";
 
   //Step 4e - Set offset to location after the CALL
-  offset += code.hexlength();
+  joffset += jumpOffset;
 
   //Step 4f - Now look for the Mode Changer CALL after <offset>
   code =
@@ -132,18 +156,24 @@ function DCToLoginWindow()
   + " FF 50 18" //CALL DWORD PTR DS:[EAX+18]
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
 
   if (offset2 === -1)
   {
     code = code.replace(" 50 18", " D0");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
   }
 
   if (offset2 === -1)
   {
     code = code.replace(" D0", " D2").replace(" 8B CF", "");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
+  }
+
+  if (offset2 === -1)
+  {
+    code = code.replace(" D2", " 50 18");
+    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
   }
 
   if (offset2 === -1)
@@ -172,7 +202,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 5d - Replace the code at offset with JMP to our code.
-  exe.replace(offset, " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4), PTYPE_HEX);
+  exe.replace(joffset, " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(joffset + 5)).packToHex(4), PTYPE_HEX);
 
   return true;
 }

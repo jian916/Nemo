@@ -20,6 +20,13 @@ function IgnoreMissingPaletteError()
 
   if (offset2 === -1)
   {
+    code = code.replace(" 8D", " C7");//mov     [ebp+var_18], 0
+    offset2 = exe.findCode(code, PTYPE_HEX, false);
+  }
+
+
+  if (offset2 === -1)
+  {
     code = "BF" + offset.packToHex(4); //MOV EDI, OFFSET addr; ASCII "CPaletteRes :: Cannot find File : "
     offset2 = exe.findCode(code, PTYPE_HEX, false);
   }

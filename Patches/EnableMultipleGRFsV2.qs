@@ -86,7 +86,7 @@ function EnableMultipleGRFsV2()
         return "Failed in Step 2";
 
     //Step 2c - Extract AddPak function address
-    var AddPak = exe.Raw2Rva(fnoffset + 5) + exe.fetchDWord(fnoffset + 1);
+    var AddPak = exe.Raw2Rva(fnoffset + addpackOffset + 4) + exe.fetchDWord(fnoffset + addpackOffset);
 
     //Step 3a - Get the INI file from user to read
     var f = new TextFile();
@@ -155,8 +155,8 @@ function EnableMultipleGRFsV2()
     code += strcode.toHex();
 
     //Step 4f - Create a call to the free space that was found before.
-    exe.replace(offset, "B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + 1, freeRva - exe.Raw2Rva(fnoffset + 5));
+    exe.replace(offset + pushOffset, "B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
+    exe.replaceDWord(fnoffset + addpackOffset, freeRva - exe.Raw2Rva(fnoffset + addpackOffset + 4));
 
     //Step 5 - Insert everything.
     exe.insert(free, size, code, PTYPE_HEX);
