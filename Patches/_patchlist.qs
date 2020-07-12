@@ -548,4 +548,6 @@ registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-Ecut
 
 registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 0, "jchcc", "Use correct charset for Official Custom Fonts on all LangType", false);
 
+registerPatch(319, "openingToServiceSelect", "Opening To Service Select", "UI", 0, "jchcc", "Make Opening button to service select, change button text in msgstringtable,txt:3354", false);
+
 GlobalPostInit();
