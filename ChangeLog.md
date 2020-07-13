@@ -6,6 +6,7 @@
 - Fix patch [Change guild exp limit](http://nemo.herc.ws/patches/ChangeGuildExpLimit/#success-clients). (fix by @jchcc).
 - Fix patch [Enable Multiple GRFs - Embedded](http://nemo.herc.ws/patches/EnableMultipleGRFsV2/#success-clients). (fix by @jchcc).
 - Fix patch [Ignore Missing Palette Error](http://nemo.herc.ws/patches/IgnoreMissingPaletteError/#success-clients). (fix by @jchcc).
+- Fix patch [Disconnect to Login Window](http://nemo.herc.ws/patches/DCToLoginWindow/#success-clients). (fix by @jchcc).
 
 
 # 2020-07-11 Patches update
