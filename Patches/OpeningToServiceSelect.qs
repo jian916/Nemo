@@ -19,7 +19,7 @@
 //#          Make Opening button work as return Service Selection                     #
 //#####################################################################################
 
-function openingToServiceSelect()
+function OpeningToServiceSelect()
 {
 
     //Step 1 - Find the MsgString ID references of "Please enter at least %d characters. If you don't have account,"
@@ -52,7 +52,7 @@ function openingToServiceSelect()
 //======================================================================//
 // Disable for Old Clients - Only Clients with new login window need it //
 //======================================================================//
-function openingToServiceSelect_()
+function OpeningToServiceSelect_()
 {
   return (exe.findCode(" 68 D5 0B 00 00 E8", PTYPE_HEX, false) !== -1);
 }
