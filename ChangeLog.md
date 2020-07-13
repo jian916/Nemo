@@ -1,3 +1,13 @@
+# 2020-07-13 Patches update
+
+## Patches
+
+- Add patch [Opening To Service Select](http://nemo.herc.ws/patches/OpeningToServiceSelect/#success-clients). (by @jchcc).
+- Fix patch [Change guild exp limit](http://nemo.herc.ws/patches/ChangeGuildExpLimit/#success-clients). (fix by @jchcc).
+- Fix patch [Enable Multiple GRFs - Embedded](http://nemo.herc.ws/patches/EnableMultipleGRFsV2/#success-clients). (fix by @jchcc).
+- Fix patch [Ignore Missing Palette Error](http://nemo.herc.ws/patches/IgnoreMissingPaletteError/#success-clients). (fix by @jchcc).
+
+
 # 2020-07-11 Patches update
 
 ## Patches
