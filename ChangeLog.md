@@ -1,3 +1,11 @@
+# 2020-07-17 Patches update
+
+## Patches
+
+- Fix patch [Disable 4 Letter Character Name Limit](http://nemo.herc.ws/patches/Disable4LetterCharnameLimit/#success-clients). (fix by @jchcc).
+- Fix patch [Disable 4 Letter User Name Limit](http://nemo.herc.ws/patches/Disable4LetterUsernameLimit/#success-clients). (fix by @jchcc).
+- Fix patch [Disable 4 Letter Password Limit](http://nemo.herc.ws/patches/Disable4LetterPasswordLimit/#success-clients). (fix by @jchcc).
+
 # 2020-07-13 Patches update
 
 ## Patches
