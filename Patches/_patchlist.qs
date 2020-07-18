@@ -550,4 +550,6 @@ registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 
 
 registerPatch(319, "OpeningToServiceSelect", "Opening To Service Select", "UI", 0, "jchcc", "Make Opening button to service select, change button text in msgstringtable,txt:3354", false);
 
+registerPatch(320, "IgnoreTownInfoReading", "Ignore Towninfo*.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading Towninfo*.lub and prevents the client from displaying a error messages window", false);
+
 GlobalPostInit();
