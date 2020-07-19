@@ -556,4 +556,6 @@ registerPatch(321, "DisableWindows", "Disable specified Windows", "UI", 0, "jchc
 
 registerPatch(322, "InsensitiveStorageSearch", "Case-Insensitive Storage Search", "UI", 0, "jchcc", "Case-insensitive search in storage UI, require SHLWAPI.StrStrIA API has been imported.", false);
 
+registerPatch(323, "RestoreSongsEffect", "Restore Songs Effect", "Fix", 0, "jchcc", "Restore Bard/Dancer songs ground effect on 2019+ clients.", false);
+
 GlobalPostInit();
