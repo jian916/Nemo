@@ -552,4 +552,6 @@ registerPatch(319, "OpeningToServiceSelect", "Opening To Service Select", "UI", 
 
 registerPatch(320, "IgnoreTownInfoReading", "Ignore Towninfo*.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading Towninfo*.lub and prevents the client from displaying a error messages window", false);
 
+registerPatch(321, "DisableWindows", "Disable specified Windows", "UI", 0, "jchcc", "Disable specified window/interface, check input/DisableWindows.txt for more information.", false);
+
 GlobalPostInit();

@@ -1,0 +1,4 @@
+//How to use: Put the window ID each line without ant prefixes & affixes.
+//You can find window/interface ID in WindowID.txt
+//Warning: Some of the windows disabled may cause game crush.
+=====Put he window ID below=====
