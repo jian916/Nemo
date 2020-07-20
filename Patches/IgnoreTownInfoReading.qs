@@ -40,7 +40,7 @@ function IgnoreTownInfoReading()
         "84 C0 " +              // 11 test al, al
         "75 AB " +              // 13 jnz  short loc_841775
         "6A 00 " +              // 15 push 0
-        "68 AB AB AB 00 " +     // 17 push offset aError 
+        "68 AB AB AB 00 " +     // 17 push offset aError
         "68 " + strHex +        // 22 push offset aTowninfoFileIn
         "6A 00 " +              // 27 push 0
         "FF AB " +              // 29 call esi ; MessageBoxA
