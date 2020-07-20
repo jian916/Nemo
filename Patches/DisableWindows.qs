@@ -22,6 +22,10 @@ function DisableWindows()
 {
   //Get the address of UIWindowMgr::MakeWindow
   var WndMgr = GetWinMgrInfo();
+
+  if (typeof(WndMgr) === "string")
+    return "Failed in Step 1 - " + WndMgr;
+
   var makeWnd = exe.Rva2Raw(WndMgr['makeWin']);
 
   //Find switch table
@@ -29,10 +33,15 @@ function DisableWindows()
     " 0F B6 AB AB AB AB 00" //movzx eax,byte ptr [eax+iswTable]
   + " FF 24 85 AB AB AB 00" //jmp dword ptr [eax*4+swTable]
   ;
+  var switch1Offset = 3;
+  var switch2Offset = 10;
 
   var offset = exe.find(code, PTYPE_HEX, true, "\xAB", makeWnd, makeWnd + 0x200);
   if (offset === -1)
     return "Failed in Step 1 - Can't find indirect table for switch statement";
+
+  logVaVar("UIWindowMgr_MakeWindow switch1", offset, switch1Offset);
+  logVaVar("UIWindowMgr_MakeWindow switch2", offset, switch2Offset);
 
   var ITSS = exe.fetchDWord(offset + 3);
 
@@ -53,6 +62,7 @@ function DisableWindows()
     var line = fp.readline().trim();
     if (line === "") continue;
 
+    var matches;
     if (matches = line.match(/^([\d]{1,3})$/))
     {
       var value = parseInt(line.substr(0));
