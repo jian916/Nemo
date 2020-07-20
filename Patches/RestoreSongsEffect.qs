@@ -30,13 +30,20 @@ function RestoreSongsEffect()
   + " FF 24 85 AB AB AB AB" //26 jmp dword ptr [eax*4+swTable]
   ;
 
+  var getJobOffset = 1;
+  var switch1Offset = 22;
+  var switch2Offset = 29;
+
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in Step 1 - CSkill::OnProcess not found";
 
+  logRawFunc("CGameActor_GetJob", offset, getJobOffset);
+  logVaVar("CSkill_OnProcess switch1", offset, switch1Offset);
+  logVaVar("CSkill_OnProcess switch2", offset, switch2Offset);
+
   //Step 1b - Get the address of indirect switch table
-  var iToffset = 22;
-  var iswTable = exe.fetchDWord(offset + iToffset);
+  var iswTable = exe.fetchDWord(offset + switch1Offset);
 
   //Step 2 - Find & borrow the code of LandProtector
   code =
@@ -49,6 +56,7 @@ function RestoreSongsEffect()
   + " E9"                      //31 jmp addr
   ;
   var patchOffset = 26;
+  var loopOffset = [2, 4];
 
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
@@ -64,6 +72,7 @@ function RestoreSongsEffect()
     + " E9"                //28 jmp addr
     ;
     patchOffset = 23;
+    loopOffset = [2, 4];
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
   if (offset === -1)
@@ -81,10 +90,13 @@ function RestoreSongsEffect()
     + " E9"                //34 jmp addr
     ;
     patchOffset = 29;
+    loopOffset = [2, 4];
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
   if (offset === -1)
     return "Failed in Step 2 - Borrow code not found";
+
+  logField("CSkill::m_LoopEffect", offset, loopOffset);
 
   var patchAddr = offset + patchOffset;
   var retAddr = exe.Raw2Rva(patchAddr + 5).packToHex(4);
