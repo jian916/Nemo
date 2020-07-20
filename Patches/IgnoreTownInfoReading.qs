@@ -49,6 +49,7 @@ function IgnoreTownInfoReading()
     var hloc = 15;
     var head = "90 90 ";
     var foot = "90 90 ";
+    var loadOffset = 1;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
@@ -67,6 +68,7 @@ function IgnoreTownInfoReading()
         hloc = 9;
         head = "90 90 ";
         foot = "90 90 90 90 90 90 ";
+        loadOffset = 1;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -87,6 +89,7 @@ function IgnoreTownInfoReading()
         hloc = 15;
         head = "90 ";
         foot = "90 90 ";
+        loadOffset = 1;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -106,11 +109,14 @@ function IgnoreTownInfoReading()
         hloc = 9;
         head = "90 ";
         foot = "90 90 90 90 90 90 ";
+        loadOffset = 1;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
     if (offset === -1)
         return "Failed in Step 1b - Pattern not found";
+
+    logRawFunc("CTownInfoMgr_Load", offset, loadOffset);
 
     consoleLog("Step 1c - Replace with xor eax, eax followed by nops");
     exe.replace(offset, "33 C0 90 90 90 ", PTYPE_HEX);  // xor eax, eax + nops
