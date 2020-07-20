@@ -1,3 +1,13 @@
+# 2020-07-20 Patches update
+
+## Patches
+
+- Add patch [Ignore Towninfo*.lub Reading](http://nemo.herc.ws/patches/IgnoreTownInfoReading/#success-clients). (by @X-EcutiOnner).
+- Add patch [Disable specified Windows](http://nemo.herc.ws/patches/DisableWindows/#success-clients). (by @jchcc).
+- Add patch [Case-Insensitive Storage Search](http://nemo.herc.ws/patches/InsensitiveStorageSearch/#success-clients). (by @jchcc).
+- Add patch [Restore Songs Effect](http://nemo.herc.ws/patches/RestoreSongsEffect/#success-clients). (by @jchcc).
+
+
 # 2020-07-17 Patches update
 
 ## Patches
