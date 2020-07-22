@@ -101,13 +101,27 @@ function RestoreSongsEffect()
   var patchAddr = offset + patchOffset;
   var retAddr = exe.Raw2Rva(patchAddr + 5).packToHex(4);
 
-  //Step 3a - Prepare effectID list
+  //Step 3 - get skill id offset
+  code =
+    " B8 AB AB 00 00"     //0 mov eax,1094h
+  + " 75 06"              //5 jne short
+  + " 8B 86 AB AB 00 00"  //7 mov eax,[esi+skillOffset]
+  + " 5E"                 //13 pop esi
+  + " C3"                 //14 ret
+  ;
+  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  if (offset === -1)
+      return "Failed in Step 3 - skill offset not found";
+
+  var sidOffset = exe.fetchHex(offset + 9, 4);
+
+  //Step 4a - Prepare effectID list
   var effectID = [242, 278, 279, 280, 281, 282, 283, 284, 285, 277, 286, 287, 288, 289, 290, 291, 292, 293, 294];
 
-  //Step 3b - Prepare the code to insert
+  //Step 4b - Prepare the code to insert
   var ins =
     " 50"                   //push eax
-  + " 8B 86 50 02 00 00"    //mov eax,[esi+250]
+  + " 8B 86" + sidOffset    //mov eax,[esi+250]
   + " 2D 9D 00 00 00"       //sub eax,9D
   + " FF 24 85 XX XX XX XX" //jmp dword ptr [eax*4+swTable]
   ;
@@ -116,14 +130,14 @@ function RestoreSongsEffect()
   var size = case1Offset + (effectID.length * 16);
   var free = exe.findZeros(size + 4);
   if (free === -1)
-    return "Failed in Step 3 - No enough free space";
+    return "Failed in Step 4 - No enough free space";
 
-  //Step 3c - Find free space
+  //Step 4c - Find free space
   var freeRva = exe.Raw2Rva(free);
   var swTable = free + case1Offset + (effectID.length * 12);
   ins = ins.replace(" XX XX XX XX", exe.Raw2Rva(swTable).packToHex(4));
 
-  //Step 3d - Add switch cases
+  //Step 4d - Add switch cases
   for (var i = 0; i < effectID.length; i++)
   {
     code =
@@ -136,20 +150,20 @@ function RestoreSongsEffect()
     ins += code;
   }
 
-  //Step 3e - Add switch address table
+  //Step 4e - Add switch address table
   for (var i = 0; i < effectID.length; i++)
   {
     var swAddr = free + case1Offset + (i * 12);
     ins += exe.Raw2Rva(swAddr).packToHex(4);
   }
 
-  //Step 3f - Inject the code
+  //Step 4f - Inject the code
   code = " E9" + (freeRva - exe.Raw2Rva(patchAddr + 5)).packToHex(4);
 
   exe.insert(free, size, ins, PTYPE_HEX);
   exe.replace(patchAddr, code, PTYPE_HEX);
 
-  //Step 4 - Modify indirect switch table
+  //Step 5 - Modify indirect switch table
   var firstUnitID = 126;
   var LPUnirID = 157;
   var firstSongUnitID = 158;
