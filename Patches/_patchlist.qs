@@ -558,4 +558,6 @@ registerPatch(322, "InsensitiveStorageSearch", "Case-Insensitive Storage Search"
 
 registerPatch(323, "RestoreSongsEffect", "Restore Songs Effect", "Fix", 0, "jchcc", "Restore Bard/Dancer songs ground effect on 2019+ clients.", false);
 
+registerPatch(324, "ChangeSecondCharCreateJob", "Change second char create job", "Custom", 0, "4144", "Replace doram to custom job in char creation window.", false);
+
 GlobalPostInit();
