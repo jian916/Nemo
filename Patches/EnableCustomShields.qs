@@ -65,7 +65,7 @@ function EnableCustomShields()
 
   //Step 2a -  Allocate space considering maximum code size possible
   var funcName = "ReqShieldName\x00";
-  var free = exe.findZeros(funcName.length + 0xB + 0x3D + 0x12);
+  var free = exe.findZeros(funcName.length + 0xB + 0x50 + 0x12);
   if (free === -1)
     return "Failed in Part 2 - Not enough free space";
 

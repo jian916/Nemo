@@ -188,7 +188,7 @@ function EnableMultipleGRFs()
     }
 
     //Step 5c - Find free space to inject our code
-    var free = exe.findZeros(size + 4);
+    var free = exe.findZeros(size + 8);
     if (free === -1)
         return "Failed in Step 3 - Not enough free space";
 

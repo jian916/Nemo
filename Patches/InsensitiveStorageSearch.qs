@@ -110,7 +110,7 @@ function InsensitiveStorageSearch()
   code = code + " 90 90 90 90"; //Separate strings from other patches
 
   //Insert everything
-  exe.insert(free, size, code, PTYPE_HEX);
+  exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Prepare the code for jump
   code =

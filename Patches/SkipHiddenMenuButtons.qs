@@ -210,7 +210,7 @@ function SkipHiddenMenuButtons()
     if (free === -1)
         return "Failed in Step 2 - Not enough free space";
 
-    exe.insert(free, code.length, code, PTYPE_HEX);
+    exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
     // add jump to own code
     code =
