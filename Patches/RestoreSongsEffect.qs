@@ -109,11 +109,13 @@ function RestoreSongsEffect()
   + " 5E"                 //13 pop esi
   + " C3"                 //14 ret
   ;
+  var jobOffset = [9, 4];
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
       return "Failed in Step 3 - skill offset not found";
 
-  var sidOffset = exe.fetchHex(offset + 9, 4);
+  var sidOffset = exe.fetchHex(offset + jobOffset[0], jobOffset[1]);
+  logField("CGameActor::m_job", offset, jobOffset);
 
   //Step 4a - Prepare effectID list
   var effectID = [242, 278, 279, 280, 281, 282, 283, 284, 285, 277, 286, 287, 288, 289, 290, 291, 292, 293, 294];
