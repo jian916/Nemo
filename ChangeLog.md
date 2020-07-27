@@ -1,3 +1,16 @@
+# 2020-07-27 Patches update
+
+## Patches
+
+- Fix patch [Case-Insensitive Storage Search](http://nemo.herc.ws/patches/InsensitiveStorageSearch/#success-clients). (fix by @jchcc).
+- Fix patch [Hide attendance button](http://nemo.herc.ws/patches/HideAttendanceButton/#success-clients). (fix by @jchcc).
+- Fix patch [Hide adventurer agency button](http://nemo.herc.ws/patches/HideAdventurerAgencyButton/#success-clients). (fix by @jchcc).
+- Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients). (fix by @jchcc).
+- Fix patch [Hide Cash Shop](http://nemo.herc.ws/patches/HideCashShop/#success-clients). (fix by @jchcc).
+- Fix patch [Restore Songs Effect](http://nemo.herc.ws/patches/RestoreSongsEffect/#success-clients). (fix by @jchcc).
+- Fix wrong insert buffer in different patches. (fix by @4144).
+
+
 # 2020-07-20 Patches update
 
 ## Patches
