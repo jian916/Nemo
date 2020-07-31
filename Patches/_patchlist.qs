@@ -560,4 +560,6 @@ registerPatch(323, "RestoreSongsEffect", "Restore Songs Effect", "Fix", 0, "jchc
 
 registerPatch(324, "ChangeSecondCharCreateJob", "Change second char create job", "Custom", 0, "4144", "Replace doram to custom job in char creation window.", false);
 
+registerPatch(325, "RemoveEquipmentTitleUI", "Remove Equipment Title UI", "UI", 12, "jchcc, X-EcutiOnner", "Remove equipment title ui on the equipment window", false);
+
 GlobalPostInit();
