@@ -1,3 +1,10 @@
+# 2020-07-31 Patches update
+
+## Patches
+
+- Add patch [Change second char create job](http://nemo.herc.ws/patches/ChangeSecondCharCreateJob/#success-clients). (by @4144).
+
+
 # 2020-07-27 Patches update
 
 ## Patches
