@@ -8,7 +8,7 @@ files:
   stage: test
   script:
   - ./.ci/retry.sh apt-get update
-  - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
   - ./.ci/checkfiles.sh
   variables:
     PACKAGES: dos2unix moreutils sed git python git gettext
@@ -19,7 +19,7 @@ translations:
   - branches@4144/Nemo
   script:
   - ./.ci/retry.sh apt-get update
-  - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
   - ./.ci/retry.sh git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/4144/nemosite.git
   - rm -rf ./.ci/index.txt || true
   - cp nemosite/logs/index.txt ./.ci/
@@ -35,7 +35,7 @@ trigger:
   - branches@4144/Nemo
   script:
   - ./.ci/retry.sh apt-get update
-  - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
   - curl -X POST -F token=$key1 -F ref=$branch1 $host1/$id1/trigger/pipeline
   variables:
     PACKAGES: curl
