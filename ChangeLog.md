@@ -1,3 +1,10 @@
+# 2020-08-06 Patches update
+
+## Patches
+
+- Add patch [Remove Equipment Title UI](http://nemo.herc.ws/patches/RemoveEquipmentTitleUI/#success-clients). (by @jchcc, @X-EcutiOnner, fix by @4144).
+
+
 # 2020-07-31 Patches update
 
 ## Patches
