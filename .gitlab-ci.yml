@@ -2,7 +2,7 @@ stages:
   - test
   - triggers
 
-image: debian:unstable
+image: debian:testing
 
 files:
   stage: test
