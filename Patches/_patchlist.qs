@@ -566,4 +566,6 @@ registerPatch(326, "DisableOTPLoginPacket", "Disable OTP Login Packet", "Fix", 0
 
 registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "jchcc", "Auto mute audio when game window not actived.", false);
 
+registerPatch(328, "Enable44khzAudio", "Enable 44.1 kHz Audio Sampling Frequency", "Custom", 0, "jchcc", "Boosts the audio sampling frequency to 44.1 kHz, improving the audio quality in the game.", false);
+
 GlobalPostInit();
