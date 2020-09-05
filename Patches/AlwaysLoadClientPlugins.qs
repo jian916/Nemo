@@ -26,8 +26,8 @@ function AlwaysLoadClientPlugins()
         return "Failed in Step 1 - SOUNDMODE not found";
 
     // Step 1b - Find its reference
-    offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
-    if (offset === -1)
+    var refoffset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+    if (refoffset === -1)
         return "Failed in Step 1 - SOUNDMODE reference not found";
 
     // Step 2a - Fetch soundMode variable location
@@ -37,7 +37,13 @@ function AlwaysLoadClientPlugins()
     +    " 50"                // PUSH EAX
     +    " 6A 00"            // PUSH 0
     ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x10, offset);
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refoffset - 0x10, refoffset);
+
+    if (offset === -1)
+    {
+        code = code.replace(" 50", " C7 45 AB 04 00 00 00 50");
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", refoffset - 0x20, refoffset); //mov [ebp+cbData],4
+    }
 
     if (offset === -1)
         return "Failed in Step 2 - Argument pushes for call to RegQueryValueEx not found";
@@ -54,7 +60,13 @@ function AlwaysLoadClientPlugins()
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
-        return "Failed in Step 3 - soundMode comparison not found";
+    {
+        code = code.replace(" 49", " C7 40 FC 00 00 00 00 83 E9 01"); //mov dword ptr [eax-4],0  sub ecx,1
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
+        return "Failed in Step 3 - soundMode comparison not found" + code;
 
     offset += code.hexlength();
 
