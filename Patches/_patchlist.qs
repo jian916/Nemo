@@ -564,4 +564,6 @@ registerPatch(325, "RemoveEquipmentTitleUI", "Remove Equipment Title UI", "UI", 
 
 registerPatch(326, "DisableOTPLoginPacket", "Disable OTP Login Packet", "Fix", 0, "jchcc", "Disable OTP Login Packet, which causing connect issue after disconnect.", true);
 
+registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "jchcc", "Auto mute audio when game window not actived.", false);
+
 GlobalPostInit();
