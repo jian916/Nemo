@@ -635,3 +635,10 @@ function logVal(name, offset, offset2)
         return;
     console2.logVal(name, offset, offset2);
 }
+
+function logFieldAbs(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logFieldAbs(name, offset, offset2[0], offset2[1]);
+}

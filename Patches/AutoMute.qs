@@ -27,85 +27,154 @@ function AutoMute()
     + " 50"                //10 push eax
     + " 8B CE"             //11 mov ecx,esi
     + " E8 AB AB AB AB"    //13 call SetStreamVolume
-    + " 8B 35 AB AB AB AB" //18 mov esi,[g_mssVar]
+    + " 8B 35 AB AB AB AB" //18 mov esi,[g_soundMgr]
     + " 8B CE"             //24 mov ecx,esi
     + " E8 AB AB AB AB"    //26 call GetStreamVolume
     + " 50"                //31 push eax
     + " 8B CE"             //32 mov ecx,esi
     + " E8 AB AB AB AB"    //34 call SetStreamVolume2
-    + " 8B 0D AB AB AB AB" //39 mov ecx,[g_mssVar]
+    + " 8B 0D AB AB AB AB" //39 mov ecx,[g_soundMgr]
     + " 57"                //45 push edi
     + " E8 AB AB AB AB"    //46 call Set2DEffectVolume
-    + " 8B 0D AB AB AB AB" //51 mov ecx,[g_mssVar]
+    + " 8B 0D AB AB AB AB" //51 mov ecx,[g_soundMgr]
     + " 57"                //57 push edi
     + " E8 AB AB AB AB"    //58 call Set3DEffectVolume
     ;
 
-  var mssVarOffset = 20;
-  var bgmOffset = 14;
-  var eff2dOffset = 47;
-  var eff3dOffset = 59;
+  var GetOptionValueOffset = 6;
+  var SetStreamVolumeOffset = 14;
+  var GetStreamVolumeOffset = 27;
+  var SetStreamVolume2Offset = 35;
+  var Set2DEffectVolumeOffset = 47;
+  var Set3DEffectVolumeOffset = 59;
+  var soundMgrOffsets = [20, 41, 53];
 
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
   {
-    code = code.replace(" 68 AB AB AB AB", " 68 AB AB AB AB 8B CB 8B F8");
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    mssVarOffset += 4;
-    bgmOffset += 4;
-    eff2dOffset += 4;
-    eff3dOffset += 4;
+        code =
+            "68 AB AB AB AB " +           // 0 push offset aBgm_volume
+            "8B CB " +                    // 5 mov ecx, ebx
+            "8B F8 " +                    // 7 mov edi, eax
+            "E8 AB AB AB AB " +           // 9 call CSession_GetOptionValue
+            "50 " +                       // 14 push eax
+            "8B CE " +                    // 15 mov ecx, esi
+            "E8 AB AB AB AB " +           // 17 call CSession_SetStreamVolume
+            "8B 35 AB AB AB AB " +        // 22 mov esi, g_soundMgr
+            "8B CE " +                    // 28 mov ecx, esi
+            "E8 AB AB AB AB " +           // 30 call CSoundMgr_GetStreamVolume
+            "50 " +                       // 35 push eax
+            "8B CE " +                    // 36 mov ecx, esi
+            "E8 AB AB AB AB " +           // 38 call CSoundMgr_SetStreamVolume2
+            "8B 0D AB AB AB AB " +        // 43 mov ecx, g_soundMgr
+            "57 " +                       // 49 push edi
+            "E8 AB AB AB AB " +           // 50 call CSoundMgr_Set2DEffectVolume
+            "8B 0D AB AB AB AB " +        // 55 mov ecx, g_soundMgr
+            "57 " +                       // 61 push edi
+            "E8 AB AB AB AB ";            // 62 call CSoundMgr_Set3DEffectVolume
+        GetOptionValueOffset = 10;
+        SetStreamVolumeOffset = 18;
+        GetStreamVolumeOffset = 31;
+        SetStreamVolume2Offset = 39;
+        Set2DEffectVolumeOffset = 51;
+        Set3DEffectVolumeOffset = 63;
+        soundMgrOffsets = [24, 45, 57];
+
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
   if (offset === -1)
     return "Failed in Step 1";
 
+  logRawFunc("CSession::GetOptionValue", offset, GetOptionValueOffset);
+  logRawFunc("CSoundMgr::SetStreamVolume", offset, SetStreamVolumeOffset);
+  logRawFunc("CSoundMgr::GetStreamVolume", offset, GetStreamVolumeOffset);
+  logRawFunc("CSoundMgr::SetStreamVolume2", offset, SetStreamVolume2Offset);
+  logRawFunc("CSoundMgr::Set2DEffectVolume", offset, Set2DEffectVolumeOffset);
+  logRawFunc("CSoundMgr::Set3DEffectVolume", offset, Set3DEffectVolumeOffset);
+
+  for (var i = 0; i < soundMgrOffsets.length; i++)
+  {
+    logVaVar("g_soundMgr", offset, soundMgrOffsets[i]);
+  }
+
   //Fetch all informations for later
-  var mssVar = exe.fetchHex(offset + mssVarOffset, 4);
-  var SetBgmFuncAddr = exe.Raw2Rva(offset + bgmOffset + 4) + exe.fetchDWord(offset + bgmOffset);
-  var SetEff2DFuncAddr = exe.Raw2Rva(offset + eff2dOffset + 4) + exe.fetchDWord(offset + eff2dOffset);
-  var SetEff3DFuncAddr = exe.Raw2Rva(offset + eff3dOffset + 4) + exe.fetchDWord(offset + eff3dOffset);
+  var soundMgr = exe.fetchHex(offset + soundMgrOffsets[0], 4);
+  var SetBgmFuncAddr = exe.Raw2Rva(offset + SetStreamVolumeOffset + 4) + exe.fetchDWord(offset + SetStreamVolumeOffset);
+  var SetEff2DFuncAddr = exe.Raw2Rva(offset + Set2DEffectVolumeOffset + 4) + exe.fetchDWord(offset + Set2DEffectVolumeOffset);
+  var SetEff3DFuncAddr = exe.Raw2Rva(offset + Set3DEffectVolumeOffset + 4) + exe.fetchDWord(offset + Set3DEffectVolumeOffset);
 
   //Step 2 - Find the CGameMode::OnUpdate function
-  code =
-      " 85 C0"             // test eax,eax
-    + " 75 AB"             // jne short
-    + " 8B 0D AB AB AB AB" // mov ecx,[offset1]
-    + " 6A 00"             // push 0
-    + " 6A 00"             // push 0
-    + " 6A 00"             // push 0
-    + " 8B 01"             // mov eax,[ecx]
-    + " 6A 00"             // puah 0
-    + " 6A 23"             // push 23
-    + " 6A 00"             // push 0
-    + " FF 90 AB 00 00 00" // call dword ptr [eax+88]
-    ;
+    code =
+        "85 C0 " +                    // 0 test eax, eax
+        "75 1A " +                    // 2 jnz short loc_9DBA59
+        "8B 0D AB AB AB AB " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
+        "6A 00 " +                    // 10 push 0
+        "6A 00 " +                    // 12 push 0
+        "6A 00 " +                    // 14 push 0
+        "8B 01 " +                    // 16 mov eax, [ecx]
+        "6A 00 " +                    // 18 push 0
+        "6A 23 " +                    // 20 push 23h
+        "6A 00 " +                    // 22 push 0
+        "FF 90 AB 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_SendMsg]
+    var UIReplayControlWndOffset = [6, 4];
+    var SendMsgOffset = [26, 4];
 
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
   {
-    code = code.replace(" 6A 00 6A 00 6A 00 8B 01", " 6A 00 8B 01 6A 00 6A 00");
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        code =
+            "85 C0 " +                    // 0 test eax, eax
+            "75 1A " +                    // 2 jnz short loc_9C570F
+            "8B 0D AB AB AB AB " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
+            "6A 00 " +                    // 10 push 0
+            "8B 01 " +                    // 12 mov eax, [ecx+UIReplayControlWnd.vptr]
+            "6A 00 " +                    // 14 push 0
+            "6A 00 " +                    // 16 push 0
+            "6A 00 " +                    // 18 push 0
+            "6A 23 " +                    // 20 push 23h
+            "6A 00 " +                    // 22 push 0
+            "FF 90 AB 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_virt136]
+        UIReplayControlWndOffset = [6, 4];
+        SendMsgOffset = [26, 4];
+
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
   if (offset === -1)
     return "Failed in Step 2a";
 
+  logFieldAbs("UIWindowMgr::m_UIReplayControlWnd", offset, UIReplayControlWndOffset);
+  logField("UIReplayControlWnd_vtable::SendMsg", offset, SendMsgOffset)
+
   //Find the location to insert the jump
-  code =
-      " E8 AB AB AB AB"       //call UIWindowMgr::InvalidateAll
-    + " B9 AB AB AB AB"       //mov ecx,offset g_Weather <--stole Byte from here
-    + " E8 AB AB AB AB"       //call CWeather::Process
-    + " 83 3D AB AB AB AB 00" //cmp dword ptr [g_isAppActive],0
-    + " 75 AB"                //jne short
-    ;
+    code =
+        "E8 AB AB AB AB " +           // 0 call UIWindowMgr_InvalidateAll
+        "B9 AB AB AB AB " +           // 5 mov ecx, offset g_Weather <--stole Byte from here
+        "E8 AB AB AB AB " +           // 10 call CWeather_Process
+        "83 3D AB AB AB AB 00 " +     // 15 cmp g_isAppActive, 0
+        "75 0D " +                    // 22 jnz short loc_9DBE78
+        "83 3D AB AB AB AB 00 " +     // 24 cmp g_3dDevice.m_bIsFullscreen, 0
+        "0F 85 ";                     // 31 jnz loc_9DC24D
+  var jmpOffset = 5;
+  var UIWindowMgr_InvalidateAllOffset = 1;
+  var g_WeatherOffset = 6;
+  var CWeather_Process = 11;
+  var g_isAppActiveOffset = 17;
+  var m_bIsFullscreenOffset = [26, 4];
 
   offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x500);
 
   if (offset === -1)
     return "Failed in Step 2b";
 
-  var jumpOffset = offset + 5;
+  logRawFunc("UIWindowMgr::InvalidateAll", offset, UIWindowMgr_InvalidateAllOffset);
+  logVaVar("g_Weather", offset, g_WeatherOffset);
+  logRawFunc("CWeather_Process", offset, CWeather_Process);
+  logVaVar("g_isAppActive", offset, g_isAppActiveOffset);
+  logFieldAbs("C3dDevice::m_bIsFullscreen", offset, m_bIsFullscreenOffset);
 
-  var varCode = exe.fetchHex(jumpOffset, 5);
+  var jumpAddr = offset + jmpOffset;
+
+  var varCode = exe.fetchHex(jumpAddr, 5);
 
   //Step 3 - Find the API:GetActiveWindow pointer
   var GetActiveWindow = GetFunction("GetActiveWindow", "User32.dll");
@@ -121,13 +190,13 @@ function AutoMute()
     + " A3" + GenVarHex(1)                    //19 mov [lastCheck],eax
     + " 83 3D" + GenVarHex(2) + " 01"         //24 cmp dword ptr [isMuted],01
     + " 74 1C"                                //31 je short
-    + " 8B 0D" + mssVar                       //33 mov ecx,[mssVar]
+    + " 8B 0D" + soundMgr                     //33 mov ecx,[g_soundMgr]
     + " 8B 81 EC 00 00 00"                    //39 mov eax,[ecx+EC]
     + " A3" + GenVarHex(3)                    //45 [bgmVol],eax
     + " 8B 81 F0 00 00 00"                    //50 mov eax,[ecx+F0]
     + " A3" + GenVarHex(4)                    //56 [effVol],eax
     + " FF 15" + GetActiveWindow.packToHex(4) //61 call dword ptr [GetActiveWindow]
-    + " 8B 0D" + mssVar                       //67 mov ecx,[mssVar]
+    + " 8B 0D" + soundMgr                     //67 mov ecx,[g_soundMgr]
     + " 85 C0"                                //73 test eax,eax
     + " 74 33"                                //75 je short
     + " 83 3D" + GenVarHex(2) + " 00"         //77 cmp dword ptr [isMuted],00
@@ -214,9 +283,9 @@ function AutoMute()
   //Insert the code & jump
   exe.insert(free, size, ins, PTYPE_HEX);
 
-  code = " E8" + ((freeRva + 16) - exe.Raw2Rva(jumpOffset + 5)).packToHex(4);
+  code = " E8" + ((freeRva + 16) - exe.Raw2Rva(jumpAddr + 5)).packToHex(4);
 
-  exe.replace(jumpOffset, code, PTYPE_HEX);
+  exe.replace(jumpAddr, code, PTYPE_HEX);
 
 
   return true;
