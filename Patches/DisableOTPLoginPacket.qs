@@ -11,12 +11,15 @@ function DisableOTPLoginPacket()
   + " 68 35 27 00 00"    //16 push 2735h
   + " FF 50 18"          //21 call dword ptr [eax+18h]
   ;
-
   var push1 = 15;
   var push2 = 17;
+  var CMode_SendMsgOffset = [23, 1]
+
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in Step 1";
+
+  logField("CMode_vtable::SendMsg", offset, CMode_SendMsgOffset)
 
   //Step 2 - Change parameter, make client send original login packet first
   exe.replace(offset + push1, " 00", PTYPE_HEX); //replace 26h with 0h
