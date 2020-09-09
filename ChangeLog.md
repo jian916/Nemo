@@ -1,3 +1,13 @@
+# 2020-09-09 Patches update
+
+## Patches
+
+- Add patch [Disable OTP Login Packet](http://nemo.herc.ws/patches/DisableOTPLoginPacket/#success-clients). (by @jchcc).
+- Add patch [Auto Mute Audio (Experimental)](http://nemo.herc.ws/patches/AutoMute/#success-clients). (by @jchcc).
+- Add patch [Enable 44.1 kHz Audio Sampling Frequency](http://nemo.herc.ws/patches/Enable44khzAudio/#success-clients). (by @jchcc).
+- Fix patch [Always Load Client Plugins (Experimental)](http://nemo.herc.ws/patches/AlwaysLoadClientPlugins/#success-clients). (fix by @jchcc).
+
+
 # 2020-08-06 Patches update
 
 ## Patches
