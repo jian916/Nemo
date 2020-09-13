@@ -29,5 +29,11 @@
 > 若出現任何問題甚至造成損失, 使用者請自行承擔  
 > 本人不負任何責任  
 
-### 其它
-> 如有特殊需求, 想要神奇的功能, 請至 ROLab 詢問  
+## Game guard files
+For disable game guard Cheat Defender need:
+1. get dropin replacment file [CDClient.dll](Input/CDClient.dll) and save into client directory.
+2. Enable patch "Disable Cheat Defender Game Guard".
+
+## License
+Original code and binary files licensed under unknown free use license.
+All additional changes licensed under GPL3.

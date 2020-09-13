@@ -1,3 +1,119 @@
+# 2019-12-17 Patches update
+
+## Patches
+
+- Fix patch [Change new char name field height](http://nemo.herc.ws/patches/ChangeNewCharNameHeight/#success-clients) for some new clients by Functor.
+- Fix patch [Enable Multiple GRFs](http://nemo.herc.ws/patches/EnableMultipleGRFs/#success-clients) for some new clients by Functor.
+- Disable useless patch [Fix shortcuts in wine](http://nemo.herc.ws/patches/FixShortcutsInWine/#success-clients).
+
+# 2019-11-12 Patches update
+
+## Patches
+
+- Fix patch [Hide packets from peek](http://nemo.herc.ws/patches/HidePacketsFromPeek/#success-clients) for old client by 4144.
+
+# 2019-09-23 Patches update
+
+## Patches
+
+ - Add patch [Always see hidden/cloaked objects](http://nemo.herc.ws/patches/Intravision/#success-clients) by Secret, A.K.M.
+
+# 2019-08-00 Patches update
+
+## Patches
+
+ - Fix typo in patch [Allow spam skills by hotkey](http://nemo.herc.ws/patches/AllowSpamSkills/#success-clients) by Functor.
+
+# 2019-07-10 Patches and plugin update
+
+## Patches
+
+ - Copy patch [Increase hair style limit in game](http://nemo.herc.ws/patches/IncreaseHairSprites/#success-clients) into [Increase hair style limit in game (old)](http://nemo.herc.ws/patches/IncreaseHairSpritesOld/#success-clients)
+ - Extend patch [Increase hair style limit in game](http://nemo.herc.ws/patches/IncreaseHairSprites/#success-clients) for support doram hairs by 4144.
+ - Add Thai translation by Kelberwitz Blade's.
+ - Add patch [Change Max Party Value](http://nemo.herc.ws/patches/ChangeMaxPartyValue/#success-clients) by Jchcc.
+ - Add patch [Force use icons only from stateiconimginfo.lub](http://nemo.herc.ws/patches/ForceLubStateIcon/#success-clients) by Jchcc.
+ - Add patches for hide all other buttons by 4144.
+ - Add patches for set hide/show other buttons by 4144.
+ - Add patch [Allow spam skills by hotkey](http://nemo.herc.ws/patches/AllowSpamSkills/#success-clients) by Functor, 4144.
+
+## Plugin
+
+ - Show client version always with UTC time zone.
+
+
+# 2019-06-15 Patches update
+
+## Patches
+
+ - Fix patch [Change mvp hp bar size](http://nemo.herc.ws/patches/ChangeMvpHealthBarSize/#success-clients) for 20180919+ clients by Jchcc.
+
+# 2019-06-12 Patches update
+
+## Patches
+
+- Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients) for 2019+ clients by 4144.
+
+# 2019-04-22 Patches update
+
+## Patches
+
+- Fix patch [Enable Proxy Support](http://nemo.herc.ws/patches/EnableProxySupport/#success-clients) for 2015+ clients by Functor.
+
+# 2019-04-01 Patches update
+
+## Patches
+
+- Fix patch [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-03-20 RE+ by 4144.
+- Add patch [Fix shortcuts in wine](http://nemo.herc.ws/patches/FixShortcutsInWine/#success-clients) by 4144.
+
+# 2019-03-09 Patches update
+
+## Patches
+
+- Update patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
+
+## License
+
+- Add some missing GPL headers.
+
+# 2019-03-05 New translations
+
+## Translations
+
+- Add Turkish translation by BigLord
+
+# 2019-02-28 New patches
+
+## Patches
+
+- Add patch [Hide build info in client](http://nemo.herc.ws/patches/HideBuildInfo/#success-clients) by 4144.
+- Add patch [Hide packets from peek](http://nemo.herc.ws/patches/HidePacketsFromPeek/#success-clients) by 4144.
+
+# For devs
+
+- Add javascript function eraseString.
+
+# 2019-02-22 Plugin update
+
+## User interface
+
+- Add link to support page.
+- Add link to donation page.
+
+# 2019-02-19 Patches update
+
+## Patches
+
+- Fix patch [Remove hardcoded connection address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for 2019-02-13 by 4144.
+- Fix [Read Data Folder First](http://nemo.herc.ws/patches/ReadDataFolderFirst/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Read msgstringtable.txt](http://nemo.herc.ws/patches/ReadMsgstringtabledottxt/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Enable Multiple GRFs](http://nemo.herc.ws/patches/EnableMultipleGRFs/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Disable Ragexe Filename Check](http://nemo.herc.ws/patches/DisableFilenameCheck/#success-clients) for 2019-02-13. (fix by 4144)
+- Fix [Disable Cheat Defender Game Guard)(http://nemo.herc.ws/patches/DisableCDGuard/#success-clients) for 2019-02-13. (fix by 4144)
+- Add new patch [Fix Homunculus attack AI](http://nemo.herc.ws/patches/FixHomunculusAI/#success-clients) by jchcc.
+
+
 # 2019-02-04 Functions update
 
 # For devs

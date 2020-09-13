@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2018  Andrei Karas (4144)
+// Copyright (C) 2018-2019  Andrei Karas (4144)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,6 +31,21 @@ function ChangeNewCharNameHeight()
         "8B 8B AB AB 00 00";      // mov ecx, [ebx+28Ch]
     var heightOffset = 8;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
+    {
+        code =
+        "C7 45 AB FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
+        "8B C8" +                 // mov ecx, eax
+        "6A 0D" +                 // push 0Dh    <- change here
+        "68 82 00 00 00" +        // push 82h
+        "89 83 AB AB 00 00" +     // mov  [ebx+28Ch], eax
+        "E8 AB AB AB 00" +        // call UIWindow_Create
+        "8B 8B AB AB 00 00";      // mov ecx, [ebx+28Ch]
+
+        heightOffset = 10;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
 
     if (offset === -1)
         return "Failed in step 1 - pattern not found";

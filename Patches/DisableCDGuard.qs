@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2018  Andrei Karas (4144)
+// Copyright (C) 2018-2019  Andrei Karas (4144)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -61,6 +61,21 @@ function DisableCDGuard()
             "E8 AB AB AB 00" +     // call CRagConnection_instanceR
             "8B C8" +              // mov ecx, eax
             "E8";                  // call CRagConnection_some_func
+        offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    }
+    if (offsets.length === 0)
+    {   // 2019-02-13+
+        var code =
+            "8B 0D AB AB AB 00 " +        // 0 mov ecx, g_CCheatDefenderMgr
+            "E8 AB AB AB FF " +           // 6 call CCheatDefenderMgr_init
+            "3C 01 " +                    // 11 cmp al, 1
+            "A1 AB AB AB AB " +           // 13 mov eax, g_CCheatDefenderMgr
+            "68 AB AB AB 00 " +           // 18 push offset g_zoneServerAddr
+            "0F 94 C1 " +                 // 23 setz cl
+            "88 48 05 " +                 // 26 mov [eax+5], cl
+            "E8 AB AB AB AB " +           // 29 call CRagConnection_instanceR
+            "8B C8 " +                    // 34 mov ecx, eax
+            "E8 ";                        // 36 call sub_867160
         offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
     if (offsets.length === 0)
