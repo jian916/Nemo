@@ -18,7 +18,8 @@
 //# Purpose: Restore login packet 0x64                                      #
 //###########################################################################
 
-function RestoreOldLoginPacket() {
+function RestoreOldLoginPacket()
+{
     // Step 1a - Force the client to send 0x64
     var LANGTYPE = GetLangType();
     if (LANGTYPE.length === 1)
@@ -49,12 +50,28 @@ function RestoreOldLoginPacket() {
         " 90 90 90" +
         " 90 90 90 90 90 90",
         PTYPE_HEX);
+
+
+    //Disable password encrypt for lang_type 4 & 7
+    var offset2 = exe.find(" 83 F9 07 75 AB", PTYPE_HEX, true, "\xAB", offset, offset + 0xFF);
+    if (offset2 === -1)
+        return "Failed in Step 1c";
+    exe.replace(offset2 + 3," EB",PTYPE_HEX);
+
+    offset2 = exe.find(" 83 F9 04 75 AB", PTYPE_HEX, true, "\xAB", offset, offset + 0xFF);
+    if (offset2 === -1)
+        return "Failed in Step 1d";
+    exe.replace(offset2 + 3," EB",PTYPE_HEX);
+
+
+
     return true;
 }
 
 //====================================================================//
 // Disable for Unneeded Clients. Start from first zero client version //
 //====================================================================//
-function RestoreOldLoginPacket_() {
+function RestoreOldLoginPacket_()
+{
   return (exe.getClientDate() > 20171019 && IsZero()) || exe.getClientDate() >= 20181114;
 }

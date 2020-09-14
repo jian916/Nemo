@@ -536,4 +536,9 @@ registerPatch(311, "AllowSpamSkills", "Allow spam skills by hotkey", "Custom", 0
 
 registerPatch(312, "Intravision", "Always see hidden/cloaked objects", "Custom", 0, "Secret, A.K.M.", "Always see black silhouette of hidden objects as if the player has intravision status", false);
 
+
+registerPatch(400, "CustomWindowTitleHex", "Custom Window Title Hex", "介面", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+
+registerPatch(401, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc", "Change Mvp drop item use identified name", false);
+
 GlobalPostInit();
