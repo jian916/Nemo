@@ -462,9 +462,9 @@ registerPatch(274, "ChangeTipboxPath", "Change Tipbox*.lub path", "Custom", 20, 
 
 registerPatch(275, "ChangeCheckAttendancePath", "Change CheckAttendance*.lub path", "Custom", 20, "Jian", "Change CheckAttendance*.lub path", false);
 
-registerPatch(276, "ChangeOngoingQuestInfoListPath", "Change OngoingQuestInfoList* path", "Custom", 20, "Jian", "Change OngoingQuestInfoList*.lub path", false);
+registerPatch(276, "ChangeOngoingQuestInfoListPath", "Change OngoingQuestInfoList*.lub path", "Custom", 20, "Jian", "Change OngoingQuestInfoList*.lub path", false);
 
-registerPatch(277, "ChangeRecommendedQuestInfoListPath", "Change RecommendedQuestInfoList* path", "Custom", 20, "Jian", "Change RecommendedQuestInfoList* path", false);
+registerPatch(277, "ChangeRecommendedQuestInfoListPath", "Change RecommendedQuestInfoList*.lub path", "Custom", 20, "Jian", "Change RecommendedQuestInfoList*.lub path", false);
 
 registerPatch(278, "ChangePrivateAirplanePath", "Change PrivateAirplane*.lub path", "Custom", 20, "Jian", "Change PrivateAirplane*.lub path", false);
 
@@ -536,8 +536,40 @@ registerPatch(311, "AllowSpamSkills", "Allow spam skills by hotkey", "Custom", 0
 
 registerPatch(312, "Intravision", "Always see hidden/cloaked objects", "Custom", 0, "Secret, A.K.M.", "Always see black silhouette of hidden objects as if the player has intravision status", false);
 
+registerPatch(313, "ChangeMapInfoPath", "Change MapInfo*.lub path", "Custom", 20, "X-EcutiOnner", "Change MapInfo*.lub path", false);
 
-registerPatch(400, "CustomWindowTitleHex", "Custom Window Title Hex", "‰ªãÈù¢", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+// 314 reserved
+
+registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Color", 0, "Hanashi, 4144", "Changes the highlight skillslot color and sets it to the specified value. Default value is b4ffb4 (Celadon)", false);
+
+registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 12, "Functor, X-EcutiOnner", "Remove equipment swap button on the equipment window", false);
+
+registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
+
+registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 0, "jchcc", "Use correct charset for Official Custom Fonts on all LangType", false);
+
+registerPatch(319, "OpeningToServiceSelect", "Opening To Service Select", "UI", 0, "jchcc", "Make Opening button to service select, change button text in msgstringtable,txt:3354", false);
+
+registerPatch(320, "IgnoreTownInfoReading", "Ignore Towninfo*.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading Towninfo*.lub and prevents the client from displaying a error messages window", false);
+
+registerPatch(321, "DisableWindows", "Disable specified Windows", "UI", 0, "jchcc", "Disable specified window/interface, check input/DisableWindows.txt for more information.", false);
+
+registerPatch(322, "InsensitiveStorageSearch", "Case-Insensitive Storage Search", "UI", 0, "jchcc", "Case-insensitive search in storage UI.", false);
+
+registerPatch(323, "RestoreSongsEffect", "Restore Songs Effect", "Fix", 0, "jchcc", "Restore Bard/Dancer songs ground effect on 2019+ clients.", false);
+
+registerPatch(324, "ChangeSecondCharCreateJob", "Change second char create job", "Custom", 0, "4144", "Replace doram to custom job in char creation window.", false);
+
+registerPatch(325, "RemoveEquipmentTitleUI", "Remove Equipment Title UI", "UI", 12, "jchcc, X-EcutiOnner", "Remove equipment title ui on the equipment window", false);
+
+registerPatch(326, "DisableOTPLoginPacket", "Disable OTP Login Packet", "Fix", 0, "jchcc", "Disable OTP Login Packet, which causing connect issue after disconnect.", false);
+
+registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "jchcc", "Auto mute audio when game window not actived.", false);
+
+registerPatch(328, "Enable44khzAudio", "Enable 44.1 kHz Audio Sampling Frequency", "Custom", 0, "jchcc", "Boosts the audio sampling frequency to 44.1 kHz, improving the audio quality in the game.", false);
+
+
+registerPatch(400, "CustomWindowTitleHex", "Custom Window Title Hex", "§∂≠±", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
 
 registerPatch(401, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc", "Change Mvp drop item use identified name", false);
 

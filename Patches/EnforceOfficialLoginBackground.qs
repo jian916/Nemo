@@ -3,7 +3,8 @@
 //#          CLoginMode::OnUpdate function.                        #
 //##################################################################
 
-function EnforceOfficialLoginBackground() {
+function EnforceOfficialLoginBackground()
+{
 
   //Step 1 - Find the comparisons
   var code =
@@ -26,13 +27,19 @@ function EnforceOfficialLoginBackground() {
   ;
 
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+  if (offsets.length === 0) //newer clients
+  {
+    code = code.replace(" 83 F8 0E 74 AB", "");   //remove CMP EAX, 0E and JZ SHORT addr
+    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+  }
   if (offsets.length === 0)
     return "Failed in Step 1";
-  
+
   //Step 2 - Replace first JZ to JMP for all the matches
-  for (var i = 0; i < offsets.length; i++) {
-    exe.replace(offsets[i], "EB", PTYPE_HEX); 
+  for (var i = 0; i < offsets.length; i++)
+  {
+    exe.replace(offsets[i], "EB", PTYPE_HEX);
   }
-  
+
   return true;
 }

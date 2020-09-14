@@ -1,0 +1,347 @@
+ID  Official Window Name
+0   UIBasicInfoWnd
+1   UINewChatWnd
+2   UISelectServerWnd
+3   UILoginWnd
+4   UIMakeCharWnd
+5   UISelectCharWnd
+6   UIWaitWnd
+7   UILoadingWnd
+8   UIItemWnd
+9   UIToolTipWnd
+10  UIEquipWnd
+11  UIStatusWnd
+12  UIItemCollectionWnd
+13  UIOptionWnd
+14  UIMinimapZoomWnd
+15  UIItemDropCntWnd
+16  UISayDialogWnd
+17  UIChooseWnd
+18  UIMenuWnd
+19  UIRestartWnd
+20  UINoticeConfirmWnd
+21  UINotifyLevelUpWnd
+22  UIItemShopWnd
+23  UIItemPurchaseWnd
+24  UIItemSellWnd
+25  UIChooseSellBuyWnd
+26  UIComboBoxWnd
+27  UIChatRoomMakeWnd
+28  UIChatRoomWnd
+29  UIPasswordWnd
+30  UIChatRoomChangeWnd
+31  UIExchangeWnd
+32  UIExchangeAcceptWnd
+33  UIItemStoreWnd
+34  UIMessengerGroupWnd
+35  UIExchangeAcceptWnd
+36  UIShortCutWnd
+37  UINewSkillListWnd
+38  UITipOfTheDayWnd
+39  UIChooseWarpWnd
+40  UIMerchantItemWnd
+41  UIMerchantShopMakeWnd
+42  UIMerchantMirrorItemWnd
+43  UIMerchantItemShopWnd
+44  UIMerchantItemPurchaseWnd
+45  UIMerchantItemMyShopWnd
+46  UISkillDescribeWnd
+47  UICardItemIllustWnd
+48  UIQuitWnd
+49  UINotifyJobLevelUpWnd
+50  UIItemParamChangeDisplayWnd
+51  UICandidateWnd
+52  UICompositionWnd
+53  UIPartySettingWnd
+54
+55  UISkillNameChangeWnd
+56  UINpcEditDialogWnd
+57  UIDetailLevelWnd
+58  UINotifyItemObtainWnd
+59  UIGuildWnd
+60  UIGuildInfoManageWnd
+61  UIGuildMemberManageWnd
+62  UIGuildPositionManageWnd
+63  UIGuildSkillWnd
+64  UIGuildBanishedMemberWnd
+65  UIGuildNoticeWnd
+66  UIGuildTotalInfoWnd
+67
+68  UIFriendOptionWnd
+69  UIMessengerGroupWnd
+70  UIExchangeAcceptWnd
+71
+72  UIAllyGuildAcceptWnd
+73  UIItemIdentifyWnd
+74  UIItemCompositionWnd
+75  UIGuildLeaveReasonDescWnd
+76  UIGuildBanReasonDescWnd
+77  UIMonsterInfoWnd
+78  UIIllustWnd
+79  UIMakeTargetListWnd
+80  UIMakeTargetProcessWnd
+81  UIMakeTargetResultWnd
+82  UICombinedCardItemCollectionWnd
+83
+84  UITalkboxTrapInputWnd
+85  UIKeyStrokeWnd
+86  UIEmotionWnd
+87  UIEmotionListWnd
+88  UIPetInfoWnd
+89
+90  UIPetEggListWnd
+91  UIPetTamingDeceiveWnd
+92
+93  UINoticeWnd
+94  UIMakingArrowListWnd
+95  UISelectCartWnd
+96
+97
+98
+99  UISpellListWnd
+100 UINpcTextEditDialogWnd
+101 UIGraffiStrboxWnd
+102
+103 UIProhibitListWnd
+104 UIExchangeAcceptWnd
+105 UIExchangeAcceptWnd
+106 UIBookWnd
+107 UIItemRepairWnd
+108
+109 UIExchangeAcceptWnd
+110 UIExchangeAcceptWnd
+111 UIWeaponRefineWnd
+112 UICommandListWnd
+113 UIHomunInfoWnd
+114 UISkillListWnd
+115
+116 UIAutoMessageWnd
+117 UIMailListWnd
+118 UIMailViewWnd
+119 UIStarPlaceAcceptWnd
+120 UIAuctionWnd
+121 UIAuctionMsgWnd
+122 UIImgMenuWnd
+123
+124
+125 UIMerInfoWnd
+126 UISkillListWnd
+127 UISelCharForUServerWnd
+128 UIChangeNameWnd
+129 UIRebirthWnd
+130 UISubChatHisWnd
+131 UISubChatHisWnd
+132 UIBattleMsgOptionWnd
+133 UISubChatMiniWnd
+134 UIQuestWnd
+135 UIQuestDetailWnd
+136
+137 UIMemorialDunWnd
+138 UIYourItemWnd
+139 UIEquipWnd
+140 UIRoMapWnd
+141
+142
+143 UINotifyQuestWnd
+144
+145
+146 UIItemStoreSubWnd
+147 UIItemStoreSubWnd
+148 UIItemStoreSubWnd
+149 UIItemStoreSubWnd
+150 UIItemStoreSubWnd
+151 UIItemStoreSubWnd
+152 UIItemStoreSubWnd
+153 UIItemStoreFindWnd
+154
+155 UIEscOptionWnd
+156
+157 UIEntryQueueWnd
+158
+159
+160 UIItemShopWnd2
+161 UIItemSellWnd2
+162
+163 UIExchangeAcceptWnd
+164 UISeekPartyWnd
+165
+166
+167
+168 UISeekPartyMBWnd
+169 UISeekPartyListWnd
+170 UIJobListWnd
+171
+172
+173 UIPartyBookingHelpWnd
+174 UIMerchantShopMakeWnd
+175 UIMerchantMirrorItemWnd
+176 UIMerchantItemMyShopWnd
+177 UIMerchantItemShopWnd
+178 UIMerchantItemPurchaseWnd
+179 UIMerchantMirrorItemWnd
+180 UILoginOTPWnd
+181
+182
+183
+184 UInCashWnd
+185
+186 UISelectReplayDataWnd
+187 UIReplayControlWnd
+188
+189
+190 UInCash_CallWnd
+191
+192
+193
+194
+195
+196 CUICollectionSystemWnd
+197
+198 UIReplayRECControlWnd
+199 UIStorePasswordInputWnd
+200 UISecondPasswordEditWnd
+201 UIMonsterDisplayWnd
+202 UIStopWatchWnd
+203 UINavigationV4Wnd
+204 UIQuestDisplay
+205 UINewQuestWnd
+206 UInQuest_CallWnd
+207 UIPartySettingWnd
+208 UIPartyInvitationToWnd
+209 UIEntryQueueStandByWnd
+210 UIEntryQueueRequestWnd
+211 UIEntryQueueHelpWnd
+212 UIGuildHelperWnd
+213 UICreateGuildWnd
+214 UIGuildTipWnd
+215 UICreateGuildWnd
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227 CMergeItemWnd
+228
+229 UINavigationHelpWnd
+230 UIMerchantItemPurchaseMSGWnd
+231
+232
+233
+234 UIItemCollection_ComparisonWnd
+235
+236
+237 UIClanInfoManageWnd
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249 UIWaitWnd
+250 UICombinedCardItemCollection_ComparisonWnd
+251
+252 UIBargainSaleToolWnd
+253 UIGuild_Storage_Log
+254 UIParaItemShopWnd
+255 UIParaItemPurchaseWnd
+256 UIParaResultWnd
+257 UIMerchantItemLogWnd
+258 UIMerchantItemLogWnd
+259 UISecondCostumeWnd
+260 UIComboBoxIDWnd
+261 UIPetEvolutionWnd
+262 UIOpenMailBoxWnd
+263 UIRodexInboxWnd
+264 UIRodexComposeWnd
+265 UIRodexContentsWnd
+266
+267 UIMileageWnd
+268 UIOpenRoulletteWnd
+269 UIRoulletteWnd
+270 UIAchievementWnd
+271 UIAchTracingWnd
+272
+273 UIMiniMapWnd
+274 UIEditctrlWnd
+275 UIBank_NewWnd
+276 UIRoundBoxTooltipWnd
+277 UINewSelectCharWnd
+278 UINewMakeCharWnd
+279
+280
+281 UIStylingShopWnd
+282 UIConnectTwitterWnd
+283 UIControlRectWnd
+284 UICaptchaRegisterWnd
+285 UIMacroDetectorWnd
+286 UIMacroReporterWnd
+287 UIMacroUserInfoWnd
+288 UICaptchaPreviewWnd
+289 UIViewCameraInfoWnd
+290 UILapineBoxWnd
+291 UITransMenuWnd
+292
+293 UIRenderTargetWnd
+294 UIPreviewEquipWnd
+295
+296
+297
+298
+299
+300
+301
+302 UILapineUpgradeBoxWnd
+303 UIHotkeyGuideWnd
+304 UIVideoWnd
+305 UIGraphicSettingWnd
+306 UINavigationroadiconWnd
+307 UIMenuIconWnd
+308 UIShowWarpWnd
+309 UIItemStoreSubWnd
+310
+311
+312
+313
+314 UINavigationRuideWnd
+315 UITipboxWnd
+316
+317
+318 UICashShopWnd
+319
+320
+321 UIRenewQuestWnd
+322 UIRenewDetailQuestInfoWnd
+323 UIRegisterPartyWnd
+324 UIAdvenPartyBoardWnd
+325 UIRPImageWnd2
+326 UIRequestJoinPartyWnd
+327
+328 UICheckAttendanceWnd
+329
+330
+331
+332 UIDisconnectedServerMsgWnd
+333 UINoteWnd
+334 UIBartermarketWnd
+335 UIBarterItemPurchaseWnd
+336
+337
+338
+339
+340 UIAccountLimitedToolWnd
+341 UIExpandedBartermarketWnd
+342 UIExpandedBarterItemPurchaseWnd
+343
+344
+345 UIApplyForPartyWnd

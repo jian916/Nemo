@@ -3,32 +3,34 @@
 //#          to JMP in Hallucination Effect maker function        #
 //#################################################################
 
-function DisableHallucinationWavyScreen() {//Missing Comparison in pre-2010 clients
-  
+function DisableHallucinationWavyScreen()
+{ //Missing Comparison in pre-2010 clients
+
   //Step 1a - Find offset of 'xmas_fild01.rsw'
   var offset = exe.findString("xmas_fild01.rsw", RVA);
   if (offset === -1)
     return "Failed in Step 1 - xmas_fild01 not found";
-  
+
   //Step 1b - Find its references. Preceding the one inside CGone of them is an assignment to g_useEffect
   var code = "B8" + offset.packToHex(4); //MOV EAX, OFFSET addr; ASCII "xmas_fild01.rsw"
   var offsets = exe.findCodes(code, PTYPE_HEX, false);
-  
+
   if (offsets.length === 0)
     return "Failed in Step 1 - xmas_fild01 references missing";
-  
-  //Step 1c - Look for the correct location inside CGameMode::Initialize in offsets[] 
+
+  //Step 1c - Look for the correct location inside CGameMode::Initialize in offsets[]
   code = " 89 AB AB AB AB 00"; //MOV DWORD PTR DS:[g_useEffect], reg32_A
-  
-  for (var i = 0; i < offsets.length; i++) {
+
+  for (var i = 0; i < offsets.length; i++)
+  {
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 8, offsets[i]);
     if (offset !== -1 && (exe.fetchUByte(offset + 1) & 0xC7) === 0x5) break;
     offset = -1;
   }
-  
+
   if (offset === -1)
     return "Failed in Step 1 - no references matched";
-  
+
   //Step 1d - Extract g_useEffect
   var gUseEffect = exe.fetchHex(offset + 2, 4);
 
@@ -40,24 +42,26 @@ function DisableHallucinationWavyScreen() {//Missing Comparison in pre-2010 clie
   + " 0F 84"                      //JE LONG addr2
   ;
   offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-  
-  if (offset === -1) {
+
+  if (offset === -1)
+  {
     code = code.replace("83 3D" + gUseEffect + " 00", "A1" + gUseEffect + " 85 C0");//Change CMP with MOV EAX, DS:[g_useEffect] followed by TEST EAX, EAX
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offset === -1)
     return "Failed in Step 2";
-  
+
   //Step 2b - Replace the JE with NOP + JMP
   exe.replace(offset + code.hexlength() - 2, "90 E9", PTYPE_HEX);
-  
+
   return true;
 }
 
 //==============================//
 // Disable for Unsupported date //
 //==============================//
-function DisableHallucinationWavyScreen_() {
+function DisableHallucinationWavyScreen_()
+{
   return (exe.getClientDate() <= 20120516);//New client uses Inverted Screen effect. Havent figured out where it is
 }

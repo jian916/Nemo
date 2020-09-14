@@ -4,8 +4,9 @@
 //#          our list and skip iteration if present.                     #
 //########################################################################
 
-function RemoveJobsFromBooking() {
-  
+function RemoveJobsFromBooking()
+{
+
   //Step 1a - Find the MsgStr call used for Job Name loading.
   var code =
     " 8D AB 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
@@ -18,8 +19,9 @@ function RemoveJobsFromBooking() {
   ;
   var type = 1; //VC6
   var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-  
-  if (offset === -1) {
+
+  if (offset === -1)
+  {
     code =
       " 8D 49 00"          //LEA ECX, [ECX]
     + " 8D AB 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
@@ -29,8 +31,9 @@ function RemoveJobsFromBooking() {
     type = 2; //VC9 & VC11
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
-  
-  if (offset === -1) {
+
+  if (offset === -1)
+  {
     code =
       " 8B AB AB"          //MOV reg32_A, DWORD PTR SS:[EBP-const]
     + " 81 AB 5D 06 00 00" //ADD reg32_A, 65D
@@ -40,17 +43,18 @@ function RemoveJobsFromBooking() {
     type = 3; //VC10
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offset === -1)
     return "Failed in Step 1a - Loop Beginning missing";
 
   offset += code.hexlength();
-  
+
   //Step 1b - Extract the MsgStr address
   var MsgStr = exe.Raw2Rva(offset + 4) + exe.fetchDWord(offset);
-  
+
   //Step 1c - Get Pattern for finding end of the loop (We need to RETN to location before Loop counter increment which is what jmpOff is for)
-  switch (type) {
+  switch (type)
+  {
     case 1: {
       code =
         " 83 C4 04"          //ADD ESP, 4
@@ -68,9 +72,10 @@ function RemoveJobsFromBooking() {
       var jmpOff = 3;
       break;
     }
-    
+
     case 2: {
-      if (exe.getClientDate() < 20140000) {//VC9
+      if (exe.getClientDate() < 20140000)
+      { //VC9
         code =
           " FF 15 AB AB AB 00" //CALL DWORD PTR DS:[<&MSVCP#.$basic*>]
         + " AB"                //INC reg32_A
@@ -79,7 +84,8 @@ function RemoveJobsFromBooking() {
         ;
         var jmpOff = 6;
       }
-      else {//VC11
+      else
+      { //VC11
         code =
           " 83 C4 04"             //ADD ESP, 4
         + " AB"                   //INC reg32_A
@@ -108,36 +114,38 @@ function RemoveJobsFromBooking() {
     }
   }
 
-  //Step 1d - Find the pattern 
+  //Step 1d - Find the pattern
   var retAddr = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 5, offset + 0x100);
   if (retAddr === -1)
     return "Failed in Step 1b - Loop End missing";
-  
+
   //Step 1e - Get RVA of location to RETN to.
   retAddr = exe.Raw2Rva(retAddr + jmpOff);
-  
+
   //Step 2a - Get the Skip List file from User
   var fp = new TextFile();
   var inpFile = GetInputFile(fp, "$bookingList", _("File Input - Remove Jobs From Booking"), _("Enter the Booking Skip List file"), APP_PATH + "/Input/bookingSkipList.txt");
   if (!inpFile)
     return "Patch Cancelled";
-  
+
   //Step 2b - Extract all the IDs from List file to an Array
   var idSet = [];
-  while (!fp.eof()) {
+  while (!fp.eof())
+  {
     var line = fp.readline().trim();
-    if (line.match(/^\d+/)) {
+    if (line.match(/^\d+/))
+    {
       var id = parseInt(line);
       if (id < 0x65D) continue;
       idSet.push(id.packToHex(2));
     }
   }
   fp.close();
-  
+
   //Step 2c - Add NULL at end of the Array
   idSet.push(" 00 00");
 
-  //Step 3a - Prep code for our function to check the ID  
+  //Step 3a - Prep code for our function to check the ID
   code =
     " 50"                //PUSH EAX
   + " 51"                //PUSH ECX
@@ -164,25 +172,25 @@ function RemoveJobsFromBooking() {
   + " 68" + GenVarHex(3) //PUSH retAddr
   + " C3"                //RETN
   ;
-  
+
   //Step 3b - Allocate space for the IDs and the Function
   var size = idSet.length * 2 + code.hexlength();
   var free = exe.findZeros(size);
   if (free === -1)
     return "Failed in Step 3 - Not enough free space"
-  
+
   var freeRva = exe.Raw2Rva(free);
-  
+
   //Step 3c - Fill in the blanks
   code = ReplaceVarHex(code, 1, freeRva);
   code = ReplaceVarHex(code, 2, MsgStr - (freeRva + size - 12));
   code = ReplaceVarHex(code, 3, retAddr);
-  
+
   //Step 4a - Insert the data and function in Allocated space
   exe.insert(free, size, idSet.join("") + code, PTYPE_HEX);
 
   //Step 4b - Change the MsgStr CALL with a CALL to our function.
   exe.replaceDWord(offset, (freeRva + idSet.length * 2) - exe.Raw2Rva(offset + 4));
-  
+
   return true;
 }

@@ -6,10 +6,10 @@
 //
 //FORMAT for registering Addon : registerAddon(functionName, description, Tooltip text);
 //
-//	functionName is the function called when an addon is clicked. All your logic goes inside it.
-//	You can define your function in any .qs file in the Addons folder.
-//	Remember the functionName needs to be in quotes (single or double) here but no quotes should be used while defining it.
-//  
+//    functionName is the function called when an addon is clicked. All your logic goes inside it.
+//    You can define your function in any .qs file in the Addons folder.
+//    Remember the functionName needs to be in quotes (single or double) here but no quotes should be used while defining it.
+//
 //  description is what shows up in the Addon menu of NEMO.
 //  tooltip - text which shows detail about what a particular tool/addon does - need to check if its actually visible.
 //

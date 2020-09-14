@@ -3,8 +3,9 @@
 //#          inside CGameMode::ProcessPcPick to ignore shift right click #
 //########################################################################
 
-function DisableAutofollow() {
-  
+function DisableAutofollow()
+{
+
   //Step 1 - Find the assignment statement
   var code =
     " 6A 01"             //PUSH 1
@@ -15,36 +16,42 @@ function DisableAutofollow() {
   + " A3 AB AB AB 00"    //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], EAX ;in this instance reg32_B = EAX
   ;
   var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  
-  if (offsets.length === 0) {
+
+  if (offsets.length === 0)
+  {
     code = code.replace(" FF AB", " FF AB AB"); //CALL DWORD PTR DS:[reg32_C + x]
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
-  if (offsets.length === 0) { // 2017 clients [Secret]
+
+  if (offsets.length === 0)
+  { // 2017 clients [Secret]
     code = code.replace(" A3 AB AB AB 00", " A3 AB AB AB AB");
-	offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
-  if (offsets.length === 0) {
+
+  if (offsets.length === 0)
+  {
     code = code.replace(" A3", " 89 AB"); //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], reg32_B
     offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
   }
-  
+
   if (offsets.length === 0)
     return "Failed in Step 1";
 
   //Step 2 - NOP out the assignment for the correct match (pattern might match more than one location)
   var found = false;
-  for (var i = 0; i < offsets.length; i++) {
+  for (var i = 0; i < offsets.length; i++)
+  {
     var offset = offsets[i] + code.hexlength() - 4;
     var opcode = exe.fetchUByte(offset);
-    if (opcode === 0xA3) {//MOV from EAX
+    if (opcode === 0xA3)
+    { //MOV from EAX
       exe.replace(offset - 1, " 90 90 90 90 90");
       found = true;
       break;
     }
-    else if (opcode & 0xC7 === 0x5) {//MOV from other registers (mode bits should be 0 & r/m bits should be 5)
+    else if (opcode & 0xC7 === 0x5)
+    { //MOV from other registers (mode bits should be 0 & r/m bits should be 5)
       exe.replace(offset - 2, " 90 90 90 90 90 90");
       found = true;
       break;

@@ -3,7 +3,8 @@
 //#           custom function which sets up aura based on user specified limits        #
 //######################################################################################
 
-function CustomAuraLimits() {
+function CustomAuraLimits()
+{
 
   //Step 1a - Find the 2 value PUSHes before ReLaunchBlurEffects is called.
   var code =
@@ -60,7 +61,8 @@ function CustomAuraLimits() {
   //   New Clients do it in a seperate function (by New i mean 2013+)
   //---------------------------------------------------------------------
 
-  if (exe.fetchUByte(cmpBegin) === 0xB9) {//MOV ECX, g_session ; Old Style
+  if (exe.fetchUByte(cmpBegin) === 0xB9)
+  { //MOV ECX, g_session ; Old Style
 
     var directComparison = true;
 
@@ -72,7 +74,8 @@ function CustomAuraLimits() {
     code = " A1 AB AB AB 00"; //MOV EAX, DWORD PTR DS:[g_level] ; EAX is later compared with 96
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x20);
 
-    if (offset === -1) {
+    if (offset === -1)
+    {
       code = " 81 3D AB AB AB 00"; //CMP DWORD PTR DS:[g_level], 96
       offset = exe.find(code, PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x80);
     }
@@ -95,7 +98,8 @@ function CustomAuraLimits() {
     var argPush = "\x6A\x00";
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
       code = code.replace("6A 00", "AB");//swap PUSH 0 with PUSH reg32_B
       argPush = "";
       offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
@@ -123,7 +127,8 @@ function CustomAuraLimits() {
     //Step 3g - Setup ZeroAssign
     var zeroAssign = " EB 08 8D 24 24 8D 6D 00 89 C0"; //JMP and some Dummy operations
   }
-  else {//MOV reg16, WORD PTR DS:[g_level] ; New Style - comparisons are done inside a seperate function
+  else
+  { //MOV reg16, WORD PTR DS:[g_level] ; New Style - comparisons are done inside a seperate function
 
     var directComparison = false;
 
@@ -148,7 +153,8 @@ function CustomAuraLimits() {
     ;
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset0, offset0 + 0x20);
-    if (offset === -1) {
+    if (offset === -1)
+    {
         code =
           " E8 AB AB AB AB" //CALL jobIdFunc
         + " 50"             //PUSH EAX
@@ -190,11 +196,13 @@ function CustomAuraLimits() {
   var index = -1;
 
   var matches;
-  while (!fp.eof()) {
+  while (!fp.eof())
+  {
     var line = fp.readline().trim();
     if (line === "") continue;
 
-    if (matches = line.match(/^([\d\-,\s]+):$/)) {
+    if (matches = line.match(/^([\d\-,\s]+):$/))
+    {
       index++;
       var idSet = matches[1].split(",");
       idLvlTable[index] = {
@@ -202,12 +210,14 @@ function CustomAuraLimits() {
         "lvlTable":""
       };
 
-      if (index > 0) {
+      if (index > 0)
+      {
         idLvlTable[index-1].lvlTable += " FF FF";
         tblSize += 2;
       }
 
-      for (var i = 0; i < idSet.length; i++) {
+      for (var i = 0; i < idSet.length; i++)
+      {
         var limits = idSet[i].split("-");
         if (limits.length === 1)
           limits[1] = limits[0];
@@ -220,7 +230,8 @@ function CustomAuraLimits() {
       idLvlTable[index].idTable += " FF FF";
       tblSize += 2;
     }
-    else if (matches = line.match(/^([\d\-\s]+)\s*=>\s*(\d)\s*,/)) {
+    else if (matches = line.match(/^([\d\-\s]+)\s*=>\s*(\d)\s*,/))
+    {
       var limits = matches[1].split("-");
 
       idLvlTable[index].lvlTable += parseInt(limits[0]).packToHex(2);
@@ -231,7 +242,8 @@ function CustomAuraLimits() {
   }
   fp.close();
 
-  if (index >= 0) {
+  if (index >= 0)
+  {
     idLvlTable[index].lvlTable += " FF FF";
     tblSize += 2;
   }
@@ -245,10 +257,10 @@ function CustomAuraLimits() {
   + " B9" + GenVarHex(1)      //MOV ECX, g_session
   + " E8" + GenVarHex(2)      //CALL jobIdFunc
   + " BB" + GenVarHex(3)      //MOV EBX, tblAddr
-  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];	addr6
+  + " 8B 0B"                  //MOV ECX, DWORD PTR DS:[EBX];    addr6
   + " 85 C9"                  //TEST ECX, ECX
   + " 74 49"                  //JE SHORT addr1
-  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];	addr5
+  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];    addr5
   + " 85 D2"                  //TEST EDX, EDX
   + " 78 15"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX, EDX
@@ -258,15 +270,15 @@ function CustomAuraLimits() {
   + " 78 09"                  //JS SHORT addr2
   + " 39 D0"                  //CMP EAX,EDX
   + " 7E 0A"                  //JLE SHORT addr4
-  + " 83 C1 04"               //ADD ECX, 4;	addr3
+  + " 83 C1 04"               //ADD ECX, 4;    addr3
   + " EB E4"                  //JMP SHORT addr5
-  + " 83 C3 08"               //ADD EBX, 8;	addr2
+  + " 83 C3 08"               //ADD EBX, 8;    addr2
   + " EB D9"                  //JMP SHORT addr6
-  + " A1" + GenVarHex(4)      //MOV EAX, DWORD PTR DS:[g_level];	addr4
+  + " A1" + GenVarHex(4)      //MOV EAX, DWORD PTR DS:[g_level];    addr4
   + " 8B 4B 04"               //MOV ECX, DWORD PTR DS:[EBX+4]
   + " 85 C9"                  //TEST ECX, ECX
   + " 74 1C"                  //JE SHORT addr1
-  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];	addr9
+  + " 0F BF 11"               //MOVSX EDX, WORD PTR DS:[ECX];    addr9
   + " 85 D2"                  //TEST EDX, EDX
   + " 78 15"                  //JS SHORT addr1
   + " 39 D0"                  //CMP EAX, EDX
@@ -276,7 +288,7 @@ function CustomAuraLimits() {
   + " 78 09"                  //JS SHORT addr1
   + " 39 D0"                  //CMP EAX, EDX
   + " 7E 14"                  //JLE SHORT addr8
-  + " 83 C1 05"               //ADD ECX, 5;	addr7
+  + " 83 C1 05"               //ADD ECX, 5;    addr7
   + " EB E4"                  //JMP SHORT addr9
   + " 5B"                     //POP EBX; addr1
   + " 5A"                     //POP EDX
@@ -320,7 +332,8 @@ function CustomAuraLimits() {
   //Step 6d - Construct the table pointers & limits to insert
   var tblAddrData = "";
   var tblData = "";
-  for (var i = 0, addr = size - tblSize; i < idLvlTable.length; i++) {
+  for (var i = 0, addr = size - tblSize; i < idLvlTable.length; i++)
+  {
     tblAddrData += (freeRva + addr).packToHex(4);
     tblData += idLvlTable[i].idTable;
     addr += idLvlTable[i].idTable.hexlength();
@@ -333,7 +346,8 @@ function CustomAuraLimits() {
   //Step 7a - Insert the function and table data
   exe.insert(free, size, code + tblAddrData + " 00 00 00 00" + tblData, PTYPE_HEX);
 
-  if (directComparison) {
+  if (directComparison)
+  {
 
   //Step 7b - Since there was no existing Function CALL, We add a CALL to our function after ECX assignment
     code =
@@ -344,7 +358,8 @@ function CustomAuraLimits() {
 
     exe.replace(cmpBegin, code, PTYPE_HEX);
   }
-  else {
+  else
+  {
     //Step 7c - Find the function call... again and replace it with a CALL to our Function
     offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x30);
     exe.replaceDWord(offset + 1, freeRva - exe.Raw2Rva(offset + 5));

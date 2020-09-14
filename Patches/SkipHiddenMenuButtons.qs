@@ -74,6 +74,12 @@ function SkipHiddenMenuButtons()
         var regByte = "47";
         var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
+    if (offset === -1)
+    {
+        code = code.replace("B5", "9D"); //esi -> ebx
+        code = code.replace("3E", "3B"); //esi -> ebx
+        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
 
     if (offset === -1)
         return "Failed in step 2 - pattern not found";
@@ -109,13 +115,80 @@ function SkipHiddenMenuButtons()
     }
 
     if (offset === -1)
+    {
+        code =
+          " 2D AB AB 00 00"    //0 sub eax, 1E9h
+        + " 0F 84 AB AB 00 00" //5 jz continueAddr
+        + " 83 E8 AB"          //11 sub eax, 7h
+        + " 0F 84 AB AB 00 00" //14 jz continueAddr
+        ;
+        var noSwitch = true;
+        var jmpOffset1 = 7;
+        var jmpOffset2 = 16;
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    }
+
+    if (offset === -1)
+    {
+        code = code.replace(" 83 E8 AB", " 2D AB AB 00 00"); //sub eax,86h
+        var noSwitch = true;
+        var jmpOffset1 = 7;
+        var jmpOffset2 = 18;
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    }
+
+    if (offset === -1)
+    {
+        code =
+          " 81 FB AB AB 00 00" //0 cmp ebx,162h
+        + " 0F 84 AB AB 00 00" //6 jz continueAddr
+        + " 81 FB AB AB 00 00" //12 cmp ebx,203h
+        + " 0F 84 AB AB 00 00" //18 jz continueAddr
+        ;
+        var noSwitch = true;
+        var jmpOffset1 = 8;
+        var jmpOffset2 = 20;
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    }
+
+        if (offset === -1)
+    {
+        code =
+          " 81 FB AB AB 00 00" //0 cmp ebx,164h
+        + " 0F 84 AB AB 00 00" //6 jz continueAddr
+        + " 81 FB AB AB 00 00" //12 cmp ebx,208h
+        + " 7E AB"             //18 jle short
+        + " 81 FB AB AB 00 00" //20 cmp ebx,20Ah
+        + " 0F 8E AB AB 00 00" //26 jle continueAddr
+
+        ;
+        var noSwitch = true;
+        var jmpOffset1 = 8;
+        var jmpOffset2 = 28;
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    }
+
+
+    if (offset === -1)
         return "Failed in Step 3 - switch not found";
 
-    // get switch jmp address for value 0
-    var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
-    var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
-    var offset1 = exe.fetchUByte(addr1);
-    var continueAddr = exe.fetchDWord(addr2 + 4 * offset1);
+    if (noSwitch)
+    {
+        var jmpAdd1 = exe.fetchDWord(offset + jmpOffset1);
+        var jmpAdd2 = exe.fetchDWord(offset + jmpOffset2);
+        var continueAddr = exe.Raw2Rva(offset + jmpOffset1 + 4) + jmpAdd1;
+        var continueAddr2 = exe.Raw2Rva(offset + jmpOffset2 + 4) + jmpAdd2;
+        if (continueAddr !== continueAddr2)
+            return "Failed in Step 3.1 - Found wrong continueAddr";
+    }
+    else
+    {
+        // get switch jmp address for value 0
+        var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
+        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        var offset1 = exe.fetchUByte(addr1);
+        var continueAddr = exe.fetchDWord(addr2 + 4 * offset1);
+    }
 
     // step 4 - patch code
 
@@ -137,7 +210,7 @@ function SkipHiddenMenuButtons()
     if (free === -1)
         return "Failed in Step 2 - Not enough free space";
 
-    exe.insert(free, code.length, code, PTYPE_HEX);
+    exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
     // add jump to own code
     code =

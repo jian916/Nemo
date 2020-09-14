@@ -3,8 +3,9 @@
 //#          specified by user and Update "No EULA " reference     #
 //##################################################################
 
-function RenameLicenseTxt() {
-  
+function RenameLicenseTxt()
+{
+
   //Step 1a - Find address of licence.txt string
   var offset = exe.findString("..\\licence.txt", RVA);
   if (offset === -1)
@@ -19,7 +20,7 @@ function RenameLicenseTxt() {
   var txtFile = exe.getUserInput("$licenseTXT", XTYPE_STRING, _("String Input"), _("Enter the name of the Txt file"), "..\\licence.txt", 1, 20);
   if (txtFile === "" || txtFile === "..\\licence.txt")
     return "Failed in Step 2 - Patch Cancelled";
-  
+
   txtFile += "\x00";
 
   //Step 2b - Allocate space for the new name
@@ -53,12 +54,14 @@ function RenameLicenseTxt() {
   var prefixes = [" 6A 20 68", " BE", " BF"];
   var freeRva = exe.Raw2Rva(free);
 
-  for (var i = 0; i < prefixes.length; i++) {
+  for (var i = 0; i < prefixes.length; i++)
+  {
     var offsets = exe.findCodes(prefixes[i] + offset.packToHex(4), PTYPE_HEX, false);
-    for (var j = 0; j < offsets.length; j++) {
+    for (var j = 0; j < offsets.length; j++)
+    {
       exe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
     }
   }
-  
+
   return true;
 }

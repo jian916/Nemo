@@ -3,7 +3,8 @@
 //#          to ignore map type comparisons                   #
 //#############################################################
 
-function ShowResurrectionButton() {//To do - When on PVP/GVG map the second time u die, the char gets warped to save point anyways.
+function ShowResurrectionButton()
+{ //To do - When on PVP/GVG map the second time u die, the char gets warped to save point anyways.
 
     //Step 1 - Find the "Token of Siegfried" id PUSH in CGameMode::HaveSiegfriedItem function.
     var offset = exe.findCode(" 68 C5 1D 00 00", PTYPE_HEX, false); //PUSH 1D5C
@@ -23,7 +24,8 @@ function ShowResurrectionButton() {//To do - When on PVP/GVG map the second time
     var type = 1;//VC6 style
     var offset2 = exe.find(code + code + code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
         code =
             " 83 78 AB 00" //CMP DWORD PTR DS:[EAX+const], 0
           + " 75 AB"       //JNE SHORT addr
@@ -33,7 +35,8 @@ function ShowResurrectionButton() {//To do - When on PVP/GVG map the second time
         offset2 = exe.find(code + code + code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
     }
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
         code =
             " 39 58 AB"          //CMP DWORD PTR DS:[EAX+const], reg32
           + " 0F 85 AB 00 00 00" //JNE addr
@@ -43,7 +46,8 @@ function ShowResurrectionButton() {//To do - When on PVP/GVG map the second time
         offset2 = exe.find(code + code + code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
     }
 
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
         code =
             " 83 78 AB 00" //CMP DWORD PTR DS:[EAX+const], 0
           + " 0F 85 AB 00 00 00" //JNE addr
@@ -52,7 +56,8 @@ function ShowResurrectionButton() {//To do - When on PVP/GVG map the second time
         type = 4;//VC17 style
         offset2 = exe.find(code + code + code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
     }
-    if (offset2 === -1) {
+    if (offset2 === -1)
+    {
         code =
             " 83 78 AB 00" //CMP DWORD PTR DS:[EAX+const], 0
           + " 0F 85 AB 01 00 00" //JNE addr

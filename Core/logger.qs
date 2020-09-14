@@ -15,9 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-String.prototype.toHex1 = function() {
+String.prototype.toHex1 = function()
+{
   var result = '';
-  for (var i = 0; i < this.length; i++) {
+  for (var i = 0; i < this.length; i++)
+  {
     var h = this.charCodeAt(i).toString(16);
     if (h.length === 1)
       h = '0' + h;
@@ -597,4 +599,46 @@ function consoleLog(message)
     if (typeof(console2) === "undefined")
         return;
     console2.log(message);
+}
+
+function logVaVar(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVaVar(name, offset, offset2);
+}
+
+function logVaFunc(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVaFunc(name, offset, offset2);
+}
+
+function logRawFunc(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logRawFunc(name, offset, offset2);
+}
+
+function logField(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logField(name, offset, offset2[0], offset2[1]);
+}
+
+function logVal(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logVal(name, offset, offset2);
+}
+
+function logFieldAbs(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logFieldAbs(name, offset, offset2[0], offset2[1]);
 }

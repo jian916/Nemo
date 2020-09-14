@@ -22,7 +22,7 @@ function FixedCharJobCreate()
 {
     //Step 1 - find sending packet 0xA39
     // 2018-05-30
-    var code = 
+    var code =
         "B8 39 0A 00 00" +        // mov     eax, 0A39h
         "66 89 85 AB AB AB AB" +  // mov     [ebp+a39.packet_id], ax
         "0F B7 05 AB AB AB AB" +  // movzx   eax, word_FC7C44

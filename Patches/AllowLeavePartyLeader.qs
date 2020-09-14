@@ -39,6 +39,7 @@ function AllowLeavelPartyLeader()
         "68 C9 0C 00 00" +        // push 0CC9h
         "E9"                      // jmp addr3
     var jzOffset = 2;
+    var friendInfoDestructorOffset = 18;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
@@ -47,6 +48,7 @@ function AllowLeavelPartyLeader()
     if (exe.fetchUByte(offset + jzOffset) !== 0x74)
         return "Failed in step 1 - wrong jz offset";
 
+    logRawFunc("FRIEND_INFO_destructor", offset, friendInfoDestructorOffset);
     exe.replace(offset + jzOffset, "EB", PTYPE_HEX);  // change jz addr3 to jmp addr3
 
     return true;

@@ -2,7 +2,8 @@
 //# Purpose: Skips the check that requires the player to not be in a clan #
 //# Author : Functor                                                      #
 //#########################################################################
-function EnableGuildWhenInClan() {
+function EnableGuildWhenInClan()
+{
 
     // Step 1 - Find Message ID #2605 reference
     var code =
@@ -29,7 +30,7 @@ function EnableGuildWhenInClan() {
     exe.replace(offset - 2, " EB", PTYPE_HEX);
 
     // Step 2 - Find the jump followed by push 0x168
-    var code = 
+    var code =
         " 0F 85 AB AB FF FF" // JNZ addr
     +   " B8 68 01 00 00"    // MOV EAX, 168
     ;
@@ -46,6 +47,7 @@ function EnableGuildWhenInClan() {
 }
 
 // Disable for unsupported clients
-function EnableGuildWhenInClan_() {
+function EnableGuildWhenInClan_()
+{
     return exe.findString("/clanchat", RAW) !== -1;
 }

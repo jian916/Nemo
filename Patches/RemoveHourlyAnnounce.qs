@@ -5,16 +5,18 @@
 
 function RemoveHourlyAnnounce()
 {
-    //PlayTime comparison is not there in Pre-2010 clients
     //Step 1a - Find the comparison for Game Grade
-    // clients before 2017-11-08b use ax, later cx
     var code =
         " 75 AB"    //JNE SHORT addr1
       + " MovR16"    //Frame Pointer Specific MOV
       + " 66 85 AB" //TEST r16, r16
-      + " 75"       //JNE SHORT addr2
+      + " 75 AB"    //JNE SHORT addr2
       ;
 
+    if (offset === -1)
+        return "Failed in Step 1a - Pattern not found";
+
+    // Step 1b - Find the Mov R16 reference
     var fpEnb = HasFramePointer();
     if (fpEnb)
         code = code.replace(" MovR16", " 66 8B AB AB"); //MOV r16, WORD PTR SS:[EBP-x]
@@ -36,36 +38,38 @@ function RemoveHourlyAnnounce()
     }
 
     if (offset === -1)
-        return "Failed in Step 1";
+        return "Failed in Step 1b - Mov R16 reference not found";
 
-    //Step 1b - Change JNE to JMP
+    //Step 1c - Change JNE to JMP
     exe.replace(offset, "EB", PTYPE_HEX);
 
-    //Step 2a - Find Time divider before the PlayTime Reminder comparison
-    code =
-        " B8 B1 7C 21 95" //MOV EAX, 95217CB1
-      + " F7 E1"          //MUL ECX
-      ;
+    var code = "\x25\x64\x20\xBD\xC3\xB0\xA3\xC0\xCC\x20\xB0\xE6\xB0\xFA\xC7\xDF\xBD\xC0\xB4\xCF\xB4\xD9\x2E"; // "%d 시간이 경과했습니다."
+    var offset = exe.findString(code, RAW);
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, false);
-    if (offsets.length === 0)
-        return "Failed in Step 2 - Magic Divisor not found";
+    if (offset === -1)
+        return "Failed in step 2a - string not found";
 
-    for (var i = 0; i < offsets.length; i++)
-    {
-        //Step 2b - Find the JLE after each (below the TEST/CMP instruction)
-        offset = exe.find(" 0F 8E AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[i] + 7, offsets[i] + 30); //JLE addr
+    offset = exe.findCode("68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+    if (offset === -1)
+        return "Failed in step 2a - string reference missing";
 
-        //Step 2c - Change to NOP + JMP
-        if (offset !== -1)
-            exe.replace(offset, " 90 E9", PTYPE_HEX);
+    //Step 2a - Find Time divider before the PlayTime Reminder comparison - mov eax, 95217CB1h
+    offset = exe.find(" B8 B1 7C 21 95", PTYPE_HEX, true, "\xAB", offset - 0xFF, offset);
 
-        /*
-        offset = exe.find(" 0F 85 AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[i] + 7, offsets[i] + 30); //JNE addr
-        if (offset === -1)
-            return "Failed in Step 2 - Iteration No." + i;
-        */
-    }
+    if (offset === -1)
+        return "Failed in Step 2b - Magic Divisor not found";
+
+    //Step 2b - Find the JLE after each (below the TEST/CMP instruction)
+    offset = exe.find(" 0F 8E AB AB 00 00", PTYPE_HEX, true, "\xAB", offset + 7, offset + 30); //JLE addr
+
+    if (offset === -1)
+        offset = exe.find(" 0F 86 AB 00 00 00", PTYPE_HEX, true, "\xAB", offset + 7, offset + 55); // JBE addr
+
+    if (offset === -1)
+        return "Failed in Step 2c - Comparison not found";
+
+    //Step 2c - Change to NOP + JMP
+    exe.replace(offset, " 90 E9", PTYPE_HEX);
 
     return true;
 }

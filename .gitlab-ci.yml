@@ -1,15 +1,26 @@
 stages:
   - test
+  - triggers
 
-image: debian:unstable
+image: debian:testing
 
-checkfiles:
+files:
   stage: test
   script:
   - ./.ci/retry.sh apt-get update
-  - ./.ci/retry.sh apt-get -y -qq install ${PACKAGES}
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
   - ./.ci/checkfiles.sh
-  - ./.ci/retry.sh git clone https://gitlab.com/4144/nemosite.git
+  variables:
+    PACKAGES: dos2unix moreutils sed git python git gettext
+
+translations:
+  stage: test
+  only:
+  - branches@4144/Nemo
+  script:
+  - ./.ci/retry.sh apt-get update
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
+  - ./.ci/retry.sh git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/4144/nemosite.git
   - rm -rf ./.ci/index.txt || true
   - cp nemosite/logs/index.txt ./.ci/
   - cd ./.ci
@@ -17,3 +28,14 @@ checkfiles:
   - ./updatetranslations.py
   variables:
     PACKAGES: dos2unix moreutils git python git gettext
+
+trigger:
+  stage: triggers
+  only:
+  - branches@4144/Nemo
+  script:
+  - ./.ci/retry.sh apt-get update
+  - ./.ci/retry.sh apt-get -y install ${PACKAGES}
+  - curl -X POST -F token=$key1 -F ref=$branch1 $host1/$id1/trigger/pipeline
+  variables:
+    PACKAGES: curl

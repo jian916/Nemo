@@ -3,15 +3,20 @@
 //#          to custom file specified by user  #
 //##############################################
 
-function ChangeItemInfo() {
+function ChangeItemInfo()
+{
 
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
-    if (IsRenewal()) {
+    if (IsSakray())
+    {
         var iiName = "System/iteminfo_Sak.lub";
-    } else {
+    }
+    else
+    {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
-        if (exe.findString(iiName, RVA) === -1) {
+        if (exe.findString(iiName, RVA) === -1)
+        {
             // iteminfo in new clients
             iiName = "System/iteminfo_true.lub";
         }
@@ -40,7 +45,7 @@ function ChangeItemInfo() {
         return "Failed in Step 2 - Not enough free space";
 
     //Step 3 - Insert the new name and replace the iteminfo reference
-    exe.insert(free, myfile.length, "$newItemInfo", PTYPE_STRING);    
+    exe.insert(free, myfile.length, "$newItemInfo", PTYPE_STRING);
     exe.replace(offset+1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
 
     return true;
@@ -49,10 +54,14 @@ function ChangeItemInfo() {
 //=================================//
 // Disable for Unsupported clients //
 //=================================//
-function ChangeItemInfo_() {
-    if (IsRenewal()) {
+function ChangeItemInfo_()
+{
+    if (IsSakray())
+    {
         var iiName = "System/iteminfo_Sak.lub";
-    } else {
+    }
+    else
+    {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
         if (exe.findString(iiName, RAW) !== -1)

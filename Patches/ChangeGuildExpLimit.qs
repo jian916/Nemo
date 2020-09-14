@@ -35,6 +35,14 @@ function ChangeGuildExpLimit()
     var limitOffset = 6;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
+    {
+        code = code.replace("78 09 ", "78 05 "); //JLE short
+        code = code.replace("0F 8E AB AB 00 00 ", " 7E AB "); //JLE short
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
     if (offset === -1)
         return "Failed in step 1 - check limit pattern not found";
 

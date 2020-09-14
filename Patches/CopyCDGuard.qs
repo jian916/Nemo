@@ -37,5 +37,5 @@ function CopyCDGuard_apply()
 //============================//
 function CopyCDGuard_()
 {
-    return (exe.findString("CDClient.dll", RAW) !== -1);  
+    return (exe.findString("CDClient.dll", RAW) !== -1);
 }
