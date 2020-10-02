@@ -208,12 +208,12 @@ function HighlightSkillSlotColor()
 {
     consoleLog("Step 1 - Find the area where color is pushed.");
     var code =
-        "0F B6 0D AB AB AB AB " +     // 0 movzx ecx, g_session.m_shortcutSlotCnt
-        "6B AB 1D " +                 // 7 imul edx, 1Dh
-        "68 B4 FF B4 00 " +           // 10 push 0B4FFB4h
-        "8B AB " +                    // 15 mov eax, ecx
-        "6A 18 " +                    // 17 push 18h
-        "83 C1 05 ";                  // 19 add ecx, 5
+        "0F B6 0D AB AB AB AB " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
+        "6B AB 1D " +              // 07 imul edx, 1Dh
+        "68 B4 FF B4 00 " +        // 10 push 0B4FFB4h
+        "8B AB " +                 // 15 mov eax, ecx
+        "6A 18 " +                 // 17 push 18h
+        "83 C1 05 ";               // 19 add ecx, 5
     var colorOffset = 11;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
@@ -225,7 +225,7 @@ function HighlightSkillSlotColor()
     }
 
     if (offset === -1)
-        return "Failed in Step 1";
+        return "Failed in Step 1 - Pattern not found";
 
     consoleLog("Step 2a - Get the new color from user");
     var color = exe.getUserInput("$HSkillSColor", XTYPE_COLOR, _("Color input"), _("Select new Highlight Skillslot Color"), 0x00B4FFB4);
