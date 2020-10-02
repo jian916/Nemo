@@ -209,13 +209,21 @@ function HighlightSkillSlotColor()
     consoleLog("Step 1 - Find the area where color is pushed.");
     var code =
         "0F B6 0D AB AB AB AB " +     // 0 movzx ecx, g_session.m_shortcutSlotCnt
-        "6B D2 1D " +                 // 7 imul edx, 1Dh
+        "6B AB 1D " +                 // 7 imul edx, 1Dh
         "68 B4 FF B4 00 " +           // 10 push 0B4FFB4h
         "8B AB " +                    // 15 mov eax, ecx
         "6A 18 " +                    // 17 push 18h
         "83 C1 05 ";                  // 19 add ecx, 5
     var colorOffset = 11;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
+    {
+        code = code.replace("68 B4 FF B4 00 8B AB ", "8B AB 68 B4 FF B4 00 ");  // Move a MOV EAX, ECX to before PUSH 0B4FFB4h
+        colorOffset = 13;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
     if (offset === -1)
         return "Failed in Step 1";
 
