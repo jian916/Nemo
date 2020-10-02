@@ -27,6 +27,22 @@ function ChangeDisplayCharDelDelay()
 
   var offset = exe.findCode(code, PTYPE_HEX, false);
 
+  if (offset === -1) //2019+ clients
+  {
+    code =
+      " 83 EC 24"          //SUB ESP, 24
+    + " 0F 57 C0"          //XORPS XMM0, XMM0
+    + " 83 39 00"          //CMP DWORD PTR [ECX], 0
+    + " 56"                //PUSH ESI
+    + " 8B 75 08"          //MOV ESI,DWORD PTR SS:[EBP+8]
+    + " 0F 11 06"          //MOVUPS XMMWORD PTR [ESI], XMM0
+    + " 7D 06"             //JGE SHORT
+    + " C7 01 00 00 00 00" //MOV DWORD PTR [ECX], 0
+    ;
+
+    offset = exe.findCode(code, PTYPE_HEX, false);
+  }
+
   if (offset === -1)
     return "Failed in Step 1";
 
@@ -34,6 +50,11 @@ function ChangeDisplayCharDelDelay()
   // Step 2 - Get "MSVCR110._time32" address
 
   var time32Func = GetFunction("_time32", "MSVCR110.dll");
+
+  if (time32Func === -1) //2019+ clients
+  {
+    time32Func = GetFunction("_time32", "api-ms-win-crt-time-l1-1-0.dll");
+  }
 
   if (time32Func === -1)
     return "Failed in Step 2 - No \"_time32\" function found";
@@ -83,6 +104,16 @@ function ChangeDisplayCharDelDelay()
 
   offset = exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false);
 
+  if (offset === -1) //2019+ clients
+  {
+    offset = exe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false);
+  }
+
+  if (offset === -1) //2019+ clients
+  {
+    offset = exe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false);
+  }
+
   if (offset === -1)
     return "Failed in Step 4";
 
@@ -93,5 +124,5 @@ function ChangeDisplayCharDelDelay()
 
 function ChangeDisplayCharDelDelay_()
 {
-  return (exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false)  !== -1);
+  return ((exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false) & exe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false) & exe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false)) !== -1);
 }

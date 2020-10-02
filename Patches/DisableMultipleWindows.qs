@@ -26,6 +26,18 @@ function DisableMultipleWindows()
   }
 
   if (offset === -1)
+  {
+    code = code.replace(" FF 6A 00", " 00 6A 00");
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
+
+  if (offset === -1)
+  {
+    code = code.replace(" E8 AB AB AB 00", " 8B 35 AB AB AB AB");
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  }
+
+  if (offset === -1)
     return "Failed in Step 1 - CoInitialize call missing";
 
   //Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,
