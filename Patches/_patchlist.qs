@@ -568,4 +568,6 @@ registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "j
 
 registerPatch(328, "Enable44khzAudio", "Enable 44.1 kHz Audio Sampling Frequency", "Custom", 0, "jchcc", "Boosts the audio sampling frequency to 44.1 kHz, improving the audio quality in the game.", false);
 
+registerPatch(329, "DisableCameraLock", "Disable ViewPointTable.txt", "UI", 0, "X-EcutiOnner", "Disable locking camera viewpoint rotation on file ViewPointTable.txt", false);
+
 GlobalPostInit();
