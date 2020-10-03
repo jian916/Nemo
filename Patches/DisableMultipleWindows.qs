@@ -5,43 +5,63 @@
 
 function DisableMultipleWindows()
 {
-    // Step 1a - Find Address of ole32.CoInitialize function
-    var offset = GetFunction("CoInitialize", "ole32.dll");
-    if (offset === -1)
+    consoleLog("Step 1a - Find Address of ole32.CoInitialize function");
+    var funcOffset = GetFunction("CoInitialize", "ole32.dll");
+    if (funcOffset === -1)
         return "Failed in Step 1 - CoInitialize not found";
 
-    // Step 1b - Find where it is called from.
+    consoleLog("Step 1b - Find where it is called from.");
     var code =
         " E8 AB AB AB FF" //CALL ResetTimer
       + " AB"             //PUSH reg32
-      + " FF 15" + offset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
+      + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
     ;
-    resetTimerOffset = 1;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var resetTimerOffset = 1;
+    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
     {
-        code = code.replace(" FF AB", " FF 6A 00");//Change PUSH reg32 with PUSH 0
+        code =
+            " E8 AB AB AB FF" //CALL ResetTimer
+          + " 6A 00 "         //PUSH 0
+          + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
+        ;
+        resetTimerOffset = 1;
+
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
     if (offset === -1)
     {
-        code = code.replace(" FF 6A 00", " 00 6A 00");
+        code =
+            " E8 AB AB AB 00" //CALL ResetTimer
+          + " 6A 00 "         //PUSH 0
+          + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
+        ;
+        resetTimerOffset = 1;
+
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
     if (offset === -1)
     {
-        code = code.replace(" E8 AB AB AB 00", " 8B 35 AB AB AB AB");
+        code =
+            " 8B 35 AB AB AB AB" //CALL [func]
+          + " 6A 00 "            //PUSH 0
+          + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
+        ;
+        resetTimerOffset = 2;
+
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
     if (offset === -1)
         return "Failed in Step 1 - CoInitialize call missing";
 
-    // Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,
-    //          Replace the statement with MOV EAX, 00FFFFFF
+    logRawFunc("ResetTimer", offset, resetTimerOffset);
+
+    consoleLog("Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,");
+    consoleLog("Replace the statement with MOV EAX, 00FFFFFF");
     if (exe.fetchUByte(offset + code.hexlength()) === 0xA1)
     {
         exe.replace(offset + code.hexlength(), " B8 FF FF FF 00");
@@ -53,11 +73,11 @@ function DisableMultipleWindows()
     // Hence we will put our own Checker code                                              //
     //=====================================================================================//
 
-    // Step 2a - Extract the ResetTimer function address (called before CoInitialize)
+    consoleLog("Step 2a - Extract the ResetTimer function address (called before CoInitialize)");
     offset += 5;
     var resetTimer = exe.fetchDWord(offset-4) + exe.Raw2Rva(offset);
 
-    // Step 2b - Prepare code for mutex windows
+    consoleLog("Step 2b - Prepare code for mutex windows");
     code =
         " E8" + GenVarHex(0)          //CALL ResetTimer
       + " 56"                         //PUSH ESI
@@ -96,15 +116,15 @@ function DisableMultipleWindows()
 
     var csize = code.hexlength();
 
-    // Step 2c - Allocate space to store the code
+    consoleLog("Step 2c - Allocate space to store the code");
     var free = exe.findZeros(csize);
     if (free === -1)
         return "Failed in Step 2 - Not enough free space";
 
-    // Step 2d - Replace the resetTimer call with our code
+    consoleLog("Step 2d - Replace the resetTimer call with our code");
     exe.replace(offset - 5, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset)).packToHex(4), PTYPE_HEX);
 
-    // Step 2e - Fill in the blanks
+    consoleLog("Step 2e - Fill in the blanks");
     code = ReplaceVarHex(code, 0, resetTimer - exe.Raw2Rva(free + 5));
     code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset));
 
@@ -122,7 +142,7 @@ function DisableMultipleWindows()
     code = ReplaceVarHex(code, 3, offset);
     code = ReplaceVarHex(code, 7, offset);
 
-    // Step 2f - Insert the code to allocated space
+    consoleLog("Step 2f - Insert the code to allocated space");
     exe.insert(free, csize, code, PTYPE_HEX);
 
     return true;
