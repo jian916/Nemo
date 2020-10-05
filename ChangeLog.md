@@ -1,3 +1,13 @@
+# 2020-10-05 Patches update
+
+## Patches
+
+- Add patch [Disable ViewPointTable.txt](http://nemo.herc.ws/patches/DisableCameraLock/#success-clients). (by @X-EcutiOnner).
+- Fix patch [Change character display deletion time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients). (fix by @jchcc).
+- Fix patch [Disable Multiple Windows](http://nemo.herc.ws/patches/DisableMultipleWindows/#success-clients). (fix by @jchcc).
+- Fix patch [Highlight Skillslot Color](http://nemo.herc.ws/patches/HighlightSkillSlotColor/#success-clients). (fix by @X-EcutiOnner).
+
+
 # 2020-09-09 Patches update
 
 ## Patches
