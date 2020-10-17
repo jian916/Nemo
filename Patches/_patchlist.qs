@@ -572,4 +572,6 @@ registerPatch(329, "DisableCameraLock", "Disable ViewPointTable.txt", "UI", 0, "
 
 registerPatch(330, "IgnoreSignBoardReading", "Ignore SignBoardList.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading SignBoardList.lub", false);
 
+registerPatch(331, "DisableBlindEffect", "Disable Blind skills effect", "UI", 0, "X-EcutiOnner", "Disables the Blind skill effect (screen becomes darkness)", false);
+
 GlobalPostInit();
