@@ -20,6 +20,7 @@
 
 function HideBuildInfo()
 {
+    consoleLog("search strings");
     var buildStr = exe.findString("build : %s - %s", RVA);
     if (buildStr === -1)
         return "Failed in search 'build : %s - %s'";
@@ -32,7 +33,7 @@ function HideBuildInfo()
     if (snStr === -1)
         return "Failed in search 's/n : %s'";
 
-    // search in CGameMode::ProcessTalkType
+    consoleLog("search in CGameMode::ProcessTalkType");
     // erase time and date
     var code =
         "68 AB AB AB AB " +            // 0 push offset a113155
@@ -46,9 +47,12 @@ function HideBuildInfo()
 
     var timeAddr = exe.Rva2Raw(exe.fetchDWord(offset + timeOffset));
     var dateAddr = exe.Rva2Raw(exe.fetchDWord(offset + dateOffset));
+    consoleLog("Erase timeAddr");
     eraseString(timeAddr, 0);
+    consoleLog("Erase dateAddr");
     eraseString(dateAddr, 0);
 
+    consoleLog("search version string usage");
     var code =
         "6A AB " +                    // 0 push 3
         "6A AB " +                    // 2 push 2
@@ -61,10 +65,14 @@ function HideBuildInfo()
     if (offset === -1)
         return "Failed in search ver string usage";
 
+    consoleLog("Remove ver1");
     exe.replaceByte(offset + ver1Offset, 0);
+    consoleLog("Remove ver2");
     exe.replaceByte(offset + ver2Offset, 0);
+    consoleLog("Remove ver3");
     exe.replaceByte(offset + ver3Offset, 0);
 
+    consoleLog("search sn string usage");
     var code =
         "68 AB AB AB AB " +           // 0 push offset aT9mx8utS35wzas
         "68 " + snStr.packToHex(4);   // 5 push offset aSNS
@@ -73,38 +81,42 @@ function HideBuildInfo()
     if (offset === -1)
         return "Failed in search sn string usage";
     var snAddr = exe.Rva2Raw(exe.fetchDWord(offset + snOffset));
+    consoleLog("Erase snAddr");
     eraseString(snAddr, 0);
 
-    // search "mylog("
+    consoleLog("search \"mylog(\"");
     var myStr = exe.find("6D 79 6C 6F 67 28", PTYPE_HEX, false, "\xAB");
     if (myStr !== -1)
     {
+        consoleLog("Erase myStr");
         eraseString(myStr, 0);
     }
 
-    // search "EnterTraceLog("
+    consoleLog("search \"EnterTraceLog(\"");
     var logStr = exe.find("45 6E 74 65 72 54 72 61 63 65 4C 6F 67 28", PTYPE_HEX, false, "\xAB");
     if (logStr !== -1)
     {
+        consoleLog("Erase logStr");
         eraseString(logStr, 0);
     }
 
-    // search any "year-" strings
+    consoleLog("search any \"year-\" strings");
     var code = ("" + exe.getClientDate()).substr(0, 4) + "-";
     var codes = exe.findAll(code, PTYPE_STRING, false, "\xAB");
     if (codes.length !== 0)
     {
         for (var f = 0; f < codes.length; f ++)
         {
+            consoleLog("Erase year string");
             eraseString(codes[f], 0);
         }
     }
 
     var peHeader = exe.fetchDWord(0x3c);
     var optHeader = peHeader + 4 + 0x14;
-    // erase PE time stamp
+    consoleLog("erase PE time stamp");
     exe.replaceDWord(peHeader + 8, 0);
-    // erase PE checksum
+    consoleLog("erase PE checksum");
     exe.replaceDWord(optHeader + 64, 0);
 
     return true;
