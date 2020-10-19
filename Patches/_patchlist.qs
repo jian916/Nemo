@@ -570,6 +570,6 @@ registerPatch(328, "Enable44khzAudio", "Enable 44.1 kHz Audio Sampling Frequency
 
 registerPatch(329, "DisableCameraLock", "Disable ViewPointTable.txt", "UI", 0, "X-EcutiOnner", "Disable locking camera viewpoint rotation on file ViewPointTable.txt", false);
 
-registerPatch(331, "IgnoreSignBoardReading", "Ignore SignBoardList.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading SignBoardList.lub", false);
+registerPatch(330, "IgnoreSignBoardReading", "Ignore SignBoardList.lub Reading", "Custom", 0, "X-EcutiOnner", "Make the client ignore to reading SignBoardList.lub", false);
 
 GlobalPostInit();

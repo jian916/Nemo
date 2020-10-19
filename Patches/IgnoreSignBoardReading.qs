@@ -33,31 +33,50 @@ function IgnoreSignBoardReading()
 
     var strHex = offset.packToHex(4);
 
-    consoleLog("Step 2 - Prep code for finding the SignBoardList");
+    consoleLog("Step 2 - Search string 'Lua Files\\SignBoardList'");
+    offset = exe.findString("Lua Files\\SignBoardList", RVA);
+
+    if (offset === -1)
+        return "Failed in Step 2 - String not found";
+
+    var strHex2 = offset.packToHex(4);
+
+    consoleLog("Step 3 - Prep code for finding the SignBoardList");
     var code =
-        "8B 8E AB AB 00 00 " +  // 00 mov ecx, [esi+567Ch]
+        "8B 8E AB AB 00 00 " +  // 00 mov ecx, [esi+CSession.m_lua_state]
         "6A 00 " +              // 06 push 0
         "6A 01 " +              // 08 push 1
         "68 " + strHex +        // 10 push offset aLuaFilesSignbo
-        "E8 AB AB AB AB " +     // 15 call sub_9FD390
-        "8B 8E AB AB 00 00 " +  // 20 mov ecx, [esi+567Ch]
+        "E8 AB AB AB AB " +     // 15 call lua_script_load
+        "8B 8E AB AB 00 00 " +  // 20 mov ecx, [esi+CSession.m_lua_state]
         "6A 00 " +              // 26 push 0
         "6A 01 " +              // 28 push 1
-        "68 AB AB AB 00 " +     // 30 push offset aLuaFilesSign_0
-        "E8 AB AB AB AB ";      // 35 call sub_9FD390
-
+        "68 " + strHex2 +       // 30 push offset aLuaFilesSign_0
+        "E8 ";                  // 35 call lua_script_load
     var repLoc = 26;
+    var luaScriptLoadOffsets = [16, 36];
+    var luaStateOffsets = [[2, 4], [22, 4]]
+
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
 
-    consoleLog("Step 3 - Replace with XOR EAX, EAX followed by NOPs");
+    for (var i = 0; i < luaScriptLoadOffsets.length; i++)
+    {
+        logRawFunc("lua_script_load", offset, luaScriptLoadOffsets[i]);
+    }
+    for (var i = 0; i < luaStateOffsets.length; i++)
+    {
+        logField("CSession::m_lua_state", offset, luaStateOffsets[i]);
+    }
+
+    consoleLog("Step 4 - Replace with XOR EAX, EAX followed by NOPs");
     var code =
-        "90 90 " +           // 00 nops
+        "33 C0 " +           // 00 xor eax, eax
         "90 90 " +           // 02 nops
-        "33 C0 90 90 90 " +  // 07 xor eax, eax + nops
-        "33 C0 90 90 90 ";   // 12 xor eax, eax + nops
+        "90 90 90 90 90 " +  // 07 nops
+        "90 90 90 90 90 ";   // 12 nops
 
     exe.replace(offset + repLoc, code, PTYPE_HEX);
 
