@@ -27,6 +27,20 @@ function Disable1rag1Params()
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   }
 
+    if (offset === -1)
+    {
+        code =
+            "68 " + offset.packToHex(4) +       // 00 push offset a1rag1
+            "AB " +                             // 05 push ebx
+            "C7 05 AB AB AB AB AB AB AB AB " +  // 06 mov dword_8353B4, 1
+            "E8 AB AB AB AB " +                 // 16 call _strstr
+            "83 C4 08 " +                       // 21 add esp, 8
+            "85 AB " +                          // 24 test eax, eax
+            "75 ";                              // 26 jnz short loc_6FAAB2
+
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
   if (offset === -1)
     return "Failed in Step 1";
 
