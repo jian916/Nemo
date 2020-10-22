@@ -576,4 +576,6 @@ registerPatch(331, "DisableBlindEffect", "Disable Blind skills effect", "UI", 0,
 
 //registerPatch(332, "SimpleReplaceDemo", "Simple replace functions demo", "DEMO", 0, "4144", "Demonstrate simple replace functions usage", false);
 
+registerPatch(333, "ChangeMaxFriendsValue", "Change Max Friends Value", "UI", 0, "X-EcutiOnner", "Change max friends value displayed on Alt+H", false);
+
 GlobalPostInit();
