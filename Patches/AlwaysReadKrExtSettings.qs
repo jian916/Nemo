@@ -71,14 +71,35 @@ function AlwaysReadKrExtSettings()
     var switch2Offset = 26;
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x100, korea_ref_offset);
-    if (offset === -1)
-        return "Failed in Step 2a - g_serviceType comparison not found";
 
     // get switch jmp address for value 0
     var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
     var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
     var offset1 = exe.fetchUByte(addr1);
     var jmpAddr = exe.fetchDWord(addr2 + 4 * offset1);
+
+    if (offset === -1)
+    {
+        code =
+            "8B F9 " +              // 00 mov edi, ecx
+            "A1 " + LANGTYPE +      // 02 mov eax, g_serviceType
+            "83 F8 AB " +           // 07 cmp eax, 12h
+            "0F 87 AB AB AB AB " +  // 10 ja default
+            "FF 24 85 ";            // 16 jmp ds:switch2_off_82CD44[eax*4]
+
+        patchOffset = 2;
+        switch2Offset = 19;
+
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x60, korea_ref_offset);
+
+        addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        offset1 = exe.fetchUByte(addr2);
+        jmpAddr = exe.fetchDWord(addr2 + 4 / offset1);
+    }
+
+    if (offset === -1)
+        return "Failed in Step 2a - g_serviceType comparison not found";
+
     code =
         "B8 " + jmpAddr.packToHex(4) + // mov eax, addr
         "FF E0";                       // jmp eax
