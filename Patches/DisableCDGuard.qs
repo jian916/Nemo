@@ -36,7 +36,7 @@ function DisableCDGuard()
     var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     if (offsets.length === 0)
     {
-        var code =
+        code =
             "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB FF" +     // call CCheatDefenderMgr_init
             "3c 01" +              // cmp al, 1    <-- change here
@@ -52,7 +52,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {
-        var code =
+        code =
             "8B 0D AB AB AB 00" +  // mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB 00" +     // call CCheatDefenderMgr_init
             "3c 01" +              // cmp al, 1    <-- change here
@@ -68,7 +68,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {   // 2019-02-13+
-        var code =
+        code =
             "8B 0D AB AB AB 00 " +        // 0 mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB FF " +           // 6 call CCheatDefenderMgr_init
             "3C 01 " +                    // 11 cmp al, 1
@@ -84,7 +84,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {   // 2019-12-xx+
-        var code =
+        code =
             "8B 0D AB AB AB 00 " +        // 0 mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB FF " +           // 6 call CCheatDefenderMgr_init
             "3C 01 " +                    // 11 cmp al, 1
@@ -100,7 +100,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {   // 2019-12-xx+ zero
-        var code =
+        code =
             "8B 0D AB AB AB 01 " +        // 0 mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB FF " +           // 6 call CCheatDefenderMgr_init
             "3C 01 " +                    // 11 cmp al, 1
@@ -116,7 +116,7 @@ function DisableCDGuard()
     }
     if (offsets.length === 0)
     {   // 2020-01-22
-        var code =
+        code =
             "8B 0D AB AB AB 01 " +        // 0 mov ecx, g_CCheatDefenderMgr
             "E8 AB AB AB 00 " +           // 6 call CCheatDefenderMgr_init
             "3C 01 " +                    // 11 cmp al, 1
