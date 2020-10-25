@@ -16,22 +16,21 @@
 //
 //##################################################
 //# Purpose: Modify LuaErrorMsg function to return #
-//#          without showing the MessageBox        #
+//#          without showing the MessageBox.       #
 //##################################################
 
 function IgnoreLuaErrors()
 {
-
-    //Step 1a - Prep code for finding the LuaErrorMsg
+    consoleLog("Step 1 - Prep code for finding the LuaErrorMsg");
     var code =
-        "FF AB AB AB AB 00" +  // call vsprintf
-        "83 AB AB" +           // add esp, 0Ch
-        "8D AB AB AB FF FF" +  // lea eax, [ebp + text] <-- replace from here
-        "6A 00" +              // push 0
-        "AB" +                 // push esi
-        "AB" +                 // push eax
-        "6A 00" +              // push 0
-        "FF 15 AB AB AB 00";   // call MessageBoxA
+        "FF AB AB AB AB 00 " +  // 00 call vsprintf
+        "83 AB AB " +           // 06 add esp, 0Ch
+        "8D AB AB AB FF FF " +  // 09 lea eax, [ebp+Text]
+        "6A 00 " +              // 15 push 0
+        "AB " +                 // 17 push esi
+        "AB " +                 // 18 push eax
+        "6A 00 " +              // 19 push 0
+        "FF 15 AB AB AB 00 ";   // 21 call MessageBoxA
 
     var repLoc = 9;
     var hCode = "33 C0 90 90 90 90 90 90 90 ";
@@ -72,9 +71,9 @@ function IgnoreLuaErrors()
     }
 
     if (offset === -1)
-        return "Failed in Step 1";
+        return "Failed in Step 1 - Pattern not found";
 
-    //Step 2 - Replace with xor eax, eax followed by nops.
+    consoleLog("Step 2 - Replace with xor eax, eax followed by nops");
     var newCode =
         hCode +                // 00 xor eax, eax + nops
         "90 " +                // 09 nops
@@ -84,4 +83,12 @@ function IgnoreLuaErrors()
     exe.replace(offset + repLoc, newCode, PTYPE_HEX);
 
     return true;
+}
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function IgnoreLuaErrors_()
+{
+    return (exe.getClientDate() >= 20100000);
 }
