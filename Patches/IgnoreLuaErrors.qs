@@ -33,20 +33,55 @@ function IgnoreLuaErrors()
         "6A 00" +              // push 0
         "FF 15 AB AB AB 00";   // call MessageBoxA
 
+    var repLoc = 9;
+    var hCode = "33 C0 90 90 90 90 90 90 90 ";
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
+    {
+        code =
+            "FF AB AB AB AB 00 " +  // 00 call vsprintf
+            "83 AB AB " +           // 06 add esp, 0Ch
+            "6A 00 " +              // 09 push 0
+            "AB " +                 // 11 push esi
+            "8D AB AB AB FF FF " +  // 12 lea eax, [ebp+Text]
+            "AB " +                 // 18 push eax
+            "6A 00 " +              // 19 push 0
+            "FF 15 AB AB AB 00 ";   // 21 call MessageBoxA
+
+        repLoc = 9;
+        hCode = "90 90 90 33 C0 90 90 90 90 ";
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
+    {
+        code =
+            "FF AB AB AB AB 00 " +  // 00 call ds:vsprintf
+            "83 AB AB " +           // 06 add esp, 0Ch
+            "6A 00 " +              // 09 push 0
+            "AB " +                 // 11 push esi
+            "8D AB AB AB " +        // 12 lea eax, [esp+204h+Dest]
+            "AB " +                 // 16 push eax
+            "6A 00 " +              // 17 push 0
+            "FF 15 AB AB AB 00 ";   // 19 call ds:MessageBoxA
+
+        repLoc = 9;
+        hCode = "90 90 90 33 C0 90 90 ";
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
 
     if (offset === -1)
         return "Failed in Step 1";
 
     //Step 2 - Replace with xor eax, eax followed by nops.
     var newCode =
-        "33 C0 90 90 90 90" +  // xor eax, eax + nops
-        "90 90" +
-        "90" +
-        "90" +
-        "90 90" +
-        "90 90 90 90 90 90";
-    exe.replace(offset + 9, newCode, PTYPE_HEX);
+        hCode +                // 00 xor eax, eax + nops
+        "90 " +                // 09 nops
+        "90 90 " +             // 10 nops
+        "90 90 90 90 90 90 ";  // 12 nops
+
+    exe.replace(offset + repLoc, newCode, PTYPE_HEX);
 
     return true;
 }
