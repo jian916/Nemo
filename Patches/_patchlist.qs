@@ -584,4 +584,6 @@ registerPatch(335, "EnableRagHTTPEmblem", "Enable HTTP Emblem on Ragexe", "Fix",
 
 registerPatch(336, "RemoveItemsEquipPreview", "Remove Equipment Preview Button", "UI", 12, "X-EcutiOnner", "Remove equipment preview button on the items description window", false);
 
+registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency level range", "Data", 0, "Asheraf", "Changes the default level range on the Adventure Agency.", false);
+
 GlobalPostInit();
