@@ -1,13 +1,12 @@
-//###################################################################
-//# Purpose: Fix up all HackShield related functions/function calls #
-//#          and remove aossdk.dll import                           #
-//###################################################################
+//######################################################################
+//# Purpose: Fix up all HackShield related functions or function calls #
+//#          by HackShield and remove aossdk.dll from import.          #
+//######################################################################
 
-delete Import_Info;//Removing any stray values before Patches are selected
+delete Import_Info;  // Removing any stray values before Patches are selected
 
 function DisableHShield()
 {
-
   //Step 1a - Find address of 'webclinic.ahnlab.com'
   var offset = exe.findString("webclinic.ahnlab.com", RVA);
   if (offset === -1)
@@ -232,28 +231,28 @@ function DisableHShield()
     exe.replace(dir.offset, code, PTYPE_HEX);
   }
 
-  return true;
+    return true;
 }
 
-//============================//
-// Disable Unsupported client //
-//============================//
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
 function DisableHShield_()
 {
-  return (exe.findString("aossdk.dll", RAW) !== -1);
+    return (exe.findString("aossdk.dll", RAW) !== -1);
 }
 
-//#######################################################################
-//# Purpose: Rerun the UseCustomDLL function if the Custom DLL patch is #
-//#          selected so that it doesnt accomodate for HShield patch    #
-//#######################################################################
+//###########################################################################
+//# Purpose: Re-run the UseCustomDLL function again if the Custom DLL patch #
+//#          has selected so that it doesn't accommodate for HShield patch. #
+//###########################################################################
 
 function _DisableHShield()
 {
-  if (getActivePatches().indexOf(211) !== -1)
-  {
-    exe.setCurrentPatch(211);
-    exe.emptyPatch(211);
-    UseCustomDLL();
-  }
+    if (getActivePatches().indexOf(211) !== -1)
+    {
+        exe.setCurrentPatch(211);
+        exe.emptyPatch(211);
+        UseCustomDLL();
+    }
 }
