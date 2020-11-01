@@ -102,7 +102,7 @@ function ShowExpNumbers()
   //          else extract reg code from the MOV ECX, reg32 and update offset
   var rcode = " CE";//for MOV ECX, ESI
 
-  if (exe.fetchUByte(offset) !== 0xE8)
+  if (exe.fetchUByte(offset) !== 0xE8) 
   { //MOV ECX, reg32 comes in between
     rcode = exe.fetchHex(offset + 1, 1);
     offset += 2;
@@ -119,9 +119,17 @@ function ShowExpNumbers()
   var extraPush = "";
   if (exe.getClientDate() > 20140116)
     extraPush = " 6A 00";
-  //Step 3e - Check if Extra PUSH 0 is there (only for clients > 20200325)
+  //Step 3f - Check if Extra PUSH 0 is there (only for 2020 clients 20200325)
   var extraPush2 = "";
-  if (exe.getClientDate() > 20200325)
+  code =
+    " E8 AB AB AB AB" //CALL UIWindow::TextOutA
+  + " 6A 00"          //PUSH 0  ; Arg9 = Only for new clients (2020+)
+  + " 6A 00"          //PUSH 0  ; Arg8 = Only for new clients
+  + " 6A 00"          //PUSH 0  ; Arg7 = Color
+  + " 6A 0E"          //PUSH 0E ; Arg6 = Font Height
+  ;
+  offset = exe.find(code, PTYPE_HEX, true, "\xAB", injectAddr - 0x20, injectAddr);
+  if (offset !== -1)
     extraPush2 = " 6A 00";
 
   //Step 4a - Prep the template code that we use for both type of exp
