@@ -33,6 +33,42 @@ function DisableHShield()
   //Step 1d - Replace the JZ + XOR with XOR + INC of EAX to return 1 without initializing AhnLab
   exe.replace(offset, " 33 C0 40 90", PTYPE_HEX);
 
+    if (exe.getClientDate() >= 20090000 && !IsSakray() || exe.getClientDate() <= 20110228 && !IsSakray())
+    {
+        consoleLog("Step 2a - Search pattern 'HackShield Error'");
+        var code =
+            "B8 01 00 00 00 " +  // 00 mov eax, 1
+            "5B " +              // 05 pop ebx
+            "8B E5 " +           // 06 mov esp, ebp
+            "5D " +              // 08 pop ebp
+            "C2 10 00 " +        // 09 retn 10h
+            "E8 AB AB AB AB " +  // 12 call sub_57AE40
+            "85 C0 " +           // 17 test eax, eax
+            "75 0E ";            // 19 jnz short loc_6FDD4C
+
+        var repLoc = 12;
+        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+        if (offset === -1)
+        {
+            code =
+                "B8 01 00 00 00 " +  // 00 mov eax, 1
+                "E9 AB 01 00 00 " +  // 05 jmp loc_717703
+                "E8 AB AB AB AB " +  // 10 call sub_576E40
+                "85 C0 " +           // 15 test eax, eax
+                "74 DD ";            // 17 jz short loc_717532
+
+            repLoc = 10;
+            offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        }
+
+        if (offset === -1)
+            return "Failed in Step 2a - Pattern not found";
+
+        consoleLog("Step 2b - Replace the CALL with MOV EAX");
+        exe.replace(offset + repLoc, "B8 01 " + "00 ".repeat(3), PTYPE_HEX);
+    }
+
   //Step 2a - Find Failure message - this is there in newer clients (maybe all ragexe too?)
   offset = exe.findString("CHackShieldMgr::Monitoring() failed", RVA);
 
