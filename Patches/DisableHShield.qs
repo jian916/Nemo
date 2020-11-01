@@ -68,39 +68,39 @@ function DisableHShield()
         exe.replace(offset + repLoc, "B8 01 " + "00 ".repeat(3), PTYPE_HEX);
     }
 
-  //Step 2a - Find Failure message - this is there in newer clients (maybe all ragexe too?)
-  offset = exe.findString("CHackShieldMgr::Monitoring() failed", RVA);
+    consoleLog("Step 3a - Search failure message - this is there in newer clients");
+    offset = exe.findString("CHackShieldMgr::Monitoring() failed", RVA);
 
-  if (offset !== -1)
-  {
-    //Step 2b - Find reference to Failure message
-    offset = exe.findCode(" 68" + offset.packToHex(4) + " FF 15", PTYPE_HEX, false);
-
-    //Step 2c - Find Pattern before the referenced location within 0x40 bytes
     if (offset !== -1)
     {
-      code =
-        " E8 AB AB AB AB"  //CALL func1
-      + " 84 C0"           //TEST AL, AL
-      + " 74 16"           //JZ SHORT addr1
-      + " 8B AB"           //MOV ECX, ESI
-      + " E8"              //CALL func2
-      ;
-      offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x40, offset);
-    }
+        consoleLog("Step 3b - Search reference to Failure message");
+        offset = exe.findCode("68 " + offset.packToHex(4) + "FF 15 ", PTYPE_HEX, false);
 
-    //Step 2d - Replace the First call with code to return 1 and cleanup stack
-    if (offset !== -1)
-    {
-      code =
-        " 90"    //NOP
-      + " B0 01" //MOV AL, 1
-      + " 5E"    //POP ESI
-      + " C3"    //RETN
-      ;
-      exe.replace(offset, code, PTYPE_HEX);
+        consoleLog("Step 3c - Search pattern before the referenced location within 0x40 bytes");
+        if (offset !== -1)
+        {
+            code =
+                "E8 AB AB AB AB " +  // 00 CALL func1
+                "84 C0 " +           // 05 TEST AL, AL
+                "74 16 " +           // 07 JZ SHORT addr1
+                "8B AB " +           // 09 MOV ECX, ESI
+                "E8 ";               // 11 CALL func2
+
+            offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x40, offset);
+        }
+
+        consoleLog("Step 3d - Replace the first call with code to return 1 and cleanup stack");
+        if (offset !== -1)
+        {
+            code =
+                "90 " +     // 00 NOP
+                "B0 01 " +  // 01 MOV AL, 1
+                "5E " +     // 03 POP ESI
+                "C3 ";      // 04 RETN
+
+            exe.replace(offset, code, PTYPE_HEX);
+        }
     }
-  }
 
   //===================================================================//
   // Now for a failsafe to avoid calls just in case - for VC9+ clients //
