@@ -158,79 +158,80 @@ function DisableHShield()
     if (exe.getClientDate() > 20140700)
         return true;
 
-  //======================================//
-  // Now we will remove aossdk.dll Import //
-  //======================================//
+    consoleLog("Step 5a - Search address of the 'aossdk.dll'");
+    var aOffset = exe.findString("aossdk.dll", PTYPE_STRING, false);
 
-  //Step 4a - Find address of the "aossdk.dll"
-  var aOffset = exe.findString("aossdk.dll", PTYPE_STRING, false);
-  if (aOffset === -1)
-    return "Failed in Step 4";
+    if (aOffset === -1)
+        return "Failed in Step 5a - String not found";
 
-  //Step 4b - Construct the Image Descriptor Pattern (Relative Virtual Address prefixed by 8 zeros)
-  aOffset = " 00".repeat(8) + (exe.Raw2Rva(aOffset) - exe.getImageBase()).packToHex(4);
+    consoleLog("Step 5b - Construct the Image Descriptor Pattern (Relative Virtual Address prefixed by 8 zeros)");
+    aOffset = "00 ".repeat(8) + (exe.Raw2Rva(aOffset) - exe.getImageBase()).packToHex(4);
 
-  //Step 4c - Check for Use Custom DLL patch - needed since it modifies the import table location
-  var hasCustomDLL = (getActivePatches().indexOf(211) !== -1);
+    consoleLog("Step 5c - Check for Use Custom DLL patch needed since it modifies the import table location");
+    var hasCustomDLL = (getActivePatches().indexOf(211) !== -1);
 
-  if (hasCustomDLL && typeof(Import_Info) !== "undefined")
-  {
-    //Step 4d - If it is used, it means the table has been shifted and all related data is available in Import_Info.
-    //          First we will remove the asssdk import entry from the table saved in Import_Info
-    var tblData = Import_Info.valueSuf;
-    var newTblData = "";
-
-    for (var i = 0; i < tblData.length; i += 20*3)
+    if (hasCustomDLL && typeof(Import_Info) !== "undefined")
     {
-      var curValue = tblData.substr(i, 20*3);
-      if (curValue.indexOf(aOffset) === 3*4) continue;//Skip aossdk import rest all are copied
-      newTblData = newTblData + curValue;
-    }
+        consoleLog("Step 5d - If it is used, it means the table has been shifted and all related data is available in Import_Info");
+        var tblData = Import_Info.valueSuf;
+        var newTblData = " ";
 
-    if (newTblData !== tblData)
+        for (var i = 0; i < tblData.length; i += 20 * 3)
+        {
+            var curValue = tblData.substr(i, 20 * 3);
+
+            if (curValue.indexOf(aOffset) === 3 * 4)
+                continue;  // Skip aossdk import rest all are copied
+
+            newTblData = newTblData + curValue;
+        }
+
+        if (newTblData !== tblData)
+        {
+            consoleLog("Step 5e - If the removal was not already done then Empty the Custom DLL patch and make the changes here instead");
+            exe.emptyPatch(211);
+
+            var PEoffset = exe.getPEOffset();
+
+            exe.insert(Import_Info.offset, (Import_Info.valuePre + newTblData).hexlength(), Import_Info.valuePre + newTblData, PTYPE_HEX);
+            exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x08, Import_Info.tblAddr);
+            exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x0C, Import_Info.tblSize);
+        }
+    }
+    else
     {
-      //Step 4e - If the removal was not already done then Empty the Custom DLL patch and make the changes here instead.
-      exe.emptyPatch(211);
+        consoleLog("Step 5f - If Custom DLL is not present then we need to traverse the Import table and remove the aossdk entry");
+        var dir = GetDataDirectory(1);
+        var finalValue = " 00".repeat(20);
+        var curValue;
+        var lastDLL = " ";
 
-      var PEoffset = exe.getPEOffset();
-      exe.insert(Import_Info.offset, (Import_Info.valuePre + newTblData).hexlength(), Import_Info.valuePre + newTblData, PTYPE_HEX);
-      exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, Import_Info.tblAddr);
-      exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, Import_Info.tblSize);
+        if (dir.offset === -1)
+            throw "Failed in Step 5f - Found wrong offset";
+
+        code = " ";  // Will contain the import table
+
+        for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+        {
+            consoleLog("Step 5e - Get the DLL Name for the import entry");
+            offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
+            var offset3 = exe.find("00 ", PTYPE_HEX, false, "\xAB", offset2);
+            var curDLL = exe.fetch(offset2, offset3 - offset2);
+
+            consoleLog("Step 5f - Make sure its not a duplicate or aossdk.dll");
+            if (lastDLL === curDLL || curDLL === "aossdk.dll")
+                continue;
+
+            consoleLog("Step 5g - Add the entry to code and save current DLL to compare next iteration");
+            code += curValue;
+            lastDLL = curDLL;
+        }
+
+        code += finalValue;
+
+        consoleLog("Step 5h - Overwrite import table with the one we got");
+        exe.replace(dir.offset, code, PTYPE_HEX);
     }
-  }
-  else
-  {
-    //Step 4f - If Custom DLL is not present then we need to traverse the Import table and remove the aossdk entry.
-    //          First we get the Import Table address and prep variables
-    var dir = GetDataDirectory(1);
-    var finalValue = " 00".repeat(20);
-    var curValue;
-    var lastDLL = "";//
-    if (dir.offset === -1)
-      throw "found wrong offset in GetDataDirectory";
-
-    code = "";//will contain the import table
-
-    for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
-    {
-      //Step 4e - Get the DLL Name for the import entry
-      offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-      var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
-      var curDLL = exe.fetch(offset2, offset3 - offset2);
-
-      //Step 4f - Make sure its not a duplicate or aossdk.dll
-      if (lastDLL === curDLL || curDLL === "aossdk.dll") continue;
-
-      //Step 4g - Add the entry to code and save current DLL to compare next iteration
-      code += curValue;
-      lastDLL = curDLL;
-    }
-
-    code += finalValue;
-
-    //Step 4h - Overwrite import table with the one we got
-    exe.replace(dir.offset, code, PTYPE_HEX);
-  }
 
     return true;
 }
