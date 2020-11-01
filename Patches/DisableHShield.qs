@@ -7,30 +7,30 @@ delete Import_Info;  // Removing any stray values before Patches are selected
 
 function DisableHShield()
 {
-  //Step 1a - Find address of 'webclinic.ahnlab.com'
-  var offset = exe.findString("webclinic.ahnlab.com", RVA);
-  if (offset === -1)
-    return "Failed in Step 1 - webclinic address missing";
+    consoleLog("Step 1a - Search string 'webclinic.ahnlab.com'");
+    var offset = exe.findString("webclinic.ahnlab.com", RVA);
 
-  //Step 1b - Find its reference
-  var code = " 68" + offset.packToHex(4);  //PUSH OFFSET addr; ASCII 'webclinic.ahnlab.com'
+    if (offset === -1)
+        return "Failed in Step 1a - String not found";
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "Failed in Step 1 - webclinic reference missing";
+    consoleLog("Step 1b - Search its reference");
+    offset = exe.findCode("68 " + offset.packToHex(4), PTYPE_HEX, false);  // push offset addr ; "webclinic.ahnlab.com"
 
-  //Step 1c - Find the JZ before the RETN that points to the PUSH
-  code =
-    " 74 AB" //JZ addr2 -> PUSH OFFSET addr; ASCII 'webclinic.ahnlab.com'
-  + " 33 C0" //XOR EAX, EAX
-  ;
+    if (offset === -1)
+        return "Failed in Step 1b - Pattern not found";
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x10, offset);
-  if (offset === -1)
-    return "Failed in Step 1 - JZ not found";
+    consoleLog("Step 1c - Search the JZ before the RETN that points to the PUSH");
+    var code =
+        "74 AB " +  // 00 jz short addr2
+        "33 C0 ";   // 04 xor eax, eax
 
-  //Step 1d - Replace the JZ + XOR with XOR + INC of EAX to return 1 without initializing AhnLab
-  exe.replace(offset, " 33 C0 40 90", PTYPE_HEX);
+    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x10, offset);
+
+    if (offset === -1)
+        return "Failed in Step 1c - Pattern not found";
+
+    consoleLog("Step 1d - Replace the JZ + XOR with XOR + INC of EAX to return 1 without initializing AhnLab");
+    exe.replace(offset, "33 C0 40 90 ", PTYPE_HEX);
 
     if (exe.getClientDate() >= 20090000 && !IsSakray() || exe.getClientDate() <= 20110228 && !IsSakray())
     {
