@@ -578,4 +578,6 @@ registerPatch(331, "DisableBlindEffect", "Disable Blind skills effect", "UI", 0,
 
 registerPatch(333, "ChangeMaxFriendsValue", "Change Max Friends Value", "UI", 0, "X-EcutiOnner", "Change max friends value displayed on Alt+H", false);
 
+registerPatch(334, "RemoveHardcodedHttpIP", "Remove Hardcoded HTTP IP", "Fix", 0, "jchcc", "Remove hardcoded HTTP service ip address, Prevent client from sending HTTP request to official server.", false);
+
 GlobalPostInit();
