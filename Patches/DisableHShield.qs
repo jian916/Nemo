@@ -102,60 +102,61 @@ function DisableHShield()
         }
     }
 
-  //===================================================================//
-  // Now for a failsafe to avoid calls just in case - for VC9+ clients //
-  //===================================================================//
+    consoleLog("Step 4a - Search address of 'ERROR'");
+    offset = exe.findString("ERROR", RVA);
 
-  //Step 3a - Find address of 'ERROR'
-  offset = exe.findString("ERROR", RVA);
-  if (offset === -1)
-    return "Failed in Step 3 - ERROR string missing";
+    if (offset === -1)
+        return "Failed in Step 4a - String not found";
 
-  //Step 3b - Find address of MessageBoxA function
-  var offset2 = GetFunction("MessageBoxA", "USER32.dll");
-  if (offset2 === -1)
-    return "Failed in Step 3 - MessageBoxA not found";
-
-  //Step 3c - Find ERROR reference followed by MessageBoxA call
-  code =
-    " 68" + offset.packToHex(4)     //PUSH OFFSET addr; ASCII "ERROR"
-  + " AB"                           //PUSH reg32_A
-  + " AB"                           //PUSH reg32_B
-  + " FF 15" + offset2.packToHex(4) //CALL DWORD PTR DS:[<&USER32.MessageBoxA>]
-  ;
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-
-  if (offset === -1)
-  {
-    code = code.replace(" AB AB FF 15", " AB 6A 00 FF 15");//Change PUSH reg32_B with PUSH 0
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-  }
-
-  if (offset !== -1)
-  {
-    //Step 3c - Find the JNE after it that skips the HShield calls
-    code =
-      " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[addr1], 0
-    + " 75"                   //JNE SHORT addr2
-    ;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+    consoleLog("Step 4b - Search address of MessageBoxA function");
+    var offset2 = GetFunction("MessageBoxA", "USER32.dll");
 
     if (offset2 === -1)
+        return "Failed in Step 4b - Function not found";
+
+    consoleLog("Step 4c - Search ERROR reference followed by MessageBoxA call");
+    var strHex1 = offset.packToHex(4);
+    var strHex2 = offset2.packToHex(4);
+
+    code =
+        "68 " + strHex1 +    // 00 PUSH OFFSET addr; ASCII "ERROR"
+        "AB " +              // 05 PUSH reg32_A
+        "AB " +              // 06 PUSH reg32_B
+        "FF 15 " + strHex2;  // 07 CALL DWORD PTR DS:[<&USER32.MessageBoxA>]
+
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
+    if (offset === -1)
     {
-      code =
-        " 39 AB AB AB AB 00" //CMP DWORD PTR DS:[addr1], reg32_A
-      + " 75"                //JNE SHORT addr2
-      ;
-      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+        code = code.replace("AB AB FF 15 ", "AB 6A 00 FF 15 ");  // Change PUSH reg32_B with PUSH 0
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
-    //Step 3d - Replace JNE with JMP to always skip
-    if (offset2 !== -1)
-      exe.replace(offset2 + code.hexlength() - 1, "EB", PTYPE_HEX);//change JNE to JMP
-  }
+    if (offset !== -1)
+    {
+        consoleLog("Step 4d - Find the JNE after it that skips the HShield calls");
+        code =
+            "80 3D AB AB AB 00 00 " +  // 00 CMP BYTE PTR DS:[addr1], 0
+            "75 ";                     // 07 JNE SHORT addr2
 
-  if (exe.getClientDate() > 20140700)
-    return true;
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+
+        if (offset2 === -1)
+        {
+            code =
+                "39 AB AB AB AB 00 " +  // 00 CMP DWORD PTR DS:[addr1], reg32_A
+                "75 ";                  // 06 JNE SHORT addr2
+
+            offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+        }
+
+        consoleLog("Step 4e - Replace the JNE with JMP to always skip");
+        if (offset2 !== -1)
+            exe.replace(offset2 + code.hexlength() - 1, "EB ", PTYPE_HEX);
+    }
+
+    if (exe.getClientDate() > 20140700)
+        return true;
 
   //======================================//
   // Now we will remove aossdk.dll Import //
