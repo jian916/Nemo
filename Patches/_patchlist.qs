@@ -574,4 +574,6 @@ registerPatch(330, "IgnoreSignBoardReading", "Ignore SignBoardList.lub Reading",
 
 registerPatch(331, "DisableBlindEffect", "Disable Blind skills effect", "UI", 0, "X-EcutiOnner", "Disables the Blind skill effect (screen becomes darkness)", false);
 
+//registerPatch(332, "SimpleReplaceDemo", "Simple replace functions demo", "DEMO", 0, "4144", "Demonstrate simple replace functions usage", false);
+
 GlobalPostInit();
