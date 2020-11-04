@@ -568,6 +568,8 @@ registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "j
 
 registerPatch(328, "Enable44khzAudio", "Enable 44.1 kHz Audio Sampling Frequency", "Custom", 0, "jchcc", "Boosts the audio sampling frequency to 44.1 kHz, improving the audio quality in the game.", false);
 
+registerPatch(335, "EnableRagHTTPEmblem", "Enable HTTP Emblem on Ragexe", "Fix", 0, "jchcc", "Enable HTTP Emblem on Ragexe, HTTP service required.", false);
+
 registerPatch(350, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
 
 registerPatch(400, "CustomWindowTitleHex", "Custom Window Title Hex", "UI", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
