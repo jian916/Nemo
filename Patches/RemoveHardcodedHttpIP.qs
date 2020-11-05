@@ -22,15 +22,20 @@ function RemoveHardcodedHttpIP()
 {
 
   var ipaddrs = ["http://112.175.128.140:3000", "http://112.175.128.30:3000", "http://192.168.5.54:3000"];
+  var found = false;
 
   for (var i =0; i < ipaddrs.length; i ++)
   {
     var offsets = exe.findAll(ipaddrs[i].toHex(), PTYPE_HEX, false);
+    if (offsets.length > 0)
+        found = true;
     for (var j = 0; j < offsets.length; j++)
     {
       exe.replace(offsets[j], "http://0.0.0.0/\x00", PTYPE_STRING);
     }
   }
+  if (found === false)
+    return "Found nothing to patch";
 
   return true;
 }
