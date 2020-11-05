@@ -74,13 +74,13 @@ function ChangeMaxFriendsValue()
     var code =
         "8B 93 AB 00 00 00 " +  // 00 mov edx, [ebx+0A0h]
         "8B 44 8D AB " +        // 06 mov eax, [ebp+ecx*4+var_4C]
-        "6A 28 " +              // 10 push 28h
+        "6A AB " +              // 10 push 28h
         "52 " +                 // 12 push edx
         "50 " +                 // 13 push eax
-        "8D 8D AB FE FF FF " +  // 14 lea ecx, [ebp+MultiByteStr]
+        "8D 8D AB AB FF FF " +  // 14 lea ecx, [ebp+MultiByteStr]
         "68 " + strHex +        // 20 push offset aSDD_1
         "51 " +                 // 25 push ecx
-        "E8 AB AB AB 00 " +     // 26 call _sprintf
+        "E8 AB AB AB AB " +     // 26 call _sprintf
         "83 C4 14 ";            // 31 add esp, 14h
 
     var repLoc = 11;
@@ -91,14 +91,14 @@ function ChangeMaxFriendsValue()
     {
         code =
             "8B AB AB 00 00 00 " +     // 00 mov edx, [esi+0BCh]
-            "8B AB 8C 18 " +           // 06 mov eax, [esp+ecx*4+3B0h+var_398]
-            "6A 28 " +                 // 10 push 28h
+            "8B AB 8C AB " +           // 06 mov eax, [esp+ecx*4+3B0h+var_398]
+            "6A AB " +                 // 10 push 28h
             "AB " +                    // 12 push edx
             "AB " +                    // 13 push eax
-            "8D AB 24 44 02 00 00 " +  // 14 lea ecx, [esp+3BCh+Dest]
+            "8D AB 24 AB AB 00 00 " +  // 14 lea ecx, [esp+3BCh+Dest]
             "68 " + strHex +           // 21 push offset aSDD_5
             "AB " +                    // 25 push ecx
-            "FF 15 AB AB AB 00 " +     // 26 call ds:sprintf
+            "FF 15 AB AB AB AB " +     // 26 call ds:sprintf
             "83 C4 14 ";               // 32 add esp, 14h
 
         repLoc = 11;
@@ -110,14 +110,14 @@ function ChangeMaxFriendsValue()
     {
         code =
             "8B 96 AB 00 00 00 " +     // 00 mov edx, [esi+0D0h]
-            "8B 84 8D AB FC FF FF " +  // 06 mov eax, [ebp+ecx*4+var_3B4]
-            "6A 28 " +                 // 13 push 28h
+            "8B 84 8D AB AB FF FF " +  // 06 mov eax, [ebp+ecx*4+var_3B4]
+            "6A AB " +                 // 13 push 28h
             "52 " +                    // 15 push edx
             "50 " +                    // 16 push eax
-            "8D 8D E8 FE FF FF " +     // 17 lea ecx, [ebp+MultiByteStr]
+            "8D 8D AB AB FF FF " +     // 17 lea ecx, [ebp+MultiByteStr]
             "68 " + strHex +           // 23 push offset aSDD_4
             "51 " +                    // 28 push ecx
-            "FF 15 AB AB AB 00 " +     // 29 call sprintf
+            "FF 15 AB AB AB AB " +     // 29 call sprintf
             "83 C4 14 ";               // 35 add esp, 14h
 
         repLoc = 14;
@@ -128,13 +128,13 @@ function ChangeMaxFriendsValue()
     if (offset === -1)
     {
         code =
-            "6A 28 " +                 // 00 push 28h
+            "6A AB " +                 // 00 push 28h
             "FF B7 AB 00 00 00 " +     // 02 push dword ptr [edi+0D4h]
-            "FF B4 85 AB FC FF FF " +  // 08 push [ebp+eax*4+var_3C8]
-            "8D 85 E8 FE FF FF " +     // 15 lea eax, [ebp+MultiByteStr]
+            "FF B4 85 AB AB FF FF " +  // 08 push [ebp+eax*4+var_3C8]
+            "8D 85 AB AB FF FF " +     // 15 lea eax, [ebp+MultiByteStr]
             "68 " + strHex +           // 21 push offset aSDD_5
             "50 " +                    // 26 push eax
-            "FF 15 AB AB AB 00 " +     // 27 call sprintf
+            "FF 15 AB AB AB AB " +     // 27 call sprintf
             "83 C4 14 ";               // 33 add esp, 14h
 
         repLoc = 1;
@@ -145,13 +145,13 @@ function ChangeMaxFriendsValue()
     if (offset === -1)
     {
         code =
-            "6A 28 " +                 // 00 push 28h
-            "FF B7 DC 00 00 00 " +     // 02 push dword ptr [edi+0DCh]
-            "8D 85 B0 FE FF FF " +     // 08 lea eax, [ebp-150h]
-            "FF B4 8D A0 FB FF FF " +  // 14 push dword ptr [ebp+ecx*4-460h]
+            "6A AB " +                 // 00 push 28h
+            "FF B7 AB AB 00 00 " +     // 02 push dword ptr [edi+0DCh]
+            "8D 85 AB AB FF FF " +     // 08 lea eax, [ebp-150h]
+            "FF B4 8D AB AB FF FF " +  // 14 push dword ptr [ebp+ecx*4-460h]
             "68 " + strHex +           // 21 push offset aSDD_8
             "50 " +                    // 26 push eax
-            "FF 15 AB AB AB 00 " +     // 27 call ds:sprintf
+            "FF 15 AB AB AB AB " +     // 27 call ds:sprintf
             "83 C4 14 ";               // 33 add esp, 14h
 
         repLoc = 1;
@@ -162,13 +162,13 @@ function ChangeMaxFriendsValue()
     if (offset === -1)
     {
         code =
-            "6A 28 " +                 // 00 push 28h
-            "FF B7 DC 00 00 00 " +     // 02 push dword ptr [edi+0DCh]
-            "8D 85 94 FE FF FF " +     // 08 lea eax, [ebp-16Ch]
-            "FF B4 8D E8 FE FF FF " +  // 14 push dword ptr [ebp+ecx*4-118h]
+            "6A AB " +                 // 00 push 28h
+            "FF B7 AB AB 00 00 " +     // 02 push dword ptr [edi+0DCh]
+            "8D 85 AB AB FF FF " +     // 08 lea eax, [ebp-16Ch]
+            "FF B4 8D AB AB FF FF " +  // 14 push dword ptr [ebp+ecx*4-118h]
             "68 " + strHex +           // 21 push offset aSDD_6
             "50 " +                    // 26 push eax
-            "E8 AB AB AB FF " +        // 27 call sub_47A2E0
+            "E8 AB AB AB AB " +        // 27 call sub_47A2E0
             "83 C4 14 ";               // 32 add esp, 14h
 
         repLoc = 1;
