@@ -208,16 +208,44 @@ function HighlightSkillSlotColor()
 {
     consoleLog("Step 1 - Find the area where color is pushed.");
     var code =
-        "0F B6 0D AB AB AB AB " +     // 0 movzx ecx, g_session.m_shortcutSlotCnt
-        "6B D2 1D " +                 // 7 imul edx, 1Dh
-        "68 B4 FF B4 00 " +           // 10 push 0B4FFB4h
-        "8B AB " +                    // 15 mov eax, ecx
-        "6A 18 " +                    // 17 push 18h
-        "83 C1 05 ";                  // 19 add ecx, 5
-    var colorOffset = 11;
+        "0F B6 0D AB AB AB AB " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
+        "6B AB 1D " +              // 07 imul edx, 1Dh
+        "68 B4 FF B4 00 " +        // 10 push 0B4FFB4h
+        "8B AB " +                 // 15 mov eax, ecx
+        "6A 18 " +                 // 17 push 18h
+        "83 C1 05 ";               // 19 add ecx, 5
+    var shortcutSlotCntOffset = [3, 4];
+    var slotCx2Offset = [9, 1];
+    var colorOffset = [11, 4];
+    var slotCyOffset = [18, 1];
+    var yOffsetOffset = [21, 1];
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+
     if (offset === -1)
-        return "Failed in Step 1";
+    {
+        code =
+            "0F B6 0D AB AB AB AB " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
+            "6B AB 1D " +              // 07 imul edx, 1Dh
+            "8B AB " +                 // 10 mov eax, ecx
+            "68 B4 FF B4 00 " +        // 12 push 0B4FFB4h
+            "6A 18 " +                 // 17 push 18h
+            "83 C1 05 ";               // 19 add ecx, 5
+        shortcutSlotCntOffset = [3, 4];
+        slotCx2Offset = [9, 1];
+        colorOffset = [13, 4];
+        slotCyOffset = [18, 1];
+        yOffsetOffset = [21, 1];
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
+        return "Failed in Step 1 - Pattern not found";
+
+    logFieldAbs("CSession::m_shortcutSlotCnt", offset, shortcutSlotCntOffset);
+    logVal("UIShortCutWnd slot2 cx", offset, slotCx2Offset);
+    logVal("UIShortCutWnd slot cy", offset, slotCyOffset);
+    logVal("UIShortCutWnd slot color", offset, colorOffset);
+    logVal("UIShortCutWnd slot y offset", offset, yOffsetOffset);
 
     consoleLog("Step 2a - Get the new color from user");
     var color = exe.getUserInput("$HSkillSColor", XTYPE_COLOR, _("Color input"), _("Select new Highlight Skillslot Color"), 0x00B4FFB4);
@@ -225,7 +253,7 @@ function HighlightSkillSlotColor()
         return "Patch Cancelled - New Color is same as old";
 
     consoleLog("Step 2b - Replace with new color");
-    exe.replace(offset + colorOffset, "$HSkillSColor", PTYPE_STRING);
+    exe.replace(offset + colorOffset[0], "$HSkillSColor", PTYPE_STRING);
 
     return true;
 }

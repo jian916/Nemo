@@ -11,7 +11,7 @@ files:
   - ./.ci/retry.sh apt-get -y install ${PACKAGES}
   - ./.ci/checkfiles.sh
   variables:
-    PACKAGES: dos2unix moreutils sed git python git gettext
+    PACKAGES: dos2unix moreutils sed git python2 git gettext
 
 translations:
   stage: test
@@ -27,7 +27,7 @@ translations:
   - ./genpofiles.sh
   - ./updatetranslations.py
   variables:
-    PACKAGES: dos2unix moreutils git python git gettext
+    PACKAGES: dos2unix moreutils git python2 git gettext
 
 trigger:
   stage: triggers

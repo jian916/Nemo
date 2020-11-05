@@ -1,5 +1,9 @@
 //
-// Copyright (C) 2018-2019  Andrei Karas (4144)
+// This file is part of NEMO (Neo Exe Modification Organizer).
+// http://nemo.herc.ws - http://gitlab.com/4144/Nemo
+//
+// Copyright (C) 2018-2020 Andrei Karas (4144)
+// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -8,15 +12,12 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 //
-//#############################################################
-//# Purpose: Hide packets table from peek                     #
-//#############################################################
 
 function HidePacketsFromPeek()
 {
@@ -24,17 +25,26 @@ function HidePacketsFromPeek()
     var pushOffset = 25;
     var callOffset = 27;
     var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+
     if (offsets.length === 0)
-        return "Failed in search pattern";
+    {
+        code = "E8ABABABAB8BC8E8ABABABAB50E8ABABABAB8BC8E8ABABABAB6A006A016A11B9ABABABABE8ABABABAB6A01E8ABABABAB8BC8E8ABABABAB6A06";
+        pushOffset = 41;
+        callOffset = 43;
+        offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offsets.length === 0)
+        return "Pattern not found";
 
     if (offsets.length > 2)
         return "Found wrong number of patterns: " + offsets.length;
 
-    for (var f = 0; f < offsets.length; f ++)
+    for (var f = 0; f < offsets.length; f++)
     {
         var instanceAddr = exe.fetchDWord(offsets[f] + callOffset + 1) + 2;
+        var code = "E8 " + instanceAddr.packToHex(4) + "6A 01 ";
 
-        var code = "E8 " + instanceAddr.packToHex(4) + " 6A 01";
         exe.replace(offsets[f] + pushOffset, code, PTYPE_HEX);
     }
 

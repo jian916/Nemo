@@ -1,3 +1,22 @@
+# 2020-10-19 Patches update
+
+## Patches
+
+- Add patch [Ignore SignBoardList.lub Reading](http://nemo.herc.ws/patches/IgnoreSignBoardReading/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Disable Blind skills effect](http://nemo.herc.ws/patches/DisableBlindEffect/#success-clients). (by @X-EcutiOnner, @4144).
+- Fix patch [Hide packets from peek](http://nemo.herc.ws/patches/HidePacketsFromPeek/#success-clients). (fix by @X-EcutiOnner).
+
+
+# 2020-10-05 Patches update
+
+## Patches
+
+- Add patch [Disable ViewPointTable.txt](http://nemo.herc.ws/patches/DisableCameraLock/#success-clients). (by @X-EcutiOnner).
+- Fix patch [Change character display deletion time from actual date to relative date](http://nemo.herc.ws/patches/ChangeDisplayCharDelDelay/#success-clients). (fix by @jchcc).
+- Fix patch [Disable Multiple Windows](http://nemo.herc.ws/patches/DisableMultipleWindows/#success-clients). (fix by @jchcc).
+- Fix patch [Highlight Skillslot Color](http://nemo.herc.ws/patches/HighlightSkillSlotColor/#success-clients). (fix by @X-EcutiOnner).
+
+
 # 2020-09-09 Patches update
 
 ## Patches
