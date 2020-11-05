@@ -84,6 +84,7 @@ function ChangeMaxFriendsValue()
         "83 C4 14 ";            // 31 add esp, 14h
 
     var repLoc = 11;
+    var sprintfOffset = [27, false];
     var offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
 
     if (offset === -1)
@@ -101,6 +102,7 @@ function ChangeMaxFriendsValue()
             "83 C4 14 ";               // 32 add esp, 14h
 
         repLoc = 11;
+        sprintfOffset = [28, true];
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
     }
 
@@ -119,6 +121,7 @@ function ChangeMaxFriendsValue()
             "83 C4 14 ";               // 35 add esp, 14h
 
         repLoc = 14;
+        sprintfOffset = [31, true];
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
     }
 
@@ -135,6 +138,7 @@ function ChangeMaxFriendsValue()
             "83 C4 14 ";               // 33 add esp, 14h
 
         repLoc = 1;
+        sprintfOffset = [29, true];
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
     }
 
@@ -151,6 +155,7 @@ function ChangeMaxFriendsValue()
             "83 C4 14 ";               // 33 add esp, 14h
 
         repLoc = 1;
+        sprintfOffset = [29, true];
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
     }
 
@@ -167,11 +172,19 @@ function ChangeMaxFriendsValue()
             "83 C4 14 ";               // 32 add esp, 14h
 
         repLoc = 1;
+        sprintfOffset = [28, false];
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offses, offses + 0xBC);
     }
 
     if (offset === -1)
         return "Failed in Step 3 - Pattern not found";
+
+    if (sprintfOffset[1] === true)
+        logVaFunc("sprintf", offset, sprintfOffset[0]);
+    else
+        logRawFunc("sprintf", offset, sprintfOffset[0]);
+
+    logVal("max friends count", offset, [repLoc, 1]);
 
     consoleLog("Step 4 - Get value frome user input");
     var value = exe.getUserInput("$max_friends_value", XTYPE_BYTE, _("Max Friends"), _("Set Max Friends Value: (Max:127, Default:40)"), "40", 1, 127);
