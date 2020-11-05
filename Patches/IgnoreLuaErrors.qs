@@ -38,6 +38,8 @@ function IgnoreLuaErrors()
 
     var repLoc = 9;
     var hCode = "33 C0 90 90 90 90 90 90 90 ";
+    var vsprintfOffset = 2;
+    var messageBoxAOffset = 23;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
@@ -54,6 +56,8 @@ function IgnoreLuaErrors()
 
         repLoc = 9;
         hCode = "90 90 90 33 C0 90 90 90 90 ";
+        vsprintfOffset = 2;
+        messageBoxAOffset = 23;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -71,11 +75,16 @@ function IgnoreLuaErrors()
 
         repLoc = 9;
         hCode = "90 90 90 33 C0 90 90 ";
+        vsprintfOffset = 2;
+        messageBoxAOffset = 21;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
 
     if (offset === -1)
         return "Failed in Step 1 - Pattern not found";
+
+    logVaFunc("vsprintf", offset, vsprintfOffset);
+    logVaFunc("MessageBoxA", offset, messageBoxAOffset);
 
     consoleLog("Step 2 - Replace with xor eax, eax followed by nops");
     var newCode =
