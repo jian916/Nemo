@@ -80,12 +80,6 @@ function AlwaysReadKrExtSettings()
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x100, korea_ref_offset);
 
-    consoleLog("Step 4b - Get switch jmp address for value 0");
-    var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
-    var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
-    var offset1 = exe.fetchUByte(addr1);
-    var jmpAddr = exe.fetchDWord(addr2 + 4 * offset1);
-
     if (offset === -1)
     {
         code =
@@ -96,18 +90,28 @@ function AlwaysReadKrExtSettings()
             "FF 24 85 ";            // 16 jmp ds:switch2_off_82CD44[eax*4]
 
         patchOffset = 2;
+        switch1Offset = 0;
         switch2Offset = 19;
 
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x60, korea_ref_offset);
-
-        consoleLog("Step 4c - Get switch jmp address for value 0");
-        addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
-        offset1 = exe.fetchUByte(addr2);
-        jmpAddr = exe.fetchDWord(addr2 + 4 / offset1);
     }
 
     if (offset === -1)
         return "Failed in Step 3 - Pattern not found";
+
+    consoleLog("Step 4b - Get switch jmp address for value 0");
+    if (switch1Offset !== 0)
+    {
+        var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
+        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        var offset1 = exe.fetchUByte(addr1);
+    }
+    else
+    {
+        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        var offset1 = 0;
+    }
+    var jmpAddr = exe.fetchDWord(addr2 + 4 * offset1);
 
     code =
         "B8 " + jmpAddr.packToHex(4) +  // 00 mov eax, addr
