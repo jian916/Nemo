@@ -20,6 +20,8 @@ function Disable1rag1Params()
         "83 C4 08 " +     // 08 add esp, 8
         "85 AB " +        // 11 test eax, eax
         "75 ";            // 13 jnz short loc_B13280
+    var jmpOffset = 13;
+    var strstrOffset = 0;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
@@ -32,6 +34,8 @@ function Disable1rag1Params()
             "83 C4 08 " +        // 11 add esp, 8
             "85 AB " +           // 14 test eax, eax
             "75 ";               // 16 jnz short loc_8660B2
+        jmpOffset = 16;
+        strstrOffset = 7;
 
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
@@ -41,11 +45,13 @@ function Disable1rag1Params()
         code =
             "68 " + strHex +                    // 00 push offset a1rag1
             "AB " +                             // 05 push ebx
-            "C7 05 AB AB AB AB AB AB AB AB " +  // 06 mov dword_8353B4, 1
+            "C7 05 AB AB AB AB 01 00 00 00 " +  // 06 mov dword_8353B4, 1
             "E8 AB AB AB AB " +                 // 16 call _strstr
             "83 C4 08 " +                       // 21 add esp, 8
             "85 AB " +                          // 24 test eax, eax
             "75 ";                              // 26 jnz short loc_6FAAB2
+        jmpOffset = 26;
+        strstrOffset = 17;
 
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
@@ -53,8 +59,11 @@ function Disable1rag1Params()
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
 
+    if (strstrOffset !== 0)
+        logRawFunc("strstr", offset, strstrOffset);
+
     consoleLog("Step 3 - Replace JNZ/JNE with JMP");
-    exe.replace(offset + code.hexlength() - 1, "EB ", PTYPE_HEX);
+    exe.replace(offset + jmpOffset, "EB ", PTYPE_HEX);
 
     return true;
 }
