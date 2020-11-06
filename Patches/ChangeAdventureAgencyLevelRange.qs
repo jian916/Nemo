@@ -32,7 +32,8 @@ function ChangeAdventureAgencyLevelRange()
         "68" + strHex +       // 10 push offset aD_2
         "6A FF";              // 15 push 0FFFFFFFFh
 
-    offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var rangeUOffset = [2, 1];
+    var offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
 
     if (offsetsU.length === 0)
     {
@@ -42,6 +43,7 @@ function ChangeAdventureAgencyLevelRange()
             "68" + strHex +   // 4 push offset aD_2
             "6A FF";          // 9 push 0FFFFFFFFh
 
+        rangeUOffset = [2, 1];
         offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -58,7 +60,8 @@ function ChangeAdventureAgencyLevelRange()
         "68" + strHex +     // 17 push offset aD_2
         "6A FF";            // 22 push 0FFFFFFFFh
 
-    offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var rangeLOffset = [2, 1];
+    var offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
 
     if (offsetsL.length === 0)
     {
@@ -70,6 +73,7 @@ function ChangeAdventureAgencyLevelRange()
             "68" + strHex +   // 9 push offset aD_2
             "6A FF";          // 14 push 0FFFFFFFFh
 
+        rangeLOffset = [2, 1];
         offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
     }
 
@@ -81,12 +85,14 @@ function ChangeAdventureAgencyLevelRange()
 
     for (var i = 0; i < offsetsU.length; i++)
     {
-        exe.replace(offsetsU[i] + 2, upprangeVal.packToHex(1), PTYPE_HEX);
+        exe.replace(offsetsU[i] + rangeUOffset[0], upprangeVal.packToHex(1), PTYPE_HEX);
+        logVaVar("MAX_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsU[i], rangeUOffset);
     }
 
     for (var i = 0; i < offsetsL.length; i++)
     {
-        exe.replace(offsetsL[i] + 2, lowrangeVal.packToHex(1), PTYPE_HEX);
+        exe.replace(offsetsL[i] + rangeLOffset[0], lowrangeVal.packToHex(1), PTYPE_HEX);
+        logVaVar("MIN_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsL[i], rangeLOffset);
     }
 
     return true;
