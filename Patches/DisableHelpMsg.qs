@@ -69,7 +69,10 @@ function DisableHelpMsg()
 
     if (offset2 === -1)
     {
-        code = code.replace("75 ", "00 75 ");  // Directly compared to 0
+        code =
+            LANGTYPE + "00 " +  // 00 cmp dword ptr ds:[g_serviceType], 0
+            "75 ";              // 05 jnz short addr
+
         offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
     }
 
