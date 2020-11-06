@@ -1,3 +1,35 @@
+# 2020-11-06 Patches and plugin update
+
+## Patches
+
+- Add patch [Change Max Friends Value](http://nemo.herc.ws/patches/ChangeMaxFriendsValue/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Remove Hardcoded HTTP IP](http://nemo.herc.ws/patches/RemoveHardcodedHttpIP/#success-clients). (by @jchcc).
+- Add patch [Enable HTTP Emblem on Ragexe](http://nemo.herc.ws/patches/EnableRagHTTPEmblem/#success-clients). (by @jchcc).
+- Add patch [Remove Equipment Preview Button](http://nemo.herc.ws/patches/RemoveItemsEquipPreview/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Change adventurer agency level range](http://nemo.herc.ws/patches/ChangeAdventureAgencyLevelRange/#success-clients). (by @Asheraf).
+- Fix patch [Disable kRO Site Launch](http://nemo.herc.ws/patches/DisableKROSiteLaunch/#success-clients). (fix by @sctnightcore).
+- Fix patch [Disable 1rag1 type parameters](http://nemo.herc.ws/patches/Disable1rag1Params/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Fix patch [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Fix patch [Load custom ClientInfo file](http://nemo.herc.ws/patches/LoadCustomClientInfo/#success-clients). (fix by @jchcc).
+- Fix patch [Show Exp Numbers](http://nemo.herc.ws/patches/ShowExpNumbers/#success-clients). (fix by @jchcc).
+- Fix patch [Ignore Lua Errors](http://nemo.herc.ws/patches/IgnoreLuaErrors/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Disable HShield](http://nemo.herc.ws/patches/DisableHShield/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Disable Help Message on Login](http://nemo.herc.ws/patches/DisableHelpMsg/#success-clients). (fix by @X-EcutiOnner).
+
+## Plugin
+
+- Prevent load files with name started from get_.
+- Add discord link.
+
+## For devs
+
+- Add function for simple search/replace. See SimpleReplaceDemo.qs (by @4144).
+
+## Other
+
+- Update chinese traditional translation from jian916 fork.
+
 # 2020-10-19 Patches update
 
 ## Patches
