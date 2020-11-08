@@ -81,6 +81,26 @@ function IgnoreLuaErrors()
     }
 
     if (offset === -1)
+    {
+        code =
+            "E8 AB AB AB 00 " +     // 00 call _vsprintf
+            "8B AB AB " +           // 05 mov eax, [ebp+lpCaption]
+            "83 AB AB " +           // 08 add esp, 0Ch
+            "8D AB AB AB FF FF " +  // 11 lea ecx, [ebp+Text]
+            "6A 00 " +              // 17 push 0
+            "AB " +                 // 19 push eax
+            "AB " +                 // 20 push ecx
+            "6A 00 " +              // 21 push 0
+            "FF 15 AB AB AB 00 ";   // 23 call ds:MessageBoxA
+
+        repLoc = 9;
+        hCode = "33 C0 90 90 90 90 90 90 90 ";
+        vsprintfOffset = 2;
+        messageBoxAOffset = 25;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+    if (offset === -1)
         return "Failed in Step 1 - Pattern not found";
 
     logVaFunc("vsprintf", offset, vsprintfOffset);
