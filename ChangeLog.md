@@ -1,3 +1,10 @@
+# 2020-11-10 Patches update
+
+## Patches
+
+- Fix patch [Disable HShield](http://nemo.herc.ws/patches/DisableHShield/#success-clients). (fix by @4144).
+
+
 # 2020-11-06 Patches and plugin update
 
 ## Patches
