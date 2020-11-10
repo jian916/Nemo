@@ -32,7 +32,7 @@ function DisableHShield()
     consoleLog("Step 1d - Replace the JZ + XOR with XOR + INC of EAX to return 1 without initializing AhnLab");
     exe.replace(offset, "33 C0 40 90 ", PTYPE_HEX);
 
-    if (exe.getClientDate() >= 20090000 && !IsSakray() || exe.getClientDate() <= 20110228 && !IsSakray())
+    if ((exe.getClientDate() >= 20090000 && exe.getClientDate() <= 20110228) && !IsSakray())
     {
         consoleLog("Step 2a - Search pattern 'HackShield Error'");
         var code =
