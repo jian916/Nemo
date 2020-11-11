@@ -1,46 +1,52 @@
 //######################################################################
-//# Purpose: Extract the Hardcoded Msgstringtable in the loaded client #
-//#          translated using the reference tables                     #
+//# Purpose: Extract the Hardcoded msgStringTable in the loaded Client #
+//#          to translated using the reference tables.                 #
 //######################################################################
 
 function ExtractMsgTable()
 {
-
-    //Step 1a - Find offset of msgStringTable.txt
+    consoleLog("Step 1a - Search string 'msgStringTable.txt'");
     var offset = exe.findString("msgStringTable.txt", RVA);
-    if (offset === -1)
-        throw "Error: msgStringTable.txt missing";
 
-    //Step 1b - Find its reference
-    offset = exe.findCode(" 68" + offset.packToHex(4) + " 68", PTYPE_HEX, false);
     if (offset === -1)
-        throw "Error: msgStringTable.txt reference missing";
+        return "Failed in Step 1a - String not found";
 
-    //Step 1c - Find the msgstring push after it
+    consoleLog("Step 1b - Search its reference");
+    var offset = exe.findCode("68 " + offset.packToHex(4) + "68 ", PTYPE_HEX, false);
+
+    if (offset === -1)
+        return "Failed in Step 1b - Pattern not found";
+
+    consoleLog("Step 1c - Search the msgString PUSH after it");
     var code =
-        " 73 05"                //JAE SHORT addr1 -> after JMP below
-      + " 8B AB AB"             //MOV reg32_A, DWORD PTR DS:[reg32_B*4 + reg32_C]
-      + " EB AB"                //JMP SHORT addr2
-      + " 8B AB AB AB AB AB 00" //MOV reg32_D, DWORD PTR DS:[reg32_B*8 + tblAddr]
-      ;
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+80);
+        "73 05 " +                // 00 jnb short addr1
+        "8B 04 B0 " +             // 02 mov reg32_A, dword ptr ds:[reg32_B*4 + reg32_C]
+        "EB 1B " +                // 05 jmp short addr2
+        "8B 14 F5 AB AB AB 00 ";  // 07 mov reg32_D, dword ptr ds:[reg32_B*8 + tblAddr]
+
+    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 80);
 
     if (offset2 === -1)
-    { //Newest Clients
-        code = code.replace(" AB 8B AB", " AB FF AB");//Change MOV reg32_D with PUSH
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+80);
+    {
+        code =
+            "73 05 " +                // 00 jnb short addr1
+            "8B 0C B1 " +             // 02 mov reg32_A, dword ptr ds:[reg32_B*4 + reg32_C]
+            "EB 1A " +                // 05 jmp short addr2
+            "FF 34 F5 AB AB AB 00 ";  // 07 push reg32_D, dword ptr ds:[reg32_B*8 + tblAddr]
+
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 80);
     }
 
     if (offset2 === -1)
     {
         code =
-            " 56"                // push esi
-          + " 33 AB"             // xor R,R
-          + " 33 AB"             // xor R,R
-          + " 8B FF"             // mov edi, edi
-          + " 8B AB AB AB AB 00" // mov reg1, tblAddr[reg2]
-          ;
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-40, offset+10);
+            "56 " +                // 00 push esi
+            "33 F6 " +             // 01 xor esi, esi
+            "33 D2 " +             // 03 xor edx, edx
+            "8B FF " +             // 05 mov edi, edi
+            "8B 8A AB AB AB 00 ";  // 07 mov ecx, off_DB76DC[edx] ; Ascii "동의 하십니까?"
+
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 40, offset + 10);
     }
 
     if (offset2 === -1)
@@ -58,85 +64,92 @@ function ExtractMsgTable()
     }
 
     if (offset2 === -1)
-    {  //Old clients
+    {
         code =
-          " 33 F6"          //XOR ESI, ESI
-        + " AB AB AB AB 00" //MOV reg32_A, tblAddr
-        ;
+            "33 F6 " +          // 00 xor esi, esi
+            "BF AB AB AB 00 ";  // 02 mov reg32_A, tblAddr ; Ascii "동의 하십니까?"
 
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset+10, offset+30);
-        if (offset2 != -1 && (exe.fetchByte(offset2 + 2) & 0xB8) != 0xB8)
-        { //Checking the opcode is within 0xB8-0xBF
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 30);
+
+        if (offset2 != -1 && (exe.fetchByte(offset2 + 2) & 0xB8) != 0xB8) // Checking the opcode is within 0xB8 to 0xBF
             offset2 = -1;
-        }
     }
 
     if (offset2 === -1)
-        throw "Error: msgString LUT missing";
+        return "Failed in Step 1c - Pattern not found";
 
-    //Step 1d - Extract the tblAddr
+    consoleLog("Step 1d - Extract the tblAddr");
     offset = exe.Rva2Raw(exe.fetchDWord(offset2 + code.hexlength() - 4)) - 4;
 
-    //Step 2a - Read the reference strings from file (Korean original in hex format)
+    consoleLog("Step 2a - Read the reference strings from file (Korean original in hex format)");
     var fp = new TextFile();
     var refList = [];
-    var msgStr = "";
+    var msgStr = " ";
 
     fp.open(APP_PATH + "/Input/msgStringRef.txt", "r");
+
     while (!fp.eof())
     {
         var parts = fp.readline().split('#');
+
         for (var i = 1; i <= parts.length; i++)
         {
-            msgStr += parts[i - 1].replace(/\\r/g, " 0D").replace(/\\n/g, " 0A");
+            msgStr += parts[i - 1].replace(/\\r/g, "0D ").replace(/\\n/g, "0A ");
+
             if (i < parts.length)
             {
                 refList.push(msgStr.toAscii());
-                msgStr = "";
+                msgStr = " ";
             }
         }
     }
+
     fp.close();
 
-    //Step 2b - Read the translated strings from file (English regular text)
-    msgStr = "";
+    consoleLog("Step 2b - Read the translated strings from file (English regular text)");
+    msgStr = " ";
     var index = 0;
     var engMap = {};
 
     fp.open(APP_PATH + "/Input/msgStringEng.txt", "r");
+
     while (!fp.eof())
     {
         var parts = fp.readline().split('#');
+
         for (var i = 1; i <= parts.length; i++)
         {
-            msgStr += parts[i-1];
+            msgStr += parts[i - 1];
             msgStr = msgStr.replace("#", "_");
+
             if (i < parts.length)
             {
                 engMap[refList[index]] = msgStr;
-                msgStr = "";
+                msgStr = " ";
                 index++;
             }
         }
     }
+
     fp.close();
 
-    //Step 3 - Loop through the table inside the client - Each Entry
+    consoleLog("Step 3 - Loop through the table inside the client (Each Entry)");
     var done = false;
     var id = 0;
 
     fp.open(APP_PATH + "/Output/msgstringtable_" + exe.getClientDate() + ".txt", "w");
+
     while (!done)
     {
         if (exe.fetchDWord(offset) === id)
         {
-            //Step 3a - Get the string for the current id
-            var start_offset = exe.Rva2Raw(exe.fetchDWord(offset+4));
-            var end_offset   = exe.find("00", PTYPE_HEX, false, "\xAB", start_offset);
+            consoleLog("Step 3a - Get the string for the current ID");
+            var start_offset = exe.Rva2Raw(exe.fetchDWord(offset + 4));
+            var end_offset   = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
 
             msgStr = exe.fetch(start_offset, end_offset - start_offset);
 
-            //Step 3b - Map the Korean string to English
+            consoleLog("Step 3b - Map the Korean string to English");
             if (engMap[msgStr])
             {
                 fp.writeline(engMap[msgStr] + '#');
@@ -148,6 +161,7 @@ function ExtractMsgTable()
                 msgStr = msgStr.replace("#", "_");
                 fp.writeline(msgStr + "#");
             }
+
             offset += 8;
             id++;
         }
@@ -156,7 +170,8 @@ function ExtractMsgTable()
             done = true;
         }
     }
+
     fp.close();
 
-    return "Msgstringtable has been Extracted to Output folder";
+    return "Success - msgStringTable.txt has been Extracted to Output folder";
 }
