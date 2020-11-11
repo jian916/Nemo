@@ -44,6 +44,20 @@ function ExtractMsgTable()
     }
 
     if (offset2 === -1)
+    {
+        code =
+            "56 " +                // 00 push esi
+            "33 F6 " +             // 01 xor esi, esi
+            "33 D2 " +             // 03 xor edx, edx
+            "66 90 " +             // 05 xchg ax, ax
+            "A1 AB AB AB 00 " +    // 07 mov eax, ds:0EB2680h
+            "8D 76 04 " +          // 12 lea esi, [esi+4]
+            "8B 8A AB AB AB 00 ";  // 15 mov ecx, [edx+0E6D02Ch] ; Ascii "동의 하십니까?"
+
+        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 40, offset + 10);
+    }
+
+    if (offset2 === -1)
     {  //Old clients
         code =
           " 33 F6"          //XOR ESI, ESI
