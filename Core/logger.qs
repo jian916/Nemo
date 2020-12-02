@@ -135,6 +135,7 @@ function GlobalInit()
     {
         Global_enableProxy();
     }
+    registerTables();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)

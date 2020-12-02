@@ -586,4 +586,6 @@ registerPatch(336, "RemoveItemsEquipPreview", "Remove Equipment Preview Button",
 
 registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency level range", "Data", 0, "Asheraf", "Changes the default level range on the Adventure Agency.", false);
 
+registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, "4144", "Validate is loaded client detected as correct client. If this patch failed, other patches can be wrong.", true);
+
 GlobalPostInit();
