@@ -19,6 +19,7 @@ function registerTables()
 {
     table.var1 = 0;
     table.g_session = 1;
+    table.g_serviceType = 2;
 
     registerTableFunctions();
 }

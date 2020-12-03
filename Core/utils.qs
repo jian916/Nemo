@@ -63,7 +63,6 @@ function IsZero()
 
 function GetLangType()
 {
-
   //Step 1a - Get address of the string 'america'
   var offset = exe.findString("america", RVA);
   if (offset === -1)
@@ -81,8 +80,10 @@ function GetLangType()
 
   logVaVar("g_serviceType", offset, 2);
   //Step 2b - Extract and return
-  return exe.fetchHex(offset + 2, 4);
-
+  var lang = exe.fetchHex(offset + 2, 4);
+  if (lang !== table.getHex4(table.g_serviceType))
+    return ["found wrong g_serviceType"];
+  return lang;
 }
 
 //###########################################################
