@@ -21,8 +21,15 @@ function registerTables()
     table.g_session = 1;
     table.g_serviceType = 2;
     table.g_windowMgr = 3;
+    table.UIWindowMgr_MakeWindow = 4;
+    table.UIWindowMgr_DeleteWindow = 5;
 
     registerTableFunctions();
+}
+
+function table_getRaw(varId)
+{
+    return exe.Rva2Raw(table.get(varId));
 }
 
 function table_getHex4(varId)
@@ -43,4 +50,5 @@ function getEcxWindowMgrHex()
 function registerTableFunctions()
 {
     table.getHex4 = table_getHex4;
+    table.getRaw = table_getRaw;
 }

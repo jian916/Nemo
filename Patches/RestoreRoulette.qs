@@ -11,7 +11,7 @@ function RestoreRoulette()
     return "Failed in Step 1 - " + mgrInfo;
 
   var movEcx  = getEcxWindowMgrHex();
-  var makeWin = mgrInfo['makeWin'];
+  var makeWin = table.get(table.UIWindowMgr_MakeWindow);
 
   //Step 2a - Find the location where the roulette icon was supposed to be created
   var code =

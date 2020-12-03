@@ -26,7 +26,7 @@ function DisableWindows()
   if (typeof(WndMgr) === "string")
     return "Failed in Step 1 - " + WndMgr;
 
-  var makeWnd = exe.Rva2Raw(WndMgr['makeWin']);
+  var makeWnd = table.getRaw(table.UIWindowMgr_MakeWindow);
 
   //Find switch table
   var code =
