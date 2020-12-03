@@ -18,4 +18,22 @@
 function registerTables()
 {
     table.var1 = 0;
+    table.g_session = 1;
+
+    registerTableFunctions();
+}
+
+function table_getHex4(varId)
+{
+    return table.get(varId).packToHex(4);
+}
+
+function getEcxSessionHex()
+{
+    return "B9 " + table.getHex4(table.g_session);  // mov ecx, g_session
+}
+
+function registerTableFunctions()
+{
+    table.getHex4 = table_getHex4;
 }

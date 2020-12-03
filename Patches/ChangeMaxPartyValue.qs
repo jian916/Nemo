@@ -27,7 +27,7 @@ function ChangeMaxPartyValue()
 
     consoleLog("step 2");
     var code =
-        "B9 AB AB AB AB " +           // 0 mov ecx, offset g_session
+        getEcxSessionHex() +          // 0 mov ecx, offset g_session
         "6A 0C " +                    // 5 push 0Ch
         "E8";                         // 7 call CSession_GetNumParty
     var patchOffset = 6;

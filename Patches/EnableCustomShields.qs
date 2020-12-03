@@ -136,7 +136,7 @@ function EnableCustomShields()
     " 3D D0 07 00 00" //CMP EAX, 7D0
   + " 7E AB"          //JLE SHORT addr1
   + " 50"             //PUSH EAX
-  + " B9 AB AB AB 00" //MOV ECX, g_session; Note: this is the reference value for all the tables
+  + getEcxSessionHex() //MOV ECX, g_session; Note: this is the reference value for all the tables
   + " E8"             //CALL CSession::GetShieldType
   ;
 

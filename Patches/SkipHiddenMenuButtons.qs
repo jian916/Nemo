@@ -32,7 +32,7 @@ function SkipHiddenMenuButtons()
         "81 FB AB AB 00 00" +  // 14 cmp ebx, 0A9h    <-- stole code here
         "75 AB" +              // 20 jnz short loc_577BA6
         "FF 35 AB AB AB AB" +  // 22 push g_session.jobId
-        "B9 AB AB AB AB" +     // 28 mov ecx, offset g_session
+        getEcxSessionHex() +   // 28 mov ecx, offset g_session
         "E8 AB AB AB AB" +     // 33 call is_doram_job
         "3C 01" +              // 38 cmp al, 1
         "75 0E" +              // 40 jnz short loc_577BA0
@@ -57,7 +57,7 @@ function SkipHiddenMenuButtons()
             "81 3E AB AB 00 00 " +        // 22 cmp dword ptr [esi], 0AEh
             "75 AB " +                    // 28 jnz short loc_5862FE
             "FF 35 AB AB AB AB " +        // 30 push g_session.jobId
-            "B9 AB AB AB AB " +           // 36 mov ecx, offset g_session
+            getEcxSessionHex() +          // 36 mov ecx, offset g_session
             "E8 AB AB AB AB " +           // 41 call is_doram_job
             "3C 01 " +                    // 46 cmp al, 1
             "75 AB " +                    // 48 jnz short loc_5862FE

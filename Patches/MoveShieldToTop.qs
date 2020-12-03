@@ -74,7 +74,7 @@ function MoveShieldToTop()
 
     // step 2 - search block for patching in CPc_RenderBodyLayer
     var code =
-        "B9 AB AB AB AB " +           // 0 mov ecx, offset g_session
+        getEcxSessionHex() +          // 0 mov ecx, offset g_session
         "E8 AB AB AB AB " +           // 5 call CSession_sub_AA0510
         "83 EC 08 " +                 // 10 sub esp, 8
         "3C 01 " +                    // 13 cmp al, 1
@@ -113,7 +113,7 @@ function MoveShieldToTop()
     if (offsets.length === 0)
     {
         var code =
-            "B9 AB AB AB AB " +           // 0 mov ecx, offset g_session
+            getEcxSessionHex() +          // 0 mov ecx, offset g_session
             "E8 AB AB AB AB " +           // 5 call CSession_sub_ADB710
             "3C 01 " +                    // 10 cmp al, 1
             "75 2D " +                    // 12 jnz short loc_AA1DED

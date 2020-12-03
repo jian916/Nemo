@@ -148,7 +148,7 @@ function CustomAuraLimits()
     code =
       " E8 AB AB AB AB" //CALL jobIdFunc
     + " 50"             //PUSH EAX
-    + " B9 AB AB AB 00" //MOV ECX, g_session
+    + getEcxSessionHex() //MOV ECX, g_session
     + " E8"             //CALL addr
     ;
 
@@ -158,7 +158,7 @@ function CustomAuraLimits()
         code =
           " E8 AB AB AB AB" //CALL jobIdFunc
         + " 50"             //PUSH EAX
-        + " B9 AB AB AB 01" //MOV ECX, g_session
+        + getEcxSessionHex() //MOV ECX, g_session
         + " E8"             //CALL addr
         ;
 

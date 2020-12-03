@@ -6,45 +6,22 @@ function EnableEmblemForBG()
 {
     //Step 1.1 - Look for the Mode checking pattern
     var code =
-        " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
+        getEcxSessionHex() //MOV ECX, OFFSET g_session
     +   " E8 AB AB AB 00" //CALL CSession::IsSiegeMode
     +   " 85 C0"          //TEST EAX, EAX
     +   " 74 AB"          //JZ SHORT addr
-    +   " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
+    +   getEcxSessionHex() //MOV ECX, OFFSET g_session
     +   " E8 AB AB AB 00" //CALL CSession::IsBgMode
     +   " 85 C0"          //TEST EAX, EAX
     +   " 75 AB"          //JNZ SHORT addr ;AB at the end is needed
     ;
-    var g_sessionOffset1 = 1;
-    var g_sessionOffset2 = 15;
     var IsSiegeModeOffset = 6;
     var IsBgModeOffset = 20;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
-    {
-        var code =
-            " B9 AB AB AB 01" //MOV ECX, OFFSET g_session
-        +   " E8 AB AB AB 00" //CALL CSession::IsSiegeMode
-        +   " 85 C0"          //TEST EAX, EAX
-        +   " 74 AB"          //JZ SHORT addr
-        +   " B9 AB AB AB 01" //MOV ECX, OFFSET g_session
-        +   " E8 AB AB AB 00" //CALL CSession::IsBgMode
-        +   " 85 C0"          //TEST EAX, EAX
-        +   " 75 AB"          //JNZ SHORT addr ;AB at the end is needed
-        ;
-        g_sessionOffset1 = 1;
-        g_sessionOffset2 = 15;
-        IsSiegeModeOffset = 6;
-        IsBgModeOffset = 20;
-
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    }
-    if (offset === -1)
         return "Failed in Step 1";
 
-    logVaVar("g_session", offset, g_sessionOffset1);
-    logVaVar("g_session", offset, g_sessionOffset2);
     logRawFunc("CSession_IsSiegeMode", offset, IsSiegeModeOffset);
     logRawFunc("CSession_IsBgMode", offset, IsBgModeOffset);
 
