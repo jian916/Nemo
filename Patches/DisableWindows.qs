@@ -21,11 +21,6 @@
 function DisableWindows()
 {
   //Get the address of UIWindowMgr::MakeWindow
-  var WndMgr = GetWinMgrInfo();
-
-  if (typeof(WndMgr) === "string")
-    return "Failed in Step 1 - " + WndMgr;
-
   var makeWnd = table.getRaw(table.UIWindowMgr_MakeWindow);
 
   //Find switch table

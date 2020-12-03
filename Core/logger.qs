@@ -643,3 +643,10 @@ function logFieldAbs(name, offset, offset2)
         return;
     console2.logFieldAbs(name, offset, offset2[0], offset2[1]);
 }
+
+function logError(text)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    throw text;
+}

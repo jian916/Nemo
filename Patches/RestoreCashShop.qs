@@ -4,12 +4,7 @@
 
 function RestoreCashShop()
 {
-
   //Step 1 - Get the Window Manager Info we need
-  var mgrInfo = GetWinMgrInfo();
-  if (typeof(mgrInfo) === "string")
-    return "Failed in Step 1 - " + mgrInfo;
-
   var movEcx  = getEcxWindowMgrHex();
   var makeWin = table.get(table.UIWindowMgr_MakeWindow);
 

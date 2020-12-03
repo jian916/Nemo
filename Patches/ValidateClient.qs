@@ -27,5 +27,7 @@ function ValidateClient()
     if (xmas1 !== xmas2)
         return "Loaded file is wrong ragnarok client. Error 3.";
 
+    GetWinMgrInfo(true);
+
     return true;
 }

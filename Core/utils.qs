@@ -121,8 +121,10 @@ function GetServerType()
 //#          address. Returned value is a hash array or error string  #
 //#####################################################################
 
-function GetWinMgrInfo()
+function GetWinMgrInfo(skipError)
 {
+    if (skipError !== true)
+        logError("legacy function GetWinMgrInfo");
     //Step 1a - Find offset of NUMACCOUNT
     var offset = exe.findString("NUMACCOUNT", RVA);
     if (offset === -1)
@@ -144,6 +146,7 @@ function GetWinMgrInfo()
     logRawFunc("UIWindowMgr_MakeWindow", offset, 6);
 
     return {
+        "gWinMgr": exe.fetchHex(offset, 5),
         "makeWin": exe.fetchDWord(offset + 6) + exe.Raw2Rva(offset) + 10
     };
 }

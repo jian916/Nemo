@@ -4,12 +4,6 @@
 
 function HideCashShop()
 {
-
-  //Step 1a - Get Window Manager Info
-  var mgrInfo = GetWinMgrInfo();
-  if (typeof(mgrInfo) === "string")
-    return "Failed in Step 1 - " + mgrInfo;
-
   //Step 1b - Find the UIWindow creation for Cash Shop - 0xBE
   var code =
     " 68 BE 00 00 00"  //PUSH 0BE
