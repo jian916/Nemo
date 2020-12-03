@@ -131,7 +131,7 @@ function DCToLoginWindow()
 
   //Step 4d - Look for the ErrorMsg (Error Message Window displayer function) CALL after the offset
   code =
-    " B9 AB AB AB 00" //MOV ECX, OFFSET g_windowMgr
+    getEcxWindowMgrHex() //MOV ECX, OFFSET g_windowMgr
   + " E8 AB AB AB FF" //CALL UIWindowMgr::ErrorMsg
   ;
   var jumpOffset = 10;

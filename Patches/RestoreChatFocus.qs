@@ -20,16 +20,12 @@
 
 function RestoreChatFocus()
 {
-    var mgrInfo = GetWinMgrInfo();
-    if (typeof(mgrInfo) === "string")
-        return "Failed in search g_windowMgr - " + mgrInfo;
-
     // search UIWindowMgr::SetFocusEdit call in CGameMode static member
     var code =
         "83 3D AB AB AB AB 01 " +  // cmp g_CMouse.button, 1
         "75 AB " +                 // jnz addr1
         "6A 00 " +                 // push 0
-        mgrInfo['gWinMgr'] +       // mov ecx, offset g_windowMgr
+        getEcxWindowMgrHex() +     // mov ecx, offset g_windowMgr
         "E8 AB AB AB AB " +        // call UIWindowMgr::SetFocusEdit
         "EB ";                     // jmp addr2
 

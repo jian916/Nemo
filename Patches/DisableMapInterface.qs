@@ -8,12 +8,12 @@ function DisableMapInterface()
   //Step 1a - Find the creation pattern 1 - There should be exactly 2 matches (map button, shortcut)
   var code =
     " 68 8C 00 00 00"    //PUSH 8C
-  + " B9 AB AB AB 00"    //MOV ECX, g_winMgr
+  + getEcxWindowMgrHex() //MOV ECX, g_winMgr
   + " E8 AB AB AB AB"    //CALL UIWindowMgr::PrepWindow ?
   + " 84 C0"             //TEST AL, AL
   + " 0F 85 AB AB 00 00" //JNE addr
   + " 68 8C 00 00 00"    //PUSH 8C
-  + " B9 AB AB AB 00"    //MOV ECX, g_winMgr
+  + getEcxWindowMgrHex() //MOV ECX, g_winMgr
   + " E8"                //CALL UIWindowMgr::MakeWindow
   ;
 

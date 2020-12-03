@@ -26,7 +26,7 @@ function EnableDNSSupport()
       + " 8B C8"             //MOV ECX,EAX
       + " E8 AB AB AB FF"    //CALL CResMgr::Get
       + " 50"                //PUSH EAX
-      + " B9 AB AB AB 00"    //MOV ECX,OFFSET g_windowMgr
+      + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
       + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
       + " A1" + gAccountAddr //MOV EAX,DWORD PTR DS:[g_accountAddr]
     ;
@@ -39,7 +39,7 @@ function EnableDNSSupport()
           + " 8B C8"             //MOV ECX,EAX
           + " E8 AB AB AB FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
-          + " B9 AB AB AB 00"    //MOV ECX,OFFSET g_windowMgr
+          + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
           + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
           + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
@@ -53,7 +53,7 @@ function EnableDNSSupport()
           + " 8B C8"             //MOV ECX,EAX
           + " E8 AB AB AB FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
-          + " B9 AB AB AB 00"    //MOV ECX,OFFSET g_windowMgr
+          + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
           + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
           + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
           + " E8 AB AB AB FF"    //CALL CCheatDefenderMgr::init
@@ -69,7 +69,7 @@ function EnableDNSSupport()
           + " 8B C8"             //MOV ECX,EAX
           + " E8 AB AB AB FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
-          + " B9 AB AB AB 00"    //MOV ECX,OFFSET g_windowMgr
+          + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
           + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
           + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
           + " E8 AB AB AB 00"    //CALL CCheatDefenderMgr::init

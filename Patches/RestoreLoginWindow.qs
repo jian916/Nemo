@@ -14,7 +14,7 @@ function RestoreLoginWindow()
   + " 8B C8"                  //MOV ECX, EAX
   + " E8 AB AB AB FF"         //CALL CResMgr::Get
   + " 50"                     //PUSH EAX
-  + " B9 AB AB AB 00"         //MOV ECX, OFFSET g_windowMgr
+  + getEcxWindowMgrHex()      //MOV ECX, OFFSET g_windowMgr
   + " E8 AB AB AB FF"         //CALL UIWindowMgr::SetWallpaper
   + " 80 3D AB AB AB 00 00"   //CMP BYTE PTR DS:[g_Tparam], 0 <- The parameter push + call to UIWindowManager::MakeWindow originally here
   + " 74 13"                  //JZ SHORT addr1 - after the JMP
@@ -36,7 +36,7 @@ function RestoreLoginWindow()
       return "Failed in Step 1";
 
   //Step 1b - Extract the MOV ECX, g_windowMgr statement
-  var movEcx = exe.fetchHex(codeOffset + 14, 5);
+  var movEcx = getEcxWindowMgrHex();
 
   //==============================================//
   // Next we need to find UIWindowMgr::MakeWindow //

@@ -20,6 +20,7 @@ function registerTables()
     table.var1 = 0;
     table.g_session = 1;
     table.g_serviceType = 2;
+    table.g_windowMgr = 3;
 
     registerTableFunctions();
 }
@@ -32,6 +33,11 @@ function table_getHex4(varId)
 function getEcxSessionHex()
 {
     return "B9 " + table.getHex4(table.g_session);  // mov ecx, g_session
+}
+
+function getEcxWindowMgrHex()
+{
+    return "B9 " + table.getHex4(table.g_windowMgr);  // mov ecx, g_windowMgr
 }
 
 function registerTableFunctions()

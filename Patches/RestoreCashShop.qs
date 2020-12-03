@@ -10,7 +10,7 @@ function RestoreCashShop()
   if (typeof(mgrInfo) === "string")
     return "Failed in Step 1 - " + mgrInfo;
 
-  var movEcx  = mgrInfo['gWinMgr'];
+  var movEcx  = getEcxWindowMgrHex();
   var makeWin = mgrInfo['makeWin'];
 
   //Step 2a - Find the location where the cash shop icon was supposed to be created

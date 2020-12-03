@@ -14,7 +14,7 @@ function HideRoulette()
   var code =
     " 74 0F"           //JE SHORT addr
   + " 68 B5 00 00 00"  //PUSH 0B5
-  + mgrInfo['gWinMgr'] //MOV ECX, OFFSET g_windowMgr
+  + getEcxWindowMgrHex() //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 

@@ -123,30 +123,29 @@ function GetServerType()
 
 function GetWinMgrInfo()
 {
+    //Step 1a - Find offset of NUMACCOUNT
+    var offset = exe.findString("NUMACCOUNT", RVA);
+    if (offset === -1)
+        return "NUMACCOUNT missing";
 
-  //Step 1a - Find offset of NUMACCOUNT
-  var offset = exe.findString("NUMACCOUNT", RVA);
-  if (offset === -1)
-    return "NUMACCOUNT missing";
+    //Step 1b - Find its reference which comes after a Window Manager call
+    var code =
+        getEcxWindowMgrHex() +        // 0 mov ecx, offset g_windowMgr
+        "E8 AB AB AB AB " +           // 5 call UIWindowMgr_MakeWindow
+        "6A 00 " +                    // 10 push 0
+        "6A 00 " +                    // 12 push 0
+        "68 " + offset.packToHex(4);  // 14 push offset aNumaccount
 
-  //Step 1b - Find its reference which comes after a Window Manager call
-  var code =
-    " 6A 00"                    //PUSH 0
-  + " 6A 00"                    //PUSH 0
-  + " 68" + offset.packToHex(4) //PUSH addr; ASCII "NUMACCOUNT"
-  ;
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    if (offset === -1)
+        return "NUMACCOUNT reference missing";
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "NUMACCOUNT reference missing";
+    logVaVar("g_windowMgr", offset, 1);
+    logRawFunc("UIWindowMgr_MakeWindow", offset, 6);
 
-  logVaVar("g_windowMgr", offset, -9);
-  logRawFunc("UIWindowMgr_MakeWindow", offset, -4);
-
-  return {
-    "gWinMgr": exe.fetchHex(offset-10, 5),
-    "makeWin": exe.fetchDWord(offset - 4) + exe.Raw2Rva(offset)
-  };
+    return {
+        "makeWin": exe.fetchDWord(offset + 6) + exe.Raw2Rva(offset) + 10
+    };
 }
 
 //###############################################################

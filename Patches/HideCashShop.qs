@@ -13,7 +13,7 @@ function HideCashShop()
   //Step 1b - Find the UIWindow creation for Cash Shop - 0xBE
   var code =
     " 68 BE 00 00 00"  //PUSH 0BE
-  + mgrInfo['gWinMgr'] //MOV ECX, OFFSET g_windowMgr
+  + getEcxWindowMgrHex() //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
