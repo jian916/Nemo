@@ -45,10 +45,9 @@ function IgnoreQuestErrors()
         "6A 00 " +                    // 29 push 0
         "68 AB AB AB AB " +           // 31 push offset aError
         "50 " +                       // 36 push eax
-        "FF 35 AB AB AB AB " +        // 37 push g_hMainWnd
+        "FF 35 " + table.getHex4(table.g_hMainWnd) + // 37 push g_hMainWnd
         "FF 15 AB AB AB AB ";         // 43 call ds:MessageBoxA
     var sprintfOffset = 7;
-    var mainWndOffset = 39;
     var replaceOffset = 29;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
@@ -58,7 +57,6 @@ function IgnoreQuestErrors()
 
     consoleLog("Log vars");
     logRawFunc("std_string_sprintf", offset, sprintfOffset);
-    logVaVar("g_hMainWnd", offset, mainWndOffset);
 
     consoleLog("Replace with xor eax, eax followed by nops");
     var newCode =

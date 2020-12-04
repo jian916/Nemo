@@ -9,7 +9,7 @@ function IgnoreResourceErrors()
     var code =
         " E8 AB AB AB FF"    //CALL GDIFlip
       + " MovEax"            //FramePointer Specific MOV
-      + " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[g_hMainWnd]
+      + " 8B 0D " + table.getHex4(table.g_hMainWnd) //MOV ECX, DWORD PTR DS:[g_hMainWnd]
       + " 6A 00"             //PUSH 0
       ;
 
