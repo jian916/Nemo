@@ -93,9 +93,9 @@ function IgnoreLuaErrors()
             "6A 00 " +              // 21 push 0
             "FF 15 AB AB AB 00 ";   // 23 call ds:MessageBoxA
 
-        repLoc = 9;
-        hCode = "33 C0 90 90 90 90 90 90 90 ";
-        vsprintfOffset = 2;
+        repLoc = 11;
+        hCode = "90 90 90 90 90 90 33 C0 90 ";
+        vsprintfOffset = 1;
         messageBoxAOffset = 25;
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
