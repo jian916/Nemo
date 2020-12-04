@@ -23,7 +23,7 @@ function AllowCloseCutinByEsc()
     // step 1
     // search in UIIllustWnd_virt136 / case 6
     var code =
-        "B9 AB AB AB AB" +  // mov ecx, offset g_modeMgr
+        getEcxModeMgrHex() + // mov ecx, offset g_modeMgr
         "E8 AB AB AB AB" +  // call CModeMgr::GetGameMode
         "8B 10" +           // mov edx, [eax]
         "6A 00" +           // push 0

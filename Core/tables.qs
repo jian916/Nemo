@@ -23,6 +23,7 @@ function registerTables()
     table.g_windowMgr = 3;
     table.UIWindowMgr_MakeWindow = 4;
     table.UIWindowMgr_DeleteWindow = 5;
+    table.g_modeMgr = 6;
 
     registerTableFunctions();
 }
@@ -45,6 +46,11 @@ function getEcxSessionHex()
 function getEcxWindowMgrHex()
 {
     return "B9 " + table.getHex4(table.g_windowMgr);  // mov ecx, g_windowMgr
+}
+
+function getEcxModeMgrHex()
+{
+    return "B9 " + table.getHex4(table.g_modeMgr);  // mov ecx, g_modeMgr
 }
 
 function registerTableFunctions()
