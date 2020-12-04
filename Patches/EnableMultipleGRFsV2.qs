@@ -12,7 +12,7 @@ function EnableMultipleGRFsV2()
     //Step 1b - Find its reference
     var code =
         " 68" + grf       //PUSH OFFSET addr1; "data.grf"
-      + " B9 AB AB AB 00" //MOV ECX, OFFSET g_fileMgr
+      + getEcxFileMgrHex() //MOV ECX, OFFSET g_fileMgr
     ;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
@@ -21,20 +21,9 @@ function EnableMultipleGRFsV2()
     var addpackOffset = -1;
 
     if (offset === -1)
-    {
-        var code =
-            " 68" + grf       //PUSH OFFSET addr1; "data.grf"
-          + " B9 AB AB AB 01" //MOV ECX, OFFSET g_fileMgr
-        ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-        setEcxOffset = 5;
-        pushOffset = 0;
-    }
-
-    if (offset === -1)
     {   // 2019-02-13
         var code =
-            "B9 AB AB AB AB " +           // 0 mov ecx, offset g_FileMgr
+            getEcxFileMgrHex() +          // 0 mov ecx, offset g_FileMgr
             "85 C0 " +                    // 5 test eax, eax
             "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
             "68 " + grf +                 // 14 push offset aData_grf
@@ -50,7 +39,7 @@ function EnableMultipleGRFsV2()
         return "Failed in Step 1";
 
     //Step 2a - Extract the g_FileMgr assignment
-    var setECX = exe.fetchHex(offset + setEcxOffset, 5);
+    var setECX = getEcxFileMgrHex()
 
     //Step 2b - Find the AddPak call after the push
     if (addpackOffset === -1)
