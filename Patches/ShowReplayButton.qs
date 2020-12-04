@@ -275,7 +275,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 
   //Step .4b - For VC11 we can simply replace at appropriate area after the match
   var size = code.hexlength();
-  if (type === 3 || 4)
+  if (type === 3 || type === 4)
   {//VC11
     exe.replace(retAddr - size, code, PTYPE_HEX);
   }
