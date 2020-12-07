@@ -6,80 +6,8 @@
 function ExtractMsgTable()
 {
     consoleLog("Step 1a - Search string 'msgStringTable.txt'");
-    var offset = exe.findString("msgStringTable.txt", RVA);
 
-    if (offset === -1)
-        throw "Failed in Step 1a - String not found";
-
-    consoleLog("Step 1b - Search its reference");
-    var offset = exe.findCode("68 " + offset.packToHex(4) + "68 ", PTYPE_HEX, false);
-
-    if (offset === -1)
-        throw "Failed in Step 1b - Pattern not found";
-
-    consoleLog("Step 1c - Search the msgString PUSH after it");
-    var code =
-        "73 05 " +                // 00 jnb short addr1
-        "8B 04 B0 " +             // 02 mov reg32_A, dword ptr ds:[reg32_B*4 + reg32_C]
-        "EB 1B " +                // 05 jmp short addr2
-        "8B 14 F5 AB AB AB 00 ";  // 07 mov reg32_D, dword ptr ds:[reg32_B*8 + tblAddr]
-
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 80);
-
-    if (offset2 === -1)
-    {
-        code =
-            "73 05 " +                // 00 jnb short addr1
-            "8B 0C B1 " +             // 02 mov reg32_A, dword ptr ds:[reg32_B*4 + reg32_C]
-            "EB 1A " +                // 05 jmp short addr2
-            "FF 34 F5 AB AB AB 00 ";  // 07 push reg32_D, dword ptr ds:[reg32_B*8 + tblAddr]
-
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 80);
-    }
-
-    if (offset2 === -1)
-    {
-        code =
-            "56 " +                // 00 push esi
-            "33 F6 " +             // 01 xor esi, esi
-            "33 D2 " +             // 03 xor edx, edx
-            "8B FF " +             // 05 mov edi, edi
-            "8B 8A AB AB AB 00 ";  // 07 mov ecx, off_DB76DC[edx] ; Ascii "동의 하십니까?"
-
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 40, offset + 10);
-    }
-
-    if (offset2 === -1)
-    {
-        code =
-            "56 " +                // 00 push esi
-            "33 F6 " +             // 01 xor esi, esi
-            "33 D2 " +             // 03 xor edx, edx
-            "66 90 " +             // 05 xchg ax, ax
-            "A1 AB AB AB 00 " +    // 07 mov eax, ds:0EB2680h
-            "8D 76 04 " +          // 12 lea esi, [esi+4]
-            "8B 8A AB AB AB 00 ";  // 15 mov ecx, [edx+0E6D02Ch] ; Ascii "동의 하십니까?"
-
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 40, offset + 10);
-    }
-
-    if (offset2 === -1)
-    {
-        code =
-            "33 F6 " +          // 00 xor esi, esi
-            "BF AB AB AB 00 ";  // 02 mov reg32_A, tblAddr ; Ascii "동의 하십니까?"
-
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 30);
-
-        if (offset2 != -1 && (exe.fetchByte(offset2 + 2) & 0xB8) != 0xB8) // Checking the opcode is within 0xB8 to 0xBF
-            offset2 = -1;
-    }
-
-    if (offset2 === -1)
-        throw "Failed in Step 1c - Pattern not found";
-
-    consoleLog("Step 1d - Extract the tblAddr");
-    offset = exe.Rva2Raw(exe.fetchDWord(offset2 + code.hexlength() - 4)) - 4;
+    var offset = table.getRaw(table.msgStringTable) - 4;
 
     consoleLog("Step 2a - Read the reference strings from file (Korean original in hex format)");
     var fp = new TextFile();
