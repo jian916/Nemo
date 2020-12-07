@@ -9,13 +9,13 @@ function ExtractMsgTable()
     var offset = exe.findString("msgStringTable.txt", RVA);
 
     if (offset === -1)
-        return "Failed in Step 1a - String not found";
+        throw "Failed in Step 1a - String not found";
 
     consoleLog("Step 1b - Search its reference");
     var offset = exe.findCode("68 " + offset.packToHex(4) + "68 ", PTYPE_HEX, false);
 
     if (offset === -1)
-        return "Failed in Step 1b - Pattern not found";
+        throw "Failed in Step 1b - Pattern not found";
 
     consoleLog("Step 1c - Search the msgString PUSH after it");
     var code =
@@ -76,7 +76,7 @@ function ExtractMsgTable()
     }
 
     if (offset2 === -1)
-        return "Failed in Step 1c - Pattern not found";
+        throw "Failed in Step 1c - Pattern not found";
 
     consoleLog("Step 1d - Extract the tblAddr");
     offset = exe.Rva2Raw(exe.fetchDWord(offset2 + code.hexlength() - 4)) - 4;
@@ -84,7 +84,7 @@ function ExtractMsgTable()
     consoleLog("Step 2a - Read the reference strings from file (Korean original in hex format)");
     var fp = new TextFile();
     var refList = [];
-    var msgStr = " ";
+    var msgStr = "";
 
     fp.open(APP_PATH + "/Input/msgStringRef.txt", "r");
 
@@ -99,7 +99,7 @@ function ExtractMsgTable()
             if (i < parts.length)
             {
                 refList.push(msgStr.toAscii());
-                msgStr = " ";
+                msgStr = "";
             }
         }
     }
@@ -107,7 +107,7 @@ function ExtractMsgTable()
     fp.close();
 
     consoleLog("Step 2b - Read the translated strings from file (English regular text)");
-    msgStr = " ";
+    msgStr = "";
     var index = 0;
     var engMap = {};
 
@@ -125,7 +125,7 @@ function ExtractMsgTable()
             if (i < parts.length)
             {
                 engMap[refList[index]] = msgStr;
-                msgStr = " ";
+                msgStr = "";
                 index++;
             }
         }
@@ -143,11 +143,18 @@ function ExtractMsgTable()
     {
         if (exe.fetchDWord(offset) === id)
         {
-            consoleLog("Step 3a - Get the string for the current ID");
+            consoleLog("Step 3a - Get the string for id: " + id);
             var start_offset = exe.Rva2Raw(exe.fetchDWord(offset + 4));
-            var end_offset   = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
+            if (start_offset === -1)
+            {
+                msgStr = "empty";
+            }
+            else
+            {
+                var end_offset = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
 
-            msgStr = exe.fetch(start_offset, end_offset - start_offset);
+                msgStr = exe.fetch(start_offset, end_offset - start_offset);
+            }
 
             consoleLog("Step 3b - Map the Korean string to English");
             if (engMap[msgStr])
