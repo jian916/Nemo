@@ -1,3 +1,27 @@
+# 2020-12-09 Patches and plugin update
+
+## Patches
+
+- Add patch [Additional client validation](http://nemo.herc.ws/patches/ValidateClient/#success-clients). (by @4144).
+- Fix patch [Show Replay Button](http://nemo.herc.ws/patches/ShowReplayButton/#success-clients). (fix by @jchcc).
+- Fix patch [Disable Help Message on Login](http://nemo.herc.ws/patches/DisableHelpMsg/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Ignore Lua Errors](http://nemo.herc.ws/patches/IgnoreLuaErrors/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Update patch [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients) for translating sign in achievement window. (fix by @X-EcutiOnner).
+- Fixes for different patches due using tables.
+
+## Addons
+
+- Fix addon Extract msgstringtable by using tables. (by @4144).
+- Fix addon Dump Import Table for different clients with broken import table. (by @4144).
+
+## Plugin
+
+- Add tables with known values.
+- Validate all clients loading. Show error on non kro or modified clients exe.
+- From now NEMO will not works with modified clients as source.
+- New script variable IS_RO for check is loaded binary ro client or not.
+
+
 # 2020-11-10 Patches update
 
 ## Patches
