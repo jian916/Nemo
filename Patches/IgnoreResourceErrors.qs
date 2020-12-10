@@ -5,11 +5,13 @@
 
 function IgnoreResourceErrors()
 {
+    var hwndHex = table.getHex4(table.g_hMainWnd);
+
   //Step 1a - Prep code for finding the ErrorMsg(msg) function - New Client has different pattern (see Step 1b)
     var code =
         " E8 AB AB AB FF"    //CALL GDIFlip
       + " MovEax"            //FramePointer Specific MOV
-      + " 8B 0D " + table.getHex4(table.g_hMainWnd) //MOV ECX, DWORD PTR DS:[g_hMainWnd]
+      + " 8B 0D " + hwndHex  //MOV ECX, DWORD PTR DS:[g_hMainWnd]
       + " 6A 00"             //PUSH 0
       ;
 

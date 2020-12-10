@@ -31,6 +31,7 @@ function IgnoreQuestErrors()
         return "String not found";
 
     var strHex = offset.packToHex(4);
+    var hwndHex = table.getHex4(table.g_hMainWnd);
 
     consoleLog("Prep code for finding the QuestErrorMsg");
     var code =
@@ -45,7 +46,7 @@ function IgnoreQuestErrors()
         "6A 00 " +                    // 29 push 0
         "68 AB AB AB AB " +           // 31 push offset aError
         "50 " +                       // 36 push eax
-        "FF 35 " + table.getHex4(table.g_hMainWnd) + // 37 push g_hMainWnd
+        "FF 35 " + hwndHex +          // 37 push g_hMainWnd
         "FF 15 AB AB AB AB ";         // 43 call ds:MessageBoxA
     var sprintfOffset = 7;
     var replaceOffset = 29;
