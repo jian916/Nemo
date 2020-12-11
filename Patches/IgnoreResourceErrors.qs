@@ -46,7 +46,7 @@ function IgnoreResourceErrors()
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
         if (offset === -1)
             return "Failed search ErrMsg call";
-        offset = offset + 10 + exe.fetchDWord(offset + 6)
+        offset = offset + 10 + exe.fetchDWord(offset + 6);
 
         // we found ErrorMsg function. now searching for some bytes patterns
         code =
