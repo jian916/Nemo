@@ -71,3 +71,15 @@ function IgnoreQuestErrors()
 
     return true;
 }
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function IgnoreQuestErrors_()
+{
+    return (
+                exe.getClientDate() >= 20180319 ||
+                exe.getClientDate() >= 20180300 && IsSakray() ||
+                exe.getClientDate() >= 20171115 && IsZero()
+            );
+}
