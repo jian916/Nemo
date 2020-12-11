@@ -1,3 +1,14 @@
+# 2020-12-11 Patches and translations update
+
+## Patches
+
+- Hide patches [Ignore Quest Errors](http://nemo.herc.ws/patches/IgnoreQuestErrors/#success-clients) and [Ignore Resource Errors](http://nemo.herc.ws/patches/IgnoreResourceErrors/#success-clients) (by @X-EcutiOnner)
+
+## Translations
+
+- Update Thai translation (by @X-EcutiOnner).
+
+
 # 2020-12-09 Patches and plugin update
 
 ## Patches
