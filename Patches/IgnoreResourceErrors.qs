@@ -67,3 +67,11 @@ function IgnoreResourceErrors()
         exe.replace(offset + 5, " 33 C0 C3 90", PTYPE_HEX);
     return true;
 }
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function IgnoreResourceErrors_()
+{
+    return (exe.getClientDate() >= 20100000);
+}
