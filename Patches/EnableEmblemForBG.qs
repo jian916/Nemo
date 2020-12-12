@@ -34,3 +34,11 @@ function EnableEmblemForBG()
     exe.replace(offset + jmp2, "74", PTYPE_HEX);
     return true;
 }
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function EnableEmblemForBG_()
+{
+    return (exe.getClientDate() > 20130710);
+}
