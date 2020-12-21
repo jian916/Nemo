@@ -47,3 +47,11 @@ function ChangeWalkToDelay(value)
 
   return true;
 }
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function ChangeWalkToDelay_()
+{
+    return (exe.getClientDate() > 20020729);
+}
