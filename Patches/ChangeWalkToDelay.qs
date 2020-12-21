@@ -21,17 +21,19 @@ function ChangeWalkToDelay(value)
 
   //Step 1a - Find the first delay addition
   var code =
-    " 81 C1 58 02 00 00" //ADD ECX,00000258   ;  600ms
-  + " 3B C1"             //CMP EAX,ECX
+    " 81 AB 58 02 00 00" //ADD ECX,00000258   ;  600ms
+  + " 3B AB"             //CMP EAX,ECX
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset === -1)
     return "Failed in Step 1 - Walk Delay Code not found.";
 
   //Step 2 - Replace the value
   exe.replace(offset + 2, value.packToHex(4) , PTYPE_HEX);
 
+    if (exe.getClientDate() > 20170329)
+    {
   //Step 3a - Find the second delay addition
   var code =
     " 81 C1 5E 01 00 00" //ADD ECX,0000015E   ;  350ms
@@ -44,6 +46,7 @@ function ChangeWalkToDelay(value)
 
   //Step 4 - Replace the value
   exe.replace(offset + 2, value.packToHex(4) , PTYPE_HEX);
+    }
 
   return true;
 }
