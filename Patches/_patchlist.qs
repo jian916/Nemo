@@ -590,4 +590,6 @@ registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, 
 
 registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
 
+registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "X-EcutiOnner", "Disable all .mp3 audio files in BGM folder for playing background music", false);
+
 GlobalPostInit();
