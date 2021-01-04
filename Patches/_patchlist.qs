@@ -592,4 +592,6 @@ registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix",
 
 registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "X-EcutiOnner", "Disable all .mp3 audio files in BGM folder for playing background music", false);
 
+registerPatch(341, "DisableMapInfo", "Disable map sign display", "UI", 0, "X-EcutiOnner", "Disable all map sign display listing in MapInfo*.lub when players entering map.", false);
+
 GlobalPostInit();
