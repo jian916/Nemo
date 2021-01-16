@@ -136,6 +136,7 @@ function GlobalInit()
         Global_enableProxy();
     }
     registerTables();
+    registerAsm();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)
