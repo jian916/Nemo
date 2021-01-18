@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2017 Secret
-// Copyright (C) 2017-2020 Andrei Karas (4144)
+// Copyright (C) 2017-2021 Andrei Karas (4144)
 // Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
