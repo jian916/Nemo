@@ -150,39 +150,45 @@ function ChangeMinimalResolutionLimit()
         return "Failed in step 2a";
 
     code =
-        "A3 AB AB AB AB " +              //mov resolutionListIndex, eax
-        "89 AB AB 00 00 00 ";            //mov [reg+y], eax
+        "A3 AB AB AB AB " +              //0 mov MODECNT, eax
+        "89 AB AB 00 00 00 ";            //5 mov [reg+UIGraphicSettingWnd.MODECNT], eax
+    var retAdd = 5;
+    var modeCntOffset = [1, 4];
+    var uiModeCntOffset = [7, 4];
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
     if (offset === -1)
         return "Failed in step 2b";
 
-    code = exe.fetchHex(offset, 5);
-    var retAdd = offset + 5;
+    logVaVar("MODECNT", offset, modeCntOffset);
+    logField("UIGraphicSettingWnd::MODECNT", offset, uiModeCntOffset);
 
-    var ins =
-        "83 F8 00 " +                               //cmp eax,0
-        "7D 02 " +                                  //jnl 02
-        "31 C0 " +                                  //xor eax,eax
-        code +                                      //mov resolutionListIndex, eax
-        + " 68" + exe.Raw2Rva(retAdd).packToHex(4)  //push retAdd
-        + " C3";                                    //ret
+    var codeIns = exe.fetchHex(offset, retAdd);
 
-    var size = ins.hexlength();
+    var text = asm.combine(
+        "cmp eax, 0",
+        "jnl _no",
+        "xor eax, eax",
+        "_no: " + asm.hexToAsm(codeIns),
+        "push retAddr",
+        "ret"
+    );
+
+    var vars = {
+        "retAddr": exe.Raw2Rva(offset + retAdd),
+    };
+
+    var size = asm.textToHexVaLength(0, text, vars);
     var free = exe.findZeros(size + 4);
     if (free === -1)
         return "Failed in Step 3 - No enough free space";
 
+    var obj = asm.textToHexRaw(free, text, vars);
+    if (obj === false)
+        return "Asm code error";
 
-    var jump = exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5);
-
-    code = " E9" + jump.packToHex(4);
-
-
-    exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset, code, PTYPE_HEX);
-
-
+    exe.insert(free, size + 4, obj, PTYPE_HEX);
+    exe.setJmpRaw(offset, free);
 
     return true;
 }
