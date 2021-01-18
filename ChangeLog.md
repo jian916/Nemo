@@ -1,3 +1,11 @@
+# 2021-01-18 Clients support update
+
+## Other
+
+- Update tables with clients support.
+- Update copyright year to 2021.
+
+
 # 2020-12-11 Patches and translations update
 
 ## Patches
