@@ -588,6 +588,6 @@ registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency 
 
 registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, "4144", "Validate is loaded client detected as correct client. If this patch failed, other patches can be wrong.", true);
 
-registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
+registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
 
 GlobalPostInit();

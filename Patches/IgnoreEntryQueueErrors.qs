@@ -2,7 +2,7 @@
 // This file is part of NEMO (Neo Exe Modification Organizer).
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
-// Copyright (C) 2020 Andrei Karas (4144)
+// Copyright (C) 2020-2021 Andrei Karas (4144)
 // Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
@@ -47,7 +47,9 @@ function IgnoreEntryQueueErrors()
         "FF 15 AB AB AB AB " ;  // 31 call ds:MessageBoxA
 
     var createfileOffset = 7;
-    var replaceOffset = 18;
+    var messageBoxOffset = 33;
+    var replaceStartOffset = 18;
+    var replaceEndOffset = 31 + 6;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
@@ -66,7 +68,9 @@ function IgnoreEntryQueueErrors()
             "FF 15 AB AB AB AB " ;  // 32 call MessageBoxA
 
         createfileOffset = 7;
-        replaceOffset = 18;
+        messageBoxOffset = 34;
+        replaceStartOffset = 18;
+        replaceEndOffset = 32 + 6;
 
         offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     }
@@ -75,17 +79,11 @@ function IgnoreEntryQueueErrors()
         return "Failed in Step 2 - Pattern not found";
 
     consoleLog("Log vars");
-    logRawFunc("CreateFileA", offset, createfileOffset);
+    logVaFunc("CreateFileA", offset, createfileOffset);
+    logVaFunc("MessageBoxA", offset, messageBoxOffset);
 
     consoleLog("Step 3 - Replace with nops");
-    var newCode =
-        "90 90 " +             // 00 nops
-        "90 90 90 90 90 " +    // 02 nops
-        "90 90 90 90 90 " +    // 07 nops
-        "90 " +                // 12 nop
-        "90 90 90 90 90 90 ";  // 13 nops
-
-    exe.replace(offset + replaceOffset, newCode, PTYPE_HEX);
+    exe.setNopsRange(offset + replaceStartOffset, offset + replaceEndOffset);
 
     return true;
 }
