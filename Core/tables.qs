@@ -27,6 +27,7 @@ function registerTables()
     table.g_fileMgr = 7;
     table.g_hMainWnd = 8;
     table.msgStringTable = 9;
+    table.CSession_m_accountId = 10;
 
     registerTableFunctions();
 }
