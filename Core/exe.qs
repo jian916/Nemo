@@ -32,8 +32,25 @@ function exe_setJmpRaw(patchAddr, jmpAddrRaw)
     exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw));
 }
 
+function exe_setNops(patchAddr, nopsCount)
+{
+    var code = "";
+    for (var i = 0; i < nopsCount; i ++)
+    {
+        code = code + "90 ";
+    }
+    exe.replace(patchAddr, code, PTYPE_HEX);
+}
+
+function exe_setNopsRange(patchStartAddr, patchEndAddr)
+{
+    exe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
     exe.setJmpRaw = exe_setJmpRaw;
+    exe.setNops = exe_setNops;
+    exe.setNopsRange = exe_setNopsRange;
 }
