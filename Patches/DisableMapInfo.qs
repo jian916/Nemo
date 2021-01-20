@@ -26,6 +26,7 @@
 function DisableMapInfo()
 {
     consoleLog("Step 1 - Search string 'system\mapInfo*.lub'");
+    var iiName;
     if (IsSakray())
         iiName = "system\\mapInfo_sak.lub";
     else
@@ -41,18 +42,30 @@ function DisableMapInfo()
 
     consoleLog("Step 3 - Prep code for finding the CMapInfoMgr ErrorMsg window");
     var code =
-        "0F 84 B4 00 00 00 " +  // 00 jz loc_9E7B40
-        "FF 75 EC " +           // 06 push [ebp+var_14]
-        "E8 AB AB AB AB " +     // 09 call sub_475E20
-        "6A 00 " +              // 14 push 0
-        "68 AB AB AB AB " +     // 16 push 9E8270h
-        "FF 75 EC " +           // 21 push [ebp+var_14]
-        "E8 AB AB AB AB ";      // 24 call sub_46BC60
+        "0F 84 B4 00 00 00 " +        // 0 jz loc_4D2EF0
+        "FF 75 AB " +                 // 6 push [ebp+L]
+        "E8 AB AB AB AB " +           // 9 call luaL_openlibs
+        "6A 00 " +                    // 14 push 0
+        "68 AB AB AB AB " +           // 16 push offset lua_function_sub
+        "FF 75 AB " +                 // 21 push [ebp+L]
+        "E8 ";                        // 24 call lua_pushcclosure
+    var l1Offset = 8;
+    var l2Offset = 23;
+    var openLibsOffset = 10;
+    var pushcclosureOffset = 25;
 
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
         return "Failed in Step 3 - Pattern not found";
+
+    if (exe.fetchUByte(offset + l1Offset) !== exe.fetchUByte(offset + l2Offset))
+    {
+        return "Faile in Step 3 - found wrong lua offsets";
+    }
+
+    logRawFunc("luaL_openlibs", offset, openLibsOffset);
+    logRawFunc("lua_pushcclosure", offset, pushcclosureOffset);
 
     consoleLog("Step 4 - Replace offset found in step 3 with NOP + JMP");
     exe.replace(offset, "90 E9 ", PTYPE_HEX);
@@ -65,6 +78,7 @@ function DisableMapInfo()
 //=======================================================//
 function DisableMapInfo_()
 {
+    var iiName;
     if (IsSakray())
         iiName = "system\\mapInfo_sak.lub";
     else
