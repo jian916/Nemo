@@ -46,69 +46,74 @@ function EnableWhoCommand()
 
     //Step 2a - Find PUSH 0B2 followed by CALL MsgStr - Common pattern inside Zc_User_Count
     code =
-        " 68 B2 00 00 00" //PUSH 0B2
-      + " E8 AB AB AB AB" //CALL MsgStr
-      + " 83 C4 04"       //ADD ESP, 4
+        " 68 B2 00 00 00" //0 PUSH 0B2
+      + " E8 AB AB AB AB" //5 CALL MsgStr
+      + " 83 C4 04"       //10 ADD ESP, 4
       ;
+    var msgStrOffset = 6;
 
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
     if (offset === -1)
         return "Failed in Step 2 - MsgStr call missing";
 
+    logRawFunc("MsgStr", offset, msgStrOffset);
+
     //Step 2b - Find the JNE after LangType comparison before it (closer to start of Zc_User_Count)
+
+    var aidHex = (table.get(table.g_session) + table.get(table.CSession_m_accountId)).packToHex(4);
+
     code =
         " 75 AB"          //JNE SHORT addr
-      + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[refAddr]
+      + " A1 " + aidHex   //MOV EAX, DWORD PTR DS:[g_session.m_account_id]
       + " 50"             //PUSH EAX
       + " E8 AB AB AB FF" //CALL IsGravityAid
       + " 83 C4 04"       //ADD ESP, 4
       + " 84 C0"          //TEST AL, AL
       + " 75"             //JNE SHORT addr
       ;
+    var patchOffset = 0;
+    var aidOffset = [3, 4];
+    var isGravityAidOffset = 9;
     var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x60, offset);
     if (offset2 === -1)
     {
         code =
             " 75 AB"          //JNE SHORT addr
-          + " FF 35 AB AB AB 00"  // PUSH DWORD PTR DS:[refAddr]
+          + " FF 35 " + aidHex  // PUSH DWORD PTR DS:[g_session.m_account_id]
           + " E8 AB AB AB FF" //CALL IsGravityAid
           + " 83 C4 04"       //ADD ESP, 4
           + " 84 C0"          //TEST AL, AL
           + " 75"             //JNE SHORT addr
           ;
+        patchOffset = 0;
+        aidOffset = [4, 4];
+        isGravityAidOffset = 9;
         offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x60, offset);
-    }
-    // refAddr pushed further on new exe, so !
-    if (offset2 === -1)
-    {
-        code =
-            " 75 AB"          //JNE SHORT addr
-          + " FF 35 AB AB AB 01"  // PUSH DWORD PTR DS:[refAddr]
-          + " E8 AB AB AB FF" //CALL IsGravityAid
-          + " 83 C4 04"       //ADD ESP, 4
-          + " 84 C0"          //TEST AL, AL
-          + " 75"             //JNE SHORT addr
-          ;
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x60, offset);
     }
     if (offset2 === -1)  // 2018-05-30 +
     {
         code =
             " 75 AB"          //JNE SHORT addr
-          + " FF 35 AB AB AB 00"  // PUSH DWORD PTR DS:[refAddr]
+          + " FF 35 " + aidHex  // PUSH DWORD PTR DS:[g_session.m_account_id]
           + " E8 AB AB AB 00" //CALL IsGravityAid
           + " 83 C4 04"       //ADD ESP, 4
           + " 84 C0"          //TEST AL, AL
           + " 75"             //JNE SHORT addr
           ;
+        patchOffset = 0;
+        aidOffset = [4, 4];
+        isGravityAidOffset = 9;
         offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x60, offset);
     }
 
     if (offset2 === -1)
         return "Failed in Step 2 - LangType comparison missing";
 
+    logFieldAbs("CSession::m_account_id", offset2, aidOffset);
+    logRawFunc("IsGravityAid", offset2, isGravityAidOffset);
+
     //Step 2c - Replace First JNE with JMP
-    exe.replace(offset2, "EB", PTYPE_HEX);
+    exe.replace(offset2 + patchOffset, "EB", PTYPE_HEX);
 
     return true;
 }
