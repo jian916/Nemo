@@ -1,3 +1,30 @@
+# 2021-01-21 Different updates
+
+## Patches
+
+- Add patch [Ignore Entry Queue Errors](http://nemo.herc.ws/patches/IgnoreEntryQueueErrors/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Disable mp3NameTable.txt](http://nemo.herc.ws/patches/DisableBGMAudio/#success-clients). (by @X-EcutiOnner).
+- Add patch [Disable map sign display](http://nemo.herc.ws/patches/DisableMapInfo/#success-clients). (by @X-EcutiOnner, @4144).
+- Fix patch [Change Walk To Delay](http://nemo.herc.ws/patches/SetWalkToDelay/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Enable /who command](http://nemo.herc.ws/patches/EnableWhoCommand/#success-clients). (fix by @4144).
+- Update patch [Change minimal screen resolution limit](http://nemo.herc.ws/patches/ChangeMinimalResolutionLimit/#success-clients) with assembler usage. (fix by @4144).
+
+## Plugin
+
+- Add assembler functions asm.textToBytes and asm.cmdToBytes.
+
+## For devs
+
+- Add different functions for assembler usage.
+- Add javascript function String.replaceAll.
+- Add functions for put jump in client: exe.setJmpVa and exe.setJmpRaw.
+- Add functions for put nops in client: exe.setNopsRange and exe.setNops.
+
+## Other
+
+- Update copyright year to 2021
+
+
 # 2021-01-18 Clients support update
 
 ## Other
