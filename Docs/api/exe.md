@@ -1,0 +1,271 @@
+# **exe** object reference
+
+**exe** object allow different manipulation with loaded client exe.
+
+## Functions
+
+### exe.findCode
+
+```
+exe.findCode(code)
+exe.findCode(code, codeType)
+exe.findCode(code, codeType, useMask)
+exe.findCode(code, codeType, useMask, mask)
+```
+
+Search first hex bytes pattern in main executable section.
+
+### exe.findCodes
+
+```
+exe.findCodes(code)
+exe.findCodes(code, codeType)
+exe.findCodes(code, codeType, useMask)
+exe.findCodes(code, codeType, useMask, mask)
+```
+
+Search all hex bytes pattern in main executable section.
+
+### exe.find
+
+```
+exe.find(code)
+exe.find(code, codeType)
+exe.find(code, codeType, useMask)
+exe.find(code, codeType, useMask, mask)
+exe.find(code, codeType, useMask, mask, start)
+exe.find(code, codeType, useMask, mask, start, finish)
+```
+
+Search first hex bytes pattern in whole binary.
+
+### exe.findAll
+
+```
+exe.findAll(code)
+exe.findAll(code, codeType)
+exe.findAll(code, codeType, useMask)
+exe.findAll(code, codeType, useMask, mask)
+exe.findAll(code, codeType, useMask, mask, start)
+exe.findAll(code, codeType, useMask, mask, start, finish)
+```
+
+Search all hex bytes pattern in whole binary.
+
+### exe.fetchDWord
+
+``exe.fetchDWord(rawAddr)``
+
+Read dword from given address.
+
+### exe.fetchQWord
+
+``exe.fetchQWord(rawAddr)``
+
+Read qword from given address.
+
+### exe.fetchWord
+
+``exe.fetchWord(rawAddr)``
+
+Read word from given address.
+
+### exe.Raw2Rva
+
+``exe.Raw2Rva(rawAddr)``
+
+Convert raw address into virtual address.
+
+If address wrong, return -1.
+
+### exe.Rva2Raw
+
+``exe.Rva2Raw(vaAddr)``
+
+Convert virtual address into raw address.
+
+If address wrong, return -1.
+
+### exe.fetchUByte
+
+``exe.fetchUByte(rawAddr)``
+
+Read unsigned byte from given address.
+
+### exe.fetchByte
+
+``exe.fetchByte(rawAddr)``
+
+Read signed byte from given address.
+
+### exe.fetchHex
+
+``exe.fetchHex(rawAddr, size)``
+
+Read hex bytes from given address.
+
+### exe.fetch
+
+``exe.fetch(addr, size)``
+
+Read null terminated string from given address.
+
+### exe.findZeros
+
+``exe.findZeros(size)``
+
+Search first empty block in binary with given size.
+
+### exe.findString
+
+```
+exe.findString(pattern)
+exe.findString(pattern, addrType)
+exe.findString(pattern, addrType, prefixZero)
+```
+
+Find string in whole binary.
+
+### exe.insert
+
+```
+exe.insert(rawAddr, size, code)
+exe.insert(rawAddr, size, code, codeType)
+```
+
+Insert custom block of bytes at address returned by exe.findZeros.
+
+### exe.replace
+
+```
+exe.replace(rawAddr, code)
+exe.replace(rawAddr, code, codeType)
+```
+
+Patch binary block at given address.
+
+### exe.replaceByte
+
+``exe.replaceByte(addr, data)``
+
+Patch byte at given address.
+
+### exe.replaceWord
+
+``exe.replaceWord(addr, data)``
+
+Patch word at given address.
+
+### exe.replaceDWord
+
+``exe.replaceDWord(addr, data)``
+
+Patch dword at given address.
+
+### exe.getUserInput
+
+```
+exe.getUserInput(varName, valType, title, prompt, value)
+exe.getUserInput(varName, valType, title, prompt, value, minValue)
+exe.getUserInput(varName, valType, title, prompt, value, minValue, maxValue)
+```
+
+Request information from user.
+
+### exe.getROffset
+
+``exe.getROffset(section)``
+
+Return raw address of given section.
+
+### exe.getRSize
+
+``exe.getRSize(section)``
+
+Return raw size of given section.
+
+### exe.getVOffset
+
+``exe.getVOffset(section)``
+
+Return virtual address of given section.
+
+### exe.getVSize
+
+``exe.getVSize(section)``
+
+Return virtual size of given section.
+
+### exe.getPEOffset
+
+``exe.getPEOffset()``
+
+Return PE header raw address.
+
+### exe.getImageBase
+
+``exe.getImageBase()``
+
+Return image base.
+
+### exe.getClientDate
+
+``exe.getClientDate()``
+
+Return client date.
+
+### exe.isThemida
+
+``exe.isThemida()``
+
+Return true if client was packed with themida.
+
+### exe.emptyPatch
+
+``exe.emptyPatch(patch)``
+
+Remove patched data for given patch.
+
+### exe.setJmpVa
+
+``exe.setJmpVa(patchAddr, jmpAddrVa)``
+
+Store jmp with address at given patchAddr.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrVa| Virtual address where jmp should be jumped |
+
+### exe.setJmpRaw
+
+``exe.setJmpRaw(patchAddr, jmpAddrRaw)``
+
+Store jmp with address at given **patchAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrEaw| Raw address where jmp should be jumped |
+
+### exe.setNops
+
+``exe.setNops(patchAddr, nopsCount)``
+
+Store nops at given **patchAddr** with count **nopsCount**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where nops should be stored |
+| nopsCount| Number of nop bytes stored |
+
+### exe.setNopsRange
+
+``exe.setNopsRange(patchStartAddr, patchEndAddr)``
+
+Store nops from address **patchStartAddr** to **patchEndAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchStartAddr| Start raw address where nops should be stored |
+| patchEndAddr| End raw address where nops should be stored |
