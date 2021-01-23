@@ -72,7 +72,6 @@ function asm_cmdToObjVa(addrVa, command, vars)
         obj.codes.push(obj.bytes[i].toHex());
     }
     obj.bestCode = obj.codes[obj.bestIndex];
-    obj.vars = ret[1];
     return obj;
 }
 
