@@ -6,6 +6,10 @@ This is fork of @MStr3am project [Nemo](https://github.com/MStr3am/NEMO)
 
 This program can be used for patch closed source clients for using with [Hercules](https://github.com/herculesws/hercules/) or other Rag*rok emulators.
 
+# Docs
+
+Basic docs located in [Docs](Docs) directory.
+
 ## Profiles
 
 Predefined minimal profile for zero clients. See in [profiles](profiles) directory.
