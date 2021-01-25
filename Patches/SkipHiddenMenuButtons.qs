@@ -263,12 +263,7 @@ function SkipHiddenMenuButtons()
     var vars = {
         "addr1": exe.Raw2Rva(free),
     };
-
-    var obj = asm.textToHexRaw(patchAddr, text, vars);
-    if (obj === false)
-        return "Asm code error";
-
-    exe.replace(patchAddr, obj, PTYPE_HEX); // add jump to own code
+    exe.replaceAsmText(patchAddr, text, vars);  // add jump to own code
 
     return true;
 }

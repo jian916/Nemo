@@ -288,3 +288,17 @@ If success, return array.
 Array index 0 contains raw address where bytes was stored.
 
 Array index 1 contains bytes sequence.
+
+### exe.replaceAsmText
+
+``exe.replaceAsmText(patchAddr, commands, vars)``
+
+Replace bytes at raw address patchAddr to given assembler code.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where code should be stored |
+| commands | Assembler text with commands |
+| vars     | Variables for assembler text |
+
+On success return bytes in hex format from assembler text.

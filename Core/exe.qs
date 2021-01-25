@@ -63,6 +63,16 @@ function exe_insertAsmText(commands, vars)
     return [free, obj];
 }
 
+function exe_replaceAsmText(patchAddr, commands, vars)
+{
+    var obj = asm.textToHexRaw(patchAddr, commands, vars);
+    if (obj === false)
+        throw "Asm code error";
+
+    exe.replace(patchAddr, obj, PTYPE_HEX);
+    return obj;
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
@@ -70,4 +80,5 @@ function registerExe()
     exe.setNops = exe_setNops;
     exe.setNopsRange = exe_setNopsRange;
     exe.insertAsmText = exe_insertAsmText;
+    exe.replaceAsmText = exe_replaceAsmText;
 }
