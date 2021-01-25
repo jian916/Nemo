@@ -1,61 +1,45 @@
-//###################################################################################\\
-//# Modify the Siege mode & BG mode check Jumps to Display Emblem when either is ON #\\
-//###################################################################################\\
+//####################################################################
+//# Purpose: Modify the Siege mode and Battleground mode check jumps #
+//#          to display Emblem when either mode is ON                #
+//####################################################################
 
 function EnableEmblemForBG()
 {
-    //Step 1.1 - Look for the Mode checking pattern
+    consoleLog("Step 1 - Look for the Mode checking pattern");
     var code =
-        " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
-    +   " E8 AB AB AB 00" //CALL CSession::IsSiegeMode
-    +   " 85 C0"          //TEST EAX, EAX
-    +   " 74 AB"          //JZ SHORT addr
-    +   " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
-    +   " E8 AB AB AB 00" //CALL CSession::IsBgMode
-    +   " 85 C0"          //TEST EAX, EAX
-    +   " 75 AB"          //JNZ SHORT addr ;AB at the end is needed
-    ;
-    var g_sessionOffset1 = 1;
-    var g_sessionOffset2 = 15;
+        getEcxSessionHex() +  // 00 mov ecx, offset g_session
+        "E8 AB AB AB 00 " +   // 05 call CSession_IsSiegeMode
+        "85 C0 " +            // 10 test eax, eax
+        "74 AB " +            // 12 jz short loc_550CDE
+        getEcxSessionHex() +  // 14 mov ecx, offset g_session
+        "E8 AB AB AB 00 " +   // 19 call CSession_IsBattleFieldMode
+        "85 C0 " +            // 24 test eax, eax
+        "75 ";                // 26 jnz short loc_550CDE
+
+    var jmp1 = 12;
+    var jmp2 = 26;
     var IsSiegeModeOffset = 6;
-    var IsBgModeOffset = 20;
+    var IsBattleFieldModeOffset = 20;
     var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
     if (offset === -1)
-    {
-        var code =
-            " B9 AB AB AB 01" //MOV ECX, OFFSET g_session
-        +   " E8 AB AB AB 00" //CALL CSession::IsSiegeMode
-        +   " 85 C0"          //TEST EAX, EAX
-        +   " 74 AB"          //JZ SHORT addr
-        +   " B9 AB AB AB 01" //MOV ECX, OFFSET g_session
-        +   " E8 AB AB AB 00" //CALL CSession::IsBgMode
-        +   " 85 C0"          //TEST EAX, EAX
-        +   " 75 AB"          //JNZ SHORT addr ;AB at the end is needed
-        ;
-        g_sessionOffset1 = 1;
-        g_sessionOffset2 = 15;
-        IsSiegeModeOffset = 6;
-        IsBgModeOffset = 20;
+        return "Failed in Step 1 - Pattern not found";
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    }
-    if (offset === -1)
-        return "Failed in Step 1";
-
-    logVaVar("g_session", offset, g_sessionOffset1);
-    logVaVar("g_session", offset, g_sessionOffset2);
     logRawFunc("CSession_IsSiegeMode", offset, IsSiegeModeOffset);
-    logRawFunc("CSession_IsBgMode", offset, IsBgModeOffset);
+    logRawFunc("CSession_IsBattleFieldMode", offset, IsBattleFieldModeOffset);
 
-    //Step 1.2 - Calculate the code size & its half (will point to the second MOV ECX when added to offset)
-    var csize = code.hexlength();
-    var hsize = csize/2;
+    consoleLog("Step 2a - Swap the first JZ to JNZ and addr to location after the code");
+    exe.replace(offset + jmp1, "75 " + (jmp1 + 2).packToHex(1), PTYPE_HEX);
 
-    //Step 2.1 - Change the first JZ to JNZ and addr to location after the code
-    exe.replace(offset + hsize - 2, "75" + hsize.packToHex(1), PTYPE_HEX);
-
-    //Step 2.2 - Change the second JNZ to JZ
-        exe.replace(offset + csize - 2, "74", PTYPE_HEX);
+    consoleLog("Step 2b - Swap the second JNZ to JZ");
+    exe.replace(offset + jmp2, "74 ", PTYPE_HEX);
     return true;
+}
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function EnableEmblemForBG_()
+{
+    return (exe.getClientDate() > 20130710);
 }

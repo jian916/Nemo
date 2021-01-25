@@ -4,14 +4,9 @@
 
 function RestoreRoulette()
 {
-
   //Step 1 - Get the Window Manager Info we need
-  var mgrInfo = GetWinMgrInfo();
-  if (typeof(mgrInfo) === "string")
-    return "Failed in Step 1 - " + mgrInfo;
-
-  var movEcx  = mgrInfo['gWinMgr'];
-  var makeWin = mgrInfo['makeWin'];
+  var movEcx  = getEcxWindowMgrHex();
+  var makeWin = table.get(table.UIWindowMgr_MakeWindow);
 
   //Step 2a - Find the location where the roulette icon was supposed to be created
   var code =

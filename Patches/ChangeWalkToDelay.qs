@@ -4,12 +4,12 @@
 
 function DisableWalkToDelay()
 {
-  return ChangeWalkToDelay(0);
+    return ChangeWalkToDelay(0);
 }
 
 function SetWalkToDelay()
 {
-  return ChangeWalkToDelay(exe.getUserInput("$walkDelay", XTYPE_WORD, _("Number Input"), _("Enter the new walk delay (0-1000) - snaps to closest valid value"), 150, 0, 1000));
+    return ChangeWalkToDelay(exe.getUserInput("$walkDelay", XTYPE_WORD, _("Number Input"), _("Enter the new walk delay (0-1000) - snaps to closest valid value"), 150, 0, 1000));
 }
 
 //########################################################################
@@ -18,32 +18,42 @@ function SetWalkToDelay()
 
 function ChangeWalkToDelay(value)
 {
+    consoleLog("Step 1a - Search the first delay addition");
+    var code =
+        "81 AB 58 02 00 00 " +  // 00 add ecx, 258h ; 600ms
+        "3B AB ";               // 06 cmp eax, ecx
 
-  //Step 1a - Find the first delay addition
-  var code =
-    " 81 C1 58 02 00 00" //ADD ECX,00000258   ;  600ms
-  + " 3B C1"             //CMP EAX,ECX
-  ;
+    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "Failed in Step 1 - Walk Delay Code not found.";
+    if (offset === -1)
+        return "Failed in Step 1a - Pattern not found";
 
-  //Step 2 - Replace the value
-  exe.replace(offset + 2, value.packToHex(4) , PTYPE_HEX);
+    consoleLog("Step 2a - Replace the first offset value");
+    exe.replace(offset + 2, value.packToHex(4), PTYPE_HEX);
 
-  //Step 3a - Find the second delay addition
-  var code =
-    " 81 C1 5E 01 00 00" //ADD ECX,0000015E   ;  350ms
-  + " 3B C1"             //CMP EAX,ECX
-  ;
+    if (exe.getClientDate() > 20170329)
+    {
+        consoleLog("Step 1b - Search the second delay addition");
+        var code =
+            "81 C1 5E 01 00 00 " +  // 00 add ecx, 15Eh ; 350ms
+            "3B C1 " ;              // 06 cmp eax, ecx
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "Failed in Step 3 - Walk Delay Code not found.";
+        var offset = exe.findCode(code, PTYPE_HEX, false);
 
-  //Step 4 - Replace the value
-  exe.replace(offset + 2, value.packToHex(4) , PTYPE_HEX);
+        if (offset === -1)
+            return "Failed in Step 1b - Pattern not found";
 
-  return true;
+        consoleLog("Step 2b - Replace the second offset value");
+        exe.replace(offset + 2, value.packToHex(4), PTYPE_HEX);
+    }
+
+    return true;
+}
+
+//=======================================================//
+// Disable for Unsupported Clients - Check for Reference //
+//=======================================================//
+function ChangeWalkToDelay_()
+{
+    return (exe.getClientDate() > 20020729);
 }

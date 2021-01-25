@@ -31,12 +31,23 @@ function EnableRagHTTPEmblem()
     ;
 
   var modPos = 5;
+  var InsertFrontDataOffset = 8;
+  var recvQueue2Offset = [5, 1];
   var offset = exe.findCode(code, PTYPE_HEX, false);
   if (offset === -1)
-    return "Failed in Step 1";
+    return "Failed in Step 1"
 
   //Step 2 - Change buffer offset
   exe.replace(offset + modPos, " 3C", PTYPE_HEX);
 
+  logRawFunc("CPacketQueue_InsertFrontData", offset, InsertFrontDataOffset);
+  logField("CRagConnection::m_recvQueue2", offset, recvQueue2Offset);
+
   return true;
+}
+
+//Hide patch for unsupported clients
+function EnableRagHTTPEmblem_()
+{
+  return ((exe.findString(".?AVCEmblemDataDownloadAsyncWork@@", RVA, false) | exe.findString("CDClient.dll", RVA, false)) !== -1);
 }

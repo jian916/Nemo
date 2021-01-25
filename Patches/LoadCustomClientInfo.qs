@@ -1,6 +1,6 @@
 //
 // Copyright (C) 2017  Secret
-// Copyright (C) 2017-2019  Andrei Karas (4144)
+// Copyright (C) 2017-2021  Andrei Karas (4144)
 //
 // This script is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -100,7 +100,6 @@ function LoadCustomClientInfo()
             exe.replace(offset4+1, exe.Raw2Rva(free+0xE).packToHex(4), PTYPE_HEX);
         }
     }
-
     return true;
 }
 

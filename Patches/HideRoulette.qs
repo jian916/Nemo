@@ -4,17 +4,11 @@
 
 function HideRoulette()
 {
-
-  //Step 1a - Get Window Manager Info
-  var mgrInfo = GetWinMgrInfo();
-  if (typeof(mgrInfo) === "string")
-    return "Failed in Step 1 - " + mgrInfo;
-
   //Step 1b - Find the UIWindow creation before Roulette (which is always present - 0xB5)
   var code =
     " 74 0F"           //JE SHORT addr
   + " 68 B5 00 00 00"  //PUSH 0B5
-  + mgrInfo['gWinMgr'] //MOV ECX, OFFSET g_windowMgr
+  + getEcxWindowMgrHex() //MOV ECX, OFFSET g_windowMgr
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 

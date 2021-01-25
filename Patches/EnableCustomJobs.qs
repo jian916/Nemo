@@ -235,7 +235,7 @@ function EnableCustomJobs()
     //          Steps 5d and 5e are also done in TranslateClient but we will keep it anyways as a failsafe
     code =
         " 83 3D" + LANGTYPE + " 00" //CMP DWORD PTR DS:[g_serviceType], 00
-      + " B9 AB AB AB 00"           //MOV ECX, g_session
+      + getEcxSessionHex()          //MOV ECX, g_session
       + " 75"                       //JNE SHORT addr -> CALL CSession::GetSex
       ;
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);

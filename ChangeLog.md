@@ -1,3 +1,112 @@
+# 2021-01-21 Different updates
+
+## Patches
+
+- Add patch [Ignore Entry Queue Errors](http://nemo.herc.ws/patches/IgnoreEntryQueueErrors/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Disable mp3NameTable.txt](http://nemo.herc.ws/patches/DisableBGMAudio/#success-clients). (by @X-EcutiOnner).
+- Add patch [Disable map sign display](http://nemo.herc.ws/patches/DisableMapInfo/#success-clients). (by @X-EcutiOnner, @4144).
+- Fix patch [Change Walk To Delay](http://nemo.herc.ws/patches/SetWalkToDelay/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Enable /who command](http://nemo.herc.ws/patches/EnableWhoCommand/#success-clients). (fix by @4144).
+- Update patch [Change minimal screen resolution limit](http://nemo.herc.ws/patches/ChangeMinimalResolutionLimit/#success-clients) with assembler usage. (fix by @4144).
+
+## Plugin
+
+- Add assembler functions asm.textToBytes and asm.cmdToBytes.
+
+## For devs
+
+- Add different functions for assembler usage.
+- Add javascript function String.replaceAll.
+- Add functions for put jump in client: exe.setJmpVa and exe.setJmpRaw.
+- Add functions for put nops in client: exe.setNopsRange and exe.setNops.
+
+## Other
+
+- Update copyright year to 2021
+
+
+# 2021-01-18 Clients support update
+
+## Other
+
+- Update tables with clients support.
+- Update copyright year to 2021.
+
+
+# 2020-12-11 Patches and translations update
+
+## Patches
+
+- Hide patches [Ignore Quest Errors](http://nemo.herc.ws/patches/IgnoreQuestErrors/#success-clients) and [Ignore Resource Errors](http://nemo.herc.ws/patches/IgnoreResourceErrors/#success-clients) (by @X-EcutiOnner)
+
+## Translations
+
+- Update Thai translation (by @X-EcutiOnner).
+
+
+# 2020-12-09 Patches and plugin update
+
+## Patches
+
+- Add patch [Additional client validation](http://nemo.herc.ws/patches/ValidateClient/#success-clients). (by @4144).
+- Fix patch [Show Replay Button](http://nemo.herc.ws/patches/ShowReplayButton/#success-clients). (fix by @jchcc).
+- Fix patch [Disable Help Message on Login](http://nemo.herc.ws/patches/DisableHelpMsg/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Ignore Lua Errors](http://nemo.herc.ws/patches/IgnoreLuaErrors/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Update patch [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients) for translating sign in achievement window. (fix by @X-EcutiOnner).
+- Fixes for different patches due using tables.
+
+## Addons
+
+- Fix addon Extract msgstringtable by using tables. (by @4144).
+- Fix addon Dump Import Table for different clients with broken import table. (by @4144).
+
+## Plugin
+
+- Add tables with known values.
+- Validate all clients loading. Show error on non kro or modified clients exe.
+- From now NEMO will not works with modified clients as source.
+- New script variable IS_RO for check is loaded binary ro client or not.
+
+
+# 2020-11-10 Patches update
+
+## Patches
+
+- Fix patch [Disable HShield](http://nemo.herc.ws/patches/DisableHShield/#success-clients). (fix by @4144).
+
+
+# 2020-11-06 Patches and plugin update
+
+## Patches
+
+- Add patch [Change Max Friends Value](http://nemo.herc.ws/patches/ChangeMaxFriendsValue/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Remove Hardcoded HTTP IP](http://nemo.herc.ws/patches/RemoveHardcodedHttpIP/#success-clients). (by @jchcc).
+- Add patch [Enable HTTP Emblem on Ragexe](http://nemo.herc.ws/patches/EnableRagHTTPEmblem/#success-clients). (by @jchcc).
+- Add patch [Remove Equipment Preview Button](http://nemo.herc.ws/patches/RemoveItemsEquipPreview/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Change adventurer agency level range](http://nemo.herc.ws/patches/ChangeAdventureAgencyLevelRange/#success-clients). (by @Asheraf).
+- Fix patch [Disable kRO Site Launch](http://nemo.herc.ws/patches/DisableKROSiteLaunch/#success-clients). (fix by @sctnightcore).
+- Fix patch [Disable 1rag1 type parameters](http://nemo.herc.ws/patches/Disable1rag1Params/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Always load Korea ExternalSettings lua file](http://nemo.herc.ws/patches/AlwaysReadKrExtSettings/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Fix patch [Disable Cheat Defender Game Guard](http://nemo.herc.ws/patches/DisableCDGuard/#success-clients). (fix by @X-EcutiOnner, @4144).
+- Fix patch [Load custom ClientInfo file](http://nemo.herc.ws/patches/LoadCustomClientInfo/#success-clients). (fix by @jchcc).
+- Fix patch [Show Exp Numbers](http://nemo.herc.ws/patches/ShowExpNumbers/#success-clients). (fix by @jchcc).
+- Fix patch [Ignore Lua Errors](http://nemo.herc.ws/patches/IgnoreLuaErrors/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Disable HShield](http://nemo.herc.ws/patches/DisableHShield/#success-clients). (fix by @X-EcutiOnner).
+- Fix patch [Disable Help Message on Login](http://nemo.herc.ws/patches/DisableHelpMsg/#success-clients). (fix by @X-EcutiOnner).
+
+## Plugin
+
+- Prevent load files with name started from get_.
+- Add discord link.
+
+## For devs
+
+- Add function for simple search/replace. See SimpleReplaceDemo.qs (by @4144).
+
+## Other
+
+- Update chinese traditional translation from jian916 fork.
+
 # 2020-10-19 Patches update
 
 ## Patches

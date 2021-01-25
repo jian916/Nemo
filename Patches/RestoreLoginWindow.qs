@@ -14,7 +14,7 @@ function RestoreLoginWindow()
   + " 8B C8"                  //MOV ECX, EAX
   + " E8 AB AB AB FF"         //CALL CResMgr::Get
   + " 50"                     //PUSH EAX
-  + " B9 AB AB AB 00"         //MOV ECX, OFFSET g_windowMgr
+  + getEcxWindowMgrHex()      //MOV ECX, OFFSET g_windowMgr
   + " E8 AB AB AB FF"         //CALL UIWindowMgr::SetWallpaper
   + " 80 3D AB AB AB 00 00"   //CMP BYTE PTR DS:[g_Tparam], 0 <- The parameter push + call to UIWindowManager::MakeWindow originally here
   + " 74 13"                  //JZ SHORT addr1 - after the JMP
@@ -36,7 +36,7 @@ function RestoreLoginWindow()
       return "Failed in Step 1";
 
   //Step 1b - Extract the MOV ECX, g_windowMgr statement
-  var movEcx = exe.fetchHex(codeOffset + 14, 5);
+  var movEcx = getEcxWindowMgrHex();
 
   //==============================================//
   // Next we need to find UIWindowMgr::MakeWindow //
@@ -174,6 +174,8 @@ function RestoreLoginWindow()
   //Step 5d - Find how many PUSH 0s are there. Older clients had 3 arguments but newer ones only have 3
   var pushes = exe.findAll("6A 00", PTYPE_HEX, false, "\xAB", offset + code.hexlength() + 4, offset + code.hexlength() + 16);
 
+  var hwndHex = table.getHex4(table.g_hMainWnd);
+
   //Step 5e - Find error handler = CModeMgr::Quit
   code =
     " 8B F1"                      //MOV ESI,ECX
@@ -181,7 +183,7 @@ function RestoreLoginWindow()
   + " C7 40 14 00 00 00 00"       //MOV DWORD PTR DS:[EAX+14], 0
   + " 83 3D" + LANGTYPE + " 0B"   //CMP DWORD PTR DS:[g_serviceType], 0B
   + " 75 1D"                      //JNE SHORT addr1 -> after CALL instruction below
-  + " 8B 0D AB AB AB 00"          //MOV ECX,DWORD PTR DS:[g_hMainWnd]
+  + " 8B 0D " + hwndHex           //MOV ECX,DWORD PTR DS:[g_hMainWnd]
   + " 6A 01"                      //PUSH 1
   + " 6A 00"                      //PUSH 0
   + " 6A 00"                      //PUSH 0
@@ -201,18 +203,22 @@ function RestoreLoginWindow()
 
   if (offset === -1)
   { //For recent client g_hMainWnd is directly pushed instead of assigning to ECX first
-
-    code = code.replace(" 75 1D 8B 0D AB AB AB 00", " 75 1C"); //remove the ECX assignment and fix the JNE address accordingly
-    code = code.replace(" 51 FF 15 AB", " FF 35 AB AB AB 00 FF 15 AB"); //replace PUSH ECX with PUSH DWORD PTR DS:[g_hMainWnd]
+    code =
+      " 8B F1"                      //MOV ESI,ECX
+    + " 8B 46 04"                   //MOV EAX,DWORD PTR DS:[ESI+4]
+    + " C7 40 14 00 00 00 00"       //MOV DWORD PTR DS:[EAX+14], 0
+    + " 83 3D" + LANGTYPE + " 0B"   //CMP DWORD PTR DS:[g_serviceType], 0B
+    + " 75 1C"                      //JNE SHORT addr1 -> after CALL instruction below
+    + " 6A 01"                      //PUSH 1
+    + " 6A 00"                      //PUSH 0
+    + " 6A 00"                      //PUSH 0
+    + " 68 AB AB AB 00"             //PUSH addr2 ; ASCII "http://www.ragnarok.co.in/index.php"
+    + " 68 AB AB AB 00"             //PUSH addr3 ; ASCII "open"
+    + " FF 35 " + hwndHex           //PUSH DWORD PTR DS:[g_hMainWnd]
+    + " FF 15 AB AB AB 00"          //CALL DWORD PTR DS:[<&SHELL32.ShellExecuteA>]
+    + " C7 06 00 00 00 00"          //MOV DWORD PTR DS:[ESI],0 (ESI is supposed to have g_modeMgr but it doesn't always point to it, so we assign it another way)
 
     offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-
-    if (offset === -1)
-    {
-      // and newer clients push hwndParent further, so !
-      code = code.replace(" FF 35 AB AB AB 00 FF 15 AB", " FF 35 AB AB AB 01 FF 15 AB");
-      offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-    }
   }
 
   if (offset === -1)

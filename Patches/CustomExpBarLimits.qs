@@ -18,10 +18,10 @@ function CustomExpBarLimits()
 
   //Step 1b - Find the Job ID getter before the first reference
   code =
-    " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
+    getEcxSessionHex() //MOV ECX, OFFSET g_session
   + " E8 AB AB AB 00" //CALL CSession::jobIdFunc
   + " 50"             //PUSH EAX
-  + " B9 AB AB AB 00" //MOV ECX, OFFSET g_session
+  + getEcxSessionHex() //MOV ECX, OFFSET g_session
   + " E8 AB AB AB 00" //CALL CSession::isThirdJob
 
   var suffix =

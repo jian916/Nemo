@@ -63,7 +63,6 @@ function IsZero()
 
 function GetLangType()
 {
-
   //Step 1a - Get address of the string 'america'
   var offset = exe.findString("america", RVA);
   if (offset === -1)
@@ -81,8 +80,10 @@ function GetLangType()
 
   logVaVar("g_serviceType", offset, 2);
   //Step 2b - Extract and return
-  return exe.fetchHex(offset + 2, 4);
-
+  var lang = exe.fetchHex(offset + 2, 4);
+  if (lang !== table.getHex4(table.g_serviceType))
+    return ["found wrong g_serviceType"];
+  return lang;
 }
 
 //###########################################################
@@ -120,32 +121,34 @@ function GetServerType()
 //#          address. Returned value is a hash array or error string  #
 //#####################################################################
 
-function GetWinMgrInfo()
+function GetWinMgrInfo(skipError)
 {
+    if (skipError !== true)
+        logError("legacy function GetWinMgrInfo");
+    //Step 1a - Find offset of NUMACCOUNT
+    var offset = exe.findString("NUMACCOUNT", RVA);
+    if (offset === -1)
+        return "NUMACCOUNT missing";
 
-  //Step 1a - Find offset of NUMACCOUNT
-  var offset = exe.findString("NUMACCOUNT", RVA);
-  if (offset === -1)
-    return "NUMACCOUNT missing";
+    //Step 1b - Find its reference which comes after a Window Manager call
+    var code =
+        getEcxWindowMgrHex() +        // 0 mov ecx, offset g_windowMgr
+        "E8 AB AB AB AB " +           // 5 call UIWindowMgr_MakeWindow
+        "6A 00 " +                    // 10 push 0
+        "6A 00 " +                    // 12 push 0
+        "68 " + offset.packToHex(4);  // 14 push offset aNumaccount
 
-  //Step 1b - Find its reference which comes after a Window Manager call
-  var code =
-    " 6A 00"                    //PUSH 0
-  + " 6A 00"                    //PUSH 0
-  + " 68" + offset.packToHex(4) //PUSH addr; ASCII "NUMACCOUNT"
-  ;
+    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    if (offset === -1)
+        return "NUMACCOUNT reference missing";
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
-  if (offset === -1)
-    return "NUMACCOUNT reference missing";
+    logVaVar("g_windowMgr", offset, 1);
+    logRawFunc("UIWindowMgr_MakeWindow", offset, 6);
 
-  logVaVar("g_windowMgr", offset, -9);
-  logRawFunc("UIWindowMgr_MakeWindow", offset, -4);
-
-  return {
-    "gWinMgr": exe.fetchHex(offset-10, 5),
-    "makeWin": exe.fetchDWord(offset - 4) + exe.Raw2Rva(offset)
-  };
+    return {
+        "gWinMgr": exe.fetchHex(offset, 5),
+        "makeWin": exe.fetchDWord(offset + 6) + exe.Raw2Rva(offset) + 10
+    };
 }
 
 //###############################################################

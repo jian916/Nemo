@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2018  Andrei Karas (4144)
+// Copyright (C) 2018-2021  Andrei Karas (4144)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -135,6 +135,9 @@ function GlobalInit()
     {
         Global_enableProxy();
     }
+    registerTables();
+    registerAsm();
+    registerExe();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)
@@ -641,4 +644,11 @@ function logFieldAbs(name, offset, offset2)
     if (typeof(console2) === "undefined")
         return;
     console2.logFieldAbs(name, offset, offset2[0], offset2[1]);
+}
+
+function logError(text)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    throw text;
 }

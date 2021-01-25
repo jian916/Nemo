@@ -4,6 +4,7 @@
 .ci/nemo.po
 /Other/
 /Other
+/Output/*.h
 /Output/*.txt
 /Output/*.dll
 /Output/*.asi

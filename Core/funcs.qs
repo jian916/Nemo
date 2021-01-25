@@ -70,6 +70,12 @@ String.prototype.toBE = function()
   return this.split(" ").reverse().join("");
 }
 
+String.prototype.replaceAll = function(search, replacement)
+{
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
 Number.prototype.packToHex = function(size)
 {
     var number = this;

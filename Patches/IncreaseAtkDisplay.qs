@@ -119,7 +119,7 @@ function IncreaseAtkDisplay()
   var offByte2 = exe.fetchByte(offset2 - 1);
 
   //Step 2f - Find the g_modeMgr assignment
-  offset = exe.find(" B9 AB AB AB 00", PTYPE_HEX, true, "\xAB", offset2);//MOV ECX, g_modeMgr
+  offset = exe.find(getEcxModeMgrHex(), PTYPE_HEX, true, "\xAB", offset2);//MOV ECX, g_modeMgr
   if (offset === -1)
     return "Failed in Step 2 - g_modeMgr assignment missing";
 

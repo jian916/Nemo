@@ -574,7 +574,25 @@ registerPatch(330, "IgnoreSignBoardReading", "Ignore SignBoardList.lub Reading",
 
 registerPatch(331, "DisableBlindEffect", "Disable Blind skills effect", "UI", 0, "X-EcutiOnner", "Disables the Blind skill effect (screen becomes darkness)", false);
 
+//registerPatch(332, "SimpleReplaceDemo", "Simple replace functions demo", "DEMO", 0, "4144", "Demonstrate simple replace functions usage", false);
+
+registerPatch(333, "ChangeMaxFriendsValue", "Change Max Friends Value", "UI", 0, "X-EcutiOnner", "Change max friends value displayed on Alt+H", false);
+
+registerPatch(334, "RemoveHardcodedHttpIP", "Remove Hardcoded HTTP IP", "Fix", 0, "jchcc", "Remove hardcoded HTTP service ip address, Prevent client from sending HTTP request to official server.", false);
+
 registerPatch(335, "EnableRagHTTPEmblem", "Enable HTTP Emblem on Ragexe", "Fix", 0, "jchcc", "Enable HTTP Emblem on Ragexe, HTTP service required.", false);
+
+registerPatch(336, "RemoveItemsEquipPreview", "Remove Equipment Preview Button", "UI", 12, "X-EcutiOnner", "Remove equipment preview button on the items description window", false);
+
+registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency level range", "Data", 0, "Asheraf", "Changes the default level range on the Adventure Agency.", false);
+
+registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, "4144", "Validate is loaded client detected as correct client. If this patch failed, other patches can be wrong.", true);
+
+registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
+
+registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "X-EcutiOnner", "Disable all .mp3 audio files in BGM folder for playing background music", false);
+
+registerPatch(341, "DisableMapInfo", "Disable map sign display", "UI", 0, "X-EcutiOnner", "Disable all map sign display listing in MapInfo*.lub when players entering map.", false);
 
 registerPatch(350, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
 
