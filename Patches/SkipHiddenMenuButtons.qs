@@ -238,7 +238,6 @@ function SkipHiddenMenuButtons()
         "a9JmpAddr": a9JmpAddr,
         "nonA9JmpAddr": nonA9JmpAddr,
     };
-
     var text = asm.combine(
         "mov eax, [" + regName + "]",  // strlen
         "cmp eax, 0",
@@ -251,17 +250,8 @@ function SkipHiddenMenuButtons()
         "_continue2:",
         "jmp nonA9JmpAddr");
 
-    var size = asm.textToHexVaLength(0, text, vars);
-
-    var free = exe.findZeros(size);
-    if (free === -1)
-        return "Failed in Step 2 - Not enough free space";
-
-    var obj = asm.textToHexRaw(free, text, vars);
-    if (obj === false)
-        return "Asm code error";
-
-    exe.insert(free, size, obj, PTYPE_HEX);
+    var data = exe.insertAsmText(text, vars);
+    var free = data[0]
 
 
     consoleLog("add jump to own code");

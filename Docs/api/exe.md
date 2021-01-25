@@ -269,3 +269,22 @@ Store nops from address **patchStartAddr** to **patchEndAddr**.
 | -------- | ----------- |
 | patchStartAddr| Start raw address where nops should be stored |
 | patchEndAddr| End raw address where nops should be stored |
+
+### exe.insertAsmText
+
+``exe.insertAsmText(commands, vars)``
+
+Insert assembler code in free block in binary.
+
+| Argument | Description |
+| -------- | ----------- |
+| commands  | Assembler text with commands |
+| vars      | Variables for assembler text |
+
+If fail trigger exception.
+
+If success, return array.
+
+Array index 0 contains raw address where bytes was stored.
+
+Array index 1 contains bytes sequence.

@@ -47,10 +47,27 @@ function exe_setNopsRange(patchStartAddr, patchEndAddr)
     exe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
 }
 
+function exe_insertAsmText(commands, vars)
+{
+    var size = asm.textToHexVaLength(0, commands, vars);
+
+    var free = exe.findZeros(size);
+    if (free === -1)
+        throw "Failed in exe.insertAsm - Not enough free space";
+
+    var obj = asm.textToHexRaw(free, commands, vars);
+    if (obj === false)
+        throw "Asm code error";
+
+    exe.insert(free, size, obj, PTYPE_HEX);
+    return [free, obj];
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
     exe.setJmpRaw = exe_setJmpRaw;
     exe.setNops = exe_setNops;
     exe.setNopsRange = exe_setNopsRange;
+    exe.insertAsmText = exe_insertAsmText;
 }

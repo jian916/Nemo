@@ -173,21 +173,13 @@ function ChangeMinimalResolutionLimit()
         "push retAddr",
         "ret"
     );
-
     var vars = {
         "retAddr": exe.Raw2Rva(offset + retAdd),
     };
 
-    var size = asm.textToHexVaLength(0, text, vars);
-    var free = exe.findZeros(size + 4);
-    if (free === -1)
-        return "Failed in Step 3 - No enough free space";
+    var data = exe.insertAsmText(text, vars);
 
-    var obj = asm.textToHexRaw(free, text, vars);
-    if (obj === false)
-        return "Asm code error";
-
-    exe.insert(free, size + 4, obj, PTYPE_HEX);
+    var free = data[0];
     exe.setJmpRaw(offset, free);
 
     return true;
