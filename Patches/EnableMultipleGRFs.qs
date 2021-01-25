@@ -217,7 +217,7 @@ function EnableMultipleGRFs()
     code = code + " 00".repeat(8);
 
     //Step 6 - Insert everything.
-    exe.insert(free, size+8, code, PTYPE_HEX);
+    exe.insert(free, size + 8, code, PTYPE_HEX);
 
     //Step 7 - Find offset of rdata.grf (if present zero it out)
     offset = exe.findString("rdata.grf", RAW);

@@ -69,7 +69,7 @@ function LoadCustomClientInfo()
     }
 
     //Step 2a - Get the new filename from user
-    var myfile = exe.getUserInput("$newclientinfo", XTYPE_STRING, _("String input - maximum 14 characters"), _("Enter the new clientinfo path"), ciName, 9, 15);
+    var myfile = exe.getUserInput("$newclientinfo", XTYPE_STRING, _("String input - maximum 14 characters"), _("Enter the new clientinfo path"), ciName, 9, 14);
     if (myfile === ciName)
         return "Patch Cancelled - New value is same as old";
     if (myfile.length > 14 || myfile.length < 9)
