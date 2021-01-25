@@ -44,8 +44,7 @@ function SkipHiddenMenuButtons()
     var a9Offset = 22;
     var stoleOffset = 14;
     var stoleSize = 6;
-    // in esi pointer to current name
-    var regByte = "46";
+    var regName = "esi";
     var noSwitch = false;
     var jobIdOffset = [24, 4];
     var isDoramJobOffset = 34;
@@ -73,8 +72,7 @@ function SkipHiddenMenuButtons()
         a9Offset = 30;
         stoleOffset = 22;
         stoleSize = 6;
-        // in edi pointer to current name
-        regByte = "47";
+        regName = "edi";
         jobIdOffset = [32, 4];
         isDoramJobOffset = 42;
         noSwitch = false;
@@ -102,8 +100,7 @@ function SkipHiddenMenuButtons()
         a9Offset = 30;
         stoleOffset = 22;
         stoleSize = 6;
-        // in edi pointer to current name
-        regByte = "47";
+        regName = "edi";
         jobIdOffset = [32, 4];
         isDoramJobOffset = 42;
         noSwitch = false;
@@ -117,8 +114,8 @@ function SkipHiddenMenuButtons()
     logFieldAbs("CSession::m_job", offset, jobIdOffset);
     logRawFunc("CSession_isDoramJob", offset, isDoramJobOffset);
 
-    var nonA9JmpAddr = exe.Raw2Rva(exe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1).packToHex(4);
-    var a9JmpAddr = exe.Raw2Rva(offset + a9Offset).packToHex(4);
+    var nonA9JmpAddr = exe.Raw2Rva(exe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1);
+    var a9JmpAddr = exe.Raw2Rva(offset + a9Offset);
     var patchAddr = offset + stoleOffset;
 
     // step 3 - search switch block and non default jmp in switch (using first one jump)
@@ -235,30 +232,53 @@ function SkipHiddenMenuButtons()
     // step 4 - patch code
 
     // add own extra checks
-    code =
-        "8B " + regByte + " 00" +  // mov eax, [esi + 0]  (strlen)
-        "3C 00" +              // cmp eax, 0
-        "75 06 " +             // jnz +6
-        "68 " + continueAddr.packToHex(4) + // push continueAddr
-        "C3 " +                // retn
-        exe.fetchHex(patchAddr, stoleSize) + // cmp ebx, 0A9
-        "75 06 " +             // jnz +6
-        "68 " + a9JmpAddr +    // push a9JmpAddr
-        "C3 " +                // retn
-        "68 " + nonA9JmpAddr + // push nonA9JmpAddr
-        "C3 ";                 // retn
 
-    var free = exe.findZeros(code.hexlength());
+    var vars = {
+        "continueAddr": continueAddr,
+        "a9JmpAddr": a9JmpAddr,
+        "nonA9JmpAddr": nonA9JmpAddr,
+    };
+
+    var text = asm.combine(
+        "mov eax, [" + regName + "]",  // strlen
+        "cmp eax, 0",
+        "jne _continue1",
+        "jmp continueAddr",
+        "_continue1:",
+        asm.hexToAsm(exe.fetchHex(patchAddr, stoleSize)),  // cmp ebx, 0A9
+        "jne _continue2",
+        "jmp a9JmpAddr",
+        "_continue2:",
+        "jmp nonA9JmpAddr");
+
+    var size = asm.textToHexVaLength(0, text, vars);
+
+    var free = exe.findZeros(size);
     if (free === -1)
         return "Failed in Step 2 - Not enough free space";
 
-    exe.insert(free, code.hexlength(), code, PTYPE_HEX);
+    var obj = asm.textToHexRaw(free, text, vars);
+    if (obj === false)
+        return "Asm code error";
 
-    // add jump to own code
-    code =
-        "68" + exe.Raw2Rva(free).packToHex(4) + // push addr1
-        "C3"                                    // retn
-    exe.replace(patchAddr, code, PTYPE_HEX); // add jump to own code
+    exe.insert(free, size, obj, PTYPE_HEX);
+
+
+    consoleLog("add jump to own code");
+
+    var text = asm.combine(
+        "push addr1",
+        "ret"
+    )
+    var vars = {
+        "addr1": exe.Raw2Rva(free),
+    };
+
+    var obj = asm.textToHexRaw(patchAddr, text, vars);
+    if (obj === false)
+        return "Asm code error";
+
+    exe.replace(patchAddr, obj, PTYPE_HEX); // add jump to own code
 
     return true;
 }
