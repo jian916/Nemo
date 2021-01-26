@@ -1,3 +1,22 @@
+# 2021-01-26 Themes and docs.
+
+## Plugin
+
+- Add support for themes.
+
+## For devs
+
+- Add function insert asm code into empty block: exe.insertAsmText.
+- Add function for replace code to asm text: exe.replaceAsmText.
+- Fix function asm.cmdToObjVa.
+- Add basic [documentation](Docs/api.md) about api functions.
+
+## Themes
+
+- Add support for themes.
+- Add theme default, notheme, green.
+
+
 # 2021-01-21 Different updates
 
 ## Patches
