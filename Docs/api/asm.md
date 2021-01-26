@@ -14,7 +14,7 @@ Convert assembler text into bytes sequence.
 
 | Argument  | Description |
 | --------  | ----------- |
-| addVa     | Virtual address where code should be located |
+| addrVa    | Virtual address where code should be located |
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
@@ -34,7 +34,7 @@ Convert one assembler command into all possible bytes sequences.
 
 | Argument | Description |
 | -------- | ----------- |
-| addVa    | Virtual address where code should be located |
+| addrVa   | Virtual address where code should be located |
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
@@ -54,7 +54,7 @@ Convert assembler text into bytes sequence and put into object.
 
 | Argument | Description |
 | -------- | ----------- |
-| addVa    | Virtual address where code should be located |
+| addrVa   | Virtual address where code should be located |
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
@@ -98,7 +98,7 @@ Convert assembler text into bytes sequence.
 
 | Argument  | Description |
 | --------  | ----------- |
-| addVa     | Virtual address where code should be located |
+| addrVa    | Virtual address where code should be located |
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
@@ -114,7 +114,7 @@ Convert assembler text into bytes sequence and return length of sequence.
 
 | Argument  | Description |
 | --------  | ----------- |
-| addVa     | Virtual address where code should be located |
+| addrVa    | Virtual address where code should be located |
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
@@ -162,7 +162,7 @@ Convert one assembler command into all possible bytes sequences and put into obj
 
 | Argument | Description |
 | -------- | ----------- |
-| addVa    | Virtual address where code should be located |
+| addrVa   | Virtual address where code should be located |
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
@@ -212,7 +212,7 @@ Convert one assembler command into best possible bytes in hex format.
 
 | Argument | Description |
 | -------- | ----------- |
-| addVa    | Virtual address where code should be located |
+| addrVa   | Virtual address where code should be located |
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
