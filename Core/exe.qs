@@ -50,6 +50,8 @@ function exe_setNopsRange(patchStartAddr, patchEndAddr)
 function exe_insertAsmText(commands, vars)
 {
     var size = asm.textToHexVaLength(0, commands, vars);
+    if (obj === false)
+        throw "Asm code error";
 
     var free = exe.findZeros(size);
     if (free === -1)
