@@ -1,3 +1,8 @@
+# 2021-02-04 Patches update
+
+- Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients). (fix by @4144).
+
+
 # 2021-01-26 Themes and docs.
 
 ## Plugin
