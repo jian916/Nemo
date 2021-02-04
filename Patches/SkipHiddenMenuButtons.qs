@@ -240,7 +240,7 @@ function SkipHiddenMenuButtons()
     };
     var text = asm.combine(
         "mov eax, [" + regName + "]",  // strlen
-        "cmp eax, 0",
+        "cmp al, 0",
         "jne _continue1",
         "jmp continueAddr",
         "_continue1:",
