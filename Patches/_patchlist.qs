@@ -594,4 +594,6 @@ registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "
 
 registerPatch(341, "DisableMapInfo", "Disable map sign display", "UI", 0, "X-EcutiOnner", "Disable all map sign display listing in MapInfo*.lub when players entering map.", false);
 
+registerPatch(342, "ExtendCashShopPreview", "Add support for preview button in cash shop", "Fix", 0, "4144", "Extend cash shop packet for support equipment preview.", false);
+
 GlobalPostInit();
