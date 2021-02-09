@@ -28,13 +28,22 @@ function registerTables()
     table.g_hMainWnd = 8;
     table.msgStringTable = 9;
     table.CSession_m_accountId = 10;
+    table.ITEM_INFO_location = 11;
+    table.ITEM_INFO_view_sprite = 12;
+    table.cashShopPreviewPatch1 = 13;
+    table.cashShopPreviewPatch2 = 14;
+    table.packetBuf = 15;
+    table.cashShopPreviewFlag = 16;
 
     registerTableFunctions();
 }
 
 function table_getRaw(varId)
 {
-    return exe.Rva2Raw(table.get(varId));
+    var ret = table.get(varId);
+    if (ret === 0)
+        return 0;
+    return exe.Rva2Raw(ret);
 }
 
 function table_getHex4(varId)

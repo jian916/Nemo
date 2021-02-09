@@ -302,3 +302,48 @@ Replace bytes at raw address patchAddr to given assembler code.
 | vars     | Variables for assembler text |
 
 On success return bytes in hex format from assembler text.
+
+### exe.match
+
+``exe.match(code, useMask, rawAddr)``
+
+Check is given bytes can be matched to given raw address.
+
+| Argument | Description |
+| -------- | ----------- |
+| code     | Matched hex bytes |
+| useMask  | Flag for enable use mask in matching |
+| rawAddr  | Raw address for check with given bytes |
+
+If given bytes matched, return true.
+
+In other case return false.
+
+### exe.fetchValue
+
+``exe.fetchValue(offset, offset2)``
+
+Allow fetch value from binary with raw address offset plus offset2.
+
+In offset2 also exists size of fetched value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+
+On success return fetched bytes.
+
+### exe.setValue
+
+``exe.setValue(offset, offset2, value)``
+
+Set value into binary with raw address offset plus offset2.
+
+In offset2 also exists size of saved value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+| value    | Saved value in hex |

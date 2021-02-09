@@ -50,7 +50,7 @@ function exe_setNopsRange(patchStartAddr, patchEndAddr)
 function exe_insertAsmText(commands, vars)
 {
     var size = asm.textToHexVaLength(0, commands, vars);
-    if (obj === false)
+    if (size === false)
         throw "Asm code error";
 
     var free = exe.findZeros(size);
@@ -75,6 +75,47 @@ function exe_replaceAsmText(patchAddr, commands, vars)
     return obj;
 }
 
+function exe_match(code, useMask, addrRaw)
+{
+    var offset = exe.find(code, PTYPE_HEX, useMask, "\xAB", addrRaw, addrRaw + 1);
+    if (offset !== addrRaw)
+        return false;
+    return true;
+}
+
+function exe_fetchValue(offset, offset2)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    if (size == 1)
+    {
+        return exe.fetchByte(addr);
+    }
+    else if (size == 2)
+    {
+        return exe.fetchWord(addr);
+    }
+    else if (size == 4)
+    {
+        return exe.fetchDWord(addr);
+    }
+    else if (size == 8)
+    {
+        return exe.fetchQWord(addr);
+    }
+    else
+    {
+        throw "Unknown size in exe.fetchValue: " + size;
+    }
+}
+
+function exe_setValue(offset, offset2, value)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    exe.replace(addr, value.packToHex(size), PTYPE_HEX);
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
@@ -83,4 +124,7 @@ function registerExe()
     exe.setNopsRange = exe_setNopsRange;
     exe.insertAsmText = exe_insertAsmText;
     exe.replaceAsmText = exe_replaceAsmText;
+    exe.match = exe_match;
+    exe.fetchValue = exe_fetchValue;
+    exe.setValue = exe_setValue;
 }
