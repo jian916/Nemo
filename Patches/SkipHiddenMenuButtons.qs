@@ -253,17 +253,8 @@ function SkipHiddenMenuButtons()
     var data = exe.insertAsmText(text, vars);
     var free = data[0]
 
-
     consoleLog("add jump to own code");
-
-    var text = asm.combine(
-        "push addr1",
-        "ret"
-    )
-    var vars = {
-        "addr1": exe.Raw2Rva(free),
-    };
-    exe.replaceAsmText(patchAddr, text, vars);  // add jump to own code
+    exe.setJmpRaw(patchAddr, free);
 
     return true;
 }

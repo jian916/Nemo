@@ -136,17 +136,9 @@ function ExtendCashShopPreview()
     var free = data[0]
 
     consoleLog("add jump to own code");
-
-    var text = asm.combine(
-        "jmp addr1"
-    )
-    var vars = {
-        "addr1": exe.Raw2Rva(free)
-    };
-    exe.replaceAsmText(offset1, text, vars);  // add jump to own code
+    exe.setJmpRaw(offset1, free);
 
     consoleLog("update block size");
-
     exe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
 
     return true;
