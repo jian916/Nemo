@@ -30,31 +30,31 @@ function ChangeMerchantStoreUrl()
     return "Failed in Step 1b - String missing";
 
   //Step 2a - Find strings reference for servertype = primary
-  var code = 
+  var code =
       " 6A 2E"                  //0 push 2E
-	+ " 68" + url1.packToHex(4) //2 push offset url1
-	+ " E8 AB AB AB AB"         //7 call memcopy
-	+ " 6A 2E"                  //12 push 2E
-	+ " 68" + url2.packToHex(4) //14 push offset url2
-	+ " 8D 4F 24"               //19 lea ecx,[edi+24h]
-	+ " E8"                     //22 call memcopy
-	;
-		
+    + " 68" + url1.packToHex(4) //2 push offset url1
+    + " E8 AB AB AB AB"         //7 call memcopy
+    + " 6A 2E"                  //12 push 2E
+    + " 68" + url2.packToHex(4) //14 push offset url2
+    + " 8D 4F 24"               //19 lea ecx,[edi+24h]
+    + " E8"                     //22 call memcopy
+    ;
+
   var urlLen1 = 1;
   var urlLen2 = 13;
   var url1Ref = 3;
   var url2Ref = 15;
 
-  //Step 2b - Find strings reference for servertype = sakray 
+  //Step 2b - Find strings reference for servertype = sakray
   var offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
   if (offset1 === -1)
-	return "Failed in Step 2a";
+    return "Failed in Step 2a";
 
-  code = 
+  code =
       " BF" + url2.packToHex(4) //0 mov edi, offset url2
-	+ " BE 2E 00 00 00"         //5 mov esi, 2E
-	+ " B8" + url1.packToHex(4) //10 mov eax, offset url1
-	;
+    + " BE 2E 00 00 00"         //5 mov esi, 2E
+    + " B8" + url1.packToHex(4) //10 mov eax, offset url1
+    ;
 
   var urlLen3 = 6;
   var url1aRef = 11;
@@ -68,10 +68,10 @@ function ChangeMerchantStoreUrl()
   var saveUrl = exe.getUserInput("$save", XTYPE_STRING, _("String input - maximum 255 characters"), _("Enter the new URL for MerchantStore save"), "http://", 9, 255);
 
   var loadUrl = exe.getUserInput("$load", XTYPE_STRING, _("String input - maximum 255 characters"), _("Enter the new URL for MerchantStore load"), "http://", 9, 255);
-  
+
   var ins = saveUrl.toHex() + " 00" + loadUrl.toHex() + " 00";
     ins = ins + " 90".repeat(8);
-  
+
   //Step 3 - find free space
   var size = ins.hexlength();
   var free = exe.findZeros(size);
@@ -79,26 +79,26 @@ function ChangeMerchantStoreUrl()
     return "Failed in Step 3 - Not enough free space";
 
   var freeRva = exe.Raw2Rva(free);
-  
+
   //Step 4 - Insert and replace everything
   exe.insert(free, size, ins, PTYPE_HEX);
-  
+
   exe.replace(offset1 + urlLen1, saveUrl.length.packToHex(1), PTYPE_HEX);
   exe.replace(offset1 + urlLen2, loadUrl.length.packToHex(1), PTYPE_HEX);
   exe.replace(offset1 + url1Ref, freeRva.packToHex(4), PTYPE_HEX);
   exe.replace(offset1 + url2Ref, (freeRva + saveUrl.length + 1).packToHex(4), PTYPE_HEX);
-  
+
   exe.replace(offset2[1] + urlLen3, saveUrl.length.packToHex(4), PTYPE_HEX);
   exe.replace(offset2[1] + url1aRef, freeRva.packToHex(4), PTYPE_HEX);
   exe.replace(offset2[1] + url2aRef, (freeRva + saveUrl.length + 1).packToHex(4), PTYPE_HEX);
-  
+
   //Step 5 -Remove all official ip address
   var ipaddr = "http://112.175.128.140:3000";
   var offsets = exe.findAll(ipaddr.toHex(), PTYPE_HEX, false);
-  
+
   for (var i =0; i < offsets.length; i ++)
   {
-	exe.replace(offsets[i], "http://0.0.0.0/\x00", PTYPE_STRING);
+    exe.replace(offsets[i], "http://0.0.0.0/\x00", PTYPE_STRING);
   }
 
   return true;
