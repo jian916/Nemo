@@ -21,10 +21,10 @@
 
 function SkipHiddenMenuButtons()
 {
-    // step 1 - search string status_doram
+    consoleLog("search string status_doram");
     var strHex = exe.findString("status_doram", RVA).packToHex(4);
 
-    // step 2 - search start for do/while block in adding buttons
+    consoleLog("search start for do/while block in adding buttons");
     var code =
         "8D B5 AB AB AB AB" +  // 0 lea esi, [ebp+names]
         "89 8D AB AB AB AB" +  // 6 mov [ebp+cnt2], ecx
@@ -118,7 +118,7 @@ function SkipHiddenMenuButtons()
     var a9JmpAddr = exe.Raw2Rva(offset + a9Offset);
     var patchAddr = offset + stoleOffset;
 
-    // step 3 - search switch block and non default jmp in switch (using first one jump)
+    consoleLog("search switch block and non default jmp in switch (using first one jump)");
     code =
         "8D 83 AB AB AB AB" +     // 0 lea eax, [ebx-164h]
         "3D AB AB 00 00" +        // 6 cmp eax, 0A6h
@@ -169,8 +169,6 @@ function SkipHiddenMenuButtons()
         + " 2D AB AB 00 00"    //11 sub eax, 86h
         + " 0F 84 AB AB 00 00" //16 jz continueAddr
         ;
-
-//        code = code.replace(" 83 E8 AB", " 2D AB AB 00 00"); //sub eax,86h
         noSwitch = true;
         jmpOffset1 = 7;
         jmpOffset2 = 18;
@@ -191,7 +189,7 @@ function SkipHiddenMenuButtons()
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
     }
 
-        if (offset === -1)
+    if (offset === -1)
     {
         code =
           " 81 FB AB AB 00 00" //0 cmp ebx,164h
@@ -229,9 +227,7 @@ function SkipHiddenMenuButtons()
         var continueAddr = exe.fetchDWord(addr2 + 4 * offset1);
     }
 
-    // step 4 - patch code
-
-    // add own extra checks
+    consoleLog("patch code");
 
     var vars = {
         "continueAddr": continueAddr,
@@ -239,8 +235,10 @@ function SkipHiddenMenuButtons()
         "nonA9JmpAddr": nonA9JmpAddr,
     };
     var text = asm.combine(
+        "push eax",
         "mov eax, [" + regName + "]",  // strlen
         "cmp al, 0",
+        "pop eax",
         "jne _continue1",
         "jmp continueAddr",
         "_continue1:",
