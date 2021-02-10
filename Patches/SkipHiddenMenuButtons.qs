@@ -108,6 +108,34 @@ function SkipHiddenMenuButtons()
     }
 
     if (offset === -1)
+    {
+        var code =
+            "8D B5 AB AB AB FF " +        // 0 lea esi, [ebp+var_224]
+            "8B 18 " +                    // 6 mov ebx, [eax]
+            "81 FB AB AB 00 00 " +        // 8 cmp ebx, 0A8h
+            "75 AB " +                    // 14 jnz short loc_514D99
+            "FF 35 AB AB AB AB " +        // 16 push g_session.m_job
+            "B9 AB AB AB AB " +           // 22 mov ecx, offset g_session
+            "E8 AB AB AB AB " +           // 27 call CSession_isDoramJob
+            "3C 01 " +                    // 32 cmp al, 1
+            "75 0E " +                    // 34 jnz short loc_514D8D
+            "6A 0C " +                    // 36 push 0Ch
+            "68 " + strHex +              // 38 push offset aStatus_doram
+            "8B CE " +                    // 43 mov ecx, esi
+            "E8 ";                        // 45 call std_string_assign
+        nonA9Offset = 15;
+        a9Offset = 16;
+        stoleOffset = 8;
+        stoleSize = 6;
+        regName = "esi";
+        jobIdOffset = [18, 4];
+        isDoramJobOffset = 28;
+        noSwitch = false;
+        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    }
+
+
+    if (offset === -1)
         return "Failed in step 2 - pattern not found";
     offset1 = offset;
 
@@ -205,6 +233,20 @@ function SkipHiddenMenuButtons()
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
     }
 
+    if (offset === -1)
+    {
+        code =
+            "81 FB AB AB 00 00 " +        // 0 cmp ebx, 1F0h
+            "0F 84 AB AB 00 00 " +        // 6 jz Menu_icons_switch_1F0
+            "68 AB AB AB 00 " +           // 12 push 118h
+            "E8 AB AB AB AB " +           // 17 call operator_new
+            "8B F8 " +                    // 22 mov edi, eax
+            "83 C4 04 ";                  // 24 add esp, 4
+        noSwitch = true;
+        jmpOffset1 = 8;
+        jmpOffset2 = 0;
+        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    }
 
     if (offset === -1)
         return "Failed in Step 3 - switch not found";
@@ -212,11 +254,14 @@ function SkipHiddenMenuButtons()
     if (noSwitch)
     {
         var jmpAdd1 = exe.fetchDWord(offset + jmpOffset1);
-        var jmpAdd2 = exe.fetchDWord(offset + jmpOffset2);
         var continueAddr = exe.Raw2Rva(offset + jmpOffset1 + 4) + jmpAdd1;
-        var continueAddr2 = exe.Raw2Rva(offset + jmpOffset2 + 4) + jmpAdd2;
-        if (continueAddr !== continueAddr2)
-            return "Failed in Step 3.1 - Found wrong continueAddr";
+        if (jmpOffset2 !== 0)
+        {
+            var jmpAdd2 = exe.fetchDWord(offset + jmpOffset2);
+            var continueAddr2 = exe.Raw2Rva(offset + jmpOffset2 + 4) + jmpAdd2;
+            if (continueAddr !== continueAddr2)
+                return "Failed in Step 3.1 - Found wrong continueAddr";
+        }
     }
     else
     {
