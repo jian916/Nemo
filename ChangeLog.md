@@ -1,3 +1,27 @@
+# 2021-02-10 Different updates
+
+## Patches
+
+- Add patch [Add support for preview button in cash shop](http://nemo.herc.ws/patches/ExtendCashShopPreview/#success-clients). (by @4144).
+- Add patch [Change MerchantStore Url](http://nemo.herc.ws/patches/ChangeMerchantStoreUrl/#success-clients). (by @jchcc).
+- Add patch [Mvp Drop Item Use Identified Name](http://nemo.herc.ws/patches/MvpItemIdentifyName/#success-clients). (by @jchcc, @4144).
+- Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients) for some clients. (fix by @4144).
+- Fix patch [Disable Ragexe Filename Check](http://nemo.herc.ws/patches/DisableFilenameCheck/#success-clients) for latest clients. (fix by @4144)
+- Fix patch [Fix item description bug](http://nemo.herc.ws/patches/FixItemDescBug/#success-clients) for some clients. (fix by @jchcc).
+
+
+## For devs
+
+- Add function for match bytes at given address: exe.match.
+- Add function for fetch value from binary with size defined in variable: exe.fetchValue.
+- Add function for save value to binary with size defined in variable: exe.setValue.
+
+## Other
+
+- Update tables with clients support.
+- Update chinese traditional translation from jian916 fork.
+
+
 # 2021-02-04 Patches update
 
 - Fix patch [Skip some hidden menu icon buttons](http://nemo.herc.ws/patches/SkipHiddenMenuButtons/#success-clients). (fix by @4144).
