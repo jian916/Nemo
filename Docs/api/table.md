@@ -63,3 +63,27 @@ Virtual address of msgStringTable.
 ## table.CSession_m_accountId
 
 m_accountId offset inside CSession class.
+
+## table.ITEM_INFO_location
+
+Offset of location field in ITEM_INFO struct.
+
+## table.ITEM_INFO_view_sprite
+
+Offset of view_sprite field in ITEM_INFO struct.
+
+## table.cashShopPreviewPatch1
+
+Virtual address of first place of cash shop preview patch.
+
+## table.cashShopPreviewPatch2
+
+Virtual address of second place of cash shop preview patch.
+
+## table.packetBuf
+
+Virtual address of packet buffer variable.
+
+## table.cashShopPreviewFlag
+
+Cash shop preview patch flag.
