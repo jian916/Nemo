@@ -598,6 +598,6 @@ registerPatch(342, "ExtendCashShopPreview", "Add support for preview button in c
 
 registerPatch(343, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
 
-registerPatch(344, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc", "Change Mvp drop item use identified name", false);
+registerPatch(344, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc, 4144", "Change Mvp drop item use identified name", false);
 
 GlobalPostInit();
