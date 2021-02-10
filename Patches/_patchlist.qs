@@ -596,4 +596,6 @@ registerPatch(341, "DisableMapInfo", "Disable map sign display", "UI", 0, "X-Ecu
 
 registerPatch(342, "ExtendCashShopPreview", "Add support for preview button in cash shop", "Fix", 0, "4144", "Extend cash shop packet for support equipment preview.", false);
 
+registerPatch(343, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
+
 GlobalPostInit();
