@@ -31,6 +31,7 @@ function ExtendCashShopPreview()
     {
         return "Cash shop address 2 not found";
     }
+    var offset3 = table.getRaw(table.cashShopPreviewPatch3);
 
     var location = table.get(table.ITEM_INFO_location);
     if (location === 0)
@@ -45,7 +46,6 @@ function ExtendCashShopPreview()
     }
 
     var flag = table.get(table.cashShopPreviewFlag);
-    var packetBuf = table.get(table.packetBuf);
 
     consoleLog("search first pattern");
 
@@ -93,6 +93,25 @@ function ExtendCashShopPreview()
 
     var blockSize = exe.fetchValue(offset2, blockSizeOffset);
 
+    if (flag == 0)
+    {
+        consoleLog("search third pattern");
+
+        code = "89 8D";         // 0 mov [ebp+next], ecx
+        var nextOffset = [2, 4];
+        var found = exe.match(code, true, offset3);
+
+        if (found !== true)
+        {
+            return "Error: third pattern not found";
+        }
+        var next = exe.fetchValue(offset3, nextOffset);
+    }
+    else
+    {
+        next = 0;
+    }
+
     consoleLog("add new code");
 
     var stolenCode = exe.fetchHex(offset1, stolenCodeSize);
@@ -115,10 +134,13 @@ function ExtendCashShopPreview()
         var text = asm.combine(
             asm.hexToAsm(stolenCode),
             "push eax",
-            "movzx eax, word ptr [packet_buf + block_size]",
+            "push ecx",
+            "mov ecx, dword ptr [ebp + next + 0]",
+            "movzx eax, word ptr [ecx + block_size]",
             "mov [ebp + itemInfo + view_sprite], eax",
-            "mov eax, dword ptr [packet_buf + block_size + 2]",
+            "mov eax, dword ptr [ecx + block_size + 2]",
             "mov [ebp + itemInfo + location], eax",
+            "pop ecx",
             "pop eax",
             "jmp continueItemAddr"
         );
@@ -128,7 +150,7 @@ function ExtendCashShopPreview()
         "location": location,
         "view_sprite": viewSprite,
         "itemInfo": exe.fetchValue(offset1, itemInfoOffset),
-        "packet_buf": packetBuf,
+        "next": next,
         "block_size": blockSize
     };
 

@@ -80,9 +80,9 @@ Virtual address of first place of cash shop preview patch.
 
 Virtual address of second place of cash shop preview patch.
 
-## table.packetBuf
+## table.cashShopPreviewPatch3
 
-Virtual address of packet buffer variable.
+Virtual address of third place of cash shop preview patch.
 
 ## table.cashShopPreviewFlag
 

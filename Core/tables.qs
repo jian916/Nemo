@@ -32,7 +32,7 @@ function registerTables()
     table.ITEM_INFO_view_sprite = 12;
     table.cashShopPreviewPatch1 = 13;
     table.cashShopPreviewPatch2 = 14;
-    table.packetBuf = 15;
+    table.cashShopPreviewPatch3 = 15;
     table.cashShopPreviewFlag = 16;
 
     registerTableFunctions();
