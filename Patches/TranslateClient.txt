@@ -66,8 +66,8 @@ R: '%d/%d/%d - %d:%d:%d'
 M: Translate Message Box
 -----------------------
 
-F: B8 DE BD C3 C1 F6
-R: 'Messag'
+F: B8 DE BD C3 C1 F6 00
+R: 'Message'
 
 -----------------------
 M: Translate Character Slot Usage
@@ -269,8 +269,8 @@ R: 'Insect'
 M: Dragon
 -----------------------
 
-F: BF EB C1 B7
-R: 'Drag'
+F: BF EB C1 B7 00
+R: 'Dragn'
 
 -----------------------
 M: Mob
@@ -348,13 +348,6 @@ M: (%s) map, please move to
 
 F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 B8 CA 28 25 73 29 C0 B8 B7 CE 20 C0 CC B5 BF C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9
 R: 'Navigation >: (%s) map, please move to'
-
------------------------
-M: Guidance to %s (A) By using
------------------------
-
-F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 BE C8 B3 BB C7 CF B4 C2 20 25 73 28 C0 BB 29 B8 A6 20 C0 CC BF EB C7 CF BF A9
-R: 'Navigation >: Guidance to %s (A) By usin'
 
 -----------------------
 M: Do you want to cancel navigation?
@@ -780,8 +773,8 @@ R: 'RankBoard'
 M: Not reverse the effect of the miracle of the sun, the moon and the stars will no occur
 -----------------------
 
-F: C0 CC C1 F6 BF AA C0 BA 20 C5 C2 BE E7 B0 FA B4 DE B0 FA BA B0 C0 C7 20 B1 E2 C0 FB 20 C8 BF B0 FA B0 A1 20 B9 DF BB FD C7 CF C1 F6 20 BE CA BD C0 B4 CF B4 D9
-R: 'Not reverse the effect of the miracle of the sun, the moon and the stars will no occur'
+F: C0 CC C1 F6 BF AA C0 BA 20 C5 C2 BE E7 B0 FA B4 DE B0 FA BA B0 C0 C7 20 B1 E2 C0 FB 20 C8 BF B0 FA B0 A1 20 B9 DF BB FD C7 CF C1 F6 20 BE CA BD C0 B4 CF B4 D9 2E
+R: 'In this Map, Miracle of Sun, Moon and Stars is ignored'
 
 -----------------------
 M: Station does not prohibite item trades
@@ -857,8 +850,8 @@ R: 'Enter Character Name'
 M: Character name does not match
 -----------------------
 
-F: C4 B3 B8 AF B8 ED C0 CC 20 C0 CF C4 A1 C7 CF C1 F6 20 BE CA BD C0 B4 CF B4 D9
-R: 'Character name does not match'
+F: C4 B3 B8 AF B8 ED C0 CC 20 C0 CF C4 A1 C7 CF C1 F6 20 BE CA BD C0 B4 CF B4 D9 2E
+R: 'Character name dosn't match'
 
 -----------------------
 M: Make Character
@@ -913,7 +906,7 @@ R: 'Please use the item and go to the map area'
 M: Find a Map using the location
 -----------------------
 
-F: C3 A3 B0 ED C0 DA 20 C7 CF B4 C2 20 B8 CA C0 CC 20 C7 D8 B4 E7 20 B8 CA 20 C0 D4 B4 CF B4 D9
+F: C3 A3 B0 ED C0 DA 20 C7 CF B4 C2 20 B8 CA C0 CC 20 C7 D8 B4 E7 20 B8 CA 20 C0 D4 B4 CF B4 D9 2E
 R: 'Find a Map using the location'
 
 -----------------------
@@ -1208,7 +1201,7 @@ M: Mob of that level output
 -----------------------
 
 F: C7 D8 B4 E7 20 B7 B9 BA A7 C0 C7 20 B8 F3 BD BA C5 CD 20 C3 E2 B7 C2
-R: 'Mob of that level output'
+R: 'Mob of that level out'
 
 -----------------------
 M: Output all items
@@ -1271,7 +1264,7 @@ M: Failed to read information
 -----------------------
 
 F: C1 A4 BA B8 B8 A6 20 C0 D0 C1 F6 20 B8 F8 C7 D4
-R: 'Fail to read info'
+R: 'Fail to read inf'
 
 -----------------------
 M: Help
@@ -1306,7 +1299,7 @@ M: Limited time
 -----------------------
 
 F: C1 A6 C7 D1 BD C3 B0 A3 00
-R: 'Time limit'
+R: 'Time limt'
 
 -----------------------
 M: Navigation Interface
@@ -1445,8 +1438,8 @@ R: '[Dest] %s'
 M: Quest Info
 -----------------------
 
-F: 00 25 64 20 B0 B3 00
-R: 00 25 64 00 00 00 00
+F: 00 25 64 20 B0 B3
+R: 00 25 64 00 00 00
 
 -----------------------
 M: Achievement (Right of Main Screen)
@@ -1454,3 +1447,129 @@ M: Achievement (Right of Main Screen)
 
 F: A2 BA 00 00 A1 DC 20 5B 25 73 5D 00 28 2B 25 64 29 00
 R: 2D 3E 00 00 07 20 20 5B 25 73 5D 00 28 2B 25 64 29 00
+
+-----------------------
+M: Back to Nav
+-----------------------
+
+F: B1 E6 20 C1 A4 BA B8
+R: 'Bak Nav'
+
+-----------------------
+M: Move to kafra
+-----------------------
+
+F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 B8 CA 28 25 73 29 C0 BB 20 BC B1 C5 C3 C7 CF BF A9 20 C0 CC B5 BF 20 C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9
+R: 'Navigation >: Goal Map: (%s), Please go to Kafra'
+
+-----------------------
+M: Guidance - Part 1
+-----------------------
+
+F: 4E 61 76 69 67 61 74 69 6F 6E 20 3E 3A 20 BE C8 B3 BB C7 CF B4 C2 20 25 73 28 C0 BB 29 B8 A6 20 C0 CC BF EB C7 CF BF A9 00
+R: 'Navigation >: Guidance to %s (A) By using'
+
+-----------------------
+M: You - Part 1
+-----------------------
+
+F: A1 DA 00
+R: 'You'
+
+-----------------------
+M: Ending time - full
+-----------------------
+
+F: B0 ED B0 B4 B4 D4 C0 C7 20 C0 CC BF EB 20 BD C3 B0 A3 C0 BA 20 25 64 B3 E2 20 25 64 20 BF F9 20 25 64 C0 CF 20 25 64 3A 25 64 20 BF A1 20 C1 BE B7 E1 B5 CB B4 CF B4 D9 2E
+R: 'Usage time ends on %d/%d/%d at %d:%d .'
+
+-----------------------
+M: Ending time - hr & min
+-----------------------
+
+F: B0 ED B0 B4 B4 D4 C0 C7 20 C0 CC BF EB 20 BD C3 B0 A3 C0 BA 20 25 64 BD C3 B0 A3 20 25 64 BA D0 20 C8 C4 BF A1 20 C1 BE B7 E1 B5 CB B4 CF B4 D9 2E
+R: 'Usage time ends after %d hrs & %d mins.'
+
+-----------------------
+M: Use Game Recharge - Part 1
+-----------------------
+
+F: C7 F6 C0 E7 20 B0 ED B0 B4 B4 D4 C0 C7 20 C0 CC BF EB 20 BD C3 B0 A3 C0 BA 20 25 64 BA D0 20 B3 B2 BE D2 BD C0 B4 CF B4 D9 2E 20 C0 CC BF EB BD C3 B0 A3 C0 CC 20 B3 A1 B3 AD 20 C8 C4 20 B0 AD C1 A6 C0 FB C0 B8 B7 CE 20 C1 BE B7 E1 B5 CB B4 CF B4 D9 2E 20 C1 A4 BB F3 C0 FB C0 CE 20 B0 D4 C0 D3 20 C0 CC BF EB C0 BB 20 C0 A7 C7 D8 20 C3 E6 C0 FC C0 BB 20 C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E
+R: 'You currently have %d mins left after which the game will terminate. Please recharge for normal game use.'
+
+-----------------------
+M: Game Recharge - Part 2
+-----------------------
+
+F: C7 F6 C0 E7 20 B0 ED B0 B4 B4 D4 C0 C7 20 C0 CC BF EB 20 BD C3 B0 A3 C0 BA 20 25 64 BD C3 B0 A3 20 B3 B2 BE D2 BD C0 B4 CF B4 D9 2E 20 C1 A4 BB F3 C0 FB C0 CE 20 B0 D4 C0 D3 20 C0 CC BF EB C0 BB 20 C0 A7 C7 D8 20 C3 E6 C0 FC C0 BB 20 C7 CF BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E
+R: 'You currently have %d hours left. Please recharge for normal game use.'
+
+-----------------------
+M: Search Window
+-----------------------
+
+F: 20 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 2D 20 4E 61 76 69 67 61 74 69 6F 6E 20 B0 CB BB F6 C3 A2 20 B8 ED B7 C9 BE EE 20 2D 2D 2D 2D 2D 2D 2D
+R: '----------- Navigation Search Window ----------'
+
+-----------------------
+M: No invite
+-----------------------
+
+F: 43 42 54 20 C3 CA C3 BB 20 C0 AF C0 FA B0 A1 20 BE C6 B4 D5 B4 CF B4 D9
+R: 'CBT User is not invited'
+
+-----------------------
+M: Wait Time - Part 1
+-----------------------
+
+F: C7 F6 C0 E7 20 C1 A2 BC D3 20 C0 CE BF F8 C0 CC 20 B0 A1 B5 E6 20 C3 A1 BD C0 B4 CF B4 D9 2E 20 20 20 20 20 20 20 20 20 20 20 5E 30 30 30 30 66 66 C7 F6 C0 E7 20 B4 EB B1 E2 BC F8 C0 A7 20 3A 20 25 64 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 BF B9 BB F3 20 B4 EB B1 E2 BD C3 B0 A3 20 3A 20 25 64 C3 CA
+R: 'Currently, Server is full.      ^0000ffPeople Currently Waiting : %d      Expected Waiting Time: %d Seconds'
+
+-----------------------
+M: Wait Time - Part 2
+-----------------------
+
+F: C7 F6 C0 E7 20 C1 A2 BC D3 20 C0 CE BF F8 C0 CC 20 B0 A1 B5 E6 20 C3 A1 BD C0 B4 CF B4 D9 2E 20 20 20 20 20 20 20 20 20 20 20 5E 30 30 30 30 66 66 C7 F6 C0 E7 20 B4 EB B1 E2 BC F8 C0 A7 20 3A 20 25 64 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 BF B9 BB F3 20 B4 EB B1 E2 BD C3 B0 A3 20 3A 20 25 64 BA D0 20 25 64 C3 CA
+R: 'Currently, Server is full.  ^0000ffPeople Currently Waiting : %d    Expected Waiting Time: %d Minutes %d Seconds'
+
+-----------------------
+M: Item Char Bound
+-----------------------
+
+F: C7 D8 B4 E7 20 BE C6 C0 CC C5 DB C0 BB 20 B0 B3 BA C0 C7 CF BF A9 20 C8 B9 B5 E6 B5 C7 B4 C2 20 BE C6 C0 CC C5 DB B5 E9 C0 BA 20 C4 B3 B8 AF C5 CD 20 B1 CD BC D3 20 BE C6 C0 CC C5 DB 20 28 C3 A2 B0 ED C0 CC B5 BF 20 BA D2 B0 A1 B4 C9 29 20 C0 D4 B4 CF B4 D9 2E 20 BA BB 20 C4 B3 B8 AF C5 CD BF A1 20 BB E7 BF EB C7 CF BD C3 B4 C2 20 B0 CD C0 CC 20 B8 C2 C0 B8 BD C5 C1 F6 20 C8 AE C0 CE C7 D8 C1 D6 BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E 20 BB F3 C0 DA B8 A6 20 B0 B3 BA C0 C7 CF BD C3 B0 DA BD C0 B4 CF B1 EE 3F
+R: 'Items obtained by opening the box is character bound (you cannot move it to storage). Ensure the character is the one you want. Do you want to open the box?'
+
+-----------------------
+M: Counterfeit detected
+-----------------------
+
+F: C6 C4 C0 CF C0 C7 20 C0 A7 BA AF C1 B6 B0 A1 20 B0 A8 C1 F6 20 B5 C7 BE FA BD C0 B4 CF B4 D9 2E
+R: 'Counterfit File was detected'
+
+-----------------------
+M: Goal is here
+-----------------------
+
+F: B8 F1 C7 A5 B0 A1 20 BF A9 B1 E2 20 C0 D4 B4 CF B4 D9 2E
+R: 'The goal is here'
+
+-----------------------
+M: Goal is same
+-----------------------
+
+F: C0 CC C0 FC B0 FA 20 B5 BF C0 CF C7 D1 20 B8 F1 C7 A5 20 C0 D4 B4 CF B4 D9 2E
+R: 'Goal is the same location'
+
+-----------------------
+M: Use item & go
+-----------------------
+
+F: BE C6 C0 CC C5 DB C0 BB 20 BB E7 BF EB C7 CF BF A9 20 C0 CC B5 BF C7 CF BF A9 20 C1 D6 BD C3 B1 E2 20 B9 D9 B6 F8 B4 CF B4 D9 2E
+R: 'Please use the item and go to the map area'
+
+-----------------------
+M: Find unsupported route
+-----------------------
+
+F: C7 D8 B4 E7 20 B8 CA C0 BA 20 B1 E6 C3 A3 B1 E2 B0 A1 20 C1 F6 BF F8 20 B5 C7 C1 F6 20 BE CA B4 C2 20 B8 CA C0 D4 B4 CF B4 D9 2E
+R: 'Find the map route which is not supported.'
