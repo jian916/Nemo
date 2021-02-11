@@ -1,3 +1,14 @@
+# 2021-02-11 Patches update
+
+## Patches
+
+- Fix patch [Add support for preview button in cash shop](http://nemo.herc.ws/patches/ExtendCashShopPreview/#success-clients) for 2019-12-xx and newer. (fix by @4144).
+
+## Other
+
+- Update tables with clients support.
+
+
 # 2021-02-10 Different updates
 
 ## Patches
