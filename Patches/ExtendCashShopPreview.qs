@@ -168,5 +168,5 @@ function ExtendCashShopPreview()
 
 function ExtendCashShopPreview_()
 {
-    return true;
+    return (exe.findString(".?AVUIPreviewEquipWnd@@", RAW) !== -1);
 }
