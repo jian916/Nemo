@@ -1,3 +1,19 @@
+# 2021-02-23 Different updates
+
+## Patches
+
+- Update translation strings in patch [Translate Client](http://nemo.herc.ws/patches/TranslateClient/#success-clients). (fix by @4144).
+
+## For devs
+
+- Add functions for put short jump in client: exe.setShortJmpVa and exe.setShortJmpRaw.
+- Allow use any similar to jump commands in exe.setShortJmp* and exe.setJmp* as last parameter.
+
+## Other
+
+- Update tables with clients support.
+
+
 # 2021-02-11 Patches update
 
 ## Patches
