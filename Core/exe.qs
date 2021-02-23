@@ -15,21 +15,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function exe_setJmpVa(patchAddr, jmpAddrVa)
+function exe_setJmpVa(patchAddr, jmpAddrVa, cmd)
 {
+    if (typeof(cmd) === "undefined")
+        cmd = "jmp";
     var vars = {
         "offset": jmpAddrVa,
     };
-    var code = asm.textToHexRaw(patchAddr, "jmp offset", vars);
+    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
     if (code === false)
         throw "Jmp code error";
 
     exe.replace(patchAddr, code, PTYPE_HEX);
 }
 
-function exe_setJmpRaw(patchAddr, jmpAddrRaw)
+function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd)
 {
-    exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw));
+    exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd);
 }
 
 function exe_setNops(patchAddr, nopsCount)
@@ -116,6 +118,28 @@ function exe_setValue(offset, offset2, value)
     exe.replace(addr, value.packToHex(size), PTYPE_HEX);
 }
 
+function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
+{
+    if (typeof(cmd) === "undefined")
+        cmd = "jmp";
+    var vars = {
+        "offset": jmpAddrVa,
+    };
+    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
+    if (code === false)
+        throw "Jmp code error";
+
+    if (code.hexlength() !== 2)
+        throw cmd + " is not short";
+
+    exe.replace(patchAddr, code, PTYPE_HEX);
+}
+
+function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
+{
+    exe_setShortJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd);
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
@@ -127,4 +151,6 @@ function registerExe()
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;
     exe.setValue = exe_setValue;
+    exe.setShortJmpRaw = exe_setShortJmpRaw;
+    exe.setShortJmpVa = exe_setShortJmpVa;
 }

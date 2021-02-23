@@ -228,25 +228,51 @@ Remove patched data for given patch.
 
 ### exe.setJmpVa
 
-``exe.setJmpVa(patchAddr, jmpAddrVa)``
+``exe.setJmpVa(patchAddr, jmpAddrVa, cmd)``
 
-Store jmp with address at given patchAddr.
+Store jmp command with address at given patchAddr.
 
 | Argument | Description |
 | -------- | ----------- |
 | patchAddr| Raw address where jmp should be stored |
 | jmpAddrVa| Virtual address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
 
 ### exe.setJmpRaw
 
-``exe.setJmpRaw(patchAddr, jmpAddrRaw)``
+``exe.setJmpRaw(patchAddr, jmpAddrRaw, cmd)``
 
-Store jmp with address at given **patchAddr**.
+Store jmp command with address at given **patchAddr**.
 
 | Argument | Description |
 | -------- | ----------- |
 | patchAddr| Raw address where jmp should be stored |
 | jmpAddrEaw| Raw address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+
+### exe.setShortJmpVa
+
+``exe.setShortJmpVa(patchAddr, jmpAddrVa, cmd)``
+
+Store short jmp command (2 bytes) with address at given patchAddr.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrVa| Virtual address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+
+### exe.setShortJmpRaw
+
+``exe.setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)``
+
+Store short jmp command (2 bytes) with address at given **patchAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrEaw| Raw address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
 
 ### exe.setNops
 
