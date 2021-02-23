@@ -14,9 +14,10 @@ function EnableEmblemForBG()
         getEcxSessionHex() +  // 14 mov ecx, offset g_session
         "E8 AB AB AB 00 " +   // 19 call CSession_IsBattleFieldMode
         "85 C0 " +            // 24 test eax, eax
-        "75 ";                // 26 jnz short loc_550CDE
+        "75 AB ";             // 26 jnz short loc_550CDE
 
     var jmp1 = 12;
+    var jmp1Offset = 28;
     var jmp2 = 26;
     var IsSiegeModeOffset = 6;
     var IsBattleFieldModeOffset = 20;
@@ -28,8 +29,8 @@ function EnableEmblemForBG()
     logRawFunc("CSession_IsSiegeMode", offset, IsSiegeModeOffset);
     logRawFunc("CSession_IsBattleFieldMode", offset, IsBattleFieldModeOffset);
 
-    consoleLog("Step 2a - Swap the first JZ to JNZ and addr to location after the code");
-    exe.replace(offset + jmp1, "75 " + (jmp1 + 2).packToHex(1), PTYPE_HEX);
+    consoleLog("Step 2a - Swap the first JZ to JNZ and addr to location after the check code");
+    exe.setShortJmpRaw(offset + jmp1, offset + jmp1Offset, "jnz");
 
     consoleLog("Step 2b - Swap the second JNZ to JZ");
     exe.replace(offset + jmp2, "74 ", PTYPE_HEX);
