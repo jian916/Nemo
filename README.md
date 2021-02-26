@@ -1,4 +1,6 @@
-# Nemo - closed source clients patcher.
+Discord [![Discord](https://img.shields.io/discord/724239709966041128)](https://discord.com/invite/ByEQHDf)
+
+# Nemo - rag*ok client patcher.
 
 This is fork of @MStr3am project [Nemo](https://github.com/MStr3am/NEMO)
 
