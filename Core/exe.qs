@@ -140,6 +140,13 @@ function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
     exe_setShortJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd);
 }
 
+function exe_fetchRelativeValue(offset, offset2)
+{
+    var value = exe_fetchValue(offset, offset2);
+    var addr = exe.Raw2Rva(offset + offset2[0]) + offset2[1] + value;
+    return addr;
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
@@ -153,4 +160,5 @@ function registerExe()
     exe.setValue = exe_setValue;
     exe.setShortJmpRaw = exe_setShortJmpRaw;
     exe.setShortJmpVa = exe_setShortJmpVa;
+    exe.fetchRelativeValue = exe_fetchRelativeValue;
 }
