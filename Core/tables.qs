@@ -34,6 +34,9 @@ function registerTables()
     table.cashShopPreviewPatch2 = 14;
     table.cashShopPreviewPatch3 = 15;
     table.cashShopPreviewFlag = 16;
+    table.bgCheck1 = 17;
+    table.bgCheck2 = 18;
+    table.CSession_IsBattleFieldMode = 19;
 
     registerTableFunctions();
 }
