@@ -28,6 +28,8 @@ function GenMapEffectPlugin()
         " B9 AB AB AB 00" //MOV ECX, g_Weather
       + " E8"             //CALL CWeather::ScriptProcess
       ;
+    var gWeatherOffset = [1, 4];
+    var scriptProcessOffset = 6;
 
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
     if (offset === -1)
@@ -36,10 +38,15 @@ function GenMapEffectPlugin()
             " B9 AB AB AB 01" //MOV ECX, g_Weather
           + " E8"             //CALL CWeather::ScriptProcess
           ;
+        gWeatherOffset = [1, 4];
+        scriptProcessOffset = 6;
         offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
     }
     if (offset === -1)
         throw "Error: g_Weather assignment missing";
+
+    logVaVar("g_Weather", offset, gWeatherOffset);
+    logRawFunc("CWeather_ScriptProcess", offset, scriptProcessOffset);
 
     consoleLog("Save the g_Weather address");
     var gWeather = exe.fetchHex(offset+1, 4);
@@ -50,9 +57,12 @@ function GenMapEffectPlugin()
       + " B9" + gWeather //MOV ECX, g_Weather
       + " E8"            //CALL CWeather::LaunchPokJuk
       ;
+    var launchPokJukOffset = 8;
+
     offset = exe.find(code, PTYPE_HEX, false, "\xAB", CI_Entry+1);
     if (offset === -1)
         throw "Error: CI_Return missing";
+    logRawFunc("CWeather::LaunchPokJuk", offset, launchPokJukOffset);
 
     consoleLog("Save RetPtr.");
     var CI_Return = offset + code.hexlength() + 4;
@@ -80,19 +90,28 @@ function GenMapEffectPlugin()
     consoleLog("Go Inside and extract g_useEffect");
     var opcode = exe.fetchByte(offset) & 0xFF;//and mask to fix up Sign issues
     if (opcode === 0xA1)
+    {
         var gUseEffect = exe.fetchHex(offset+1, 4);
+        logFieldAbs("CSession::m_isEffectOn", offset, [1, 4]);
+    }
     else
+    {
         var gUseEffect = exe.fetchHex(offset+2, 4);
+        logFieldAbs("CSession::m_isEffectOn", offset, [2, 4]);
+    }
 
     consoleLog("Now look for LaunchCloud call after it");
     code =
         " B9" + gWeather //MOV ECX, g_Weather
       + " E8"            //CALL CWeather::LaunchCloud
       ;
+    var launchCloudOffset = 6;
 
     offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
     if (offset === -1)
         throw "Error: LaunchCloud call missing";
+
+    logRawFunc("CWeather::LaunchCloud", offset, launchCloudOffset);
 
     offset += code.hexlength();
 
@@ -125,6 +144,9 @@ function GenMapEffectPlugin()
     consoleLog("Save g_renderer & the g_renderer->ClearColor offset");
     var gRenderer = exe.fetchHex(offset, 4);
     var gR_clrColor = exe.fetchHex(offset+6, 1);
+
+    logVaVar("g_renderer", offset, 0);
+    logField("CRenderer::m_nClearColor", offset, [6, 1]);
 
     consoleLog("Find pattern after offset that JMPs to CGameMode_OnInit_RetPtr");
     code =
@@ -166,6 +188,8 @@ function GenMapEffectPlugin()
     consoleLog("Save CWeather::LaunchNight address (not RAW)");
     var CW_LNight = exe.Raw2Rva(offset).packToHex(4);
 
+    logRawFuncDirect("CWeather::LaunchNight", offset);
+
     consoleLog("Find CWeather::LaunchSnow function call. should be after xmas.rsw is PUSHed");
     code =
         " 74 07"          //JZ SHORT addr1 -> Skip LaunchSnow and call StopSnow instead
@@ -173,9 +197,15 @@ function GenMapEffectPlugin()
       + " EB 05"          //JMP SHORT addr2 -> Skip StopSnow call
       + " E8"             //CALL CWeather::StopSnow
       ;
+    var launchSnowOffset = 3;
+    var stopShowOffset = 10;
+
     offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry);
     if (offset === -1)
         throw "Error: LaunchSnow call missing";
+
+    logRawFunc("CWeather::LaunchSnow", offset, launchSnowOffset);
+    logRawFunc("CWeather::StopSnow", offset, stopShowOffset);
 
     consoleLog("Save CWeather::LaunchSnow address (not RAW)");
     var CW_LSnow = (exe.Raw2Rva(offset+7) + exe.fetchDWord(offset+3)).packToHex(4);
@@ -199,6 +229,8 @@ function GenMapEffectPlugin()
     if (offset2 === -1)
         throw "Error: LaunchMaple start missing";
 
+    logRawFuncDirect("CWeather::LaunchMaple", offset2);
+
     consoleLog("Save CWeather::LaunchMaple address (not RAW)");
     var CW_LMaple = exe.Raw2Rva(offset2).packToHex(4);
 
@@ -215,6 +247,8 @@ function GenMapEffectPlugin()
 
     if (offset2 === -1)
         throw "Error: LaunchSakura start missing";
+
+    logRawFuncDirect("CWeather::LaunchSakura", offset2);
 
     consoleLog("Save CWeather::LaunchSakura address (not RAW)");
     var CW_LSakura = exe.Raw2Rva(offset2).packToHex(4);

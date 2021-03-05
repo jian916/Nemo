@@ -625,6 +625,13 @@ function logRawFunc(name, offset, offset2)
     console2.logRawFunc(name, offset, offset2);
 }
 
+function logRawFuncDirect(name, offset, offset2)
+{
+    if (typeof(console2) === "undefined")
+        return;
+    console2.logRawFuncDirect(name, offset);
+}
+
 function logField(name, offset, offset2)
 {
     if (typeof(console2) === "undefined")
