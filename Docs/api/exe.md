@@ -375,6 +375,21 @@ In offset2 also exists size of fetched value in bytes.
 
 On success return fetched relative address converted to absolute virtual address.
 
+### exe.fetchHexBytes
+
+``exe.fetchHexBytes(offset, offset2)``
+
+Allow fetch hex bytes from binary with raw address offset plus offset2.
+
+In offset2 also exists size of fetched value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+
+On success return fetched bytes in hex string format.
+
 ### exe.setValue
 
 ``exe.setValue(offset, offset2, value)``

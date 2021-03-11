@@ -87,3 +87,19 @@ Virtual address of third place of cash shop preview patch.
 ## table.cashShopPreviewFlag
 
 Cash shop preview patch flag.
+
+## table.bgCheck1
+
+Battle ground address 1
+
+## table.bgCheck2
+
+Battle ground address 2
+
+## table.CSession_IsBattleFieldMode
+
+Virtual address of CSession::IsBattleFieldMode
+
+## table.CSession_GetTalkType_ret
+
+Virtual address near ret in CSession::GetTalkType
