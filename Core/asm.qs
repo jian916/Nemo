@@ -111,7 +111,9 @@ function asm_combine()
     var code = ""
     for (var i = 0; i < args.length; i ++)
     {
-        code = code + args[i] + "\n";
+        code = code + args[i];
+        if (code[code.length - 1] != "\n")
+            code = code + "\n";
     }
     return code;
 }
