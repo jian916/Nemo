@@ -1,3 +1,29 @@
+# 2021-03-11 Different updates
+
+## Patches
+
+- Add patch [Send at commands to server](http://nemo.herc.ws/patches/EnableSlashAtCommands/#success-clients). (by @4144).
+- Fix patch [Enable Emblem hover for BG](http://nemo.herc.ws/patches/EnableEmblemForBG/#success-clients). (fix by @4144).
+
+## Translations
+
+- Update Thai translation (by @X-EcutiOnner).
+
+## For devs
+
+- Add function exe.fetchRelativeValue for fetch relative address for example from "call XXX".
+- Add function exe.fetchHexBytes for fetch any number of hex bytes with offsets in standard format.
+
+## Plugin
+
+- Save/load previous profiles near patched exe.
+- Fixed possible crash on load downloader scripts.
+
+## Other
+
+- Update tables with clients support.
+
+
 # 2021-02-23 Different updates
 
 ## Patches
