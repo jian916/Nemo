@@ -600,4 +600,6 @@ registerPatch(343, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom
 
 registerPatch(344, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc, 4144", "Change Mvp drop item use identified name", false);
 
+registerPatch(345, "EnableSlashAtCommands", "Send at commands to server", "Custom", 0, "4144", "Allow send at commands unsupported by client to server", false);
+
 GlobalPostInit();
