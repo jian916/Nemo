@@ -1,3 +1,8 @@
+# 2021-03-11 Patches update
+
+- Fix patch [Enable Emblem hover for BG](http://nemo.herc.ws/patches/EnableEmblemForBG/#success-clients) for 2019 clients. (fix by @4144).
+
+
 # 2021-03-11 Different updates
 
 ## Patches
