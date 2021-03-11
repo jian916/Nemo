@@ -147,6 +147,13 @@ function exe_fetchRelativeValue(offset, offset2)
     return addr;
 }
 
+function exe_fetchHexBytes(offset, offset2)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    return exe.fetchHex(addr, size);
+}
+
 function registerExe()
 {
     exe.setJmpVa = exe_setJmpVa;
@@ -157,6 +164,7 @@ function registerExe()
     exe.replaceAsmText = exe_replaceAsmText;
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;
+    exe.fetchHexBytes = exe_fetchHexBytes;
     exe.setValue = exe_setValue;
     exe.setShortJmpRaw = exe_setShortJmpRaw;
     exe.setShortJmpVa = exe_setShortJmpVa;
