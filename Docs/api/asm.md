@@ -250,6 +250,6 @@ Returns assembler text command with given bytes.
 
 ### asm.combine
 
-``asm_combine(arguments)``
+``asm.combine(arguments)``
 
 Combine any assembler commands in separate lines into ready to use assembler text.
