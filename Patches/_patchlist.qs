@@ -276,7 +276,7 @@ registerPatch(101, "SkipCheaterFriendCheck", "Skip Friend list Cheat Check", "UI
 
 registerPatch(102, "SkipCheaterGuildCheck", "Skip Guild Member Cheat Check", "UI", 0, "Ai4rei/AN", "Prevents warnings during PM's when the sender has similar name to one of your guild members", false);
 
-registerPatch(103, "DisableAutofollow", "Disable Auto follow", "UI", 0, "Functor, Neo", "Disables player auto-follow on Shift+Right click", false);
+registerPatch(103, "DisableAutofollow", "Disable Auto follow", "UI", 0, "Functor, Neo, 4144", "Disables player auto-follow on Shift+Right click", false);
 
 registerPatch(104, "IncreaseHairLimits", "Increase creation Hair Style & Color Limits", "UI", 0, "Neo", "Modify the limits used in Make Character Window for Hair Style and Color to user specified values");
 

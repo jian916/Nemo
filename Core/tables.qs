@@ -38,6 +38,7 @@ function registerTables()
     table.bgCheck2 = 18;
     table.CSession_IsBattleFieldMode = 19;
     table.CSession_GetTalkType_ret = 20;
+    table.m_lastLockOnPcGid = 21;
 
     registerTableFunctions();
 }
