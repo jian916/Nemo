@@ -602,7 +602,7 @@ registerPatch(344, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "
 
 registerPatch(345, "EnableSlashAtCommands", "Send at commands to server", "Custom", 0, "4144", "Allow send at commands unsupported by client to server", false);
 
-//346 reserved
+registerPatch(346, "RestoreAutoFollow", "Restore auto follow", "Fix", 0, "4144", "Restore auto follow functionality in zero clients", false);
 
 registerPatch(347, "DisableRequireAdmin", "Disable OS Privileges execution level", "Fix", 0, "X-EcutiOnner", "Disable OS Privileges execution level for run client by user account", false);
 

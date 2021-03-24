@@ -39,6 +39,8 @@ function registerTables()
     table.CSession_IsBattleFieldMode = 19;
     table.CSession_GetTalkType_ret = 20;
     table.m_lastLockOnPcGid = 21;
+    table.CGameMode_ProcessAutoFollow = 22;
+    table.CGameMode_OnUpdate = 23;
 
     registerTableFunctions();
 }
