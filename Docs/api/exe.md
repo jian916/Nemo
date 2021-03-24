@@ -2,55 +2,7 @@
 
 **exe** object allow different manipulation with loaded client exe.
 
-## Functions
-
-### exe.findCode
-
-```
-exe.findCode(code)
-exe.findCode(code, codeType)
-exe.findCode(code, codeType, useMask)
-exe.findCode(code, codeType, useMask, mask)
-```
-
-Search first hex bytes pattern in main executable section.
-
-### exe.findCodes
-
-```
-exe.findCodes(code)
-exe.findCodes(code, codeType)
-exe.findCodes(code, codeType, useMask)
-exe.findCodes(code, codeType, useMask, mask)
-```
-
-Search all hex bytes pattern in main executable section.
-
-### exe.find
-
-```
-exe.find(code)
-exe.find(code, codeType)
-exe.find(code, codeType, useMask)
-exe.find(code, codeType, useMask, mask)
-exe.find(code, codeType, useMask, mask, start)
-exe.find(code, codeType, useMask, mask, start, finish)
-```
-
-Search first hex bytes pattern in whole binary.
-
-### exe.findAll
-
-```
-exe.findAll(code)
-exe.findAll(code, codeType)
-exe.findAll(code, codeType, useMask)
-exe.findAll(code, codeType, useMask, mask)
-exe.findAll(code, codeType, useMask, mask, start)
-exe.findAll(code, codeType, useMask, mask, start, finish)
-```
-
-Search all hex bytes pattern in whole binary.
+## Actual functions
 
 ### exe.fetchDWord
 
@@ -69,22 +21,6 @@ Read qword from given address.
 ``exe.fetchWord(rawAddr)``
 
 Read word from given address.
-
-### exe.Raw2Rva
-
-``exe.Raw2Rva(rawAddr)``
-
-Convert raw address into virtual address.
-
-If address wrong, return -1.
-
-### exe.Rva2Raw
-
-``exe.Rva2Raw(vaAddr)``
-
-Convert virtual address into raw address.
-
-If address wrong, return -1.
 
 ### exe.fetchUByte
 
@@ -171,30 +107,6 @@ exe.getUserInput(varName, valType, title, prompt, value, minValue, maxValue)
 ```
 
 Request information from user.
-
-### exe.getROffset
-
-``exe.getROffset(section)``
-
-Return raw address of given section.
-
-### exe.getRSize
-
-``exe.getRSize(section)``
-
-Return raw size of given section.
-
-### exe.getVOffset
-
-``exe.getVOffset(section)``
-
-Return rva address of given section.
-
-### exe.getVSize
-
-``exe.getVSize(section)``
-
-Return virtual size of given section.
 
 ### exe.getPEOffset
 
@@ -403,3 +315,112 @@ In offset2 also exists size of saved value in bytes.
 | offset   | Raw address (int) |
 | offset2  | additional offset and size (two ints) |
 | value    | Saved value in hex |
+
+
+## Legacy functions
+
+Better not use this functions. This functions can be removed in future.
+
+### exe.findCode
+
+```
+exe.findCode(code)
+exe.findCode(code, codeType)
+exe.findCode(code, codeType, useMask)
+exe.findCode(code, codeType, useMask, mask)
+```
+
+Search first hex bytes pattern in main executable section.
+
+Recommended to switch to pe.findCode
+
+### exe.findCodes
+
+```
+exe.findCodes(code)
+exe.findCodes(code, codeType)
+exe.findCodes(code, codeType, useMask)
+exe.findCodes(code, codeType, useMask, mask)
+```
+
+Search all hex bytes pattern in main executable section.
+
+Recommended to switch to pe.findCodes
+
+### exe.find
+
+```
+exe.find(code)
+exe.find(code, codeType)
+exe.find(code, codeType, useMask)
+exe.find(code, codeType, useMask, mask)
+exe.find(code, codeType, useMask, mask, start)
+exe.find(code, codeType, useMask, mask, start, finish)
+```
+
+Search first hex bytes pattern in whole binary.
+
+Recommended to switch to pe.find
+
+### exe.findAll
+
+```
+exe.findAll(code)
+exe.findAll(code, codeType)
+exe.findAll(code, codeType, useMask)
+exe.findAll(code, codeType, useMask, mask)
+exe.findAll(code, codeType, useMask, mask, start)
+exe.findAll(code, codeType, useMask, mask, start, finish)
+```
+
+Search all hex bytes pattern in whole binary.
+
+Recommended to switch to pe.findAll
+
+### exe.Raw2Rva
+
+``exe.Raw2Rva(rawAddr)``
+
+Convert raw address into virtual address.
+
+If address wrong, return -1.
+
+Recommended to switch to pe.rawToVa
+
+### exe.Rva2Raw
+
+``exe.Rva2Raw(vaAddr)``
+
+Convert virtual address into raw address.
+
+If address wrong, return -1.
+
+Recommended to switch to pe.vaToRaw
+
+### exe.getROffset
+
+``exe.getROffset(section)``
+
+Return raw address of given section.
+
+Recommended to switch to pe.sectionRaw(section)[0]
+
+### exe.getRSize
+
+``exe.getRSize(section)``
+
+Return raw size of given section.
+
+### exe.getVOffset
+
+``exe.getVOffset(section)``
+
+Return rva address of given section.
+
+Recommended to switch to pe.sectionVa(section)[0]
+
+### exe.getVSize
+
+``exe.getVSize(section)``
+
+Return virtual size of given section.

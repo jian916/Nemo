@@ -107,3 +107,11 @@ Virtual address near ret in CSession::GetTalkType
 # table.m_lastLockOnPcGid
 
 Virtual address of CGameMode::m_lastLockOnPcGid
+
+## table.CGameMode_ProcessAutoFollow
+
+Virtual address of CGameMode::ProcessAutoFollow
+
+## table.CGameMode_OnUpdate
+
+Virtual address of CGameMode::OnUpdate
