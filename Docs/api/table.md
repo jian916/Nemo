@@ -103,3 +103,7 @@ Virtual address of CSession::IsBattleFieldMode
 ## table.CSession_GetTalkType_ret
 
 Virtual address near ret in CSession::GetTalkType
+
+# table.m_lastLockOnPcGid
+
+Virtual address of CGameMode::m_lastLockOnPcGid
