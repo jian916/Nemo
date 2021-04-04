@@ -604,4 +604,6 @@ registerPatch(345, "EnableSlashAtCommands", "Send at commands to server", "Custo
 
 //346 reserved
 
+registerPatch(347, "DisableRequireAdmin", "Disable OS Privileges execution level", "Fix", 0, "X-EcutiOnner", "Disable OS Privileges execution level for run client by user account", false);
+
 GlobalPostInit();
