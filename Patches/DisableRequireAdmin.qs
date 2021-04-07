@@ -54,5 +54,5 @@ function DisableRequireAdmin()
 //=======================================================//
 function DisableRequireAdmin_()
 {
-    return (exe.findAll("\x72\x65\x71\x75\x69\x72\x65\x41\x64\x6D\x69\x6E\x69\x73\x74\x72\x61\x74\x6F\x72\x22", PTYPE_HEX, false) !== -1);
+    return (exe.findAll("\x72\x65\x71\x75\x69\x72\x65\x41\x64\x6D\x69\x6E\x69\x73\x74\x72\x61\x74\x6F\x72\x22", PTYPE_STRING, false) !== -1);
 }
