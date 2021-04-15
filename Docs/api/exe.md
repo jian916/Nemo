@@ -188,7 +188,7 @@ Return raw size of given section.
 
 ``exe.getVOffset(section)``
 
-Return virtual address of given section.
+Return rva address of given section.
 
 ### exe.getVSize
 
