@@ -138,6 +138,7 @@ function GlobalInit()
     registerTables();
     registerAsm();
     registerExe();
+    registerPe();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)
