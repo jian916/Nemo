@@ -610,4 +610,6 @@ registerPatch(348, "SendClientFlags", "Send client flags to server", "Custom", 0
 
 registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-EcutiOnner, 4144", "Show Damage on GvG Maps during the Guild War", false);
 
+registerPatch(350, "DisableAdventureAgent", "Disable Adventure Agent button on Party Window", "UI", 12, "X-EcutiOnner", "Disable Adventure Agency button on Party Window", false);
+
 GlobalPostInit();
