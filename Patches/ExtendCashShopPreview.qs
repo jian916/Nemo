@@ -50,11 +50,11 @@ function ExtendCashShopPreview()
     consoleLog("search first pattern");
 
     var code =
-        "8D 8D AB AB AB FF ";         // 0 lea ecx, [ebp+itemInfo]
+        "8D 8D ?? ?? ?? FF ";         // 0 lea ecx, [ebp+itemInfo]
     var itemInfoOffset = [2, 4];
     var stolenCodeSize = 6;
 
-    var found = exe.match(code, true, offset1);
+    var found = pe.match(code, offset1);
     if (found !== true)
     {
         return "Error: first pattern not found";
@@ -63,27 +63,27 @@ function ExtendCashShopPreview()
     consoleLog("search second pattern");
 
     code =
-        "83 C6 AB ";                  // 0 add esi, size struct_packet_8CA_next
+        "83 C6 ?? ";                  // 0 add esi, size struct_packet_8CA_next
     var blockSizeOffset = [2, 1];
     var register = "esi";
-    var found = exe.match(code, true, offset2);
+    var found = pe.match(code, offset2);
 
     if (found !== true)
     {
         code =
-            "83 C7 AB ";                  // 0 add edi, size struct_packet_8CA_next
+            "83 C7 ?? ";                  // 0 add edi, size struct_packet_8CA_next
         var blockSizeOffset = [2, 1];
         var register = "edi";
-        var found = exe.match(code, true, offset2);
+        var found = pe.match(code, offset2);
     }
 
     if (found !== true)
     {
         code =
-            "83 C1 AB ";                  // 0 add ecx, size struct_packet_8CA_next
+            "83 C1 ?? ";                  // 0 add ecx, size struct_packet_8CA_next
         var blockSizeOffset = [2, 1];
         var register = "ecx";
-        var found = exe.match(code, true, offset2);
+        var found = pe.match(code, offset2);
     }
 
     if (found !== true)
@@ -99,7 +99,7 @@ function ExtendCashShopPreview()
 
         code = "89 8D";         // 0 mov [ebp+next], ecx
         var nextOffset = [2, 4];
-        var found = exe.match(code, true, offset3);
+        var found = pe.match(code, offset3);
 
         if (found !== true)
         {
