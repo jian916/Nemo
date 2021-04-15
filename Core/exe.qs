@@ -79,6 +79,8 @@ function exe_replaceAsmText(patchAddr, commands, vars)
 
 function exe_match(code, useMask, addrRaw)
 {
+    reportLegacy("Please replace exe.match to pe.match");
+
     var offset = exe.find(code, PTYPE_HEX, useMask, "\xAB", addrRaw, addrRaw + 1);
     if (offset !== addrRaw)
         return false;
@@ -169,4 +171,5 @@ function registerExe()
     exe.setShortJmpRaw = exe_setShortJmpRaw;
     exe.setShortJmpVa = exe_setShortJmpVa;
     exe.fetchRelativeValue = exe_fetchRelativeValue;
+    registerExeLegacy();
 }
