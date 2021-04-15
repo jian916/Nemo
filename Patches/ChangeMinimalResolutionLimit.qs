@@ -22,16 +22,16 @@
 function ChangeMinimalResolutionLimit()
 {
     var code =
-        "8B 0D AB AB AB AB " +        // 0 mov ecx, screen_width
-        "A3 AB AB AB AB " +           // 6 mov screen_old_height, eax
+        "8B 0D ?? ?? ?? ?? " +        // 0 mov ecx, screen_width
+        "A3 ?? ?? ?? ?? " +           // 6 mov screen_old_height, eax
         "81 F9 00 04 00 00 " +        // 11 cmp ecx, 400h
         "72 0C " +                    // 17 jb short loc_ADA278
-        "A1 AB AB AB AB " +           // 19 mov eax, screen_height
+        "A1 ?? ?? ?? ?? " +           // 19 mov eax, screen_height
         "3D 00 03 00 00 " +           // 24 cmp eax, 300h
         "73 15 " +                    // 29 jnb short loc_ADA28D
         "B9 00 04 00 00 " +           // 31 mov ecx, 400h
         "B8 00 03 00 00 " +           // 36 mov eax, 300h
-        "89 0D AB AB AB AB " +        // 41 mov screen_width, ecx
+        "89 0D ?? ?? ?? ?? " +        // 41 mov screen_width, ecx
         "A3 ";                        // 47 mov screen_height, eax
     var widthOffset1 = 13;
     var widthOffset2 = 32;
@@ -45,18 +45,18 @@ function ChangeMinimalResolutionLimit()
     var widthLimit = 1024;
     var heightLimit1 = 768;
     var heightLimit2 = 768;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)  //Newer clients only compare screen_height
     {
         code =
-            "A3 AB AB AB AB " +           // 0 mov screen_old_height, eax
-            "A1 AB AB AB AB " +           // 5 mov eax, screen_height
+            "A3 ?? ?? ?? ?? " +           // 0 mov screen_old_height, eax
+            "A1 ?? ?? ?? ?? " +           // 5 mov eax, screen_height
             "3D 98 02 00 00 " +           // 10 cmp eax, 298h
             "73 17 " +                    // 15 jnb short loc_AAF6A6
             "B9 00 04 00 00 " +           // 17 mov ecx, 400h
             "B8 00 03 00 00 " +           // 22 mov eax, 300h
-            "89 0D AB AB AB AB " +        // 27 mov screen_width, ecx
+            "89 0D ?? ?? ?? ?? " +        // 27 mov screen_width, ecx
             "A3 ";                        // 33 mov screen_height, eax
         widthOffset1 = -1;
         widthOffset2 = 18;
@@ -70,7 +70,7 @@ function ChangeMinimalResolutionLimit()
         widthLimit = 1024;
         heightLimit1 = 664;
         heightLimit2 = 768;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -128,35 +128,35 @@ function ChangeMinimalResolutionLimit()
 
     code =
         "3B 3D " + screenWidthAdd +    //cmp edi, screenWidth
-        "8B BD AB AB AB AB " +         //mov edi, [ebp-x]
-        "75 AB " +                     //jne short
+        "8B BD ?? ?? ?? ?? " +         //mov edi, [ebp-x]
+        "75 ?? " +                     //jne short
         "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-        "75 AB ";                      //jne short
+        "75 ?? ";                      //jne short
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1) //Newer clients
     {
         code =
-            "3B AB " + screenWidthAdd +    //cmp reg, screenWidth
-            "75 AB " +                     //jne short
+            "3B ?? " + screenWidthAdd +    //cmp reg, screenWidth
+            "75 ?? " +                     //jne short
             "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-            "75 AB " +                     //jne short
+            "75 ?? " +                     //jne short
             "3B ";                         //cmp reg, screenColor
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
 
     }
     if (offset === -1)
         return "Failed in step 2a";
 
     code =
-        "A3 AB AB AB AB " +              //0 mov MODECNT, eax
-        "89 AB AB 00 00 00 ";            //5 mov [reg+UIGraphicSettingWnd.MODECNT], eax
+        "A3 ?? ?? ?? ?? " +              //0 mov MODECNT, eax
+        "89 ?? ?? 00 00 00 ";            //5 mov [reg+UIGraphicSettingWnd.MODECNT], eax
     var retAdd = 5;
     var modeCntOffset = [1, 4];
     var uiModeCntOffset = [7, 4];
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+    offset = pe.find(code, offset, offset + 0x80);
     if (offset === -1)
         return "Failed in step 2b";
 
