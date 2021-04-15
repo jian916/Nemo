@@ -7,20 +7,20 @@ function EnableEmblemForBG_Normal(offset)
 {
     var code =
         getEcxSessionHex() +  // 00 mov ecx, offset g_session
-        "E8 AB AB AB 00 " +   // 05 call CSession_IsSiegeMode
+        "E8 ?? ?? ?? 00 " +   // 05 call CSession_IsSiegeMode
         "85 C0 " +            // 10 test eax, eax
-        "74 AB " +            // 12 jz short loc_550CDE
+        "74 ?? " +            // 12 jz short loc_550CDE
         getEcxSessionHex() +  // 14 mov ecx, offset g_session
-        "E8 AB AB AB 00 " +   // 19 call CSession_IsBattleFieldMode
+        "E8 ?? ?? ?? 00 " +   // 19 call CSession_IsBattleFieldMode
         "85 C0 " +            // 24 test eax, eax
-        "75 AB ";             // 26 jnz short loc_550CDE
+        "75 ?? ";             // 26 jnz short loc_550CDE
     var jmp1 = 12;
     var jmp1Offset = 28;
     var jmp2 = 26;
     var IsSiegeModeOffset = 6;
     var IsBattleFieldModeOffset = 20;
 
-    var found = exe.match(code, true, offset);
+    var found = pe.match(code, offset);
     if (found !== true)
     {
         throw "Pattern not found";
@@ -40,15 +40,15 @@ function EnableEmblemForBG_Small(offset)
 {
     var code =
         getEcxSessionHex() +  // 00 mov ecx, offset g_session
-        "E8 AB AB AB 00 " +   // 05 call CSession_IsSiegeMode
+        "E8 ?? ?? ?? 00 " +   // 05 call CSession_IsSiegeMode
         "85 C0 " +            // 10 test eax, eax
-        "74 AB "              // 12 jz short loc_550CDE
+        "74 ?? "              // 12 jz short loc_550CDE
     var patchOffset = 5;
     var IsSiegeModeOffset = 6;
     var continueOffset = 13;
     var drawOffset = 14;
 
-    var found = exe.match(code, true, offset);
+    var found = pe.match(code, offset);
     if (found !== true)
     {
         throw "Pattern not found";
