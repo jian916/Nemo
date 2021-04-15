@@ -45,16 +45,16 @@ function EnableSlashAtCommands()
         "C2 0C 00 ";                  // 3 retn 0Ch
     var stolenCodeOffset = [0, 3];
     var retOffset = [3, 3];
-    var found = exe.match(code, false, offset);
+    var found = pe.match(code, offset);
 
     if (found !== true)
     {
         code =
-            "81 C4 AB 00 00 00 " +        // 0 add esp, 88h
+            "81 C4 ?? 00 00 00 " +        // 0 add esp, 88h
             "C2 0C 00 ";                  // 6 retn 0Ch
         stolenCodeOffset = [0, 6];
         retOffset = [6, 3];
-        var found = exe.match(code, true, offset);
+        var found = pe.match(code, offset);
     }
 
     if (found !== true)
