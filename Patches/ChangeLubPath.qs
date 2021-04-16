@@ -217,7 +217,7 @@ function ChangeLubPath(old_path, new_path)
     if (offset === -1)
         return "Failed in Step 1a - file name not found";
 
-    offset = exe.findCode("68" + offset.packToHex(4),  PTYPE_HEX, false);
+    offset = pe.findCode("68" + offset.packToHex(4));
     if (offset === -1)
         return "Failed in Step 1b - reference not found";
 
