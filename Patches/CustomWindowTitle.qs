@@ -23,12 +23,12 @@ function CustomWindowTitle()
     exe.replace(strOff, "$customWindowTitle", PTYPE_STRING);
 
     //Step 2a - Find offset of of 'Ragnarok' or 'Ragnarok : Zero'
-    var code = " C7 05 AB AB AB 00" + exe.findString("Ragnarok", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
+    var code = " C7 05 ?? ?? ?? 00" + exe.findString("Ragnarok", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
     if (IsZero())
-        code = " C7 05 AB AB AB 00" + exe.findString("Ragnarok : Zero", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok : Zero"
+        code = " C7 05 ?? ?? ?? 00" + exe.findString("Ragnarok : Zero", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok : Zero"
 
     //Step 2b - Find its reference
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if ( offset === -1)
         return "Failed in Step 2";
 
