@@ -42,17 +42,17 @@ function ChatColorGM()
 {
 
   //Step 1a - Find the unique color FF, 8D, 1D (Orange) PUSH for langtype 11
-  var offset1 = exe.findCode("68 FF 8D 1D 00", PTYPE_HEX, false);
+  var offset1 = pe.findCode("68 FF 8D 1D 00");
   if (offset1 === -1)
     return "Failed in Step 1 - Orange color not found";
 
   //Step 1b - Find FF, FF, 00 (Cyan) PUSH in the vicinity of Orange
-  var offset2 = exe.find("68 FF FF 00 00", PTYPE_HEX, false, "\xAB", offset1 - 0x30, offset1 + 0x30);
+  var offset2 = pe.find("68 FF FF 00 00", offset1 - 0x30, offset1 + 0x30);
   if (offset2 === -1)
     return "Failed in Step 1 - Cyan not found";
 
   //Step 1c - Find 00, FF, FF (Yellow) PUSH in the vicinity of Orange
-  var offset3 = exe.find("68 00 FF FF 00", PTYPE_HEX, false, "\xAB", offset1 - 0x30, offset1 + 0x30);
+  var offset3 = pe.find("68 00 FF FF 00", offset1 - 0x30, offset1 + 0x30);
   if (offset3 === -1)
     return "Failed in Step 1 - Yellow not found";
 
@@ -78,14 +78,14 @@ function ChatColorPlayerSelf()
 { //N.B. - Check if it holds good for old client. Till 2010 no issue is there.
 
   //Step 1a - Find PUSH 00,78,00 (Dark Green) offsets (the required Green color PUSH is within the vicinity of one of these)
-  var offsets = exe.findCodes(" 68 00 78 00 00", PTYPE_HEX, false);
+  var offsets = pe.findCodes(" 68 00 78 00 00");
   if (offsets.length === 0)
     return "Failed in Step 1 - Dark Green missing";
 
   //Step 1b - Find the Green color push.
   for (var i = 0; i < offsets.length; i++)
   {
-    var offset = exe.find(" 68 00 FF 00 00", PTYPE_HEX, false, "\xAB", offsets[i] + 5, offsets[i] + 40);
+    var offset = pe.find(" 68 00 FF 00 00", offsets[i] + 5, offsets[i] + 40);
     if (offset !== -1) break;
   }
 
@@ -116,7 +116,7 @@ function ChatColorPlayerOther()
     " 6A 01"           //PUSH 1
   + " 68 FF FF FF 00"  //PUSH FF,FF,FF (White)
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1";
 
@@ -144,12 +144,12 @@ function ChatColorPartySelf()
     " 6A 03"          //PUSH 3
   + " 68 FF C8 00 00" //PUSH FF,C8,00 (Yellowish Brown)
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" 6A 03", " 6A 03 8D AB AB AB FF FF");//insert LEA reg32_A, [EBP-x] after PUSH 3
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 6A 03", " 6A 03 8D ?? ?? ?? FF FF"); //insert LEA reg32_A, [EBP-x] after PUSH 3
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -179,12 +179,12 @@ function ChatColorPartyOther()
     " 6A 03"          //PUSH 3 ; old clients have an extra instruction after this one
   + " 68 FF C8 C8 00" //PUSH FF,C8,C8 (Light Pink)
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" 6A 03", " 6A 03 8D AB AB AB FF FF"); //insert LEA reg32_A, [EBP-x] after PUSH 3
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 6A 03", " 6A 03 8D ?? ?? ?? FF FF"); //insert LEA reg32_A, [EBP-x] after PUSH 3
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -208,10 +208,10 @@ function HighlightSkillSlotColor()
 {
     consoleLog("Step 1 - Find the area where color is pushed.");
     var code =
-        "0F B6 0D AB AB AB AB " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
-        "6B AB 1D " +              // 07 imul edx, 1Dh
+        "0F B6 0D ?? ?? ?? ?? " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
+        "6B ?? 1D " +              // 07 imul edx, 1Dh
         "68 B4 FF B4 00 " +        // 10 push 0B4FFB4h
-        "8B AB " +                 // 15 mov eax, ecx
+        "8B ?? " +                 // 15 mov eax, ecx
         "6A 18 " +                 // 17 push 18h
         "83 C1 05 ";               // 19 add ecx, 5
     var shortcutSlotCntOffset = [3, 4];
@@ -219,14 +219,14 @@ function HighlightSkillSlotColor()
     var colorOffset = [11, 4];
     var slotCyOffset = [18, 1];
     var yOffsetOffset = [21, 1];
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            "0F B6 0D AB AB AB AB " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
-            "6B AB 1D " +              // 07 imul edx, 1Dh
-            "8B AB " +                 // 10 mov eax, ecx
+            "0F B6 0D ?? ?? ?? ?? " +  // 00 movzx ecx, g_session.m_shortcutSlotCnt
+            "6B ?? 1D " +              // 07 imul edx, 1Dh
+            "8B ?? " +                 // 10 mov eax, ecx
             "68 B4 FF B4 00 " +        // 12 push 0B4FFB4h
             "6A 18 " +                 // 17 push 18h
             "83 C1 05 ";               // 19 add ecx, 5
@@ -235,7 +235,7 @@ function HighlightSkillSlotColor()
         colorOffset = [13, 4];
         slotCyOffset = [18, 1];
         yOffsetOffset = [21, 1];
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
