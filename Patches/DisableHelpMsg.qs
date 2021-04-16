@@ -10,7 +10,7 @@ function DisableHelpMsg()
         "6A 0D " +  // 00 push 0Dh
         "6A 2A ";   // 02 push 2Ah
 
-    var offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
@@ -18,7 +18,7 @@ function DisableHelpMsg()
             "6A 0E " +  // 00 push 0Eh
             "6A 2A ";   // 02 push 2Ah
 
-        offset = exe.findCode(code, PTYPE_HEX, false);
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -28,7 +28,7 @@ function DisableHelpMsg()
             "8B 01 " +  // 02 mov eax, [ecx]
             "6A 2A ";   // 04 push 2Ah
 
-        offset = exe.findCode(code, PTYPE_HEX, false);
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -38,7 +38,7 @@ function DisableHelpMsg()
             "8B 01 " +  // 02 mov eax, [ecx]
             "6A 2F ";   // 04 push 2Fh
 
-        offset = exe.findCode(code, PTYPE_HEX, false);
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -48,7 +48,7 @@ function DisableHelpMsg()
             "8B 11 " +  // 02 mov edx, [ecx]
             "6A 2F ";   // 04 push 2Fh
 
-        offset = exe.findCode(code, PTYPE_HEX, false);
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -65,7 +65,7 @@ function DisableHelpMsg()
         LANGTYPE +  // 00 CMP DWORD PTR DS:[g_serviceType], reg32_A
         "75 ";      // 04 JNE addr
 
-    var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
+    var offset2 = pe.find(code, offset - 0x20, offset);
 
     if (offset2 === -1)
     {
@@ -73,17 +73,17 @@ function DisableHelpMsg()
             LANGTYPE + "00 " +  // 00 cmp dword ptr ds:[g_serviceType], 0
             "75 ";              // 05 jnz short addr
 
-        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset);
+        offset2 = pe.find(code, offset - 0x20, offset);
     }
 
     if (offset2 === -1)
     {
         code =
             LANGTYPE +  // 00 mov eax, g_serviceType
-            "AB AB " +  // 04 cmp eax, edi
+            "?? ?? " +  // 04 cmp eax, edi
             "75 ";      // 06 jnz short addr
 
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x20, offset);
+        offset2 = pe.find(code, offset - 0x20, offset);
     }
 
     if (offset2 === -1)
