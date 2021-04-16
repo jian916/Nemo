@@ -16,7 +16,7 @@ function ReadMsgstringtabledottxt()
       + " 56"                       //PUSH ESI
       + " 75"                       //JNZ SHORT addr -> continue with msgStringTable.txt loading
       ;
-    var offset = exe.findCode(code, PTYPE_HEX, false);//VC9+ Clients
+    var offset = pe.findCode(code);  //VC9+ Clients
 
     if (offset === -1)
     {
@@ -26,7 +26,7 @@ function ReadMsgstringtabledottxt()
           + " 85 C0"         //TEST EAX, EAX
           + " 75"            //JNZ SHORT addr -> continue with msgStringTable.txt loading
         ;
-        offset = exe.findCode(code, PTYPE_HEX, false);//Older Clients
+        offset = pe.findCode(code); //Older Clients
     }
 
     if (offset === -1)
@@ -36,7 +36,7 @@ function ReadMsgstringtabledottxt()
           + " 75 25"                    // JNZ SHORT addr
           + " 56"                       // PUSH ESI
         ;
-        offset = exe.findCode(code, PTYPE_HEX, false); // 2016 clients [Secret]
+        offset = pe.findCode(code); // 2016 clients [Secret]
         offset2 = 3;
     }
 
@@ -47,7 +47,7 @@ function ReadMsgstringtabledottxt()
           + " 75 26"                    // JNZ SHORT addr
           + " 56"                       // PUSH ESI
         ;
-        offset = exe.findCode(code, PTYPE_HEX, false); // 2016 clients [Secret]
+        offset = pe.findCode(code); // 2016 clients [Secret]
         offset2 = 3;
     }
 
