@@ -12,7 +12,7 @@ function DisableGameGuard()
     return "Failed in Step 1 - GameGuard String missing";
 
   //Step 1b - Find its Reference
-  offset = exe.findCode(" 68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode(" 68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - GG String Reference missing";
 
@@ -24,7 +24,7 @@ function DisableGameGuard()
   + " 68"     //PUSH value
   ;
 
-  offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x160, offset);
+  offset = pe.find(code, offset - 0x160, offset);
   if (offset === -1)
     return "Failed in Step 1 - ProcessFindHack Function missing";
 
@@ -32,13 +32,13 @@ function DisableGameGuard()
 
   //Step 2a - Find pattern matching ProcessFindHack call
   code =
-    " E8 AB AB 00 00"  //CALL ProcessFindHack
+    " E8 ?? ?? 00 00"  //CALL ProcessFindHack
   + " 84 C0"           //TEST AL, AL
   + " 74 04"           //JE SHORT addr
-  + " C6 AB AB 01"     //MOV BYTE PTR DS:[reg32+byte], 1; addr2
+  + " C6 ?? ?? 01"     //MOV BYTE PTR DS:[reg32+byte], 1; addr2
   ;
 
-  var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+  var offsets = pe.findCodes(code, "\xAB");
   if (offsets.length === 0)
     return "Failed in Step 2 - No Calls found matching ProcessFindHack";
 
@@ -70,22 +70,22 @@ function DisableGameGuard()
   + " FF 35"                    //PUSH DWORD PTR DS:[addr2]
   ;
 
-  offsets = exe.findCodes(code, PTYPE_HEX, false);
+  offsets = pe.findCodes(code);
   if (offsets.length === 0)
     return "Failed in Step 3 - nProtect references missing";
 
   //Step 4a - Find the short JE before each reference
   code =
     " 84 C0"          //TEST AL, AL
-  + " 74 AB"          //JE SHORT addr
-  + " E8 AB AB AB FF" //CALL addr2
+  + " 74 ??"          //JE SHORT addr
+  + " E8 ?? ?? ?? FF" //CALL addr2
   + " 8B C8"          //MOV ECX, EAX
   + " E8"             //CALL addr3
   ;
 
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x50, offsets[i]);
+    offset = pe.find(code, offsets[i] - 0x50, offsets[i]);
 
     //Step 4b - Replace JE with JMP
     if (offset !== -1)
