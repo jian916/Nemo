@@ -12,22 +12,22 @@ function CancelToLoginWindow()
     //Step 1b - Find the case branch that occurs before the Cancel Button case.
     //          The pattern will match multiple locations of which 1 (or recently 2) is the one we need
     var code =
-        " 8D AB AB AB AB AB 00"  //LEA reg32_B, [reg32_A*8 + refAddr]
-      + " AB"                    //PUSH reg32_B
+        " 8D ?? ?? ?? ?? ?? 00"  //LEA reg32_B, [reg32_A*8 + refAddr]
+      + " ??"                    //PUSH reg32_B
       + " 68 37 03 00 00"        //PUSH 337
       + " E8"                    //CALL addr
     ;
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
 
     if (offsets.length === 0)
     {
         var code =
-            " 8D AB AB AB AB AB 01"  //LEA reg32_B, [reg32_A*8 + refAddr]
-          + " AB"                    //PUSH reg32_B
+            " 8D ?? ?? ?? ?? ?? 01"  //LEA reg32_B, [reg32_A*8 + refAddr]
+          + " ??"                    //PUSH reg32_B
           + " 68 37 03 00 00"        //PUSH 337
           + " E8"                    //CALL addr
         ;
-        offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsets = pe.findCodes(code);
     }
 
     if (offsets.length === 0)
@@ -42,24 +42,24 @@ function CancelToLoginWindow()
     //Step 2a - Find CConnection::Disconnect & CRagConnection::instanceR calls
     code =
         " 83 C4 08"       //ADD ESP, 8
-      + " E8 AB AB AB 00" //CALL CRagConnection::instanceR
+      + " E8 ?? ?? ?? 00" //CALL CRagConnection::instanceR
       + " 8B C8"          //MOV ECX, EAX
-      + " E8 AB AB AB 00" //CALL CConnection::Disconnect
-      + " B9 AB AB AB 00" //MOV ECX, OFFSET addr
+      + " E8 ?? ?? ?? 00" //CALL CConnection::Disconnect
+      + " B9 ?? ?? ?? 00" //MOV ECX, OFFSET addr
     ;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
             " 83 C4 08"       //ADD ESP, 8
-          + " E8 AB AB AB FF" //CALL CRagConnection::instanceR
+          + " E8 ?? ?? ?? FF" //CALL CRagConnection::instanceR
           + " 8B C8"          //MOV ECX, EAX
-          + " E8 AB AB AB FF" //CALL CConnection::Disconnect
-          + " B9 AB AB AB 00" //MOV ECX, OFFSET addr
+          + " E8 ?? ?? ?? FF" //CALL CConnection::Disconnect
+          + " B9 ?? ?? ?? 00" //MOV ECX, OFFSET addr
         ;
-//        code = code.replace(/ E8 AB AB AB 00/g, " E8 AB AB AB FF");
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+//        code = code.replace(/ E8 ?? ?? ?? 00/g, " E8 ?? ?? ?? FF");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -77,8 +77,8 @@ function CancelToLoginWindow()
     //Step 2d - Prep Cancel case pattern to look for
     var canceller =
         " 68" + offset.packToHex(4) //PUSH addr ; "메시지"
-      + " AB"    //PUSH reg32_A ; contains 0
-      + " AB"    //PUSH reg32_A
+      + " ??"    //PUSH reg32_A ; contains 0
+      + " ??"    //PUSH reg32_A
       + " 6A 01" //PUSH 1
       + " 6A 02" //PUSH 2
       + " 6A 11" //PUSH 11
@@ -96,12 +96,12 @@ function CancelToLoginWindow()
         //Step 3a - Find the cancel case after offsets[i] using the 'canceller' pattern
         //          We are looking for the msgBox creator that shows the quit message
         offsets[i] += csize;
-        offset = exe.find(canceller, PTYPE_HEX, true, "\xAB", offsets[i], offsets[i] + 0x80);
+        offset = pe.find(canceller, offsets[i], offsets[i] + 0x80);
 
         if (offset === -1)
         {
             var zeroPush = " 6A 00";
-            offset = exe.find(canceller.replace(" AB AB", " 6A 00 6A 00"), PTYPE_HEX, true, "\xAB", offsets[i], offsets[i] + 0x80);
+            offset = pe.find(canceller.replace(" ?? ??", " 6A 00 6A 00"), offsets[i], offsets[i] + 0x80);
         }
         else
         {
@@ -128,15 +128,15 @@ function CancelToLoginWindow()
         //Step 3d - Find the end point of the msgBox call.
         //          There will be a comparison for the return code
         code =
-            " 3D AB 00 00 00"    //CMP EAX, const
-          + " 0F 85 AB AB 00 00" //JNE addr; skip quitting.
+            " 3D ?? 00 00 00"    //CMP EAX, const
+          + " 0F 85 ?? ?? 00 00" //JNE addr; skip quitting.
         ;
-        var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + cansize, offset + cansize + 40);
+        var offset2 = pe.find(code, offset + cansize, offset + cansize + 40);
 
         if (offset2 === -1)
         {
-            code = code.replace(" 3D AB 00 00 00", " 83 F8 AB");
-            offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + cansize, offset + cansize + 40);
+            code = code.replace(" 3D ?? 00 00 00", " 83 F8 ??");
+            offset2 = pe.find(code, offset + cansize, offset + cansize + 40);
         }
 
         if (offset2 === -1)
@@ -150,7 +150,7 @@ function CancelToLoginWindow()
             zeroPush.repeat(3) //PUSH reg32 x3 or PUSH 0 x3
           + " 6A 02";
 
-        var offset3 = exe.find(code, PTYPE_HEX, false, "\xAB", offset2, offset2 + 0x20);
+        var offset3 = pe.find(code, offset2, offset2 + 0x20);
         if (offset3 === -1)
             continue;
 
