@@ -53,7 +53,7 @@ function IsSakray()
 function IsZero()
 {
     // search for "Software\Gravity Soft\RenewSetup Zero"
-    return(exe.find("53 6F 66 74 77 61 72 65 5C 47 72 61 76 69 74 79 20 53 6F 66 74 5C 52 65 6E 65 77 53  65 74 75 70 20 5A 65 72 6F", PTYPE_HEX) !== -1);
+    return(pe.find("53 6F 66 74 77 61 72 65 5C 47 72 61 76 69 74 79 20 53 6F 66 74 5C 52 65 6E 65 77 53  65 74 75 70 20 5A 65 72 6F") !== -1);
 }
 
 //###########################################################
@@ -69,12 +69,12 @@ function GetLangType()
     return ["'america' not found"];
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return ["'america' reference missing"];
 
   //Step 2a - Look for the g_serviceType assignment to 1 after it.
-  offset = exe.find(" C7 05 AB AB AB AB 01 00 00 00", PTYPE_HEX, true, "\xAB", offset + 5);
+  offset = pe.find(" C7 05 ?? ?? ?? ?? 01 00 00 00", offset + 5);
   if (offset === -1)
     return ["g_serviceType assignment missing"];
 
@@ -100,12 +100,12 @@ function GetServerType()
     throw "'sakray' not found";
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     throw "'sakray' reference missing";
 
   //Step 2a - Look for the g_serverType assignment to 1 after it.
-  offset = exe.find(" C7 05 AB AB AB AB 01 00 00 00", PTYPE_HEX, true, "\xAB", offset + 5);
+  offset = pe.find(" C7 05 ?? ?? ?? ?? 01 00 00 00", offset + 5);
   if (offset === -1)
     throw "g_serverType assignment missing";
 
@@ -133,12 +133,12 @@ function GetWinMgrInfo(skipError)
     //Step 1b - Find its reference which comes after a Window Manager call
     var code =
         getEcxWindowMgrHex() +        // 0 mov ecx, offset g_windowMgr
-        "E8 AB AB AB AB " +           // 5 call UIWindowMgr_MakeWindow
+        "E8 ?? ?? ?? ?? " +           // 5 call UIWindowMgr_MakeWindow
         "6A 00 " +                    // 10 push 0
         "6A 00 " +                    // 12 push 0
         "68 " + offset.packToHex(4);  // 14 push offset aNumaccount
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1)
         return "NUMACCOUNT reference missing";
 
@@ -213,16 +213,16 @@ function FetchPacketKeyInfo()
 
   //Step 1b - Find its reference
   if (offset !== -1)
-    offset = exe.findCode(" 68" + offset.packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode(" 68" + offset.packToHex(4));
 
   //Step 1c - In case its not there look for the Reference Pattern present usually after PACKET_CZ_ENTER
   if (offset === -1)
   {
 
     var code =          //template call format
-      " E8 AB AB AB AB" //CALL CRagConnection::instanceR
+      " E8 ?? ?? ?? ??" //CALL CRagConnection::instanceR
     + " 8B C8"          //MOV ECX, EAX
-    + " E8 AB AB AB AB" //CALL func
+    + " E8 ?? ?? ?? ??" //CALL func
     ;
 
     code =
@@ -239,7 +239,7 @@ function FetchPacketKeyInfo()
                //CALL CConnection::SetBlock
     + " 6A 06" //PUSH 6
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -247,14 +247,14 @@ function FetchPacketKeyInfo()
 
   //Step 2a - Find Pattern 1 - Keys pushed to the Key assigner function (Type 0)
   var code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
-  + " 68 AB AB AB AB"    //PUSH key3
-  + " 68 AB AB AB AB"    //PUSH key2
-  + " 68 AB AB AB AB"    //PUSH key1
+    " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
+  + " 68 ?? ?? ?? ??"    //PUSH key3
+  + " 68 ?? ?? ?? ??"    //PUSH key2
+  + " 68 ?? ?? ?? ??"    //PUSH key1
   + " E8"                //CALL CRagConnection::Obfuscate ; We will call it this for the time being
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+  var offset2 = pe.find(code, offset - 0x100, offset);
   if (offset2 !== -1)
   {
     //Step 2b - In case it succeeded Get the ECX assignment, RVA of the Obfuscate function & the packetKeys.
@@ -272,20 +272,20 @@ function FetchPacketKeyInfo()
   //Step 3a - Find Pattern 2 - Encryption + Key assignment fused into one function with mode argument.
   //          0 = Encrypt & Assign Keys, 1 = Assign Base Keys, 2 = Assign 0s = No Encryption
   code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
+    " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
   + " 6A 01"             //PUSH 1
   + " E8"                //CALL CRagConnection::Obfuscate2
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+  var offset2 = pe.find(code, offset - 0x100, offset);
   if (offset2 == -1)
   {
       code =
-        " 8B 0D AB AB AB AB" //MOV ECX, DWORD PTR DS:[refAddr]
+        " 8B 0D ?? ?? ?? ??" //MOV ECX, DWORD PTR DS:[refAddr]
       + " 6A 01"             //PUSH 1
       + " E8"                //CALL CRagConnection::Obfuscate2
       ;
-      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+      offset2 = pe.find(code, offset - 0x100, offset);
   }
   if (offset2 == -1)
     return "PKI: Failed to find Encryption call";
@@ -301,16 +301,16 @@ function FetchPacketKeyInfo()
   //Step 3c - Go Inside and look for Base Key assignment (No Shared Key format)
   var prefix =
     " 83 F8 01" //CMP EAX,1
-  + " 75 AB"    //JNE short
+  + " 75 ??"    //JNE short
   ;
   code =
     prefix
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+x], <Key 1> ; Keys may not be assigned in order - depends on x, y and z values
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+y], <Key 2>
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+z], <Key 3>
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+x], <Key 1> ; Keys may not be assigned in order - depends on x, y and z values
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+y], <Key 2>
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+z], <Key 3>
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x50);
+  offset2 = pe.find(code, offset, offset + 0x50);
 
   if (offset2 !== -1)
   {
@@ -332,13 +332,13 @@ function FetchPacketKeyInfo()
   //Step 4a - Look for Shared Key format
   code =
     prefix
-  + " B8 AB AB AB AB" // MOV EAX, Shared Key
-  + " 89 41 AB"       // MOV DWORD PTR DS:[ECX+x], EAX
-  + " 89 41 AB"       // MOV DWORD PTR DS:[ECX+y], EAX
+  + " B8 ?? ?? ?? ??" // MOV EAX, Shared Key
+  + " 89 41 ??"       // MOV DWORD PTR DS:[ECX+x], EAX
+  + " 89 41 ??"       // MOV DWORD PTR DS:[ECX+y], EAX
   + " C7 41"          // MOV DWORD PTR DS:[ECX+z], Unique Key
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x50);
+  offset2 = pe.find(code, offset, offset + 0x50);
 
   if (offset2 != -1)
   {
@@ -431,7 +431,7 @@ function GetFunction(funcName, dllName, ordinal)
     if (dllName !== "")
     {
       nameOff = exe.Rva2Raw(nameOff + imgBase);
-      var nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
+      var nameEnd = pe.find("00", nameOff);
       if (dllName !== exe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
     }
 
@@ -453,7 +453,7 @@ function GetFunction(funcName, dllName, ordinal)
         //Step 2d - The Thunk will point to a location with first 2 bytes as Hint followed by Function Name.
         //          So extract it after 2nd byte
         nameOff = exe.Rva2Raw((funcData & 0x7FFFFFFF) + imgBase) + 2;
-        nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
+        nameEnd = pe.find("00", nameOff);
 
         //Step 2e - Check if the Function name matches. If it does, save the address in IAT and break
         if (funcName === exe.fetch(nameOff, nameEnd - nameOff))
