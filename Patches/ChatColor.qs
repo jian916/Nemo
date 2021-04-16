@@ -11,12 +11,12 @@ function ChatColorGuild()
     " 6A 04"          //PUSH 4
   + " 68 B4 FF B4 00" //PUSH B4,FF,B4 (Light Green)
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
 
   if (offset === -1)
 {
-    code = code.replace(" 6A 04", " 6A 04 8D AB AB AB FF FF");//insert LEA reg32_A, [EBP-x] after PUSH 4
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 6A 04", " 6A 04 8D ?? ?? ?? FF FF");  // insert LEA reg32_A, [EBP-x] after PUSH 4
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
