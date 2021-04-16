@@ -25,7 +25,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     var overrideAddr = offset + overrideAddressOffset + 4 + exe.fetchDWord(offset + overrideAddressOffset);  // rva to va
 
     consoleLog("step 2a - find string 127.0.0.1");
-    var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
+    var offset = pe.find("31 32 37 2E 30 2E 30 2E 31 00");
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
     offset = exe.Raw2Rva(offset);
@@ -34,7 +34,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     var code = " " +
         offset.packToHex(4) + // offset 127.0.0.1
         " 26 1B 00 00"        // 6950
-    var otpAddr = exe.find(code, PTYPE_HEX, true, "\xAB");
+    var otpAddr = pe.find(code);
     if (otpAddr === -1)
         return "Failed in step 2b (old)";
     otpAddr = exe.Raw2Rva(otpAddr);
@@ -45,12 +45,12 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     consoleLog("step 3a - find otp_addr usage");
     var code =
         " FF 35" + otpAddr.packToHex(4) + // 0  push otp_addr
-        " 8B AB AB AB AB 00" +            // 6  mov esi, ds:_snprintf_s
-        " 68 AB AB AB 00" +               // 12 push offset "%s"
+        " 8B ?? ?? ?? ?? 00" +            // 6  mov esi, ds:_snprintf_s
+        " 68 ?? ?? ?? 00" +               // 12 push offset "%s"
         " 6A FF" +                        // 17 push 0FFFFFFFFh
-        " 8D AB AB AB FF FF" +            // 19 lea eax, [ebp+buf]
+        " 8D ?? ?? ?? FF FF" +            // 19 lea eax, [ebp+buf]
         " 6A 10"                          // 25 push 10h
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     var snprintfOffset = 8;
     if (offset === -1)
         return "Failed in step 3a (old)";
@@ -64,10 +64,10 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     var code =
         " 75 F4" +                                 // 0  jnz addr1
         " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
-        " FF 15 AB AB AB 00" +                     // 8  call ds:atoi
-        " FF 35 AB AB AB 00"                       // 14 push clientinfo_domain
+        " FF 15 ?? ?? ?? 00" +                     // 8  call ds:atoi
+        " FF 35 ?? ?? ?? 00"                       // 14 push clientinfo_domain
     var atoiOffset = 10;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 4a (old)";
 
@@ -90,7 +90,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 {
     consoleLog("step 2a - find string 127.0.0.1");
-    var offset = exe.find("31 32 37 2E 30 2E 30 2E 31 00", PTYPE_HEX);
+    var offset = pe.find("31 32 37 2E 30 2E 30 2E 31 00");
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
     offset = exe.Raw2Rva(offset);
@@ -99,7 +99,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var code = " " +
         offset.packToHex(4) + // offset 127.0.0.1
         " 26 1B 00 00"        // 6950
-    var otpAddr = exe.find(code, PTYPE_HEX, true, "\xAB");
+    var otpAddr = pe.find(code);
     if (otpAddr === -1)
         return "Failed in step 2b (new)";
     otpAddr = exe.Raw2Rva(otpAddr);
@@ -112,14 +112,14 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     consoleLog("step 3a - find otp_addr usage");
     var code =
         "FF 35" + otpAddr.packToHex(4) + // 0 push otp_addr
-        "8D AB AB AB AB FF " +        // 6 lea eax, [ebp+Dst]
-        "68 AB AB AB 00 " +           // 12 push offset aS
+        "8D ?? ?? ?? ?? FF " +        // 6 lea eax, [ebp+Dst]
+        "68 ?? ?? ?? 00 " +           // 12 push offset aS
         "6A FF " +                    // 17 push 0FFFFFFFFh
         "6A 10 " +                    // 19 push 10h
         "50 ";                        // 21 push eax
     var authAddrOffset = 2;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 3a (new)";
 
@@ -132,10 +132,10 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var code =
         " 75 F3" +                                 // 0  jnz addr1
         " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
-        " FF 15 AB AB AB 00" +                     // 8  call ds:atoi
-        " FF 35 AB AB AB 00"                       // 14 push clientinfo_domain
+        " FF 15 ?? ?? ?? 00" +                     // 8  call ds:atoi
+        " FF 35 ?? ?? ?? 00"                       // 14 push clientinfo_domain
     var atoiOffset = 10;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 4a (new)";
 
@@ -180,12 +180,12 @@ function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, cli
         "68 " + sdHex +               // 6 push offset aSD_6
         "6A FF " +                    // 11 push 0FFFFFFFFh
         "68 81 00 00 00 " +           // 13 push 81h
-        "68 AB AB AB AB " +           // 18 push offset g_auth_host_port
-        "E8 AB AB AB AB " +           // 23 call snprintf_s
+        "68 ?? ?? ?? ?? " +           // 18 push offset g_auth_host_port
+        "E8 ?? ?? ?? ?? " +           // 23 call snprintf_s
         "83 C4 18 ";                  // 28 add esp, 18h
     var authHostOffset = 19;
     var snprintfOffset = 24;
-    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", overrideAddr, overrideAddr + 0x300);
+    var offset = pe.find(code, overrideAddr, overrideAddr + 0x300);
 
     if (offset === -1)
         return "Failed in search snprintf_s call";
@@ -232,13 +232,13 @@ function RemoveHardcodedAddress()
 {
     consoleLog("step 1a - Find the code where we will remove call");
     var code =
-        " 80 3D AB AB AB AB 00" + // cmp byte_addr1, 0
-        " 75 AB" +                // jnz short addr2
-        " E8 AB AB 00 00" +       // call override_address_port
-        " E9 AB AB 00 00";        // jmp addr3
+        " 80 3D ?? ?? ?? ?? 00" + // cmp byte_addr1, 0
+        " 75 ??" +                // jnz short addr2
+        " E8 ?? ?? 00 00" +       // call override_address_port
+        " E9 ?? ?? 00 00";        // jmp addr3
     var overrideAddressOffset = 10;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset !== -1)
         return RemoveHardcodedAddressOld(offset, overrideAddressOffset);
@@ -247,7 +247,7 @@ function RemoveHardcodedAddress()
     var g_serverType = GetServerType();
 
     consoleLog("search 6900");
-    var offset = exe.find("36 39 30 30 00", PTYPE_HEX);
+    var offset = pe.find("36 39 30 30 00");
     if (offset === -1)
         return "Failed in search '6900' (new)";
     var portStrHex = exe.Raw2Rva(offset).packToHex(4);
@@ -255,17 +255,17 @@ function RemoveHardcodedAddress()
     consoleLog("search override address");
 
     var code =
-        "80 3D AB AB AB AB 00 " +     // 0 cmp byte_F64F5B, 0
-        "0F 85 AB AB AB 00 " +        // 7 jnz loc_716084
+        "80 3D ?? ?? ?? ?? 00 " +     // 0 cmp byte_F64F5B, 0
+        "0F 85 ?? ?? ?? 00 " +        // 7 jnz loc_716084
         "8B 15 " + g_serverType.packToHex(4) + // 13 mov edx, g_serverType
-        "A1 AB AB AB AB " +           // 19 mov eax, _dword_F09838
-        "8B 0D AB AB AB AB " +        // 24 mov ecx, _dword_F097F0
-        "C7 05 AB AB AB AB " + portStrHex; // 30 mov _off_CCF968, offset a6900
+        "A1 ?? ?? ?? ?? " +           // 19 mov eax, _dword_F09838
+        "8B 0D ?? ?? ?? ?? " +        // 24 mov ecx, _dword_F097F0
+        "C7 05 ?? ?? ?? ?? " + portStrHex; // 30 mov _off_CCF968, offset a6900
     var overrideAddressOffset = 13;
     var retAddrOffset = 9;
     var cmdHaveAccountOffset = 2;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 1 (new)";
 
