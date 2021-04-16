@@ -20,10 +20,10 @@ function ChangeWalkToDelay(value)
 {
     consoleLog("Step 1a - Search the first delay addition");
     var code =
-        "81 AB 58 02 00 00 " +  // 00 add ecx, 258h ; 600ms
-        "3B AB ";               // 06 cmp eax, ecx
+        "81 ?? 58 02 00 00 " +  // 00 add ecx, 258h ; 600ms
+        "3B ?? ";               // 06 cmp eax, ecx
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 1a - Pattern not found";
@@ -38,7 +38,7 @@ function ChangeWalkToDelay(value)
             "81 C1 5E 01 00 00 " +  // 00 add ecx, 15Eh ; 350ms
             "3B C1 " ;              // 06 cmp eax, ecx
 
-        var offset = exe.findCode(code, PTYPE_HEX, false);
+        var offset = pe.findCode(code);
 
         if (offset === -1)
             return "Failed in Step 1b - Pattern not found";
