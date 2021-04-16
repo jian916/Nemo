@@ -27,6 +27,8 @@ function reportLegacy(text)
 
 function registerExeLegacy()
 {
+    var enableLegacy = true;
+
     if (typeof(enableLegacy) !== "undefined")
         return;
     exe.findCode = function()
