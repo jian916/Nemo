@@ -14,17 +14,17 @@ function DisableHShield()
         return "Failed in Step 1a - String not found";
 
     consoleLog("Step 1b - Search its reference");
-    offset = exe.findCode("68 " + offset.packToHex(4), PTYPE_HEX, false);  // push offset addr ; "webclinic.ahnlab.com"
+    offset = pe.findCode("68 " + offset.packToHex(4));  // push offset addr ; "webclinic.ahnlab.com"
 
     if (offset === -1)
         return "Failed in Step 1b - Pattern not found";
 
     consoleLog("Step 1c - Search the JZ before the RETN that points to the PUSH");
     var code =
-        "74 AB " +  // 00 jz short addr2
+        "74 ?? " +  // 00 jz short addr2
         "33 C0 ";   // 04 xor eax, eax
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x10, offset);
+    offset = pe.find(code, offset - 0x10, offset);
 
     if (offset === -1)
         return "Failed in Step 1c - Pattern not found";
@@ -41,24 +41,24 @@ function DisableHShield()
             "8B E5 " +           // 06 mov esp, ebp
             "5D " +              // 08 pop ebp
             "C2 10 00 " +        // 09 retn 10h
-            "E8 AB AB AB AB " +  // 12 call sub_57AE40
+            "E8 ?? ?? ?? ?? " +  // 12 call sub_57AE40
             "85 C0 " +           // 17 test eax, eax
             "75 0E ";            // 19 jnz short loc_6FDD4C
 
         var repLoc = 12;
-        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        var offset = pe.findCode(code);
 
         if (offset === -1)
         {
             code =
                 "B8 01 00 00 00 " +  // 00 mov eax, 1
-                "E9 AB 01 00 00 " +  // 05 jmp loc_717703
-                "E8 AB AB AB AB " +  // 10 call sub_576E40
+                "E9 ?? 01 00 00 " +  // 05 jmp loc_717703
+                "E8 ?? ?? ?? ?? " +  // 10 call sub_576E40
                 "85 C0 " +           // 15 test eax, eax
                 "74 DD ";            // 17 jz short loc_717532
 
             repLoc = 10;
-            offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+            offset = pe.findCode(code);
         }
 
         if (offset === -1)
@@ -74,19 +74,19 @@ function DisableHShield()
     if (offset !== -1)
     {
         consoleLog("Step 3b - Search reference to Failure message");
-        offset = exe.findCode("68 " + offset.packToHex(4) + "FF 15 ", PTYPE_HEX, false);
+        offset = pe.findCode("68 " + offset.packToHex(4) + "FF 15 ");
 
         consoleLog("Step 3c - Search pattern before the referenced location within 0x40 bytes");
         if (offset !== -1)
         {
             code =
-                "E8 AB AB AB AB " +  // 00 CALL func1
+                "E8 ?? ?? ?? ?? " +  // 00 CALL func1
                 "84 C0 " +           // 05 TEST AL, AL
                 "74 16 " +           // 07 JZ SHORT addr1
-                "8B AB " +           // 09 MOV ECX, ESI
+                "8B ?? " +           // 09 MOV ECX, ESI
                 "E8 ";               // 11 CALL func2
 
-            offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x40, offset);
+            offset = pe.find(code, offset - 0x40, offset);
         }
 
         consoleLog("Step 3d - Replace the first call with code to return 1 and cleanup stack");
@@ -120,34 +120,34 @@ function DisableHShield()
 
     code =
         "68 " + strHex1 +    // 00 PUSH OFFSET addr; ASCII "ERROR"
-        "AB " +              // 05 PUSH reg32_A
-        "AB " +              // 06 PUSH reg32_B
+        "?? " +              // 05 PUSH reg32_A
+        "?? " +              // 06 PUSH reg32_B
         "FF 15 " + strHex2;  // 07 CALL DWORD PTR DS:[<&USER32.MessageBoxA>]
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
     {
-        code = code.replace("AB AB FF 15 ", "AB 6A 00 FF 15 ");  // Change PUSH reg32_B with PUSH 0
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        code = code.replace("?? ?? FF 15 ", "?? 6A 00 FF 15 ");  // Change PUSH reg32_B with PUSH 0
+        offset = pe.findCode(code);
     }
 
     if (offset !== -1)
     {
         consoleLog("Step 4d - Find the JNE after it that skips the HShield calls");
         code =
-            "80 3D AB AB AB 00 00 " +  // 00 CMP BYTE PTR DS:[addr1], 0
+            "80 3D ?? ?? ?? 00 00 " +  // 00 CMP BYTE PTR DS:[addr1], 0
             "75 ";                     // 07 JNE SHORT addr2
 
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+        offset2 = pe.find(code, offset, offset + 0x80);
 
         if (offset2 === -1)
         {
             code =
-                "39 AB AB AB AB 00 " +  // 00 CMP DWORD PTR DS:[addr1], reg32_A
+                "39 ?? ?? ?? ?? 00 " +  // 00 CMP DWORD PTR DS:[addr1], reg32_A
                 "75 ";                  // 06 JNE SHORT addr2
 
-            offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+            offset2 = pe.find(code, offset, offset + 0x80);
         }
 
         consoleLog("Step 4e - Replace the JNE with JMP to always skip");
@@ -215,7 +215,7 @@ function DisableHShield()
         {
             consoleLog("Step 5e - Get the DLL Name for the import entry");
             offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-            var offset3 = exe.find("00 ", PTYPE_HEX, false, "\xAB", offset2);
+            var offset3 = pe.find("00 ", offset2);
             var curDLL = exe.fetch(offset2, offset3 - offset2);
 
             consoleLog("Step 5f - Make sure its not a duplicate or aossdk.dll");
