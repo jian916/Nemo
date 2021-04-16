@@ -12,47 +12,47 @@ function DisableMultipleWindows()
 
     consoleLog("Step 1b - Find where it is called from.");
     var code =
-        " E8 AB AB AB FF" //CALL ResetTimer
-      + " AB"             //PUSH reg32
+        " E8 ?? ?? ?? FF" //CALL ResetTimer
+      + " ??"             //PUSH reg32
       + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
     ;
     var resetTimerOffset = 1;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB FF" //CALL ResetTimer
+            " E8 ?? ?? ?? FF" //CALL ResetTimer
           + " 6A 00 "         //PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB 00" //CALL ResetTimer
+            " E8 ?? ?? ?? 00" //CALL ResetTimer
           + " 6A 00 "         //PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            " 8B 35 AB AB AB AB" //CALL [func]
+            " 8B 35 ?? ?? ?? ??" //CALL [func]
           + " 6A 00 "            //PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 2;
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
