@@ -23,14 +23,14 @@ function ShowReplayButton()
     " 83 78 04 1E" //CMP DWORD PTR DS:[EAX+4], 1E
   + " 75"          //JNE SHORT addr
   ;
-  var offset = exe.find(code, PTYPE_HEX, false, "\xAB", result, result + 0x40);
+  var offset = pe.find(code, result, result + 0x40);
   if (offset === -1)  //New clients - reconstruct mode comparison
   {
     code =
-        " E8 AB AB AB AB"       //CALL func
-      + " 8D 45 AB"             //LEA EAX, [EBP+a]
+        " E8 ?? ?? ?? ??"       //CALL func
+      + " 8D 45 ??"             //LEA EAX, [EBP+a]
       ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", result, result + 0x20);
+    offset = pe.find(code, result, result + 0x20);
     if (offset === -1)
         return "Failed in Step 2.6 - Mode comparison missing";
 
@@ -73,7 +73,7 @@ function ShowReplayButton()
   + " 68 29 27 00 00" //PUSH 2729
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 3 - Select Server case missing";
 
@@ -81,40 +81,40 @@ function ShowReplayButton()
 
   //Step 3b - Find the Replay Mode Enable bit setting
   code =
-    " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
-  + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    " C6 40 ?? 01"          //MOV BYTE PTR DS:[EAX + const], 1
+  + " C7 ?? 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
   ;
   var assignedLen = 4;
 
-  var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset2 = pe.findCode(code);
   if (offset2 === -1)
   {
     code =
-      " C6 80 AB AB 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
-    + " C7 AB 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+      " C6 80 ?? ?? 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
+    + " C7 ?? 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
     assignedLen = 7;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
   {
      code =
-      " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
+      " C6 40 ?? 01"          //MOV BYTE PTR DS:[EAX + const], 1
     + " 33 C0"                 //XOR EAX, EAX
-    + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    + " C7 ?? 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
   var assignedLen = 4;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
   {
     code =
-      " C6 80 AB AB 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
+      " C6 80 ?? ?? 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
     + " 33 C0"                 //XOR EAX, EAX
-    + " C7 AB 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    + " C7 ?? 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
     assignedLen = 7;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
     return "Failed in Step 3 - Replay mode setter missing";
@@ -169,13 +169,13 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 
   //Step .1 - Find its reference inside the UI*Wnd::OnCreate function
   var code = offset.packToHex(4);
-  offset = exe.findCode(code + " C7", PTYPE_HEX, false);
+  offset = pe.findCode(code + " C7");
 
   if (offset === -1)
-    offset = exe.findCode(code + " 89", PTYPE_HEX, false);
+    offset = pe.findCode(code + " 89");
 
   if (offset === -1)
-    offset = exe.findCode(code + "AB AB AB AB C7", PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code + "?? ?? ?? ?? C7");
 
   if (offset === -1)
     return "1 - OnCreate function missing";
@@ -183,36 +183,42 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   offset += 5;
 
   //Step .2 - Find the coordinate assignment for the Cancel/Exit button
-  var offset2 = exe.find(" EA 00 00 00", PTYPE_HEX, false, "\xAB", offset, offset + 0x50);
+  var offset2 = pe.find(" EA 00 00 00", offset, offset + 0x50);
   if (offset2 === -1)
     return "2 - 2nd Button asssignment missing";
 
   //Step .3 - Find the coordinate assignment for the button we need
   var type = 1; //VC9
   var code =
-    " 89 AB 24 AB" //MOV DWORD PTR SS:[ESP + x], reg32_A ; x-coord
-  + " 89 AB 24 AB" //MOV DWORD PTR SS:[ESP + y], reg32_A ; y-coord
+    " 89 ?? 24 ??" //MOV DWORD PTR SS:[ESP + x], reg32_A ; x-coord
+  + " 89 ?? 24 ??" //MOV DWORD PTR SS:[ESP + y], reg32_A ; y-coord
   ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
-  var jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+  var jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
 
   if (jmpAddr === -1)
   {
     type = 2;//VC10
-    code = code.replace(/ 89 AB 24/g, " 89 AB");//change ESP + to EBP -
-    jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    code =
+      " 89 ?? ??" //MOV DWORD PTR SS:[EBP + x], reg32_A ; x-coord
+    + " 89 ?? ??" //MOV DWORD PTR SS:[EBP + y], reg32_A ; y-coord
+    ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
+    jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
   {
     type = 3; //VC11
-    code = code.replace(/ 89 AB AB/g, " C7 45 AB 9C FF FF FF");//change ESI to -64
-    jmpAddr = exe.find(code + suffix2, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    code =
+      " C7 45 ?? 9C FF FF FF" //MOV DWORD PTR SS:[EBP + x], reg32_A ; x-coord
+    + " C7 45 ?? 9C FF FF FF" //MOV DWORD PTR SS:[EBP + y], reg32_A ; y-coord
+    ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
+    jmpAddr = pe.find(code + suffix2, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
   {
     type = 4; //VC14
-    jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
@@ -258,7 +264,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     }
     case 4:
     {  //Move LEA EAX, [EBP+a] downward, so we don't get wrong eax value.
-    offset = exe.find(" 8D 45 AB", PTYPE_HEX, true, "\xAB", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
+    offset = pe.find(" 8D 45 ??", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
     if (offset === -1)
         return "4";
     var varCode = exe.fetchHex(offset, 3);
