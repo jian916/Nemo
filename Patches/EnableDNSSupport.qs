@@ -11,9 +11,9 @@ function EnableDNSSupport()
         return "Failed in Step 1 - IP not found";
 
     //Step 1b - Find the g_accountAddr assignment to the IP
-    var code = "C7 05 AB AB AB 00" + offset.packToHex(4); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII '211.172.247.115'
+    var code = "C7 05 ?? ?? ?? 00" + offset.packToHex(4); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII '211.172.247.115'
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - g_accountAddr assignment missing";
 
@@ -22,60 +22,60 @@ function EnableDNSSupport()
 
     //Step 2a - Find the code to hook our function to
     code =
-        " E8 AB AB AB FF"    //CALL g_resMgr
+        " E8 ?? ?? ?? FF"    //CALL g_resMgr
       + " 8B C8"             //MOV ECX,EAX
-      + " E8 AB AB AB FF"    //CALL CResMgr::Get
+      + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
       + " 50"                //PUSH EAX
       + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-      + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
+      + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
       + " A1" + gAccountAddr //MOV EAX,DWORD PTR DS:[g_accountAddr]
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     { // 2018-03-xx ragexe +
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
-          + " E8 AB AB AB FF"    //CALL CCheatDefenderMgr::init
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B 0D ?? ?? ?? ??" //mov ecx, g_CCheatDefenderMgr
+          + " E8 ?? ?? ?? FF"    //CALL CCheatDefenderMgr::init
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     { // 2018-05-30 ragexe +
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
-          + " E8 AB AB AB 00"    //CALL CCheatDefenderMgr::init
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B 0D ?? ?? ?? ??" //mov ecx, g_CCheatDefenderMgr
+          + " E8 ?? ?? ?? 00"    //CALL CCheatDefenderMgr::init
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
