@@ -35,11 +35,11 @@ function ChangeAutoFollowDelay(value)
   //Step 1a - Find the delay comparison
   var code =
     " FF D7"                //CALL EDI                     ;  timeGetTime
-  + " 2B 05 AB AB AB AB"    //SUB EAX, DWORD PRT DS:[addr] ;  lastFollowTime
+  + " 2B 05 ?? ?? ?? ??"    //SUB EAX, DWORD PRT DS:[addr] ;  lastFollowTime
   + " 3D E8 03 00 00"       //CMP EAX, 3E8h                ;  1000ms
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - AutoFollow Delay Code not found.";
 
