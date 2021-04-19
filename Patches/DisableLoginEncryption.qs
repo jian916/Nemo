@@ -9,12 +9,12 @@ function DisableLoginEncryption()
 
   //Step 1 - Find Encryptor function call.
   var code =
-    " E8 AB AB AB FF" //CALL Encryptor (preceded by PUSH reg32_A)
+    " E8 ?? ?? ?? FF" //CALL Encryptor (preceded by PUSH reg32_A)
   + " B9 06 00 00 00" //MOV ECX,6
   + " 8D"             //LEA reg32_B, [EBP-x]
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Encryptor call missing";
 
