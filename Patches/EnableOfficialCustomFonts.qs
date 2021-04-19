@@ -11,21 +11,21 @@ function EnableOfficialCustomFonts()
     //Step 1 - Find the JNE (Comparison pattern changes from client to client, but the JNE and CALL doesn't)
     var code =
         LANGTYPE + " 00 "     //CMP g_serviceType, 0
-      + " AB"                 //POP EDI
+      + " ??"                 //POP EDI
       + " 0F 85 AE 00 00 00"  //JNE addr - Skips .eot loading
-      + " E8 AB AB AB FF"     //CALL func
+      + " E8 ?? ?? ?? FF"     //CALL func
     ;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {  // 2018-05-30 +
         code =
             LANGTYPE + " 00 "     //CMP g_serviceType, 0
-          + " AB"                 //POP EDI
+          + " ??"                 //POP EDI
           + " 0F 85 AE 00 00 00"  //JNE addr - Skips .eot loading
-          + " E8 AB AB AB 00"     //CALL func
+          + " E8 ?? ?? ?? 00"     //CALL func
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
