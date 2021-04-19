@@ -12,33 +12,33 @@ function EnableProxySupport()
     return "Failed in Step 1 - setup string not found";
 
   //Step 1b - Find the string's referenced location (which is only inside CConnection::Connect)
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - setup string reference missing";
 
   //Step 2a - Find connect call (Indirect call pattern should be within 0x50 bytes before offset)  - VC9 onwards
   var code =
-    " FF 15 AB AB AB AB" //CALL DWORD PTR DS:[<&WS2_32.connect>]
+    " FF 15 ?? ?? ?? ??" //CALL DWORD PTR DS:[<&WS2_32.connect>]
   + " 83 F8 FF"          //CMP EAX,-1
-  + " 75 AB"             //JNZ SHORT addr
-  + " 8B AB AB AB AB AB" //MOV EDI,DWORD PTR DS:[<&WS2_32.WSAGetLastError>]
-  + " FF AB"             //CALL EDI
+  + " 75 ??"             //JNZ SHORT addr
+  + " 8B ?? ?? ?? ?? ??" //MOV EDI,DWORD PTR DS:[<&WS2_32.WSAGetLastError>]
+  + " FF ??"             //CALL EDI
   + " 3D 33 27 00 00"    //CMP EAX, 2733h
   ;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x50, offset);
+  var offset2 = pe.find(code, offset - 0x50, offset);
 
   if (offset2 === -1)
   {
     //Step 2b - Find connect call (Direct call pattern should be within 0x90 bytes before offset) - Older clients
     code =
-      " E8 AB AB AB AB" //CALL <&WS2_32.connect>
+      " E8 ?? ?? ?? ??" //CALL <&WS2_32.connect>
     + " 83 F8 FF"       //CMP EAX,-1
-    + " 75 AB"          //JNZ SHORT addr
-    + " E8 AB AB AB AB" //CALL <&WS2_32.WSAGetLastError>
+    + " 75 ??"          //JNZ SHORT addr
+    + " E8 ?? ?? ?? ??" //CALL <&WS2_32.WSAGetLastError>
     + " 3D 33 27 00 00" //CMP EAX, 2733h
     ;
 
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x90, offset);
+    offset2 = pe.find(code, offset - 0x90, offset);
     if (offset2 === -1)
       return "Failed in Step 2";//Both patterns failed
 
@@ -67,14 +67,14 @@ function EnableProxySupport()
   ;
 
   //Changing register from "ESI" to "EBX" for 2016+ EXE versions
-  if (exe.find(" 89 43 0C B8 02 00 00 00", PTYPE_HEX, true, "\xAB", offset2 - 0x50, offset2) !== -1)
+  if (pe.find(" 89 43 0C B8 02 00 00 00", offset2 - 0x50, offset2) !== -1)
   {
     code = code.replace(" 8B 46 0C", " 8B 43 0C");
     code = code.replace(" 89 46 0C", " 89 43 0C");
   }
 
   //Changing register from "ESI" to "EDI" for 2019+ EXE versions
-  if (exe.find(" 8D 47 08 ", PTYPE_HEX, true, "\xAB", offset2 - 0x20, offset2) !== -1)
+  if (pe.find(" 8D 47 08 ", offset2 - 0x20, offset2) !== -1)
   {
     code = code.replace(" 8B 46 0C", " 8B 47 0C");
     code = code.replace(" 89 46 0C", " 89 47 0C");
