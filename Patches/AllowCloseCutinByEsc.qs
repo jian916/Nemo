@@ -24,12 +24,12 @@ function AllowCloseCutinByEsc()
     // search in UIIllustWnd_virt136 / case 6
     var code =
         getEcxModeMgrHex() + // mov ecx, offset g_modeMgr
-        "E8 AB AB AB AB" +  // call CModeMgr::GetGameMode
+        "E8 ?? ?? ?? ??" +  // call CModeMgr::GetGameMode
         "8B 10" +           // mov edx, [eax]
         "6A 00" +           // push 0
-        "6A AB" +           // push 1
+        "6A ??" +           // push 1
         "6A FF" +           // push 0FFFFFFFFh
-        "68 AB AB AB AB" +  // push offset EmptyStr
+        "68 ?? ?? ?? ??" +  // push offset EmptyStr
         "6A 64" +           // push 64h
         "8B C8" +           // mov ecx, eax
         "FF 52";            // call dword ptr [edx+18h] (CGameMode_virt24)
@@ -38,7 +38,7 @@ function AllowCloseCutinByEsc()
     var getGameModeOffset = 6;
     var EmptyStrOffset = 19;
     var vptrOffset = 29;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 1 - check pattern not found";
 
@@ -55,19 +55,19 @@ function AllowCloseCutinByEsc()
     code =
         "56 " +                // push esi
         "8B CF " +             // mov ecx, edi
-        "E8 AB AB AB AB " +    // call UIWindowMgr::check_close   <-- patch here
+        "E8 ?? ?? ?? ?? " +    // call UIWindowMgr::check_close   <-- patch here
         "84 C0 " +             // test al, al
-        "0F 85 AB AB AB AB " + // jnz addr2
+        "0F 85 ?? ?? ?? ?? " + // jnz addr2
         "83 FE FF " +          // cmp esi, 0FFFFFFFFh
         "74 10 " +             // jnz addr1
         "56 " +                // push esi
         "8B CF " +             // mov ecx, edi
-        "E8 AB AB AB AB " +    // call UIWindowMgr::DeleteWindow
+        "E8 ?? ?? ?? ?? " +    // call UIWindowMgr::DeleteWindow
         "3C 01 " +             // cmp al, 1
         "0F 84 ";              // jz addr2
     var checkFuncOffset = 4;
     var deleteFuncOffset = 25;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 2 - check esc pattern not found";
 
