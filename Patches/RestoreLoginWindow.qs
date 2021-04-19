@@ -10,26 +10,26 @@ function RestoreLoginWindow()
   //Step 1a - Find the code where we need to make client call the login window
   var code =
     " 50"                     //PUSH EAX
-  + " E8 AB AB AB FF"         //CALL g_ResMgr
+  + " E8 ?? ?? ?? FF"         //CALL g_ResMgr
   + " 8B C8"                  //MOV ECX, EAX
-  + " E8 AB AB AB FF"         //CALL CResMgr::Get
+  + " E8 ?? ?? ?? FF"         //CALL CResMgr::Get
   + " 50"                     //PUSH EAX
   + getEcxWindowMgrHex()      //MOV ECX, OFFSET g_windowMgr
-  + " E8 AB AB AB FF"         //CALL UIWindowMgr::SetWallpaper
-  + " 80 3D AB AB AB 00 00"   //CMP BYTE PTR DS:[g_Tparam], 0 <- The parameter push + call to UIWindowManager::MakeWindow originally here
+  + " E8 ?? ?? ?? FF"         //CALL UIWindowMgr::SetWallpaper
+  + " 80 3D ?? ?? ?? 00 00"   //CMP BYTE PTR DS:[g_Tparam], 0 <- The parameter push + call to UIWindowManager::MakeWindow originally here
   + " 74 13"                  //JZ SHORT addr1 - after the JMP
-  + " C6 AB AB AB AB 00 00"   //MOV BYTE PTR DS:[g_Tparam], 0
-  + " C7 AB AB 04 00 00 00"   //MOV DWORD PTR DS:[EBX+0C], 4 <- till here we need to overwrite
+  + " C6 ?? ?? ?? ?? 00 00"   //MOV BYTE PTR DS:[g_Tparam], 0
+  + " C7 ?? ?? 04 00 00 00"   //MOV DWORD PTR DS:[EBX+0C], 4 <- till here we need to overwrite
   + " E9"                     //JMP addr2
   ;
 
-  var codeOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var codeOffset = pe.findCode(code);
   // newer exes have g_tParam located past 00nnnn, so we need to expand the search!
   if (codeOffset === -1)
   {
-    code = code.replace(" 80 3D AB AB AB 00", " 80 3D AB AB AB 01");
-    code = code.replace(" C6 AB AB AB AB 00", " C6 AB AB AB AB 01");
-    codeOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 80 3D ?? ?? ?? 00", " 80 3D ?? ?? ?? 01");
+    code = code.replace(" C6 ?? ?? ?? ?? 00", " C6 ?? ?? ?? ?? 01");
+    codeOffset = pe.findCode(code);
   }
 
   if (codeOffset === -1)
@@ -50,13 +50,13 @@ function RestoreLoginWindow()
   //Step 2b - Find the UIWindowMgr::MakeWindow call
   code =
     movEcx              //MOV ECX, OFFSET g_windowMgr
-  + " E8 AB AB AB FF"   //CALL UIWindowMgr::MakeWindow
+  + " E8 ?? ?? ?? FF"   //CALL UIWindowMgr::MakeWindow
   + " 6A 00"            //PUSH 0
   + " 6A 00"            //PUSH 0
   + " 68" + offset.packToHex(4) //PUSH addr ; ASCII "NUMACCOUNT"
   ;
 
-  var o2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var o2 = pe.findCode(code);
   if (o2 === -1)
     return "Failed in Step 2 - MakeWindow not found";
 
@@ -86,34 +86,34 @@ function RestoreLoginWindow()
     return "Failed in Step 4 - " + LANGTYPE[0];
 
   code =
-    " 80 3D AB AB AB 00 00"   //CMP BYTE PTR DS:[g_passwordencrypt], 0
-  + " 0F 85 AB AB 00 00"      //JNE addr1
+    " 80 3D ?? ?? ?? 00 00"   //CMP BYTE PTR DS:[g_passwordencrypt], 0
+  + " 0F 85 ?? ?? 00 00"      //JNE addr1
   + " A1" + LANGTYPE          //MOV EAX, DWORD PTR DS:[g_serviceType]
-  + " AB AB"                  //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-  + " 0F 84 AB AB 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
-  + " 83 AB 12"               //CMP EAX, 12
-  + " 0F 84 AB AB 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+  + " ?? ??"                  //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+  + " 0F 84 ?? ?? 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+  + " 83 ?? 12"               //CMP EAX, 12
+  + " 0F 84 ?? ?? 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
   ;
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" A1", " 8B AB"); //MOV reg32_A, DWORD PTR DS:[g_serviceType]
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" A1", " 8B ??"); //MOV reg32_A, DWORD PTR DS:[g_serviceType]
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
   {
       code =
-        " 80 3D AB AB AB 01 00"   //CMP BYTE PTR DS:[g_passwordencrypt], 0
-      + " 0F 85 AB AB 00 00"      //JNE addr1
-      + " 8B AB" + LANGTYPE       //MOV EAX, DWORD PTR DS:[g_serviceType]
-      + " AB AB"                  //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-      + " 0F 84 AB AB 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
-      + " 83 AB 12"               //CMP EAX, 12
-      + " 0F 84 AB AB 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+        " 80 3D ?? ?? ?? 01 00"   //CMP BYTE PTR DS:[g_passwordencrypt], 0
+      + " 0F 85 ?? ?? 00 00"      //JNE addr1
+      + " 8B ??" + LANGTYPE       //MOV EAX, DWORD PTR DS:[g_serviceType]
+      + " ?? ??"                  //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+      + " 0F 84 ?? ?? 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+      + " 83 ?? 12"               //CMP EAX, 12
+      + " 0F 84 ?? ?? 00 00"      //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
       ;
-      offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+      offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -149,18 +149,18 @@ function RestoreLoginWindow()
   + " FF"               //CALL reg32_A or CALL DWORD PTR DS:[reg32_A+const]
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 5 - Unable to find g_modeMgr code";
 
   //Step 5b - Find the start of the function
   code =
-    " 83 3D AB AB AB AB 01"   //CMP DWORD PTR DS:[addr1], 1
-  + " 75 AB"                  //JNE addr2
+    " 83 3D ?? ?? ?? ?? 01"   //CMP DWORD PTR DS:[addr1], 1
+  + " 75 ??"                  //JNE addr2
   + " 8B 0D"                  //MOV ECX, DWORD PTR DS:[Reference]
   ;
 
-  var offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 30, offset);
+  var offset = pe.find(code, offset - 30, offset);
   if (offset === -1)
     return "Failed in Step 5 - Start of Function missing";
 
@@ -172,7 +172,7 @@ function RestoreLoginWindow()
   ;
 
   //Step 5d - Find how many PUSH 0s are there. Older clients had 3 arguments but newer ones only have 3
-  var pushes = exe.findAll("6A 00", PTYPE_HEX, false, "\xAB", offset + code.hexlength() + 4, offset + code.hexlength() + 16);
+  var pushes = pe.findAll("6A 00", offset + code.hexlength() + 4, offset + code.hexlength() + 16);
 
   var hwndHex = table.getHex4(table.g_hMainWnd);
 
@@ -187,10 +187,10 @@ function RestoreLoginWindow()
   + " 6A 01"                      //PUSH 1
   + " 6A 00"                      //PUSH 0
   + " 6A 00"                      //PUSH 0
-  + " 68 AB AB AB 00"             //PUSH addr2 ; ASCII "http://www.ragnarok.co.in/index.php"
-  + " 68 AB AB AB 00"             //PUSH addr3 ; ASCII "open"
+  + " 68 ?? ?? ?? 00"             //PUSH addr2 ; ASCII "http://www.ragnarok.co.in/index.php"
+  + " 68 ?? ?? ?? 00"             //PUSH addr3 ; ASCII "open"
   + " 51"                         //PUSH ECX
-  + " FF 15 AB AB AB 00"          //CALL DWORD PTR DS:[<&SHELL32.ShellExecuteA>]
+  + " FF 15 ?? ?? ?? 00"          //CALL DWORD PTR DS:[<&SHELL32.ShellExecuteA>]
   + " C7 06 00 00 00 00"          //MOV DWORD PTR DS:[ESI],0 (ESI is supposed to have g_modeMgr but it doesn't always point to it, so we assign it another way)
   ;
   /*==============================================================================
@@ -199,7 +199,7 @@ function RestoreLoginWindow()
    but the client would dimmer down/flicker and appear again at login interface.
   ===============================================================================*/
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
 
   if (offset === -1)
   { //For recent client g_hMainWnd is directly pushed instead of assigning to ECX first
@@ -212,13 +212,13 @@ function RestoreLoginWindow()
     + " 6A 01"                      //PUSH 1
     + " 6A 00"                      //PUSH 0
     + " 6A 00"                      //PUSH 0
-    + " 68 AB AB AB 00"             //PUSH addr2 ; ASCII "http://www.ragnarok.co.in/index.php"
-    + " 68 AB AB AB 00"             //PUSH addr3 ; ASCII "open"
+    + " 68 ?? ?? ?? 00"             //PUSH addr2 ; ASCII "http://www.ragnarok.co.in/index.php"
+    + " 68 ?? ?? ?? 00"             //PUSH addr3 ; ASCII "open"
     + " FF 35 " + hwndHex           //PUSH DWORD PTR DS:[g_hMainWnd]
-    + " FF 15 AB AB AB 00"          //CALL DWORD PTR DS:[<&SHELL32.ShellExecuteA>]
+    + " FF 15 ?? ?? ?? 00"          //CALL DWORD PTR DS:[<&SHELL32.ShellExecuteA>]
     + " C7 06 00 00 00 00"          //MOV DWORD PTR DS:[ESI],0 (ESI is supposed to have g_modeMgr but it doesn't always point to it, so we assign it another way)
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -261,7 +261,7 @@ function RestoreLoginWindow()
     //  PUSH 1
     //  PUSH 0
     //  PUSH addr; "ID"
-    offset = exe.findCode("6A 01 6A 00 68" + offset.packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode("6A 01 6A 00 68" + offset.packToHex(4));
     if (offset === -1)
       return "Failed in Step 6 - ID reference not found";
 
@@ -269,7 +269,7 @@ function RestoreLoginWindow()
     //  PUSH EAX
     //  CALL func
     //  JMP addr
-    offset = exe.find("50 E8 AB AB AB 00 EB", PTYPE_HEX, true, "\xAB", offset - 80, offset);
+    offset = pe.find("50 E8 ?? ?? ?? 00 EB", offset - 80, offset);
     if (offset === -1)
       return "Failed in Step 6 - Function not found";
 
@@ -277,7 +277,7 @@ function RestoreLoginWindow()
     var call = exe.fetchDWord(offset + 2) + offset + 6;
 
     //Step 6e - Sly devils have made a jump here so search for that.
-    offset = exe.find("E9", PTYPE_HEX, false, "\xAB", call);
+    offset = pe.find("E9", call);
     if (offset === -1)
       return "Failed in Step 6 - Jump Not found";
 
@@ -288,7 +288,7 @@ function RestoreLoginWindow()
     //  PUSH 13
     //  CALL DWORD PTR DS:[addr]
     //  AND EAX, 000000FF
-    offset = exe.find(" 6A 13 FF 15 AB AB AB 00 25 FF 00 00 00", PTYPE_HEX, true, "\xAB", call);
+    offset = pe.find(" 6A 13 FF 15 ?? ?? ?? 00 25 FF 00 00 00", call);
     if (offset === -1)
       return "Failed in Step 6 - Pattern not found";
 
