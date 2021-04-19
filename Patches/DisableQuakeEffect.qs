@@ -10,7 +10,7 @@ function DisableQuakeEffect()
     if (bmpOffset === -1)
     {
         // .BMP\x00
-        bmpOffset = exe.find("2E 42 4D 50 00", PTYPE_HEX, false);
+        bmpOffset = pe.find("2E 42 4D 50 00");
         if (bmpOffset !== -1)
             bmpOffset = exe.Raw2Rva(bmpOffset);
     }
@@ -23,7 +23,7 @@ function DisableQuakeEffect()
         " 68" + bmpOffset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
       + " 8B"                       //MOV ECX, reg32_A
       ;
-    var offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
@@ -32,23 +32,23 @@ function DisableQuakeEffect()
             " 68" + bmpOffset.packToHex(4) //PUSH OFFSET addr; ASCII ".BMP"
           + " 8D"                          //MOV ECX, [reg32+addr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, false);
+        offset = pe.findCode(code);
     }
     if (offset === -1)
         return "Failed in Step 1 - BMP reference missing";
 
     //Step 2a - Find the SetQuakeInfo call (should be within 0x80 bytes before offset)
     code =
-        " E8 AB AB AB AB" //CALL CView::SetQuakeInfo
+        " E8 ?? ?? ?? ??" //CALL CView::SetQuakeInfo
       + " 33 C0"          //XOR EAX, EAX
-      + " E9 AB AB 00 00" //JMP addr
+      + " E9 ?? ?? 00 00" //JMP addr
     ;
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x80, offset);
+    var offset2 = pe.find(code, offset - 0x80, offset);
 
     if (offset2 === -1)
     {
-        code = code.replace("33 C0 E9 AB AB 00 00", "AB AB 33 C0");//Remove the JMP and Insert two bytes before XOR to represent POP reg32 instructions
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+        code = code.replace("33 C0 E9 ?? ?? 00 00", "?? ?? 33 C0");//Remove the JMP and Insert two bytes before XOR to represent POP reg32 instructions
+        offset2 = pe.find(code, offset - 0x100, offset);
     }
 
     if (offset2 === -1)
@@ -64,16 +64,16 @@ function DisableQuakeEffect()
     //Step 3a - Find the SetQuake call (should be within 0xA0 bytes before offset)
     code =
         " 6A 01"          //PUSH 1
-      + " E8 AB AB AB AB" //CALL CView::SetQuake
+      + " E8 ?? ?? ?? ??" //CALL CView::SetQuake
       + " 33 C0"          //XOR EAX, EAX
-      + " E9 AB AB 00 00" //JMP addr
+      + " E9 ?? ?? 00 00" //JMP addr
     ;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0xA0, offset);
+    offset2 = pe.find(code, offset - 0xA0, offset);
 
     if (offset2 === -1)
     {
-        code = code.replace("33 C0 E9 AB AB 00 00", "AB AB 33 C0");//Remove the JMP and Insert two bytes before XOR to represent POP reg32 instructions
-        offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x120, offset);
+        code = code.replace("33 C0 E9 ?? ?? 00 00", "?? ?? 33 C0");//Remove the JMP and Insert two bytes before XOR to represent POP reg32 instructions
+        offset2 = pe.find(code, offset - 0x120, offset);
     }
 
     if (offset2 === -1)
