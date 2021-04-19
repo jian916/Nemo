@@ -12,42 +12,42 @@ function CustomExpBarLimits()
   + " 68 38 FF FF FF" //PUSH -0C8
   ;
 
-  var refOffsets = exe.findCodes(code, PTYPE_HEX, false);
+  var refOffsets = pe.findCodes(code);
   if (refOffsets.length === 0)
     return "Failed in Step 1 - Reference PUSHes missing";
 
   //Step 1b - Find the Job ID getter before the first reference
   code =
     getEcxSessionHex() //MOV ECX, OFFSET g_session
-  + " E8 AB AB AB 00" //CALL CSession::jobIdFunc
+  + " E8 ?? ?? ?? 00" //CALL CSession::jobIdFunc
   + " 50"             //PUSH EAX
   + getEcxSessionHex() //MOV ECX, OFFSET g_session
-  + " E8 AB AB AB 00" //CALL CSession::isThirdJob
+  + " E8 ?? ?? ?? 00" //CALL CSession::isThirdJob
 
   var suffix =
     " 85 C0"          //TEST EAX, EAX
-  + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[g_level]
+  + " A1 ?? ?? ?? 00" //MOV EAX, DWORD PTR DS:[g_level]
   + " BF 63 00 00 00" //MOV EDI, 63
   ;
   var type = 1;//VC6 style
-  var offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
+  var offset = pe.find(code + suffix, refOffsets[0] - 0x120, refOffsets[0]);
 
   if (offset === -1)
   {
     suffix =
-      " 8B 8E AB 00 00 00" //MOV ECX, DWORD PTR DS:[ESI+const]
+      " 8B 8E ?? 00 00 00" //MOV ECX, DWORD PTR DS:[ESI+const]
     + " BF 63 00 00 00"    //MOV EDI, 63
     + " 85 C0"             //TEST EAX, EAX
     ;
     type = 2;//VC9 style 1
-    offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
+    offset = pe.find(code + suffix, refOffsets[0] - 0x120, refOffsets[0]);
   }
 
   if (offset === -1)
   {
-    suffix = suffix.replace(" 8B 8E AB 00 00 00", "");
+    suffix = suffix.replace(" 8B 8E ?? 00 00 00", "");
     type = 3;//VC9 style 2
-    offset = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", refOffsets[0] - 0x120, refOffsets[0]);
+    offset = pe.find(code + suffix, refOffsets[0] - 0x120, refOffsets[0]);
   }
 
   if (offset === -1)
@@ -67,10 +67,10 @@ function CustomExpBarLimits()
   }
   else
   {
-    var offset2 = exe.find(" 81 3D AB AB AB 00 AB 00 00 00", PTYPE_HEX, true, "\xAB", offset, refOffsets[0]); //CMP DWORD PTR DS:[g_level], value
+    var offset2 = pe.find(" 81 3D ?? ?? ?? 00 ?? 00 00 00", offset, refOffsets[0]); //CMP DWORD PTR DS:[g_level], value
 
     if (offset2 === -1)
-      offset2 = exe.find(" 39 3D AB AB AB 00 75", PTYPE_HEX, true, "\xAB", offset, refOffsets[0]);//CMP DWORD PTR DS:[g_level], EDI
+      offset2 = pe.find(" 39 3D ?? ?? ?? 00 75", offset, refOffsets[0]);//CMP DWORD PTR DS:[g_level], EDI
 
     if (offset2 === -1)
       return "Failed in Step 1 - First comparison missing";
@@ -79,7 +79,7 @@ function CustomExpBarLimits()
   }
 
   //Step 2a - Find the ESI+const movement to ECX between baseBegin and first reference offset
-  offset = exe.find(" 8B 8E AB 00 00 00", PTYPE_HEX, true, "\xAB", baseBegin, refOffsets[0]);//MOV ECX, DWORD PTR DS:[ESI+const]
+  offset = pe.find(" 8B 8E ?? 00 00 00", baseBegin, refOffsets[0]);//MOV ECX, DWORD PTR DS:[ESI+const]
   if (offset === -1)
     return "Failed in Step 2 - First ESI Offset missing";
 
@@ -109,7 +109,7 @@ function CustomExpBarLimits()
   + " 68 38 FF FF FF" //PUSH -0C8
   ;
 
-  var refOffsets2 = exe.findAll(code, PTYPE_HEX, true, "\xAB", jobBegin, jobBegin + 0x120);
+  var refOffsets2 = pe.findAll(code, jobBegin, jobBegin + 0x120);
   if (refOffsets2.length === 0)
     return "Failed in Step 3 - 2nd Reference PUSHes missing";
 
@@ -131,9 +131,9 @@ function CustomExpBarLimits()
   }
 
   //Step 3c - Find g_jobLevel reference between the 2nd reference set
-  code = " 83 3D AB AB AB 00 0A"; //CMP DWORD PTR DS:[g_jobLevel], 0A
+  code = " 83 3D ?? ?? ?? 00 0A"; //CMP DWORD PTR DS:[g_jobLevel], 0A
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffsets2[0], refOffsets2[refOffsets2.length - 1]);
+  offset = pe.find(code, refOffsets2[0], refOffsets2[refOffsets2.length - 1]);
   if (offset === -1)
     return "Failed in Step 3 - g_jobLevel reference missing";
 
