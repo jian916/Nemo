@@ -12,7 +12,7 @@ function MoveItemCountUpwards()
   + " 0F BF CE"       //MOVSX ECX, SI
   ;
   var type = 1;//VC6 & Early VC9
-  var offsets = exe.findCodes(code, PTYPE_HEX, false);
+  var offsets = pe.findCodes(code);
 
   if (offsets.length === 0)
   {
@@ -26,7 +26,7 @@ function MoveItemCountUpwards()
       type = 3; //VC10
     else
       type = 2; //VC9
-    offsets = exe.findCodes(code, PTYPE_HEX, false);
+    offsets = pe.findCodes(code);
   }
 
   if (offsets.length === 0)
@@ -39,7 +39,7 @@ function MoveItemCountUpwards()
     + " 98"             //CWDE
     ;
     type = 4; //VC11
-    offsets = exe.findCodes(code, PTYPE_HEX, false);
+    offsets = pe.findCodes(code);
   }
 
   if (offsets.length === 0)
@@ -72,7 +72,7 @@ function MoveItemCountUpwards()
   var offset = -1;
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] - 0x50, offsets[i]);
+    offset = pe.find(code, offsets[i] - 0x50, offsets[i]);
     if (offset !== -1)
       break;
   }
