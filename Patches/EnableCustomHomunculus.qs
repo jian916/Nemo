@@ -13,9 +13,9 @@ function EnableCustomHomunculus()
     return "Failed in Step 1 - LIF not found";
 
   //Step 1b - Find its reference - This is where all the homunculus names are loaded into the table.
-  var code = " C7 AB C4 5D 00 00" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A+5DC4], OFFSET addr; ASCII "LIF"
+  var code = " C7 ?? C4 5D 00 00" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A+5DC4], OFFSET addr; ASCII "LIF"
 
-  var hookLoc = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var hookLoc = pe.findCode(code);
   if (hookLoc === -1)
     return "Failed in Step 1 - homun code not found";
 
@@ -95,7 +95,7 @@ function EnableCustomHomunculus()
   + " B9 33 00 00 00" //MOV ECX, 33
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset !== -1)
   {
     //Step 4b - Replace the 33 with MaxHomun - 6001
@@ -110,7 +110,7 @@ function EnableCustomHomunculus()
   + " 3D A5 17 00 00" //CMP EAX, 17A5
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 4";
 
