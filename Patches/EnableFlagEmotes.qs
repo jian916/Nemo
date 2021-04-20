@@ -10,15 +10,15 @@ function EnableFlagEmotes()
   var code =
     " 05 2E FF FF FF"    //ADD EAX,-D2
   + " 83 F8 08"          //CMP EAX, 08
-  + " 0F 87 AB AB 00 00" //JA addr -> skip showing emotes
+  + " 0F 87 ?? ?? 00 00" //JA addr -> skip showing emotes
   + " FF 24 85"          //JMP DWORD PTR DS:[EAX*4+refAddr]
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" 05 2E FF FF FF", " 83 C0 AB");//change ADD EAX, -D2 with ADD EAX, -54
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 05 2E FF FF FF", " 83 C0 ??");//change ADD EAX, -D2 with ADD EAX, -54
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -64,7 +64,7 @@ function EnableFlagEmotes()
   var code2 =
     " 6A 00" //PUSH 0
   + " 6A 00" //PUSH 0
-  + " 6A AB" //PUSH emoteConstant
+  + " 6A ??" //PUSH emoteConstant
   + " 6A 1F" //PUSH 1F
   + " FF"    //CALL EDX or CALL DWORD PTR DS:[EAX+const]
   ;
@@ -76,7 +76,7 @@ function EnableFlagEmotes()
     var offset = exe.Rva2Raw(exe.fetchDWord(refAddr + (i - 1)*4));
 
     //Step 3c - Find the first code. Ideally it would be at offset itself unless something changed
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
+    offset = pe.find(code, offset);
     if (offset === -1)
       return "Failed in Step 3 - First part missing : " + i;
 
@@ -97,7 +97,7 @@ function EnableFlagEmotes()
     if (consts[i])
     {
       //Step 3e - Find the second code.
-      offset = exe.find(code2, PTYPE_HEX, true, "\xAB", offset);
+      offset = pe.find(code2, offset);
       if (offset === -1)
         return "Failed in Step 3 - Second part missing : " + i;
 
