@@ -17,6 +17,8 @@
 
 function pe_find(code, startRaw, endRaw)
 {
+    checkArgs(arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
+
     if (typeof(startRaw) === "undefined")
     {
         startRaw = 0;
@@ -31,6 +33,8 @@ function pe_find(code, startRaw, endRaw)
 
 function pe_findAll(code, startRaw, endRaw)
 {
+    checkArgs(arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
+
     if (typeof(startRaw) === "undefined")
     {
         startRaw = 0;
@@ -54,6 +58,8 @@ function pe_findAll(code, startRaw, endRaw)
 
 function pe_findCode(code)
 {
+    checkArgs(arguments, [["String"]]);
+
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
     var endRaw = sect[1];
@@ -62,6 +68,8 @@ function pe_findCode(code)
 
 function pe_findCodes(code)
 {
+    checkArgs(arguments, [["String"]]);
+
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
     var endRaw = sect[1];
@@ -79,6 +87,8 @@ function pe_findCodes(code)
 
 function pe_match(code, addrRaw)
 {
+    checkArgs(arguments, [["String", "Number"]]);
+
     var offset = pe.findMaskInternal(code, addrRaw, addrRaw + 1);
     if (offset !== addrRaw)
         return false;
