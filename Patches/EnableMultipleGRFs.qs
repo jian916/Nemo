@@ -29,7 +29,7 @@ function EnableMultipleGRFs()
         " 68" + grf       //PUSH OFFSET addr1; "data.grf"
       + getEcxFileMgrHex() //MOV ECX, OFFSET g_fileMgr
     ;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     var setEcxOffset = 5;
     var pushOffset = 0;
     var addpackOffset = -1;
@@ -39,10 +39,10 @@ function EnableMultipleGRFs()
         var code =
             getEcxFileMgrHex() +          // 0 mov ecx, offset g_FileMgr
             "85 C0 " +                    // 5 test eax, eax
-            "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
+            "0F 95 05 ?? ?? ?? ?? " +     // 7 setnz byte ptr g_session+4D8Eh
             "68 " + grf +                 // 14 push offset aData_grf
             "E8 ";                        // 19 call CFileMgr_AddPak
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
         setEcxOffset = 0;
         pushOffset = 14;
         fnoffset = offset;
@@ -59,31 +59,31 @@ function EnableMultipleGRFs()
     if (addpackOffset === -1)
     {
         code =
-            " E8 AB AB AB AB"    //CALL CFileMgr::AddPak()
-          + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
-          + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
+            " E8 ?? ?? ?? ??"    //CALL CFileMgr::AddPak()
+          + " 8B ?? ?? ?? ?? 00" //MOV reg32, DWORD PTR DS:[addr1]
+          + " A1 ?? ?? ?? 00"    //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        var fnoffset = pe.find(code, offset + 10, offset + 40);
         var addpackOffset = 1;
     }
 
     if (fnoffset === -1)
     { //VC9 Client
         code =
-          " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-        + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[addr2]
+          " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+        + " A1 ?? ?? ?? 00" //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
         addpackOffset = 1;
     }
 
     if (fnoffset === -1)
     { //Older Clients
         code =
-            " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-          + " BF AB AB AB 00" //MOV EDI, OFFSET addr2
+            " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+          + " BF ?? ?? ?? 00" //MOV EDI, OFFSET addr2
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
         addpackOffset = 1;
     }
 
