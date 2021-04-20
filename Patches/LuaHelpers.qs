@@ -33,16 +33,16 @@ function _GetLuaAddrs()
     return "LUA: ReqJobName not found";
 
   //Step 2b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "LUA: ReqJobName reference missing";
 
   //Step 2c - Find the ESP allocation before the reference and Extract the subtracted value
   var code =
-    " 83 EC AB" //SUB ESP, const
+    " 83 EC ??" //SUB ESP, const
   + " 8B CC"    //MOV ECX, ESP
   ;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x28, offset);
+  var offset2 = pe.find(code, offset - 0x28, offset);
   if (offset2 === -1)
     return "LUA: ESP allocation missing";
 
@@ -75,19 +75,19 @@ function _GetLuaAddrs()
   }
 
   //Step 2e - Find Lua_state assignment after offset and extract it
-  code = "8B AB AB AB AB 00"; //MOV reg32_A, DWORD PTR DS:[lua_state]
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10); //VC9 - VC10
+  code = "8B ?? ?? ?? ?? 00"; //MOV reg32_A, DWORD PTR DS:[lua_state]
+  offset2 = pe.find(code, offset, offset + 0x10); //VC9 - VC10
 
   if (offset2 === -1)
   {
-    code = "FF 35 AB AB AB 00"; //PUSH DWORD PTR DS:[lua_state]
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//VC11
+    code = "FF 35 ?? ?? ?? 00"; //PUSH DWORD PTR DS:[lua_state]
+    offset2 = pe.find(code, offset, offset + 0x10);//VC11
   }
 
   if (offset2 === -1)
   {
-    code = "A1 AB AB AB 00"; //MOV EAX, DWORD PTR DS:[lua_state]
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//Older Clients
+    code = "A1 ?? ?? ?? 00"; //MOV EAX, DWORD PTR DS:[lua_state]
+    offset2 = pe.find(code, offset, offset + 0x10);//Older Clients
   }
 
   if (offset2 === -1)
@@ -98,7 +98,7 @@ function _GetLuaAddrs()
   LuaState = exe.fetchHex(offset2 - 4, 4);
 
   //Step 2f - Find the Lua Function caller after offset2
-  offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x10);
+  offset = pe.find(" E8 ?? ?? ?? FF", offset2, offset2 + 0x10);
   if (offset === -1)
     return "LUA: Lua Function caller missing";
 
@@ -217,16 +217,16 @@ function InjectLuaFiles(origFile, nameList, free)
     return "LUAFL: Filename missing";
 
   //Step 1b - Find its reference
-  var offset = exe.findCode("68" + origOffset.packToHex(4), PTYPE_HEX, false);
+  var offset = pe.findCode("68" + origOffset.packToHex(4));
   if (offset === -1)
     return "LUAFL: Filename Reference missing";
 
   //Step 1c - Find the ECX assignment before it - which is where we will jmp to our code
-  var hookLoader = exe.find(" 8B 8E AB AB 00 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
+  var hookLoader = pe.find(" 8B 8E ?? ?? 00 00", offset - 10, offset);
 
   if (hookLoader === -1)
   {
-    hookLoader = exe.find(" 8B 0D AB AB AB 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
+    hookLoader = pe.find(" 8B 0D ?? ?? ?? 00", offset - 10, offset);
   }
 
   if (hookLoader === -1)
