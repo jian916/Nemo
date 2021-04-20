@@ -12,14 +12,14 @@ function ExtendNpcBox()
     return "Failed in Step 1 - Format string missing";
 
   //Step 1b - Find its references
-  var offsets = exe.findCodes("68" + offset.packToHex(4), PTYPE_HEX, false);
+  var offsets = pe.findCodes("68" + offset.packToHex(4));
   if (offsets.length === 0)
     return "Failed in Step 1 - String reference missing";
 
   //Step 1c - Find the Stack allocation address => SUB ESP, 804+x . Only 1 of the offsets matches
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = exe.find("81 EC AB 08 00 00", PTYPE_HEX, true, "\xAB", offsets[i] - 0x80, offsets[i]);
+    offset = pe.find("81 EC ?? 08 00 00", offsets[i] - 0x80, offsets[i]);
     if (offset !== -1)
       break;
   }
@@ -49,7 +49,7 @@ function ExtendNpcBox()
     ;
   }
 
-  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 5, offset + 0x200);//i is from the for loop
+  var offset2 = pe.find(code, offsets[i] + 5, offset + 0x200);//i is from the for loop
   if (offset2 === -1)
     return "Failed in Step 1 - Function end missing";
 
@@ -69,7 +69,7 @@ function ExtendNpcBox()
     for (var i = 0; i <= 3; i++)
     {
       code = (i - stackSub).packToHex(4);//-x+i
-      offsets = exe.findAll(code, PTYPE_HEX, false, "\xAB", offset + 6, offset2);
+      offsets = pe.findAll(code, offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++)
       {
         exe.replaceDWord(offsets[j], i - value);
@@ -81,7 +81,7 @@ function ExtendNpcBox()
     //Step 2d - Update all ESP+i Stack references, where i is in (0x804 - 0x820)
     for (var i = 0x804; i <= 0x820; i += 4 )
     {
-      offsets = exe.findAll(i.packToHex(4), PTYPE_HEX, false, "\xAB", offset + 6, offset2);
+      offsets = pe.findAll(i.packToHex(4), offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++)
       {
         exe.replaceDWord(offsets[j], value + i - 0x804);
