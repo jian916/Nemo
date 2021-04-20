@@ -16,12 +16,12 @@ function ReadQuestid2displaydottxt()
         " 6A 00"                    //PUSH 0
       + " 68" + offset.packToHex(4) //PUSH addr2 ; "questID2display.txt"
     ;
-    offset = exe.findCode(code, PTYPE_HEX, false);//VC9+ Clients
+    offset = pe.findCode(code);//VC9+ Clients
 
     if (offset === -1)
     {
-        code = code.replace(" 00", " 00 8D AB AB");//Insert LEA reg32, [LOCAL.x] after PUSH 0
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Older Clients
+        code = code.replace(" 00", " 00 8D ?? ??");//Insert LEA reg32, [LOCAL.x] after PUSH 0
+        offset = pe.findCode(code);//Older Clients
     }
 
     if (offset === -1)
