@@ -660,3 +660,10 @@ function logError(text)
         return;
     throw text;
 }
+
+function logArgsError(text)
+{
+    if (typeof(console2) === "undefined")
+        throw text;
+    console2.logArgsError(text);
+}
