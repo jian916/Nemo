@@ -35,19 +35,19 @@ function FixCameraAngles(newvalue)
     + " 6A 5D" //PUSH 5D
     + " EB"    //JMP SHORT addr
     ;
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
 
   if (offset !== -1)
   { //VC9+ clients
     //Step 1b - Now find the function call we need (should be within 0x50 bytes before)
     code =
         " 8B CE"          //MOV ECX, ESI
-      + " E8 AB AB AB AB" //CALL addr1 <- this is the one we want
-      + " AB"             //PUSH reg32_A
+      + " E8 ?? ?? ?? ??" //CALL addr1 <- this is the one we want
+      + " ??"             //PUSH reg32_A
       + " 8B CE"          //MOV ECX, ESI
-      + " E8 AB AB AB AB" //CALL addr2
+      + " E8 ?? ?? ?? ??" //CALL addr2
       ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x80, offset);
+    offset = pe.find(code, offset-0x80, offset);
     if (offset === -1)
       return "Failed in Step 1 - Function Call Missing";
 
@@ -56,18 +56,18 @@ function FixCameraAngles(newvalue)
 
     //Step 2a - Find the angle value assignment in the function (should be within 0x800 bytes)
     code =
-        " 74 AB"             //JZ SHORT addr
-      + " D9 05 AB AB AB 00" //FLD DWORD PTR DS:[angleAddr]
+        " 74 ??"             //JZ SHORT addr
+      + " D9 05 ?? ?? ?? 00" //FLD DWORD PTR DS:[angleAddr]
       ;
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x800);
+    var offset2 = pe.find(code, offset, offset+0x800);
 
     if (offset2 === -1)
     {
       code =
-        " 74 AB"                   //JZ SHORT addr
-      + " F3 0F 10 AB AB AB AB 00" //MOVSS XMM#, DWORD PTR DS:[angleAddr]
+        " 74 ??"                   //JZ SHORT addr
+      + " F3 0F 10 ?? ?? ?? ?? 00" //MOVSS XMM#, DWORD PTR DS:[angleAddr]
       ;
-      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x800);
+      offset2 = pe.find(code, offset, offset+0x800);
     }
 
     if (offset2 === -1)
@@ -90,11 +90,11 @@ function FixCameraAngles(newvalue)
   { //Older clients
     //Step 4a - Find all locations where the current angle = 20.00 (0x41A0000) is assigned
     code =
-      " C7 45 AB 00 00 A0 41" //MOV DWORD PTR SS:[EBP+const1], 41A00000 ; FLOAT 20.00000
+      " C7 45 ?? 00 00 A0 41" //MOV DWORD PTR SS:[EBP+const1], 41A00000 ; FLOAT 20.00000
     + " 8B"                   //MOV reg32_A, DWORD PTR DS:[reg32_B+const2]
     ;
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
     if (offsets.length === 0 || offsets.length > 2)
       return "Failed in Step 4 - No or Too Many matches";
 
@@ -110,7 +110,7 @@ function FixCameraAngles(newvalue)
     + " 00 00 82 C2" //DD FLOAT -65.00000
     ;
 
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", exe.getROffset(CODE) + exe.getRSize(CODE));//Check only after Code section
+    offset = pe.find(code, exe.getROffset(CODE) + exe.getRSize(CODE));//Check only after Code section
     if (offset === -1)
       return "Failed in Step 5";
 
