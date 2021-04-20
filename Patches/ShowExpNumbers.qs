@@ -18,7 +18,7 @@ function ShowExpNumbers()
   + " 8B"                       //MOV ECX, reg32_A
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - String reference missing";
 
@@ -26,23 +26,23 @@ function ShowExpNumbers()
 
   //Step 2a - Look for a double PUSH pattern (addresses of Total and Current Exp values are being sent as args to be filled)
   code =
-    " 8B AB AB 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
-  + " 68 AB AB AB AB"    //PUSH totExp
-  + " 68 AB AB AB AB"    //PUSH curExp
+    " 8B ?? ?? 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
+  + " 68 ?? ?? ?? ??"    //PUSH totExp
+  + " 68 ?? ?? ?? ??"    //PUSH curExp
   + " E8"                //CALL loaderFunc
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
+  var offset2 = pe.find(code, offset, offset + 0x300);
   if (offset2 === -1)
   {  //new clients
     code =
-      " 8B AB AB 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
-    + " FF 35 AB AB AB AB"    //PUSH totExp
-    + " FF 35 AB AB AB AB"    //PUSH curExp.sign bit
-    + " FF 35 AB AB AB AB"    //PUSH curExp
+      " 8B ?? ?? 00 00 00" //MOV ECX, DWORD PTR DS:[reg32_B + const]
+    + " FF 35 ?? ?? ?? ??"    //PUSH totExp
+    + " FF 35 ?? ?? ?? ??"    //PUSH curExp.sign bit
+    + " FF 35 ?? ?? ?? ??"    //PUSH curExp
     + " E8"                //CALL loaderFunc
     ;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
+    offset2 = pe.find(code, offset, offset + 0x300);
     var newclient = 1;
   }
 
@@ -64,7 +64,7 @@ function ShowExpNumbers()
   var totExpBase = exe.fetchDWord(offset2 - 21);
   }
   //Step 2c - Look for the double PUSH pattern again after the first one.
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset2, offset + 0x300);
+  offset2 = pe.find(code, offset2, offset + 0x300);
   if (offset2 === -1)
     return "Failed in Step 2 - Job Exp addrs missing";
 
@@ -92,7 +92,7 @@ function ShowExpNumbers()
   + " 6A 11" //PUSH 11
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 3 - Args missing";
 
@@ -122,13 +122,13 @@ function ShowExpNumbers()
   //Step 3f - Check if Extra PUSH 0 is there (only for 2020 clients 20200325)
   var extraPush2 = "";
   code =
-    " E8 AB AB AB AB" //CALL UIWindow::TextOutA
+    " E8 ?? ?? ?? ??" //CALL UIWindow::TextOutA
   + " 6A 00"          //PUSH 0  ; Arg9 = Only for new clients (2020+)
   + " 6A 00"          //PUSH 0  ; Arg8 = Only for new clients
   + " 6A 00"          //PUSH 0  ; Arg7 = Color
   + " 6A 0E"          //PUSH 0E ; Arg6 = Font Height
   ;
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", injectAddr - 0x20, injectAddr);
+  offset = pe.find(code, injectAddr - 0x20, injectAddr);
   if (offset !== -1)
     extraPush2 = " 6A 00";
 
