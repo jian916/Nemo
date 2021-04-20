@@ -31,7 +31,7 @@ function IncreaseZoomOut(newvalue)
       + " 00 00 96 43" //DD FLOAT 300.000              zoom3 (max indoor zoom level)
     ;
 
-    var offset = exe.find(code, PTYPE_HEX, false); // Its not there in code section - so we use the generic find
+    var offset = pe.find(code); // Its not there in code section - so we use the generic find
     if (offset === -1)
         return "Failed in Step 1";
 
@@ -46,7 +46,7 @@ function IncreaseZoomOut(newvalue)
 
         // search and patch also enabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
         var code1 = " C7 05 " + zoom2 + " 00 00 F0 43"; // mov zoom2, 480.0
-        var offsets = exe.findCodes(code1, PTYPE_HEX, false);
+        var offsets = pe.findCodes(code1);
         if (offsets.length === 0)
             return "Failed in Step 3. Enabled /zoom usage not found";
         if (offsets.length !== 2 && offsets.length !== 3)
@@ -59,7 +59,7 @@ function IncreaseZoomOut(newvalue)
 
         // search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
         var code2 = " C7 05 " + zoom2 + " 00 00 C8 43"; // mov zoom2, 480.0
-        var offsets = exe.findCodes(code2, PTYPE_HEX, false);
+        var offsets = pe.findCodes(code2);
         if (offsets.length === 0)
             return "Failed in Step 3. Disabled /zoom usage not found";
         if (offsets.length !== 2 && offsets.length !== 3)
@@ -71,30 +71,30 @@ function IncreaseZoomOut(newvalue)
 
         //Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)
         var code =
-            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_enabled
+            "F3 0F 10 0D ?? ?? ?? ??" +  // movss xmm1, zoom_max_load_enabled
             "EB 08" +                    // jmp +8
-            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_disabled
-            "F3 0F 10 05 AB AB AB AB" +  // movss xmm0, ADDR1
-            "F3 0F 10 15 AB AB AB AB" +  // movss xmm2, g_outdoorViewLatitude
+            "F3 0F 10 0D ?? ?? ?? ??" +  // movss xmm1, zoom_max_load_disabled
+            "F3 0F 10 05 ?? ?? ?? ??" +  // movss xmm0, ADDR1
+            "F3 0F 10 15 ?? ?? ?? ??" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2" +                 // comiss xmm0, xmm2
             "F3 0F 11 0D " + zoom2;      // movss zoom2_max_outdoor, xmm1
         var enabledOffset = 4;
         var disabledOffset = 14;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
         if (offset === -1)
         {
             code =
-            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_enabled
+            "F3 0F 10 0D ?? ?? ?? ??" +  // movss xmm1, zoom_max_load_enabled
             code1 +                      // mov zoom2, 480.0
             "EB 12" +                    // jmp +12
-            "F3 0F 10 0D AB AB AB AB" +  // movss xmm1, zoom_max_load_disabled
+            "F3 0F 10 0D ?? ?? ?? ??" +  // movss xmm1, zoom_max_load_disabled
             code2 +                      // mov zoom2, 480.0
-            "F3 0F 10 05 AB AB AB AB" +  // movss xmm0, ADDR1
-            "F3 0F 10 15 AB AB AB AB" +  // movss xmm2, g_outdoorViewLatitude
+            "F3 0F 10 05 ?? ?? ?? ??" +  // movss xmm0, ADDR1
+            "F3 0F 10 15 ?? ?? ?? ??" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2";                  // comiss xmm0, xmm2
             enabledOffset = 4;
             disabledOffset = 24;
-            offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+            offset = pe.findCode(code);
         }
         if (offset === -1)
             return "Failed in Step 4";
