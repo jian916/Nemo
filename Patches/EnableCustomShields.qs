@@ -17,19 +17,19 @@ function EnableCustomShields()
     return "Failed in Step 1 - Guard not found";
 
   //Step 1b - Find where it is loaded to table which is the inject location
-  var code = " C7 AB 04" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A + 4], OFFSET <guard suffix>
+  var code = " C7 ?? 04" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A + 4], OFFSET <guard suffix>
   var type = 2;
 
-  var hookReq = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9+ Clients
+  var hookReq = pe.findCode(code);//VC9+ Clients
 
   if (hookReq === -1)
   {
-    code = code.replace("C7 AB 04", " 6A 03 8B AB C7 00");//PUSH 3 ;
+    code = code.replace("C7 ?? 04", " 6A 03 8B ?? C7 00");//PUSH 3 ;
                                                           //MOV ECX, reg32_A
                                                           //MOV DWORD PTR DS:[EAX], OFFSET <guard suffix>
     type = 1;
 
-    hookReq = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    hookReq = pe.findCode(code);
   }
 
   if (hookReq === -1)
@@ -54,9 +54,9 @@ function EnableCustomShields()
   if (type === 1)
     code = " C7 00" + offset.packToHex(4); //MOV DWORD PTR DS:[EAX], OFFSET <buckler suffix>
   else
-    code = " C7 AB 08" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A + 8], OFFSET <buckler suffix>
+    code = " C7 ?? 08" + offset.packToHex(4); //MOV DWORD PTR DS:[reg32_A + 8], OFFSET <buckler suffix>
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", hookReq, hookReq + 0x38);
+  offset = pe.find(code, hookReq, hookReq + 0x38);
   if (offset === -1)
     return "Failed in Step 1 - Buckler reference missing";
 
@@ -134,23 +134,23 @@ function EnableCustomShields()
   //Step 3a - Find location where the GetShieldType is called - there are multiple matches but all of them are same
   code =
     " 3D D0 07 00 00" //CMP EAX, 7D0
-  + " 7E AB"          //JLE SHORT addr1
+  + " 7E ??"          //JLE SHORT addr1
   + " 50"             //PUSH EAX
   + getEcxSessionHex() //MOV ECX, g_session; Note: this is the reference value for all the tables
   + " E8"             //CALL CSession::GetShieldType
   ;
 
-  var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+  var offsets = pe.findCodes(code);
   if (offsets.length === 0)
     return "Failed in Step 3 - GetShieldType call missing";
 
   //Step 3b - Find call to CSession::GetWeaponType before one of the locations.
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = exe.find("E8 AB AB AB AB 85 C0", PTYPE_HEX, true, "\xAB", offsets[i] - 0x40, offsets[i]);//CALL CSession::GetWeaponType followed by TEST EAX, EAX
+    offset = pe.find("E8 ?? ?? ?? ?? 85 C0", offsets[i] - 0x40, offsets[i]);//CALL CSession::GetWeaponType followed by TEST EAX, EAX
 
     if (offset === -1)
-      offset = exe.find("E8 AB AB AB AB 33 AB 85 C0", PTYPE_HEX, true, "\xAB", offsets[i] - 0x40, offsets[i]);//XOR reg32_A, reg32_A added before TEST
+      offset = pe.find("E8 ?? ?? ?? ?? 33 ?? 85 C0", offsets[i] - 0x40, offsets[i]);//XOR reg32_A, reg32_A added before TEST
 
     if (offset !== -1)
       break;
@@ -205,7 +205,7 @@ function EnableCustomShields()
   + " 6A 05" //PUSH 5
   + " 8B"    //MOV ECX, reg32_A
   ;
-  offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x30, hookReq);
+  offset = pe.find(code, hookReq - 0x30, hookReq);
 
   if (offset !== -1)
   {
@@ -219,7 +219,7 @@ function EnableCustomShields()
     + " 2B"          //SUB reg32_A, reg32_B
     ;
 
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", hookReq - 0x60, hookReq);
+    offset = pe.find(code, hookReq - 0x60, hookReq);
     if (offset === -1)
       return "Failed in Step 5 - No Allocator PUSHes found";
 
@@ -231,7 +231,7 @@ function EnableCustomShields()
     + " 73"       //JAE SHORT addr
     ;
 
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
+    offset = pe.find(code, offset - 0x10, offset);
     if (offset === -1)
       return "Failed in Step 5 - Comparison Missing";
 
