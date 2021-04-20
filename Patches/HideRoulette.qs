@@ -12,7 +12,7 @@ function HideRoulette()
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Reference Code missing";
 
