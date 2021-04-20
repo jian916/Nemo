@@ -11,12 +11,12 @@ function EnableEffectForAllMaps()
     return "Failed in Step 1 - String missing";
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);//PUSH addr
+  offset = pe.findCode("68" + offset.packToHex(4));//PUSH addr
   if (offset === -1)
     return "Failed in Step 1 - String Reference missing";
 
   //Step 2a - Find the JE before the PUSH
-  offset = exe.find("0F 84 AB AB 00 00", PTYPE_HEX, true, "\xAB", offset - 0x20, offset);
+  offset = pe.find("0F 84 ?? ?? 00 00", offset - 0x20, offset);
   if (offset === -1)
     return "Failed in Step 2 - Jump missing";
 
