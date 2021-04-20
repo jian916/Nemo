@@ -12,21 +12,21 @@ function EnableCustom3DBones()
     return "Failed in Step 1 - String not found";
 
   //Step 1b - Find its reference which is inside C3dGrannyBoneRes::GetAnimation
-  var offset2 = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  var offset2 = pe.findCode("68" + offset.packToHex(4));
   if (offset2 === -1)
     return "Failed in Step 1 - String reference missing";
 
   //Step 2a - Find Limiting CMP instruction within this function before the reference (should be within 0x80 bytes)
   var code =
-    " C6 05 AB AB AB 00 00" //MOV BYTE PTR DS:[addr], 0
+    " C6 05 ?? ?? ?? 00 00" //MOV BYTE PTR DS:[addr], 0
   + " 83 FE 09"             //CMP ESI, 9
   ;
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
+  offset = pe.find(code, offset2 - 0x80, offset2);
 
   if (offset === -1)
   {
     code = code.replace("09", "0A"); //Change the 09h to 0Ah for VC6 clients
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
+    offset = pe.find(code, offset2 - 0x80, offset2);
   }
 
   if (offset === -1)
@@ -39,12 +39,12 @@ function EnableCustom3DBones()
     " 85 FF" //TEST EDI, EDI
   + " 75 27" //JNE SHORT addr
   ;
-  offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
+  offset2 = pe.find(code, offset, offset + 0x20);
 
   if (offset2 === -1)
   {
     code = code.replace("27", "28"); //VC10 and older has 28 instead of 27
-    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset, offset + 0x20);
+    offset2 = pe.find(code, offset, offset + 0x20);
   }
 
   if (offset2 === -1)
@@ -75,7 +75,7 @@ function EnableCustom3DBones()
 
   //Step 4b - Find its reference + the function call after
   if (offset !== -1)
-    offset = exe.findCode(" 68" + offset.packToHex(4) + " E8", PTYPE_HEX, false);
+    offset = pe.findCode(" 68" + offset.packToHex(4) + " E8");
 
   //Step 4c - NOP out the call
   if (offset !== -1)
