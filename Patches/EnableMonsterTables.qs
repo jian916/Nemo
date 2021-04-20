@@ -14,11 +14,11 @@ function EnableMonsterTables()
   var code =
     LANGTYPE             //MOV reg32_A, DWORD PTR DS:[g_serviceType]
   + " 83 C4 04"          //ADD ESP, 4
-  + " 83 AB 13"          //CMP reg32_A, 13
-  + " 0F 85 AB AB 00 00" //JNE addr
+  + " 83 ?? 13"          //CMP reg32_A, 13
+  + " 0F 85 ?? ?? 00 00" //JNE addr
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 -  Comparison not found";
 
