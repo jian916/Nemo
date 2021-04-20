@@ -56,7 +56,7 @@ function PacketEncryptionKeys(varname, index)
     + " E8"                             //CALL CRagConnection::Obfuscate
     ;
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, false);
+    var offsets = pe.findCodes(code);
     if (offsets.length === 0)//Not supposed to happen
       return "Failed in Step 2";
 
