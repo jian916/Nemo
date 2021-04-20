@@ -12,19 +12,19 @@ function MoveCashShopIcon()
   + " 52"                //PUSH EDX
   ;
   var tgtReg = 2;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
     code = code.replace("81 EA", "2D").replace("52", "50");//change EDX to EAX
     tgtReg = 0;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
   {
     code = code.replace("50", "6A 10 50");//PUSH 10 before PUSH EAX
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset !== -1)
     { //put the PUSH 10 before the CALL
@@ -45,16 +45,16 @@ function MoveCashShopIcon()
 
   //Step 1c - Find the pattern where the Screen Size is picked up (Width is at 0x24, Height is at 0x28) - We need the address of g_ScreenStats
   code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[g_ScreenStats]
+    " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[g_ScreenStats]
   + " 8B"                //MOV reg32_A, DWORD PTR DS:[reg32_B+const]
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
+  var offset2 = pe.find(code, offset-0x18, offset);
 
   if (offset2 === -1)
   {
     code = code.replace("8B 0D", "A1");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
+    offset2 = pe.find(code, offset-0x18, offset);
   }
 
   if (offset2 === -1)
