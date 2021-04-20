@@ -9,13 +9,13 @@ function EnableShowName()
   //Step 1 - Find the Comparison
   var code =
     " 85 C0"    //TEST EAX, EAX
-  + " 74 AB"    //JZ SHORT addr -> loading setting for showname
+  + " 74 ??"    //JZ SHORT addr -> loading setting for showname
   + " 83 F8 06" //CMP EAX, 06
-  + " 74 AB"    //JZ SHORT addr -> loading setting for showname
+  + " 74 ??"    //JZ SHORT addr -> loading setting for showname
   + " 83 F8 0A" //CMP EAX, 0A
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset == -1)
     return "Failed in Step 1";
 
