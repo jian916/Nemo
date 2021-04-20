@@ -11,7 +11,7 @@ function HideCashShop()
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Patch Cancelled - Cash Shop already hidden";
 
