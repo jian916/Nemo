@@ -62,7 +62,9 @@ function pe_findCode(code)
 
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
-    var endRaw = sect[1];
+//    var endRaw = sect[1];
+// emulating Nemo limit from exe.findCode
+    var endRaw = pe.dataBaseRaw();
     return pe.findMaskInternal(code, startRaw, endRaw);
 }
 
@@ -72,7 +74,9 @@ function pe_findCodes(code)
 
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
-    var endRaw = sect[1];
+//    var endRaw = sect[1];
+// emulating Nemo limit from exe.findCode
+    var endRaw = pe.dataBaseRaw();
     var offsets = []
     var offset = pe.findMaskInternal(code, startRaw, endRaw);
     var sz = code.hexlength();
