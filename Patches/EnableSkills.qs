@@ -14,12 +14,12 @@ function EnablePlayerSkills()
 {
     return EnableSkills(
         " 3D 7D 02 00 00"    //CMP EAX, 27D
-    +   " 0F 8F AB AB 00 00" //JG addr
+    +   " 0F 8F ?? ?? 00 00" //JG addr
     +   " 3D 7C 02 00 00"    //CMP EAX, 27C
     ,
         " 3D 06 01 00 00"    //CMP EAX, 106
-    +   " 7F AB"             //JG SHORT addr
-    +   " 0F 84 AB AB 00 00" //JE addr2
+    +   " 7F ??"             //JG SHORT addr
+    +   " 0F 84 ?? ?? 00 00" //JE addr2
     ,
     233,
     "IsPlayerSkill\0",
@@ -31,7 +31,7 @@ function EnableHomunSkills() //Incomplete
 {
     return EnableSkills(
         " 3D 40 1F 00 00" //CMP EAX, 1F40
-    +   " 7C AB"          //JL SHORT addr
+    +   " 7C ??"          //JL SHORT addr
     +   " 3D 51 1F 00 00" //CMP EAX, 1F51
     ,
         " 05 C0 E0 FF FF" //ADD EAX, -1F40
@@ -47,11 +47,11 @@ function EnableMerceSkills() //Incomplete
 {
     return EnableSkills(
         " 3D 08 20 00 00" //CMP EAX, 2008
-    +   " 7C AB"          //JL SHORT addr
+    +   " 7C ??"          //JL SHORT addr
     +   " 3D 31 20 00 00" //CMP EAX, 2031
     ,
-        " 8D AB F8 DF FF FF" //LEA reg32_B, [reg32_A - 2008]
-    +   " 83 AB 29"          //CMP reg32_B, 29
+        " 8D ?? F8 DF FF FF" //LEA reg32_B, [reg32_A - 2008]
+    +   " 83 ?? 29"          //CMP reg32_B, 29
     ,
     235,
     "IsMercenarySkill\0",
@@ -73,7 +73,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         var code = newPatn; //VC9+
 
     consoleLog("Step 1.2 - Find the code inside the function");
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - ID checker missing";
 
