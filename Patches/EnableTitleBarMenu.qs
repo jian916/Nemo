@@ -12,7 +12,7 @@ function EnableTitleBarMenu()
 
   //Step 1b - Find the Style pushes
   var code = " 68 00 00 C2 02"; //PUSH 2C200000 - Style
-  var offsets = exe.findCodes(code, PTYPE_HEX, false);
+  var offsets = pe.findCodes(code);
   if (offsets.length === 0)
     return "Failed in Step 1 - Style not found";
 
@@ -21,7 +21,7 @@ function EnableTitleBarMenu()
 
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offsets[i] + 8, offsets[i] + 29);//5 + 3 for minimum operand pushes, 5 + 18 for maximum operand pushes + 6 for function call
+    offset = pe.find(code, offsets[i] + 8, offsets[i] + 29);//5 + 3 for minimum operand pushes, 5 + 18 for maximum operand pushes + 6 for function call
     if (offset !== -1)
     {
       offset = offsets[i];//Get the corresponding Style push offset
