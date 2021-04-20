@@ -9,11 +9,11 @@ function LoadItemInfoPerServer()
 {
   //Step 1a - Find the pattern before Server Name is pushed to StringAllocator Function
   var code =
-    " C1 AB 05"                   //SHL EDI,5
-  + " 66 83 AB AB AB AB 00 00 03" //CMP WORD PTR DS:[ESI+EDI+1F4],3
+    " C1 ?? 05"                   //SHL EDI,5
+  + " 66 83 ?? ?? ?? ?? 00 00 03" //CMP WORD PTR DS:[ESI+EDI+1F4],3
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Pattern not found";
 
@@ -21,18 +21,18 @@ function LoadItemInfoPerServer()
 
   //Step 1b - Find the StringAllocator call after pattern
   code =
-    " B9 AB AB AB 00"    //MOV ECX, addr
-  + " E8 AB AB AB AB"    //CALL StringAllocator
-  + " 8B AB AB AB 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B + const]
+    " B9 ?? ?? ?? 00"    //MOV ECX, addr
+  + " E8 ?? ?? ?? ??"    //CALL StringAllocator
+  + " 8B ?? ?? ?? 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B + const]
   ;
   var directCall = true;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
+  var offset2 = pe.find(code, offset, offset + 0x40);
 
   if (offset2 === -1)
   {
     code = code.replace(" E8", " FF 15");//CALL DWORD PTR DS:[StringAllocator]
     directCall = false;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
+    offset2 = pe.find(code, offset, offset + 0x40);
   }
 
   if (offset2 === -1)
@@ -46,18 +46,18 @@ function LoadItemInfoPerServer()
     return "Failed in Step 2 - ItemInfo String missing";
 
   //Step 2b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo String reference missing";
 
   //Step 2c - Find the ItemInfo Loader call before it
   code =
-    " E8 AB AB AB AB"    //CALL iteminfoPrep
-  + " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
-  + " E8 AB AB AB AB"    //CALL iteminfoLoader
+    " E8 ?? ?? ?? ??"    //CALL iteminfoPrep
+  + " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
+  + " E8 ?? ?? ?? ??"    //CALL iteminfoLoader
   ;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+  offset = pe.find(code, offset - 0x30, offset);
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo Loader missing";
 
@@ -87,15 +87,15 @@ function LoadItemInfoPerServer()
   code =
     " 68" + offset2.packToHex(4) //PUSH OFFSET addr; ASCII "main"
   + " 68 EE D8 FF FF"           //PUSH -2712
-  + " AB"                       //PUSH reg32_A
-  + " E8 AB AB AB 00"           //CALL LuaFnNamePusher
+  + " ??"                       //PUSH reg32_A
+  + " E8 ?? ?? ?? 00"           //CALL LuaFnNamePusher
   ;
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+  offset2 = pe.find(code, offset, offset + 0x200);
 
   if (offset2 === -1)
   {
-    code = code.replace(" FF FF AB E8", "FF FF FF 75 AB E8");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+    code = code.replace(" FF FF ?? E8", "FF FF FF 75 ?? E8");
+    offset2 = pe.find(code, offset, offset + 0x200);
   }
 
   if (offset2 === -1)
@@ -104,7 +104,7 @@ function LoadItemInfoPerServer()
   var mainInject = offset2 + code.hexlength() - 5;
 
   //Step 3c - Find the arg count PUSHes after it
-  offset = exe.find(" 6A 00 6A 02 6A 00", PTYPE_HEX, false, "\xAB", mainInject + 5, mainInject + 0x20);
+  offset = pe.find(" 6A 00 6A 02 6A 00", mainInject + 5, mainInject + 0x20);
   if (offset === -1)
     return "Failed in Step 3 - Arg Count Push missing";
 
@@ -114,11 +114,11 @@ function LoadItemInfoPerServer()
   //Step 4a - Find the location where the iteminfo copier is called
   code =
     refMov            //MOV ECX, DWORD PTR DS:[refAddr]
-  + " 68 AB AB AB 00" //PUSH OFFSET iiAddr
-  + " E8 AB AB AB FF" //CALL iteminfoCopier
+  + " 68 ?? ?? ?? 00" //PUSH OFFSET iiAddr
+  + " E8 ?? ?? ?? FF" //CALL iteminfoCopier
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 4 - ItemInfo copy function missing";
 
@@ -130,22 +130,22 @@ function LoadItemInfoPerServer()
 
   //Step 5a - Find the 's' input Push Function call inside the LuaFn Caller
   code =
-    " 8B AB"          //MOV reg32_A, DWORD PTR DS:[reg32_B]
-  + " 8B AB"          //MOV reg32_C, DWORD PTR DS:[reg32_D]
-  + " 83 AB 04"       //ADD reg32_B, 4
-  + " AB"             //PUSH reg32_A
-  + " AB"             //PUSH reg32_C
-  + " E8 AB AB AB 00" //CALL StringPusher
+    " 8B ??"          //MOV reg32_A, DWORD PTR DS:[reg32_B]
+  + " 8B ??"          //MOV reg32_C, DWORD PTR DS:[reg32_D]
+  + " 83 ?? 04"       //ADD reg32_B, 4
+  + " ??"             //PUSH reg32_A
+  + " ??"             //PUSH reg32_C
+  + " E8 ?? ?? ?? 00" //CALL StringPusher
   + " 83 C4 08"       //ADD ESP, 8
   ;
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" 8B AB 8B AB", " FF AB");//PUSH DWORD PTR DS:[reg32_B]
-    code = code.replace(" AB AB E8", " FF AB E8");//PUSH DWORD PTR DS:[reg32_D]
+    code = code.replace(" 8B ?? 8B ??", " FF ??");//PUSH DWORD PTR DS:[reg32_B]
+    code = code.replace(" ?? ?? E8", " FF ?? E8");//PUSH DWORD PTR DS:[reg32_D]
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
