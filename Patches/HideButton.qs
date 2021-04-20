@@ -204,19 +204,19 @@ function HideButtonNew(reference, prefix)
 
     //Step 2a - Find assignment of "info" inside UIBasicWnd::OnCreate
     var suffix = " C7";
-    var offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
+    var offset = pe.findCode(refAddr.packToHex(4) + suffix);
 
     if (offset === -1)
     {
         suffix = " 8D";
-        offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
+        offset = pe.findCode(refAddr.packToHex(4) + suffix);
     }
 
     if (offset === -1)
         return "Failed in Step 2 - info assignment missing";
 
     //Step 2b - Find the assignment of prefix after "info" assignment
-    offset = exe.find(strAddr.packToHex(4) + suffix, PTYPE_HEX, false, "\xAB", offset + 5, offset + 0x550);
+    offset = pe.find(strAddr.packToHex(4) + suffix, offset + 5, offset + 0x550);
     if (offset === -1)
         return "Failed in Step 2 - Prefix assignment missing";
 
