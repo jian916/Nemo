@@ -22,23 +22,23 @@ function AutoMute()
 {
   //Step 1 - Get informations we need from load OptionInfo.lua function.
   var code =
-      " 68 AB AB AB AB"    //0 push "Bgm_Volume"
-    + " E8 AB AB AB AB"    //5 call GetOptionValue
+      " 68 ?? ?? ?? ??"    //0 push "Bgm_Volume"
+    + " E8 ?? ?? ?? ??"    //5 call GetOptionValue
     + " 50"                //10 push eax
     + " 8B CE"             //11 mov ecx,esi
-    + " E8 AB AB AB AB"    //13 call SetStreamVolume
-    + " 8B 35 AB AB AB AB" //18 mov esi,[g_soundMgr]
+    + " E8 ?? ?? ?? ??"    //13 call SetStreamVolume
+    + " 8B 35 ?? ?? ?? ??" //18 mov esi,[g_soundMgr]
     + " 8B CE"             //24 mov ecx,esi
-    + " E8 AB AB AB AB"    //26 call GetStreamVolume
+    + " E8 ?? ?? ?? ??"    //26 call GetStreamVolume
     + " 50"                //31 push eax
     + " 8B CE"             //32 mov ecx,esi
-    + " E8 AB AB AB AB"    //34 call SetStreamVolume2
-    + " 8B 0D AB AB AB AB" //39 mov ecx,[g_soundMgr]
+    + " E8 ?? ?? ?? ??"    //34 call SetStreamVolume2
+    + " 8B 0D ?? ?? ?? ??" //39 mov ecx,[g_soundMgr]
     + " 57"                //45 push edi
-    + " E8 AB AB AB AB"    //46 call Set2DEffectVolume
-    + " 8B 0D AB AB AB AB" //51 mov ecx,[g_soundMgr]
+    + " E8 ?? ?? ?? ??"    //46 call Set2DEffectVolume
+    + " 8B 0D ?? ?? ?? ??" //51 mov ecx,[g_soundMgr]
     + " 57"                //57 push edi
-    + " E8 AB AB AB AB"    //58 call Set3DEffectVolume
+    + " E8 ?? ?? ?? ??"    //58 call Set3DEffectVolume
     ;
 
   var GetOptionValueOffset = 6;
@@ -49,29 +49,29 @@ function AutoMute()
   var Set3DEffectVolumeOffset = 59;
   var soundMgrOffsets = [20, 41, 53];
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
   {
         code =
-            "68 AB AB AB AB " +           // 0 push offset aBgm_volume
+            "68 ?? ?? ?? ?? " +           // 0 push offset aBgm_volume
             "8B CB " +                    // 5 mov ecx, ebx
             "8B F8 " +                    // 7 mov edi, eax
-            "E8 AB AB AB AB " +           // 9 call CSession_GetOptionValue
+            "E8 ?? ?? ?? ?? " +           // 9 call CSession_GetOptionValue
             "50 " +                       // 14 push eax
             "8B CE " +                    // 15 mov ecx, esi
-            "E8 AB AB AB AB " +           // 17 call CSession_SetStreamVolume
-            "8B 35 AB AB AB AB " +        // 22 mov esi, g_soundMgr
+            "E8 ?? ?? ?? ?? " +           // 17 call CSession_SetStreamVolume
+            "8B 35 ?? ?? ?? ?? " +        // 22 mov esi, g_soundMgr
             "8B CE " +                    // 28 mov ecx, esi
-            "E8 AB AB AB AB " +           // 30 call CSoundMgr_GetStreamVolume
+            "E8 ?? ?? ?? ?? " +           // 30 call CSoundMgr_GetStreamVolume
             "50 " +                       // 35 push eax
             "8B CE " +                    // 36 mov ecx, esi
-            "E8 AB AB AB AB " +           // 38 call CSoundMgr_SetStreamVolume2
-            "8B 0D AB AB AB AB " +        // 43 mov ecx, g_soundMgr
+            "E8 ?? ?? ?? ?? " +           // 38 call CSoundMgr_SetStreamVolume2
+            "8B 0D ?? ?? ?? ?? " +        // 43 mov ecx, g_soundMgr
             "57 " +                       // 49 push edi
-            "E8 AB AB AB AB " +           // 50 call CSoundMgr_Set2DEffectVolume
-            "8B 0D AB AB AB AB " +        // 55 mov ecx, g_soundMgr
+            "E8 ?? ?? ?? ?? " +           // 50 call CSoundMgr_Set2DEffectVolume
+            "8B 0D ?? ?? ?? ?? " +        // 55 mov ecx, g_soundMgr
             "57 " +                       // 61 push edi
-            "E8 AB AB AB AB ";            // 62 call CSoundMgr_Set3DEffectVolume
+            "E8 ?? ?? ?? ?? ";            // 62 call CSoundMgr_Set3DEffectVolume
         GetOptionValueOffset = 10;
         SetStreamVolumeOffset = 18;
         GetStreamVolumeOffset = 31;
@@ -80,7 +80,7 @@ function AutoMute()
         Set3DEffectVolumeOffset = 63;
         soundMgrOffsets = [24, 45, 57];
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
   }
   if (offset === -1)
     return "Failed in Step 1";
@@ -107,7 +107,7 @@ function AutoMute()
     code =
         "85 C0 " +                    // 0 test eax, eax
         "75 1A " +                    // 2 jnz short loc_9DBA59
-        "8B 0D AB AB AB AB " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
+        "8B 0D ?? ?? ?? ?? " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
         "6A 00 " +                    // 10 push 0
         "6A 00 " +                    // 12 push 0
         "6A 00 " +                    // 14 push 0
@@ -115,17 +115,17 @@ function AutoMute()
         "6A 00 " +                    // 18 push 0
         "6A 23 " +                    // 20 push 23h
         "6A 00 " +                    // 22 push 0
-        "FF 90 AB 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_SendMsg]
+        "FF 90 ?? 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_SendMsg]
     var UIReplayControlWndOffset = [6, 4];
     var SendMsgOffset = [26, 4];
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
   {
         code =
             "85 C0 " +                    // 0 test eax, eax
             "75 1A " +                    // 2 jnz short loc_9C570F
-            "8B 0D AB AB AB AB " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
+            "8B 0D ?? ?? ?? ?? " +        // 4 mov ecx, g_windowMgr.m_UIReplayControlWnd
             "6A 00 " +                    // 10 push 0
             "8B 01 " +                    // 12 mov eax, [ecx+UIReplayControlWnd.vptr]
             "6A 00 " +                    // 14 push 0
@@ -133,11 +133,11 @@ function AutoMute()
             "6A 00 " +                    // 18 push 0
             "6A 23 " +                    // 20 push 23h
             "6A 00 " +                    // 22 push 0
-            "FF 90 AB 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_virt136]
+            "FF 90 ?? 00 00 00 ";         // 24 call [eax+UIReplayControlWnd_vtable.UIReplayControlWnd_virt136]
         UIReplayControlWndOffset = [6, 4];
         SendMsgOffset = [26, 4];
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
   }
   if (offset === -1)
     return "Failed in Step 2a";
@@ -147,12 +147,12 @@ function AutoMute()
 
   //Find the location to insert the jump
     code =
-        "E8 AB AB AB AB " +           // 0 call UIWindowMgr_InvalidateAll
-        "B9 AB AB AB AB " +           // 5 mov ecx, offset g_Weather <--stole Byte from here
-        "E8 AB AB AB AB " +           // 10 call CWeather_Process
-        "83 3D AB AB AB AB 00 " +     // 15 cmp g_isAppActive, 0
+        "E8 ?? ?? ?? ?? " +           // 0 call UIWindowMgr_InvalidateAll
+        "B9 ?? ?? ?? ?? " +           // 5 mov ecx, offset g_Weather <--stole Byte from here
+        "E8 ?? ?? ?? ?? " +           // 10 call CWeather_Process
+        "83 3D ?? ?? ?? ?? 00 " +     // 15 cmp g_isAppActive, 0
         "75 0D " +                    // 22 jnz short loc_9DBE78
-        "83 3D AB AB AB AB 00 " +     // 24 cmp g_3dDevice.m_bIsFullscreen, 0
+        "83 3D ?? ?? ?? ?? 00 " +     // 24 cmp g_3dDevice.m_bIsFullscreen, 0
         "0F 85 ";                     // 31 jnz loc_9DC24D
   var jmpOffset = 5;
   var UIWindowMgr_InvalidateAllOffset = 1;
@@ -161,7 +161,7 @@ function AutoMute()
   var g_isAppActiveOffset = 17;
   var m_bIsFullscreenOffset = [26, 4];
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x500);
+  offset = pe.find(code, offset, offset + 0x500);
 
   if (offset === -1)
     return "Failed in Step 2b";
