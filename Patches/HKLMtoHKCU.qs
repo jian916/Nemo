@@ -6,7 +6,7 @@ function HKLMtoHKCU()
 {
 
   //Step 1 - Find all occurrences of HKEY_LOCAL_MACHINE (0x80000002)
-  var offsets = exe.findCodes(" 68 02 00 00 80", PTYPE_HEX, false);
+  var offsets = pe.findCodes(" 68 02 00 00 80");
 
   if (!offsets[0])
     return "Failed in Step 1";
