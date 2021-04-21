@@ -38,7 +38,7 @@ function AlwaysReadKrExtSettings()
         return "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Search pattern for its reference");
-    var korea_ref_offset = exe.findCode("68 " + offset.packToHex(4), PTYPE_HEX, false);
+    var korea_ref_offset = pe.findCode("68 " + offset.packToHex(4));
 
     if (korea_ref_offset === -1)
         return "Failed in Step 2 - Pattern not found";
@@ -51,7 +51,7 @@ function AlwaysReadKrExtSettings()
         "A1 " + LANGTYPE +  // 02 mov eax, g_serviceType
         "83 F8 12 ";        // 07 cmp eax, 12h
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x50, korea_ref_offset);
+    offset = pe.find(code, korea_ref_offset - 0x50, korea_ref_offset);
 
     if (offset !== -1)
     {
@@ -69,31 +69,31 @@ function AlwaysReadKrExtSettings()
     code =
         "8B F9 " +                 // 00 mov edi, ecx
         "A1 " + LANGTYPE +         // 02 mov eax, g_serviceType
-        "83 F8 AB " +              // 07 cmp eax, 12h
-        "0F 87 AB AB AB AB " +     // 10 ja default
-        "0F B6 80 AB AB AB AB " +  // 16 movzx eax, switch1_byte_AA28EC[eax]
+        "83 F8 ?? " +              // 07 cmp eax, 12h
+        "0F 87 ?? ?? ?? ?? " +     // 10 ja default
+        "0F B6 80 ?? ?? ?? ?? " +  // 16 movzx eax, switch1_byte_AA28EC[eax]
         "FF 24 85 ";               // 23 jmp switch2_off_AA28C0[eax*4]
 
     var patchOffset = 2;
     var switch1Offset = 19;
     var switch2Offset = 26;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x100, korea_ref_offset);
+    offset = pe.find(code, korea_ref_offset - 0x100, korea_ref_offset);
 
     if (offset === -1)
     {
         code =
             "8B F9 " +              // 00 mov edi, ecx
             "A1 " + LANGTYPE +      // 02 mov eax, g_serviceType
-            "83 F8 AB " +           // 07 cmp eax, 12h
-            "0F 87 AB AB AB AB " +  // 10 ja default
+            "83 F8 ?? " +           // 07 cmp eax, 12h
+            "0F 87 ?? ?? ?? ?? " +  // 10 ja default
             "FF 24 85 ";            // 16 jmp ds:switch2_off_82CD44[eax*4]
 
         patchOffset = 2;
         switch1Offset = 0;
         switch2Offset = 19;
 
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", korea_ref_offset - 0x60, korea_ref_offset);
+        offset = pe.find(code, korea_ref_offset - 0x60, korea_ref_offset);
     }
 
     if (offset === -1)
