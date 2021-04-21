@@ -9,39 +9,39 @@ function RemoveJobsFromBooking()
 
   //Step 1a - Find the MsgStr call used for Job Name loading.
   var code =
-    " 8D AB 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
-  + " 03 AB"             //ADD reg32_B, reg32_C
-  + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const1], reg32_A
-  + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const2], reg32_B
-  + " 8B AB AB"          //MOV EAX, DWORD PTR SS:[EBP-const1]
+    " 8D ?? 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
+  + " 03 ??"             //ADD reg32_B, reg32_C
+  + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const1], reg32_A
+  + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const2], reg32_B
+  + " 8B ?? ??"          //MOV EAX, DWORD PTR SS:[EBP-const1]
   + " 50"                //PUSH EAX
   + " E8"                //CALL MsgStr
   ;
   var type = 1; //VC6
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
     code =
       " 8D 49 00"          //LEA ECX, [ECX]
-    + " 8D AB 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
-    + " AB"                //PUSH reg32_A
+    + " 8D ?? 5D 06 00 00" //LEA reg32_A, [reg32_B + 65D]
+    + " ??"                //PUSH reg32_A
     + " E8"                //CALL MsgStr
     ;
     type = 2; //VC9 & VC11
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
   {
     code =
-      " 8B AB AB"          //MOV reg32_A, DWORD PTR SS:[EBP-const]
-    + " 81 AB 5D 06 00 00" //ADD reg32_A, 65D
-    + " AB"                //PUSH reg32_A
+      " 8B ?? ??"          //MOV reg32_A, DWORD PTR SS:[EBP-const]
+    + " 81 ?? 5D 06 00 00" //ADD reg32_A, 65D
+    + " ??"                //PUSH reg32_A
     + " E8"                //CALL MsgStr
     ;
     type = 3; //VC10
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -58,16 +58,16 @@ function RemoveJobsFromBooking()
     case 1: {
       code =
         " 83 C4 04"          //ADD ESP, 4
-      + " 8B AB AB"          //MOV reg32_A, DWORD PTR SS:[EBP-const1]
-      + " 8B AB AB"          //MOV reg32_B, DWORD PTR SS:[EBP-const2]
-      + " AB"                //INC reg32_A
-      + " AB"                //INC reg32_B
-      + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const3],reg32_C
-      + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const4],reg32_C
-      + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const5],reg32_C
-      + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const1],reg32_A
-      + " 89 AB AB"          //MOV DWORD PTR SS:[EBP-const2],reg32_B
-      + " 0F 85 AB FF FF FF" //JNZ addr
+      + " 8B ?? ??"          //MOV reg32_A, DWORD PTR SS:[EBP-const1]
+      + " 8B ?? ??"          //MOV reg32_B, DWORD PTR SS:[EBP-const2]
+      + " ??"                //INC reg32_A
+      + " ??"                //INC reg32_B
+      + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const3],reg32_C
+      + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const4],reg32_C
+      + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const5],reg32_C
+      + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const1],reg32_A
+      + " 89 ?? ??"          //MOV DWORD PTR SS:[EBP-const2],reg32_B
+      + " 0F 85 ?? FF FF FF" //JNZ addr
       ;
       var jmpOff = 3;
       break;
@@ -77,9 +77,9 @@ function RemoveJobsFromBooking()
       if (exe.getClientDate() < 20140000)
       { //VC9
         code =
-          " FF 15 AB AB AB 00" //CALL DWORD PTR DS:[<&MSVCP#.$basic*>]
-        + " AB"                //INC reg32_A
-        + " 83 6C 24 AB 01"    //SUB DWORD PTR SS:[ESP+const], 1
+          " FF 15 ?? ?? ?? 00" //CALL DWORD PTR DS:[<&MSVCP#.$basic*>]
+        + " ??"                //INC reg32_A
+        + " 83 6C 24 ?? 01"    //SUB DWORD PTR SS:[ESP+const], 1
         + " 75"                //JNZ SHORT addr
         ;
         var jmpOff = 6;
@@ -88,12 +88,12 @@ function RemoveJobsFromBooking()
       { //VC11
         code =
           " 83 C4 04"             //ADD ESP, 4
-        + " AB"                   //INC reg32_A
-        + " C7 45 AB 0F 00 00 00" //MOV DWORD PTR SS:[EBP-const1], 0F
-        + " C7 45 AB 00 00 00 00" //MOV DWORD PTR SS:[EBP-const2], 0
-        + " C6 45 AB 00"          //MOV BYTE PTR SS:[EBP-const3], 0
-        + " AB"                   //DEC reg32_B
-        + " 0F 85 AB FF FF FF"    //JNZ addr
+        + " ??"                   //INC reg32_A
+        + " C7 45 ?? 0F 00 00 00" //MOV DWORD PTR SS:[EBP-const1], 0F
+        + " C7 45 ?? 00 00 00 00" //MOV DWORD PTR SS:[EBP-const2], 0
+        + " C6 45 ?? 00"          //MOV BYTE PTR SS:[EBP-const3], 0
+        + " ??"                   //DEC reg32_B
+        + " 0F 85 ?? FF FF FF"    //JNZ addr
         ;
         var jmpOff = 3;
       }
@@ -101,12 +101,12 @@ function RemoveJobsFromBooking()
     }
     case 3: {//VC10
       code =
-        " AB 01 00 00 00"       //MOV reg32_A, 1
-      + " 01 AB AB"             //ADD DWORD PTR SS:[EBP-const1], reg32_A
-      + " 29 AB AB"             //SUB DWORD PTR SS:[EBP-const2], reg32_A
-      + " C7 45 AB AB 00 00 00" //MOV DWORD PTR SS:[EBP-const3], 0F
-      + " 89 AB AB"             //MOV DWORD PTR SS:[EBP-const4], reg32_B
-      + " 88 AB AB"             //MOV BYTE PTR SS:[EBP-const5], reg8_B
+        " ?? 01 00 00 00"       //MOV reg32_A, 1
+      + " 01 ?? ??"             //ADD DWORD PTR SS:[EBP-const1], reg32_A
+      + " 29 ?? ??"             //SUB DWORD PTR SS:[EBP-const2], reg32_A
+      + " C7 45 ?? ?? 00 00 00" //MOV DWORD PTR SS:[EBP-const3], 0F
+      + " 89 ?? ??"             //MOV DWORD PTR SS:[EBP-const4], reg32_B
+      + " 88 ?? ??"             //MOV BYTE PTR SS:[EBP-const5], reg8_B
       + " 75"                   //JNZ SHORT addr
       ;
       var jmpOff = 0;
@@ -115,7 +115,7 @@ function RemoveJobsFromBooking()
   }
 
   //Step 1d - Find the pattern
-  var retAddr = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 5, offset + 0x100);
+  var retAddr = pe.find(code, offset + 5, offset + 0x100);
   if (retAddr === -1)
     return "Failed in Step 1b - Loop End missing";
 
