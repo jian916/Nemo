@@ -17,7 +17,7 @@ function ShowLicenseScreen()
   + " 68" + offset.packToHex(4)   //PUSH addr; ASCII "model\3dmob\guildflag90_1.gr2"
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - String Reference missing";
 
@@ -26,16 +26,16 @@ function ShowLicenseScreen()
   //Step 2a - Find the conditional jump after the reference.
   code =
     " 83 F8 04" //CMP EAX, 4
-  + " 74 AB"    //JE SHORT addr
+  + " 74 ??"    //JE SHORT addr
   + " 83 F8 08" //CMP EAX, 8
-  + " 74 AB"    //JE SHORT addr
+  + " 74 ??"    //JE SHORT addr
   + " 83 F8 09" //CMP EAX, 9
-  + " 74 AB"    //JE SHORT addr
+  + " 74 ??"    //JE SHORT addr
   + " 83 F8 06" //CMP EAX, 6
   + " 75"       //JNE SHORT addr2
   ;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x60);
+  offset = pe.find(code, offset, offset + 0x60);
   if (offset === -1)
     return "Failed in Step 2 - LangType comparison missing";
 
