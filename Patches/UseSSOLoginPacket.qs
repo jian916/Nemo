@@ -12,42 +12,42 @@ function UseSSOLoginPacket()
     return "Failed in Step 1 - " + LANGTYPE[0];
 
   var code =
-    " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
-  + " 0F 85 AB AB 00 00"    //JNE addr1
+    " 80 3D ?? ?? ?? 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
+  + " 0F 85 ?? ?? 00 00"    //JNE addr1
   + " A1" + LANGTYPE        //MOV EAX, DWORD PTR DS:[g_serviceType]
-  + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-  + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
-  + " 83 AB 12"             //CMP EAX, 12
-  + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+  + " ?? ??"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+  + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+  + " 83 ?? 12"             //CMP EAX, 12
+  + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
     var code =
-      " 80 3D AB AB AB 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
-    + " 0F 85 AB AB 00 00"    //JNE addr1
-    + " 8B AB " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
-    + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
-    + " 83 AB 12"             //CMP EAX, 12
-    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+      " 80 3D ?? ?? ?? 00 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
+    + " 0F 85 ?? ?? 00 00"    //JNE addr1
+    + " 8B ?? " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
+    + " ?? ??"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+    + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    + " 83 ?? 12"             //CMP EAX, 12
+    + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
   {
     var code =
-      " 80 3D AB AB AB 01 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
-    + " 0F 85 AB AB 00 00"    //JNE addr1
-    + " 8B AB " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
-    + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
-    + " 83 AB 12"             //CMP EAX, 12
-    + " 0F 84 AB AB 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+      " 80 3D ?? ?? ?? 01 00" //CMP BYTE PTR DS:[g_passwordencrypt], 0
+    + " 0F 85 ?? ?? 00 00"    //JNE addr1
+    + " 8B ?? " + LANGTYPE    //MOV EAX, DWORD PTR DS:[g_serviceType]
+    + " ?? ??"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+    + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
+    + " 83 ?? 12"             //CMP EAX, 12
+    + " 0F 84 ?? ?? 00 00"    //JZ addr2 -> Send SSO Packet (ID = 0x825. was 0x2B0 in Old clients)
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset !== -1)
@@ -60,15 +60,15 @@ function UseSSOLoginPacket()
   // for very old clients
   //Step 2a - Since it failed it is an old client before VC9. Find the alternate comparison pattern
   code =
-    " A0 AB AB AB 00"       //MOV AL, DWORD PTR DS:[g_passwordencrypt]
-  + " AB AB"                //TEST AL, AL - (could be checked with CMP also. so using wildcard)
-  + " 0F 85 AB AB 00 00"    //JNE addr1
+    " A0 ?? ?? ?? 00"       //MOV AL, DWORD PTR DS:[g_passwordencrypt]
+  + " ?? ??"                //TEST AL, AL - (could be checked with CMP also. so using wildcard)
+  + " 0F 85 ?? ?? 00 00"    //JNE addr1
   + " A1" + LANGTYPE        //MOV EAX, DWORD PTR DS:[g_serviceType]
-  + " AB AB"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
-  + " 0F 85 AB AB 00 00"    //JNE addr2 -> Send Login Packet (ID = 0x64)
+  + " ?? ??"                //TEST EAX, EAX - (some clients use CMP EAX, EBP instead)
+  + " 0F 85 ?? ?? 00 00"    //JNE addr2 -> Send Login Packet (ID = 0x64)
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1";
 
