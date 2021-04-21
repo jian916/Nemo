@@ -26,14 +26,14 @@ function SkipHiddenMenuButtons()
 
     consoleLog("search start for do/while block in adding buttons");
     var code =
-        "8D B5 AB AB AB AB" +  // 0 lea esi, [ebp+names]
-        "89 8D AB AB AB AB" +  // 6 mov [ebp+cnt2], ecx
+        "8D B5 ?? ?? ?? ??" +  // 0 lea esi, [ebp+names]
+        "89 8D ?? ?? ?? ??" +  // 6 mov [ebp+cnt2], ecx
         "8B 18" +              // 12 mov ebx, [eax]
-        "81 FB AB AB 00 00" +  // 14 cmp ebx, 0A9h    <-- stole code here
-        "75 AB" +              // 20 jnz short loc_577BA6
-        "FF 35 AB AB AB AB" +  // 22 push g_session.jobId
+        "81 FB ?? ?? 00 00" +  // 14 cmp ebx, 0A9h    <-- stole code here
+        "75 ??" +              // 20 jnz short loc_577BA6
+        "FF 35 ?? ?? ?? ??" +  // 22 push g_session.jobId
         getEcxSessionHex() +   // 28 mov ecx, offset g_session
-        "E8 AB AB AB AB" +     // 33 call is_doram_job
+        "E8 ?? ?? ?? ??" +     // 33 call is_doram_job
         "3C 01" +              // 38 cmp al, 1
         "75 0E" +              // 40 jnz short loc_577BA0
         "6A 0C" +              // 42 push 0Ch
@@ -48,21 +48,21 @@ function SkipHiddenMenuButtons()
     var noSwitch = false;
     var jobIdOffset = [24, 4];
     var isDoramJobOffset = 34;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            "8D BD AB AB AB AB " +        // 0 lea edi, [ebp+names]
-            "C7 85 AB AB AB AB 00 00 00 00 " + // 6 mov [ebp+var_31C], 0
-            "89 B5 AB AB AB AB " +        // 16 mov [ebp+var_310], esi
-            "81 3E AB AB 00 00 " +        // 22 cmp dword ptr [esi], 0AEh
-            "75 AB " +                    // 28 jnz short loc_5862FE
-            "FF 35 AB AB AB AB " +        // 30 push g_session.jobId
+            "8D BD ?? ?? ?? ?? " +        // 0 lea edi, [ebp+names]
+            "C7 85 ?? ?? ?? ?? 00 00 00 00 " + // 6 mov [ebp+var_31C], 0
+            "89 B5 ?? ?? ?? ?? " +        // 16 mov [ebp+var_310], esi
+            "81 3E ?? ?? 00 00 " +        // 22 cmp dword ptr [esi], 0AEh
+            "75 ?? " +                    // 28 jnz short loc_5862FE
+            "FF 35 ?? ?? ?? ?? " +        // 30 push g_session.jobId
             getEcxSessionHex() +          // 36 mov ecx, offset g_session
-            "E8 AB AB AB AB " +           // 41 call is_doram_job
+            "E8 ?? ?? ?? ?? " +           // 41 call is_doram_job
             "3C 01 " +                    // 46 cmp al, 1
-            "75 AB " +                    // 48 jnz short loc_5862FE
+            "75 ?? " +                    // 48 jnz short loc_5862FE
             "6A 0C " +                    // 50 push 0Ch
             "68 " + strHex +              // 52 push offset aStatus_doram
             "8B CF " +                    // 57 mov ecx, edi
@@ -76,21 +76,21 @@ function SkipHiddenMenuButtons()
         jobIdOffset = [32, 4];
         isDoramJobOffset = 42;
         noSwitch = false;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
     if (offset === -1)
     {
         code =
-            "8D BD AB AB AB AB " +        // 0 lea edi, [ebp+names]
-            "C7 85 AB AB AB AB 00 00 00 00 " + // 6 mov [ebp+var_31C], 0
-            "89 9D AB AB AB AB " +        // 16 mov [ebp+var_310], ebx
-            "81 3B AB AB 00 00 " +        // 22 cmp dword ptr [ebx], 0AEh
-            "75 AB " +                    // 28 jnz short loc_5862FE
-            "FF 35 AB AB AB AB " +        // 30 push g_session.jobId
+            "8D BD ?? ?? ?? ?? " +        // 0 lea edi, [ebp+names]
+            "C7 85 ?? ?? ?? ?? 00 00 00 00 " + // 6 mov [ebp+var_31C], 0
+            "89 9D ?? ?? ?? ?? " +        // 16 mov [ebp+var_310], ebx
+            "81 3B ?? ?? 00 00 " +        // 22 cmp dword ptr [ebx], 0AEh
+            "75 ?? " +                    // 28 jnz short loc_5862FE
+            "FF 35 ?? ?? ?? ?? " +        // 30 push g_session.jobId
             getEcxSessionHex() +          // 36 mov ecx, offset g_session
-            "E8 AB AB AB AB " +           // 41 call is_doram_job
+            "E8 ?? ?? ?? ?? " +           // 41 call is_doram_job
             "3C 01 " +                    // 46 cmp al, 1
-            "75 AB " +                    // 48 jnz short loc_5862FE
+            "75 ?? " +                    // 48 jnz short loc_5862FE
             "6A 0C " +                    // 50 push 0Ch
             "68 " + strHex +              // 52 push offset aStatus_doram
             "8B CF " +                    // 57 mov ecx, edi
@@ -104,19 +104,19 @@ function SkipHiddenMenuButtons()
         jobIdOffset = [32, 4];
         isDoramJobOffset = 42;
         noSwitch = false;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         var code =
-            "8D B5 AB AB AB FF " +        // 0 lea esi, [ebp+var_224]
+            "8D B5 ?? ?? ?? FF " +        // 0 lea esi, [ebp+var_224]
             "8B 18 " +                    // 6 mov ebx, [eax]
-            "81 FB AB AB 00 00 " +        // 8 cmp ebx, 0A8h
-            "75 AB " +                    // 14 jnz short loc_514D99
-            "FF 35 AB AB AB AB " +        // 16 push g_session.m_job
-            "B9 AB AB AB AB " +           // 22 mov ecx, offset g_session
-            "E8 AB AB AB AB " +           // 27 call CSession_isDoramJob
+            "81 FB ?? ?? 00 00 " +        // 8 cmp ebx, 0A8h
+            "75 ?? " +                    // 14 jnz short loc_514D99
+            "FF 35 ?? ?? ?? ?? " +        // 16 push g_session.m_job
+            "B9 ?? ?? ?? ?? " +           // 22 mov ecx, offset g_session
+            "E8 ?? ?? ?? ?? " +           // 27 call CSession_isDoramJob
             "3C 01 " +                    // 32 cmp al, 1
             "75 0E " +                    // 34 jnz short loc_514D8D
             "6A 0C " +                    // 36 push 0Ch
@@ -131,7 +131,7 @@ function SkipHiddenMenuButtons()
         jobIdOffset = [18, 4];
         isDoramJobOffset = 28;
         noSwitch = false;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
 
@@ -148,28 +148,28 @@ function SkipHiddenMenuButtons()
 
     consoleLog("search switch block and non default jmp in switch (using first one jump)");
     code =
-        "8D 83 AB AB AB AB" +     // 0 lea eax, [ebx-164h]
-        "3D AB AB 00 00" +        // 6 cmp eax, 0A6h
+        "8D 83 ?? ?? ?? ??" +     // 0 lea eax, [ebx-164h]
+        "3D ?? ?? 00 00" +        // 6 cmp eax, 0A6h
         "77 0E" +                 // 11 ja short loc_577BC1
-        "0F B6 80 AB AB AB AB" +  // 13 movzx eax, switch1[eax]
-        "FF 24 85 AB AB AB AB";   // 20 jmp switch2[eax*4]
+        "0F B6 80 ?? ?? ?? ??" +  // 13 movzx eax, switch1[eax]
+        "FF 24 85 ?? ?? ?? ??";   // 20 jmp switch2[eax*4]
     var switch1Offset = 16;
     var switch2Offset = 23;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+    offset = pe.find(code, offset1, offset1 + 0x50);
 
     if (offset === -1)
     {
         var code =
             "8B 06 " +                    // 0 mov eax, [esi]
-            "05 AB AB AB FF " +           // 2 add eax, 0FFFFFE97h
-            "3D AB AB 00 00 " +           // 7 cmp eax, 0B5h
+            "05 ?? ?? ?? FF " +           // 2 add eax, 0FFFFFE97h
+            "3D ?? ?? 00 00 " +           // 7 cmp eax, 0B5h
             "77 0E " +                    // 12 ja short loc_58631A
-            "0F B6 80 AB AB AB AB " +     // 14 movzx eax, ds:switch1[eax]
-            "FF 24 85 AB AB AB AB ";      // 21 jmp ds:switch2[eax*4]
+            "0F B6 80 ?? ?? ?? ?? " +     // 14 movzx eax, ds:switch1[eax]
+            "FF 24 85 ?? ?? ?? ?? ";      // 21 jmp ds:switch2[eax*4]
         switch1Offset = 17;
         switch2Offset = 24;
         noSwitch = false;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     var jmpOffset1 = 0;
@@ -178,74 +178,74 @@ function SkipHiddenMenuButtons()
     if (offset === -1)
     {
         code =
-          " 2D AB AB 00 00"    //0 sub eax, 1E9h
-        + " 0F 84 AB AB 00 00" //5 jz continueAddr
-        + " 83 E8 AB"          //11 sub eax, 7h
-        + " 0F 84 AB AB 00 00" //14 jz continueAddr
+          " 2D ?? ?? 00 00"    //0 sub eax, 1E9h
+        + " 0F 84 ?? ?? 00 00" //5 jz continueAddr
+        + " 83 E8 ??"          //11 sub eax, 7h
+        + " 0F 84 ?? ?? 00 00" //14 jz continueAddr
         ;
         noSwitch = true;
         jmpOffset1 = 7;
         jmpOffset2 = 16;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     if (offset === -1)
     {
         code =
-          " 2D AB AB 00 00"    //0 sub eax, 1E9h
-        + " 0F 84 AB AB 00 00" //5 jz continueAddr
-        + " 2D AB AB 00 00"    //11 sub eax, 86h
-        + " 0F 84 AB AB 00 00" //16 jz continueAddr
+          " 2D ?? ?? 00 00"    //0 sub eax, 1E9h
+        + " 0F 84 ?? ?? 00 00" //5 jz continueAddr
+        + " 2D ?? ?? 00 00"    //11 sub eax, 86h
+        + " 0F 84 ?? ?? 00 00" //16 jz continueAddr
         ;
         noSwitch = true;
         jmpOffset1 = 7;
         jmpOffset2 = 18;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     if (offset === -1)
     {
         code =
-          " 81 FB AB AB 00 00" //0 cmp ebx,162h
-        + " 0F 84 AB AB 00 00" //6 jz continueAddr
-        + " 81 FB AB AB 00 00" //12 cmp ebx,203h
-        + " 0F 84 AB AB 00 00" //18 jz continueAddr
+          " 81 FB ?? ?? 00 00" //0 cmp ebx,162h
+        + " 0F 84 ?? ?? 00 00" //6 jz continueAddr
+        + " 81 FB ?? ?? 00 00" //12 cmp ebx,203h
+        + " 0F 84 ?? ?? 00 00" //18 jz continueAddr
         ;
         noSwitch = true;
         jmpOffset1 = 8;
         jmpOffset2 = 20;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     if (offset === -1)
     {
         code =
-          " 81 FB AB AB 00 00" //0 cmp ebx,164h
-        + " 0F 84 AB AB 00 00" //6 jz continueAddr
-        + " 81 FB AB AB 00 00" //12 cmp ebx,208h
-        + " 7E AB"             //18 jle short
-        + " 81 FB AB AB 00 00" //20 cmp ebx,20Ah
-        + " 0F 8E AB AB 00 00" //26 jle continueAddr
+          " 81 FB ?? ?? 00 00" //0 cmp ebx,164h
+        + " 0F 84 ?? ?? 00 00" //6 jz continueAddr
+        + " 81 FB ?? ?? 00 00" //12 cmp ebx,208h
+        + " 7E ??"             //18 jle short
+        + " 81 FB ?? ?? 00 00" //20 cmp ebx,20Ah
+        + " 0F 8E ?? ?? 00 00" //26 jle continueAddr
         ;
         noSwitch = true;
         jmpOffset1 = 8;
         jmpOffset2 = 28;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     if (offset === -1)
     {
         code =
-            "81 FB AB AB 00 00 " +        // 0 cmp ebx, 1F0h
-            "0F 84 AB AB 00 00 " +        // 6 jz Menu_icons_switch_1F0
-            "68 AB AB AB 00 " +           // 12 push 118h
-            "E8 AB AB AB AB " +           // 17 call operator_new
+            "81 FB ?? ?? 00 00 " +        // 0 cmp ebx, 1F0h
+            "0F 84 ?? ?? 00 00 " +        // 6 jz Menu_icons_switch_1F0
+            "68 ?? ?? ?? 00 " +           // 12 push 118h
+            "E8 ?? ?? ?? ?? " +           // 17 call operator_new
             "8B F8 " +                    // 22 mov edi, eax
             "83 C4 04 ";                  // 24 add esp, 4
         noSwitch = true;
         jmpOffset1 = 8;
         jmpOffset2 = 0;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x50);
+        offset = pe.find(code, offset1, offset1 + 0x50);
     }
 
     if (offset === -1)
