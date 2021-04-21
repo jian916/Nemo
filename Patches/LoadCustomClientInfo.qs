@@ -35,10 +35,10 @@ function LoadCustomClientInfo()
         return "Failed in Step 1a - (s)clientinfo file name not found";
 
     //Step 1b - Find its reference
-    var offset1 = exe.findCode(" F3 0F AB AB" + offset.packToHex(4),  PTYPE_HEX, true, "\xAB"); // MOVQ XMM0, clientinfo_xml
+    var offset1 = pe.findCode(" F3 0F ?? ??" + offset.packToHex(4)); // MOVQ XMM0, clientinfo_xml
     if (offset1 === -1)
     {
-        offset1 = exe.findCode(" 0F 10 AB" + offset.packToHex(4),  PTYPE_HEX, true, "\xAB"); // MOVUPS XMM0, XMMWORD PTR DS:clientinfo_xml
+        offset1 = pe.findCode(" 0F 10 ??" + offset.packToHex(4)); // MOVUPS XMM0, XMMWORD PTR DS:clientinfo_xml
         var xmmPTR = true;
     }
     if (offset1 === -1)
@@ -48,21 +48,21 @@ function LoadCustomClientInfo()
     {
         if (ciName == "sclientinfo.xml")
         {
-            var offset2 = exe.find(" F3 0F AB AB" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
+            var offset2 = pe.find(" F3 0F ?? ??" + (offset + 8).packToHex(4), offset1, offset1 + 0x20);
             if (offset2 === -1)
                 return "Failed in Step 1c - clientinfo reference 2 not found";
         }
         else
         {
-            var offset2 = exe.find(" A1" + (offset + 8).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1 - 10, offset1);
+            var offset2 = pe.find(" A1" + (offset + 8).packToHex(4), offset1 - 10, offset1);
             if (offset2 === -1)
                 return "Failed in Step 1c - clientinfo reference 2 not found";
 
-            var offset3 = exe.find(" 66 A1" + (offset + 0xC).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x10);
+            var offset3 = pe.find(" 66 A1" + (offset + 0xC).packToHex(4), offset1, offset1 + 0x10);
             if (offset3 === -1)
                 return "Failed in Step 1c - clientinfo reference 3 not found";
 
-            var offset4 = exe.find(" A0" + (offset + 0xE).packToHex(4),  PTYPE_HEX, true, "\xAB", offset1, offset1 + 0x20);
+            var offset4 = pe.find(" A0" + (offset + 0xE).packToHex(4), offset1, offset1 + 0x20);
             if (offset4 === -1)
                 return "Failed in Step 1c - clientinfo reference 4 not found";
         }
