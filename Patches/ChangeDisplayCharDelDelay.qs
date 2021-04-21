@@ -25,7 +25,7 @@ function ChangeDisplayCharDelDelay()
   + " 89 46 0A"          //MOV DWORD PTR DS:[ESI+A], EAX
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
 
   if (offset === -1) //2019+ clients
   {
@@ -40,7 +40,7 @@ function ChangeDisplayCharDelDelay()
     + " C7 01 00 00 00 00" //MOV DWORD PTR [ECX], 0
     ;
 
-    offset = exe.findCode(code, PTYPE_HEX, false);
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -102,16 +102,16 @@ function ChangeDisplayCharDelDelay()
 
   // Step 4 - Remove displaying the text "X month X day" by changing coords
 
-  offset = exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false);
+  offset = pe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75");
 
   if (offset === -1) //2019+ clients
   {
-    offset = exe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false);
+    offset = pe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00");
   }
 
   if (offset === -1) //2019+ clients
   {
-    offset = exe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false);
+    offset = pe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00");
   }
 
   if (offset === -1)
@@ -124,5 +124,5 @@ function ChangeDisplayCharDelDelay()
 
 function ChangeDisplayCharDelDelay_()
 {
-  return ((exe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75", PTYPE_HEX, false) & exe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false) & exe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00", PTYPE_HEX, false)) !== -1);
+  return ((pe.findCode("52 6A 28 6A 00 6A 0B 6A 00 8D 75") & pe.findCode("52 6A 28 6A 00 6A 00 6A 0B 6A 00 6A 00") & pe.findCode("57 6A 28 6A 00 6A 0B 6A 00 6A 00")) !== -1);
 }
