@@ -27,13 +27,13 @@ function ChangeAdventureAgencyLevelRange()
 
     var code =
         "8D 46 05" +          // 0 lea eax, [esi+5]
-        "66 C7 45 AB 00 00" + // 3 mov [ebp+var_20], 0
+        "66 C7 45 ?? 00 00" + // 3 mov [ebp+var_20], 0
         "50" +                // 9 push eax
         "68" + strHex +       // 10 push offset aD_2
         "6A FF";              // 15 push 0FFFFFFFFh
 
     var rangeUOffset = [2, 1];
-    var offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsetsU = pe.findCodes(code);
 
     if (offsetsU.length === 0)
     {
@@ -44,29 +44,29 @@ function ChangeAdventureAgencyLevelRange()
             "6A FF";          // 9 push 0FFFFFFFFh
 
         rangeUOffset = [2, 1];
-        offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsetsU = pe.findCodes(code);
     }
 
     if (offsetsU.length === 0)
         return "Failed in Step 1 - AgencyUpperLevelRange not found";
 
     var code =
-        "8D 46 AB" +        // 0 lea eax, [esi-5]
+        "8D 46 ??" +        // 0 lea eax, [esi-5]
         "0F 57 C0" +        // 3 xorps xmm0, xmm0
         "3B C1" +           // 6 cmp eax, ecx
-        "66 0F D6 45 AB" +  // 8 movq [ebp+var_1C], xmm0
+        "66 0F D6 45 ??" +  // 8 movq [ebp+var_1C], xmm0
         "0F 4C C1" +        // 13 cmovl eax, ecx
         "50" +              // 16 push eax
         "68" + strHex +     // 17 push offset aD_2
         "6A FF";            // 22 push 0FFFFFFFFh
 
     var rangeLOffset = [2, 1];
-    var offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsetsL = pe.findCodes(code);
 
     if (offsetsL.length === 0)
     {
         var code =
-            "8D 46 AB" +      // 0 lea eax, [esi-5]
+            "8D 46 ??" +      // 0 lea eax, [esi-5]
             "3B C1" +         // 3 cmp eax, ecx
             "0F 4C C1" +      // 5 cmovl eax, ecx
             "50" +            // 8 push eax
@@ -74,7 +74,7 @@ function ChangeAdventureAgencyLevelRange()
             "6A FF";          // 14 push 0FFFFFFFFh
 
         rangeLOffset = [2, 1];
-        offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsetsL = pe.findCodes(code);
     }
 
     if (offsetsL.length === 0)
