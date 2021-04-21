@@ -27,20 +27,20 @@ function ChangeGuildExpLimit()
         "85 C0 " +                    // 0 test eax, eax
         "78 09 " +                    // 2 js short loc_69636D
         "83 F8 32 " +                 // 4 cmp eax, 32h
-        "0F 8E AB AB 00 00 " +        // 7 jle loc_6963ED
+        "0F 8E ?? ?? 00 00 " +        // 7 jle loc_6963ED
         "6A 00 " +                    // 13 push 0
         "6A 32 " +                    // 15 push 32h
         "68 9E 0D 00 00 " +           // 17 push 0D9Eh
         "E8 ";                        // 22 call MsgStr
     var limitOffset = 6;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code = code.replace("78 09 ", "78 05 "); //JLE short
-        code = code.replace("0F 8E AB AB 00 00 ", " 7E AB "); //JLE short
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        code = code.replace("0F 8E ?? ?? 00 00 ", " 7E ?? "); //JLE short
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
