@@ -22,29 +22,29 @@
 function ChangeNewCharNameHeight()
 {
     var code =
-        "C7 45 AB FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
+        "C7 45 ?? FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
         "6A 0D" +                 // push 0Dh    <- change here
         "68 82 00 00 00" +        // push 82h
         "8B C8" +                 // mov ecx, eax
-        "89 83 AB AB 00 00" +     // mov  [ebx+28Ch], eax
-        "E8 AB AB AB 00" +        // call UIWindow_Create
-        "8B 8B AB AB 00 00";      // mov ecx, [ebx+28Ch]
+        "89 83 ?? ?? 00 00" +     // mov  [ebx+28Ch], eax
+        "E8 ?? ?? ?? 00" +        // call UIWindow_Create
+        "8B 8B ?? ?? 00 00";      // mov ecx, [ebx+28Ch]
     var heightOffset = 8;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-        "C7 45 AB FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
+        "C7 45 ?? FF FF FF FF" +  // mov [ebp+var], 0FFFFFFFFh
         "8B C8" +                 // mov ecx, eax
         "6A 0D" +                 // push 0Dh    <- change here
         "68 82 00 00 00" +        // push 82h
-        "89 83 AB AB 00 00" +     // mov  [ebx+28Ch], eax
-        "E8 AB AB AB 00" +        // call UIWindow_Create
-        "8B 8B AB AB 00 00";      // mov ecx, [ebx+28Ch]
+        "89 83 ?? ?? 00 00" +     // mov  [ebx+28Ch], eax
+        "E8 ?? ?? ?? 00" +        // call UIWindow_Create
+        "8B 8B ?? ?? 00 00";      // mov ecx, [ebx+28Ch]
 
         heightOffset = 10;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
