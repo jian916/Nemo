@@ -43,12 +43,12 @@ function IgnoreSignBoardReading()
 
     consoleLog("Step 3 - Prep code for finding the SignBoardList");
     var code =
-        "8B 8E AB AB 00 00 " +  // 00 mov ecx, [esi+CSession.m_lua_state]
+        "8B 8E ?? ?? 00 00 " +  // 00 mov ecx, [esi+CSession.m_lua_state]
         "6A 00 " +              // 06 push 0
         "6A 01 " +              // 08 push 1
         "68 " + strHex +        // 10 push offset aLuaFilesSignbo
-        "E8 AB AB AB AB " +     // 15 call lua_script_load
-        "8B 8E AB AB 00 00 " +  // 20 mov ecx, [esi+CSession.m_lua_state]
+        "E8 ?? ?? ?? ?? " +     // 15 call lua_script_load
+        "8B 8E ?? ?? 00 00 " +  // 20 mov ecx, [esi+CSession.m_lua_state]
         "6A 00 " +              // 26 push 0
         "6A 01 " +              // 28 push 1
         "68 " + strHex2 +       // 30 push offset aLuaFilesSign_0
@@ -57,7 +57,7 @@ function IgnoreSignBoardReading()
     var luaScriptLoadOffsets = [16, 36];
     var luaStateOffsets = [[2, 4], [22, 4]]
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
