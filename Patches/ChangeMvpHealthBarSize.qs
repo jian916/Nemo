@@ -4,20 +4,20 @@ function ChangeMvpHealthBarSize()
         " 6A 05"
       + " 6A 3C"
       + " 8B C8"
-      + " 89 83 AB AB 00 00"
-      + " E8 AB AB AB AB"
-      + " FF B3 AB AB 00 00"
-      + " B9 AB AB AB AB"
-      + " E8 AB AB AB AB"
-      + " 8B 8B AB AB 00 00"
+      + " 89 83 ?? ?? 00 00"
+      + " E8 ?? ?? ?? ??"
+      + " FF B3 ?? ?? 00 00"
+      + " B9 ?? ?? ?? ??"
+      + " E8 ?? ?? ?? ??"
+      + " 8B 8B ?? ?? 00 00"
       + " 56"
       ;
 
-    var offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset1 = pe.findCode(code);
     if (offset1 === -1) //newer clients
     {
     code = code.replace(" 6A 05 6A 3C 8B C8", " 8B C8 6A 05 6A 3C");
-    offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset1 = pe.findCode(code);
     }
 
     if (offset1 === -1)
@@ -26,17 +26,17 @@ function ChangeMvpHealthBarSize()
           " 6A 05"
         + " 6A 3C"
         + " 8B C8"
-        + " 89 83 AB AB 00 00"
-        + " E8 AB AB AB AB"
-        + " FF B3 AB AB 00 00"
-        + " B9 AB AB AB AB"
-        + " E8 AB AB AB AB"
-        + " 8B BD AB AB AB AB"
-        + " 8B 8B AB AB 00 00"
+        + " 89 83 ?? ?? 00 00"
+        + " E8 ?? ?? ?? ??"
+        + " FF B3 ?? ?? 00 00"
+        + " B9 ?? ?? ?? ??"
+        + " E8 ?? ?? ?? ??"
+        + " 8B BD ?? ?? ?? ??"
+        + " 8B 8B ?? ?? 00 00"
         + " 56"
         ;
 
-        offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset1 = pe.findCode(code);
     }
 
     if (offset1 === -1)
@@ -46,17 +46,17 @@ function ChangeMvpHealthBarSize()
     if (offset === -1)
         return "Failed in Step 2a";
 
-    offset2 = exe.findCode("68"+ offset2.packToHex(4), PTYPE_HEX, false);
+    offset2 = pe.findCode("68" + offset2.packToHex(4));
     if (offset2 === -1)
         return "Failed in Step 2b";
 
     code =
-        " 8A 87 AB AB 00 00"
-      + " 88 85 AB AB FF FF"
-      + " 8B AB"
+        " 8A 87 ?? ?? 00 00"
+      + " 88 85 ?? ?? FF FF"
+      + " 8B ??"
       ;
 
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0xB0);
+    offset2 = pe.find(code, offset2, offset2 + 0xB0);
     if (offset2 === -1)
         return "Failed in Step 2c";
 
