@@ -142,8 +142,8 @@ function SkipHiddenMenuButtons()
     logFieldAbs("CSession::m_job", offset, jobIdOffset);
     logRawFunc("CSession_isDoramJob", offset, isDoramJobOffset);
 
-    var nonA9JmpAddr = exe.Raw2Rva(exe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1);
-    var a9JmpAddr = exe.Raw2Rva(offset + a9Offset);
+    var nonA9JmpAddr = pe.rawToVa(exe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1);
+    var a9JmpAddr = pe.rawToVa(offset + a9Offset);
     var patchAddr = offset + stoleOffset;
 
     consoleLog("search switch block and non default jmp in switch (using first one jump)");
@@ -254,11 +254,11 @@ function SkipHiddenMenuButtons()
     if (noSwitch)
     {
         var jmpAdd1 = exe.fetchDWord(offset + jmpOffset1);
-        var continueAddr = exe.Raw2Rva(offset + jmpOffset1 + 4) + jmpAdd1;
+        var continueAddr = pe.rawToVa(offset + jmpOffset1 + 4) + jmpAdd1;
         if (jmpOffset2 !== 0)
         {
             var jmpAdd2 = exe.fetchDWord(offset + jmpOffset2);
-            var continueAddr2 = exe.Raw2Rva(offset + jmpOffset2 + 4) + jmpAdd2;
+            var continueAddr2 = pe.rawToVa(offset + jmpOffset2 + 4) + jmpAdd2;
             if (continueAddr !== continueAddr2)
                 return "Failed in Step 3.1 - Found wrong continueAddr";
         }
@@ -266,8 +266,8 @@ function SkipHiddenMenuButtons()
     else
     {
         // get switch jmp address for value 0
-        var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
-        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        var addr1 = pe.vaToRaw(exe.fetchDWord(offset + switch1Offset));
+        var addr2 = pe.vaToRaw(exe.fetchDWord(offset + switch2Offset));
         var offset1 = exe.fetchUByte(addr1);
         var continueAddr = exe.fetchDWord(addr2 + 4 * offset1);
     }
