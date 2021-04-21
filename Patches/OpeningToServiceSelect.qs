@@ -54,5 +54,5 @@ function OpeningToServiceSelect()
 //======================================================================//
 function OpeningToServiceSelect_()
 {
-  return (exe.findCode(" 68 D5 0B 00 00 E8", PTYPE_HEX, false) !== -1);
+  return (pe.findCode(" 68 D5 0B 00 00 E8") !== -1);
 }
