@@ -12,7 +12,7 @@ function ShowRegisterButton()
     return "Failed in Step 1 - String missing";
 
   //Step 1b - Find its reference inside UILoginWnd::SendMsg
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - String reference missing";
 
@@ -24,23 +24,23 @@ function ShowRegisterButton()
   //Step 2b - Look for the LangType comparison before the URL reference
   var code =
     " 83 3D" + LANGTYPE + " 00" //CMP DWORD PTR DS:[g_serviceType], 0
-  + " 75 AB"                    //JNE SHORT addr
+  + " 75 ??"                    //JNE SHORT addr
   ;
 
   var codeSuffix =
-    " 83 3D AB AB AB 00 01"     //CMP DWORD PTR DS:[g_isGravityID], 1
+    " 83 3D ?? ?? ?? 00 01"     //CMP DWORD PTR DS:[g_isGravityID], 1
   + " 75"                       //JNE SHORT addr
   ;
   var type = 1;
 
-  var offset2 = exe.find(code + codeSuffix, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+  var offset2 = pe.find(code + codeSuffix, offset - 0x30, offset);
   if (offset2 === -1)
   {
 
     if (offset2 === -1)
     {
-      codeSuffix = codeSuffix.replace(" 83 3D AB AB AB 00 01", " 83 3D AB AB AB 01 01");
-      offset2 = exe.find(code + codeSuffix, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+      codeSuffix = codeSuffix.replace(" 83 3D ?? ?? ?? 00 01", " 83 3D ?? ?? ?? 01 01");
+      offset2 = pe.find(code + codeSuffix, offset - 0x30, offset);
     }
 
     if (offset2 === -1)
@@ -48,12 +48,12 @@ function ShowRegisterButton()
       code =
         " A1" + LANGTYPE      //MOV EAX, DWORD PTR DS:[g_serviceType]
       + " 85 C0"              //TEST EAX, EAX
-      + " 0F 85 AB 00 00 00"  //JNE addr
+      + " 0F 85 ?? 00 00 00"  //JNE addr
       ;
       type = 2;
-      offset2 = exe.find(code + codeSuffix, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
-      codeSuffix = codeSuffix.replace(" 83 3D AB AB AB 01 01", " 83 3D AB AB AB 00 01");
-      offset2 = exe.find(code + codeSuffix, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+      offset2 = pe.find(code + codeSuffix, offset - 0x30, offset);
+      codeSuffix = codeSuffix.replace(" 83 3D ?? ?? ?? 01 01", " 83 3D ?? ?? ?? 00 01");
+      offset2 = pe.find(code + codeSuffix, offset - 0x30, offset);
     }
   }
 
@@ -101,18 +101,18 @@ function ShowRegisterButton()
     return "Failed in Step 4 - Button prefix missing";
 
   //Step 4b - Find its reference
-  offset = exe.findCode(offset.packToHex(4) + " C7", PTYPE_HEX, false);
+  offset = pe.findCode(offset.packToHex(4) + " C7");
   if (offset === -1)
     return "Failed in Step 4 - Prefix reference missing";
 
   //Step 4c - Look for the LangType comparison after the reference
   code =
-    " 83 AB 03"       //CMP reg32, 03 ; 03 is for register button
+    " 83 ?? 03"       //CMP reg32, 03 ; 03 is for register button
   + " 75 25"          //JNE SHORT addr
   + " A1" + LANGTYPE  //MOV EAX, DWORD PTR DS:[g_serviceType]
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 0xA0, offset + 0x100);
+  offset2 = pe.find(code, offset + 0xA0, offset + 0x100);
   if (offset2 === -1)
     return "Failed in Step 4 - Langtype comparison missing";
 
