@@ -33,7 +33,7 @@ function ChangeMerchantStoreUrl()
     var code =
         " 6A 2E"                  //0 push 2E
       + " 68" + url1.packToHex(4) //2 push offset url1
-      + " E8 AB AB AB AB"         //7 call memcopy
+      + " E8 ?? ?? ?? ??"         //7 call memcopy
       + " 6A 2E"                  //12 push 2E
       + " 68" + url2.packToHex(4) //14 push offset url2
       + " 8D 4F 24"               //19 lea ecx,[edi+24h]
@@ -46,7 +46,7 @@ function ChangeMerchantStoreUrl()
     var url2Ref = 15;
 
     //Step 2b - Find strings reference for servertype = sakray
-    var offset1 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset1 = pe.findCode(code);
     if (offset1 === -1)
         return "Failed in Step 2a";
 
@@ -60,7 +60,7 @@ function ChangeMerchantStoreUrl()
     var url1aRef = 11;
     var url2aRef = 1;
 
-    var offset2 = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offset2 = pe.findCodes(code);
     if (offset2.length !== 2)
         return "Failed in Step 2b";
 
@@ -94,7 +94,7 @@ function ChangeMerchantStoreUrl()
 
     //Step 5 -Remove all official ip address
     var ipaddr = "http://112.175.128.140:3000";
-    var offsets = exe.findAll(ipaddr.toHex(), PTYPE_HEX, false);
+    var offsets = pe.findAll(ipaddr.toHex());
 
     for (var i =0; i < offsets.length; i ++)
     {
