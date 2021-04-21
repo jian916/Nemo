@@ -8,19 +8,19 @@ function EnableGuildWhenInClan()
     // Step 1 - Find Message ID #2605 reference
     var code =
         " 68 2D 0A 00 00" // PUSH 0x0A2D
-        + " E8 AB AB AB FF" // CALL MsgStr
+        + " E8 ?? ?? ?? FF" // CALL MsgStr
         + " 50"             // PUSH EAX
     ;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
     {
         var code =
             " 68 2D 0A 00 00" // PUSH 0x0A2D
-            + " E9 AB AB AB FF" // jmp addr1
+            + " E9 ?? ?? ?? FF" // jmp addr1
             + " B8"             // mov ...
         ;
-        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        var offset = pe.findCode(code);
 
         if (offset === -1)
             return "Failed in Step 1 - reference to MsgStr with ID 2605 missing.";
@@ -31,11 +31,11 @@ function EnableGuildWhenInClan()
 
     // Step 2 - Find the jump followed by push 0x168
     var code =
-        " 0F 85 AB AB FF FF" // JNZ addr
+        " 0F 85 ?? ?? FF FF" // JNZ addr
     +   " B8 68 01 00 00"    // MOV EAX, 168
     ;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+    offset = pe.find(code, offset, offset + 0x200);
 
     if (offset === -1)
         return "Failed in Step 2 - magic jump not found";
