@@ -37,23 +37,23 @@ function RemoveItemsEquipPreview()
     var code =
         "68 " + strHex +              // 0 push offset aIseffecthatite
         "C6 01 00 " +                 // 5 mov byte ptr [ecx], 0
-        "E8 AB AB AB AB " +           // 8 call std_string_assign
-        "C7 45 AB AB AB 00 00 " +     // 13 mov [ebp+var_4], 10h
-        "FF 35 AB AB AB AB " +        // 20 push g_session.m_lua_state
-        "C7 45 AB FF FF FF FF " +     // 26 mov [ebp+var_4], 0FFFFFFFFh
-        "E8 AB AB AB AB " +           // 33 call lua_call_va
+        "E8 ?? ?? ?? ?? " +           // 8 call std_string_assign
+        "C7 45 ?? ?? ?? 00 00 " +     // 13 mov [ebp+var_4], 10h
+        "FF 35 ?? ?? ?? ?? " +        // 20 push g_session.m_lua_state
+        "C7 45 ?? FF FF FF FF " +     // 26 mov [ebp+var_4], 0FFFFFFFFh
+        "E8 ?? ?? ?? ?? " +           // 33 call lua_call_va
         "83 C4 28 " +                 // 38 add esp, 28h
-        "80 BD AB AB AB FF 01 " +     // 41 cmp [ebp+var_2CD], 1
-        "0F 84 AB AB AB AB " +        // 48 jz loc_5DEB75
-        "68 AB AB 00 00 " +           // 54 push 0C8h
-        "E8 AB AB AB AB " +           // 59 call operator_new
+        "80 BD ?? ?? ?? FF 01 " +     // 41 cmp [ebp+var_2CD], 1
+        "0F 84 ?? ?? ?? ?? " +        // 48 jz loc_5DEB75
+        "68 ?? ?? 00 00 " +           // 54 push 0C8h
+        "E8 ?? ?? ?? ?? " +           // 59 call operator_new
         "83 C4 04 " +                 // 64 add esp, 4
-        "89 85 AB AB AB FF " +        // 67 mov [ebp+var_2D4], eax
-        "C7 45 AB AB AB 00 00 " +     // 73 mov [ebp+var_4], 11h
+        "89 85 ?? ?? ?? FF " +        // 67 mov [ebp+var_2D4], eax
+        "C7 45 ?? ?? ?? 00 00 " +     // 73 mov [ebp+var_4], 11h
         "85 C0 " +                    // 80 test eax, eax
         "74 09 " +                    // 82 jz short loc_5DE656
         "8B C8 " +                    // 84 mov ecx, eax
-        "E8 AB AB AB AB " +           // 86 call UIBasicButton_UIBasicButton
+        "E8 ?? ?? ?? ?? " +           // 86 call UIBasicButton_UIBasicButton
         "EB ";                        // 91 jmp short loc_5DE658
 
     var repLoc = 48;
@@ -63,7 +63,7 @@ function RemoveItemsEquipPreview()
     var UIBasicButtonSize = [55, 4];
     var newOffset = 60;
     var UIBasicButtonConstructorOffset = 87;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
