@@ -19,7 +19,7 @@
 //#          order to open URL with default browser  #
 //####################################################
 
-function DefaultBrowserInCashshop ()
+function DefaultBrowserInCashshop()
 {
     //Step 1 - Find address of "iexplore.exe"
     var offset = exe.findString("iexplore.exe", RAW);
@@ -28,7 +28,7 @@ function DefaultBrowserInCashshop ()
         return "Failed in Step 1 - String not found.";
 
     //Step 2 - Find the string reference.
-    var offsets = exe.findCodes(" 50 68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+    var offsets = pe.findCodes(" 50 68" + exe.Raw2Rva(offset).packToHex(4));
 
     if (offsets.length === 0)
         return "Failed in Step 2 - String reference missing.";
