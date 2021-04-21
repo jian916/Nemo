@@ -31,7 +31,7 @@ function InsensitiveStorageSearch()
   var code =
     " 51"                 //0 push ecx
   + " 50"                 //1 push eax
-  + " FF 15 AB AB AB AB"  //2 call _mbsstr
+  + " FF 15 ?? ?? ?? ??"  //2 call _mbsstr
   + " 83 C4 08"           //8 add esp,8
   + " 85 C0"              //11 test eax,eax
   + " 74 04"              //13 je short
@@ -40,11 +40,11 @@ function InsensitiveStorageSearch()
   ;
   var calloffset = 2;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
   {//newer clients
-    code = code.replace(" 51 50", " 51 0F 43 45 AB 50");//cmovnb eax,[ebp-x]
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 51 50", " 51 0F 43 45 ?? 50");//cmovnb eax,[ebp-x]
+    offset = pe.findCode(code);
     calloffset += 4;
   }
   if (offset === -1)
