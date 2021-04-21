@@ -24,12 +24,12 @@ function FixActDelay()
 {
     // step 1
     var code =
-        "D9 5D AB " +                 // 0 fstp [ebp+actIndex]
-        "F3 0F 10 45 AB " +           // 3 movss xmm0, [ebp+actIndex]
+        "D9 5D ?? " +                 // 0 fstp [ebp+actIndex]
+        "F3 0F 10 45 ?? " +           // 3 movss xmm0, [ebp+actIndex]
         "0F 57 C9 " +                 // 8 xorps xmm1, xmm1
         "0F 2F C8 " +                 // 11 comiss xmm1, xmm0
-        "F3 0F 11 45 AB " +           // 14 movss [ebp+actIndex], xmm0
-        "72 AB " +                    // 19 jb short loc_9A2388
+        "F3 0F 11 45 ?? " +           // 14 movss [ebp+actIndex], xmm0
+        "72 ?? " +                    // 19 jb short loc_9A2388
         "57 " +                       // 21 push edi
         "8B CB " +                    // 22 mov ecx, ebx
         "E8 ";                        // 24 call CActRes_GetDelay
@@ -38,7 +38,7 @@ function FixActDelay()
     var actIndexOffset3 = 18;
     var patchOffset = 19;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
