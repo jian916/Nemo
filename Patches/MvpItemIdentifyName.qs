@@ -25,13 +25,13 @@ function MvpItemIdenfifyName()
         "6A 00 " +                    // 6 push 0
         "6A 03 " +                    // 8 push 3
         getEcxWindowMgrHex() +        // 10 mov ecx, offset g_windowMgr
-        "C7 85 AB FF FF FF 00 00 00 00 " + // 15 mov [ebp+item.refine_level], 0
-        "C6 85 AB FF FF FF 00 " +     // 25 mov [ebp+item.identified], 0
+        "C7 85 ?? FF FF FF 00 00 00 00 " + // 15 mov [ebp+item.refine_level], 0
+        "C6 85 ?? FF FF FF 00 " +     // 25 mov [ebp+item.identified], 0
         "E8 ";                        // 32 call UIWindowMgr_SendMsg
     var patchOffset = 31;
     var sendMsgOffset = 33;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1";
 
