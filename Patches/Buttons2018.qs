@@ -87,16 +87,16 @@ function ButtonNew(buttonId, value)
         throw "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Find the string reference");
-    offset = exe.findCode("68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
     if (offset === -1)
         throw "Failed in Step 2 - String reference missing";
 
     consoleLog("Step 3 - Find and extract address of button display table");
     var code =
-        "0F B6 80 AB AB AB AB " +     // 0 movzx eax, ds:byte_592124[eax]
+        "0F B6 80 ?? ?? ?? ?? " +     // 0 movzx eax, ds:byte_592124[eax]
         "FF 24 85 ";                  // 7 jmp ds:off_59211C[eax*4]
     var switchTblOffset = 3;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0xA0);
+    offset = pe.find(code, offset, offset + 0xA0);
 
     if (offset === -1)
         throw "Failed in Step 3 - Button display table not found";
