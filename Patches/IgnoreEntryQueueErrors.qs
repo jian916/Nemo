@@ -36,43 +36,43 @@ function IgnoreEntryQueueErrors()
     consoleLog("Step 2 - Prep code for finding the EntryQueueErrorMsg");
     var code =
         "68 " + strHex +        // 00 push offset aDataTableEntry_1 ; "Data\\Table\\EntryQueue.bex"
-        "FF 15 AB AB AB AB " +  // 05 call ds:CreateFileA
+        "FF 15 ?? ?? ?? ?? " +  // 05 call ds:CreateFileA
         "8B F8 " +              // 11 mov edi, eax
         "83 FF FF " +           // 13 cmp edi, 0FFFFFFFFh
-        "75 AB " +              // 16 jnz short loc_7ADFA5
+        "75 ?? " +              // 16 jnz short loc_7ADFA5
         "6A 30 " +              // 18 push 30h ; '0'
-        "68 AB AB AB AB " +     // 20 push offset aLoadFailed ; "Load Failed"
+        "68 ?? ?? ?? ?? " +     // 20 push offset aLoadFailed ; "Load Failed"
         "68 " + strHex +        // 25 push offset aDataTableEntry_1 ; "Data\\Table\\EntryQueue.bex"
-        "AB " +                 // 30 push esi
-        "FF 15 AB AB AB AB " ;  // 31 call ds:MessageBoxA
+        "?? " +                 // 30 push esi
+        "FF 15 ?? ?? ?? ?? " ;  // 31 call ds:MessageBoxA
 
     var createfileOffset = 7;
     var messageBoxOffset = 33;
     var replaceStartOffset = 18;
     var replaceEndOffset = 31 + 6;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
             "68 " + strHex +        // 00 push offset aDataTableEnt_1 ; "Data\\Table\\EntryQueue.bex"
-            "FF 15 AB AB AB AB " +  // 05 call CreateFileA
+            "FF 15 ?? ?? ?? ?? " +  // 05 call CreateFileA
             "8B D8 " +              // 11 mov ebx, eax
             "83 FB FF " +           // 13 cmp ebx, 0FFFFFFFFh
-            "75 AB " +              // 16 jnz short loc_856437
+            "75 ?? " +              // 16 jnz short loc_856437
             "6A 30 " +              // 18 push 30h ; '0'
-            "68 AB AB AB AB " +     // 20 push offset aLoadFailed ; "Load Failed"
+            "68 ?? ?? ?? ?? " +     // 20 push offset aLoadFailed ; "Load Failed"
             "68 " + strHex +        // 25 push offset aDataTableEnt_1 ; "Data\\Table\\EntryQueue.bex"
             "6A 00 " +              // 30 push 0
-            "FF 15 AB AB AB AB " ;  // 32 call MessageBoxA
+            "FF 15 ?? ?? ?? ?? " ;  // 32 call MessageBoxA
 
         createfileOffset = 7;
         messageBoxOffset = 34;
         replaceStartOffset = 18;
         replaceEndOffset = 32 + 6;
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
