@@ -12,7 +12,7 @@ function ResizeFont()
     return "Failed in Step 1 - CreateFontA not found";
 
   //Step 1b - Find its references i.e. all called locations
-  var offsets = exe.findCodes(" FF 15" + offset.packToHex(4), PTYPE_HEX, false); //CALL DWORD PTR DS:[<&GDI32.CreateFontA>]
+  var offsets = pe.findCodes(" FF 15" + offset.packToHex(4)); //CALL DWORD PTR DS:[<&GDI32.CreateFontA>]
   if (offsets.length === 0)
     return "Failed in Step 1 - CreateFontA calls missing";
 
@@ -52,7 +52,7 @@ function ResizeFont()
   }
 
   //Step 3c - Look for any JMP to CreateFontA calls as a failsafe
-  offset = exe.findCode(" FF 25" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode(" FF 25" + offset.packToHex(4));
 
   //Step 3d - Same step as 3b
   if (offset !== -1)
