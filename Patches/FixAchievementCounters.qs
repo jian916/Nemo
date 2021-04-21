@@ -30,18 +30,18 @@ function FixAchievementCounters()
     // step 2
     // search global counter
     var code =
-        "8B 57 AB " +                 // 0 mov edx, [edi+68h]
+        "8B 57 ?? " +                 // 0 mov edx, [edi+68h]
         "8B 42 04 " +                 // 3 mov eax, [edx+4]    <-- type1
-        "8B 48 AB " +                 // 6 mov ecx, [eax+68h]
+        "8B 48 ?? " +                 // 6 mov ecx, [eax+68h]
         "8B 02 " +                    // 9 mov eax, [edx]
         "51 " +                       // 11 push ecx
-        "FF 70 AB " +                 // 12 push dword ptr [eax+64h]
-        "8D 45 AB " +                 // 15 lea eax, [ebp+dstStr]
+        "FF 70 ?? " +                 // 12 push dword ptr [eax+64h]
+        "8D 45 ?? " +                 // 15 lea eax, [ebp+dstStr]
         "68 " + countersStr.packToHex(4) + // 18 push offset "%d/%d"
         "50 " +                       // 23 push eax
         "E8 ";                        // 24 call std_string_sprintf
     var type1Offset = 5;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
@@ -58,20 +58,20 @@ function FixAchievementCounters()
     // step 3
     // search categories except general
     var code =
-        "8B 57 AB " +  // mov edx, [edi+78h]
+        "8B 57 ?? " +  // mov edx, [edi+78h]
         "8B 42 04 " +  // mov eax, [edx+4]    <-- type1
-        "8B 48 AB " +  // mov ecx, [eax+78h]
-        "8B 42 AB " +  // mov eax, [edx+8]    <-- type2
+        "8B 48 ?? " +  // mov ecx, [eax+78h]
+        "8B 42 ?? " +  // mov eax, [edx+8]    <-- type2
         "51 " +        // push ecx
-        "FF 70 AB " +  // push dword ptr [eax+74h]
-        "8D 45 AB " +  // lea eax, [ebp+dstStr]
+        "FF 70 ?? " +  // push dword ptr [eax+74h]
+        "8D 45 ?? " +  // lea eax, [ebp+dstStr]
         "68 " + countersStr.packToHex(4) +  // push offset "%d/%d"
         "50 " +        // push eax
         "E8 ";         // call std_string_sprintf
 
     var type1Offset = 5;
     var type2Offset = 11;
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
 
     if (offsets.length === 0)
         return "Failed in step 3 - pattern not found";
@@ -95,15 +95,15 @@ function FixAchievementCounters()
     for (var i = 0; i < offsets.length; i++)
     {
         code =
-            "68 AB AB 00 00 " +        // push msgId
-            "C7 45 AB 0F 00 00 00 " +  // mov [ebp+dstStr.m_allocated_len], 0Fh
-            "C7 45 AB 00 00 00 00 " +  // mov [ebp+dstStr.m_len], 0
-            "C6 45 AB 00 " +           // mov byte ptr [ebp+dstStr.m_cstr], 0
-            "E8 AB AB AB AB " +        // call MsgStr
+            "68 ?? ?? 00 00 " +        // push msgId
+            "C7 45 ?? 0F 00 00 00 " +  // mov [ebp+dstStr.m_allocated_len], 0Fh
+            "C7 45 ?? 00 00 00 00 " +  // mov [ebp+dstStr.m_len], 0
+            "C6 45 ?? 00 " +           // mov byte ptr [ebp+dstStr.m_cstr], 0
+            "E8 ?? ?? ?? ?? " +        // call MsgStr
             "83 C4 04 " +              // add esp, 4
             "8B CF " +                 // mov ecx, edi
             "50 ";                     // push eax
-        var offset = exe.find(code, PTYPE_HEX, true, "\xAB", offsets[i] - 0x40, offsets[i]);
+        var offset = pe.find(code, offsets[i] - 0x40, offsets[i]);
         if (offset === -1)
             return "Failed in step 4: pattern not found, offset " + i;
         msgOffsets[i] = offset;
