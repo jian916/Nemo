@@ -17,6 +17,8 @@
 
 function reportLegacy(text)
 {
+    var enableLegacy = true;
+
     if (typeof(enableLegacy) !== "undefined")
         return;
 
@@ -34,5 +36,17 @@ function registerExeLegacy()
     exe.findCode = function()
     {
         reportLegacy("Please replace exe.findCode to pe.findCode");
+    }
+    exe.findCodes = function()
+    {
+        reportLegacy("Please replace exe.findCodes to pe.findCodes");
+    }
+    exe.find = function()
+    {
+        reportLegacy("Please replace exe.find to pe.find");
+    }
+    exe.findAll = function()
+    {
+        reportLegacy("Please replace exe.findAll to pe.findAll");
     }
 }
