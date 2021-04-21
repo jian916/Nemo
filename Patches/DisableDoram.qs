@@ -8,13 +8,13 @@ function DisableDoram()
 
   // Step 1
   var code =
-    " FF 77 AB"       // PUSH DWORD PTR ??
+    " FF 77 ??"       // PUSH DWORD PTR ??
   + " 8B CF"          // MOV ECX, EDI
-  + " FF 77 AB"       // PUSH DWORD PTR ??
+  + " FF 77 ??"       // PUSH DWORD PTR ??
   + " E8"             // CALL ??
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
     return "Failed in step 1";
@@ -23,12 +23,12 @@ function DisableDoram()
 
   // Step 2a - MOV pattern
   code =
-    " C7 AB AB FF FF FF 00 00 00 00"  // MOV [EBP + var_DC], 0
-  + " C7 AB AB FF FF FF 00 00 00 00"  // MOV [EBP + var_D8], 0
-  + " C7 AB AB FF FF FF 00 00 00 00"  // MOV [EBP + var_D4], 0
+    " C7 ?? ?? FF FF FF 00 00 00 00"  // MOV [EBP + var_DC], 0
+  + " C7 ?? ?? FF FF FF 00 00 00 00"  // MOV [EBP + var_D8], 0
+  + " C7 ?? ?? FF FF FF 00 00 00 00"  // MOV [EBP + var_D4], 0
   + " 6A 01"                          // PUSH 1
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
 
   if (offset === -1)
     return "Failed in step 2 - Cannot find 3 MOV [EXP + var_Dx], 0 pattern.";
@@ -38,11 +38,11 @@ function DisableDoram()
   // Step 2b - XOR jump
   code =
     " 33 F6"             // XOR ESI, ESI
-  + " 8D 87 AB AB 00 00" // LEA EAX, [EDI + const]
+  + " 8D 87 ?? ?? 00 00" // LEA EAX, [EDI + const]
   + " 8D 49 00"          // LEA ECX, [ECX + 0]
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x300);
+  var offset2 = pe.find(code, offset, offset + 0x300);
 
   if (offset2 === -1)
     return "Failed in step 2b - XOR after MOV pattern not found";
@@ -56,11 +56,11 @@ function DisableDoram()
     " 8B 8D 38 FF FF FF" // MOV ECX, [EBP+var_C8]
   + " 41"                // INC ECX
   + " 89 8D 38 FF FF FF" // MOV [EBP+var_C8], ECX
-  + " B8 AB AB 00 00"    // MOV EAX, const
+  + " B8 ?? ?? 00 00"    // MOV EAX, const
   + " 83 F9 02"          // CMP EAX, 2
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in step 3";
 
