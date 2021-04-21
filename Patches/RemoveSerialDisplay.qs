@@ -8,19 +8,19 @@ function RemoveSerialDisplay()
 
   //Step 1a - Prep comparison code
   var code1 =
-    " 83 C0 AB"          //ADD EAX, const1
-  + " 3B 41 AB"          //CMP EAX, DWORD PTR DS:[EAX+const2]
-  + " 0F 8C AB 00 00 00" //JL addr
+    " 83 C0 ??"          //ADD EAX, const1
+  + " 3B 41 ??"          //CMP EAX, DWORD PTR DS:[EAX+const2]
+  + " 0F 8C ?? 00 00 00" //JL addr
   + " 56"                //PUSH ESI
   ;
 
   var code2 = " 6A 00"; //PUSH 0
 
   //Step 1b - Find the code
-  var offset = exe.findCode(code1 + " 57" + code2, PTYPE_HEX, true, "\xAB"); //New Client
+  var offset = pe.findCode(code1 + " 57" + code2); //New Client
 
   if (offset === -1)
-    offset = exe.findCode(code1 + code2, PTYPE_HEX, true, "\xAB"); //Older client
+    offset = pe.findCode(code1 + code2); //Older client
 
   if (offset === -1)
     return "Failed in Step 1";
