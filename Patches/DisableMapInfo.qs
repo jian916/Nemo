@@ -43,18 +43,18 @@ function DisableMapInfo()
     consoleLog("Step 3 - Prep code for finding the CMapInfoMgr ErrorMsg window");
     var code =
         "0F 84 B4 00 00 00 " +        // 0 jz loc_4D2EF0
-        "FF 75 AB " +                 // 6 push [ebp+L]
-        "E8 AB AB AB AB " +           // 9 call luaL_openlibs
+        "FF 75 ?? " +                 // 6 push [ebp+L]
+        "E8 ?? ?? ?? ?? " +           // 9 call luaL_openlibs
         "6A 00 " +                    // 14 push 0
-        "68 AB AB AB AB " +           // 16 push offset lua_function_sub
-        "FF 75 AB " +                 // 21 push [ebp+L]
+        "68 ?? ?? ?? ?? " +           // 16 push offset lua_function_sub
+        "FF 75 ?? " +                 // 21 push [ebp+L]
         "E8 ";                        // 24 call lua_pushcclosure
     var l1Offset = 8;
     var l2Offset = 23;
     var openLibsOffset = 10;
     var pushcclosureOffset = 25;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 3 - Pattern not found";
