@@ -32,14 +32,14 @@ function RemoveWrongCharFromCashShop()
         "50 " +                 // push eax
         "68 C2 01 00 00 " +     // push 1C2h
         "68 26 02 00 00 " +     // push 226h
-        "E8 AB AB AB AB " +     // call UICashShopWnd_sub
-        "FF B6 AB AB 00 00 " +  // push dword ptr [esi+A]
-        "8D 45 AB " +           // lea eax, [ebp+string_ptr]
+        "E8 ?? ?? ?? ?? " +     // call UICashShopWnd_sub
+        "FF B6 ?? ?? 00 00 " +  // push dword ptr [esi+A]
+        "8D 45 ?? " +           // lea eax, [ebp+string_ptr]
         "68 " + strHex +        // push offset "%d C"
         "50 " +                 // push eax
         "E8 "                   // call std::string::sprintf
     var pushOffset = 18;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in step 2 - pattern not found";
