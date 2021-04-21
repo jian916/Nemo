@@ -12,12 +12,12 @@ function SkipLicenseScreen()
     return "Failed in Step 1 - Unable to find btn_disagree";
 
   //Step 1b - Find it's reference . Interestingly it is only PUSHed once
-  offset = exe.findCode(" 68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode(" 68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Unable to find reference to btn_disagree";
 
   //Step 2a - Find the Switch Case JMPer within 0x200 bytes before the PUSH
-  offset = exe.find(" FF 24 85 AB AB AB 00", PTYPE_HEX, true, "\xAB", offset - 0x200, offset);//JMP DWORD PTR DS:[EAX*4 + refaddr]
+  offset = pe.find(" FF 24 85 ?? ?? ?? 00", offset - 0x200, offset);//JMP DWORD PTR DS:[EAX*4 + refaddr]
   if (offset === -1)
     return "Failed in Step 2 - Unable to find the switch";
 
