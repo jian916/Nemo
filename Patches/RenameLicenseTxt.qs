@@ -12,7 +12,7 @@ function RenameLicenseTxt()
     return "Failed in Step 1 - File string missing";
 
   //Step 1b - Find its reference
-  offset = exe.findCode(" C7 05 AB AB AB 00" + offset.packToHex(4), PTYPE_HEX, true, "\xAB");//MOV DWORD PTR DS:[g_licence], stringAddr
+  offset = pe.findCode(" C7 05 ?? ?? ?? 00" + offset.packToHex(4));//MOV DWORD PTR DS:[g_licence], stringAddr
   if (offset === -1)
     return "Failed in Step 1 - String reference missing";
 
@@ -56,7 +56,7 @@ function RenameLicenseTxt()
 
   for (var i = 0; i < prefixes.length; i++)
   {
-    var offsets = exe.findCodes(prefixes[i] + offset.packToHex(4), PTYPE_HEX, false);
+    var offsets = pe.findCodes(prefixes[i] + offset.packToHex(4));
     for (var j = 0; j < offsets.length; j++)
     {
       exe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
