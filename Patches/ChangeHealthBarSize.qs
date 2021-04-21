@@ -2,33 +2,33 @@
 function ChangeHealthBarSize()
 {
     var code =
-        " 8B 8F AB AB AB AB"    //MOV ECX,[EDI+x]
+        " 8B 8F ?? ?? ?? ??"    //MOV ECX,[EDI+x]
       + " 6A 09"                //PUSH 09
       + " 6A 3C"                //PUSH 3C
       + " E8"                    //CALL
       ;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1) // new clients
     {
         code = code.replace(" 8B 8F", " 8B 8E");   //replace EDI with ESI
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
     if (offset === -1)
         return "Failed in Step 1";
     offset = offset + 6;
 
     code =
-        " 8B 86 AB 00 00 00"    //MOV EAX,[ESI+x]
+        " 8B 86 ?? 00 00 00"    //MOV EAX,[ESI+x]
       + " 83 E8 1E"                //SUB EAX,1E
       + " 89 45 D4"                //MOV [EBP-y],EAX
       ;
 
-    var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset2 = pe.findCode(code);
     if (offset2 === -1) // new clients
     {
-        code = code.replace(" 89 45 D4", " 8B BE AB 00 00 00");   //MOV EDI,[ESI+z]
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        code = code.replace(" 89 45 D4", " 8B BE ?? 00 00 00");   //MOV EDI,[ESI+z]
+        offset2 = pe.findCode(code);
     }
     if (offset2 === -1)
         return "Failed in Step 2";
