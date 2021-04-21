@@ -33,7 +33,7 @@ function EnableRagHTTPEmblem()
   var modPos = 5;
   var InsertFrontDataOffset = 8;
   var recvQueue2Offset = [5, 1];
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1"
 
