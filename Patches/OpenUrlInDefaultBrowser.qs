@@ -30,20 +30,20 @@ function UseDefaultBrowser()
       + " 8B D8"    //MOV EBX,EAX
       ;
 
-    var foffset = exe.findCode(code, PTYPE_HEX, false);
+    var foffset = pe.findCode(code);
     if (foffset === -1)
         return "Failed in Step 1a - Function not found.";
 
     //Step 1b - Find offset where client start parsing first argument of <URL>
     code =
         " 6A 00"            //PUSH 00
-      + " 8D 45 AB"            //LEA EAX,[EBP-z]
+      + " 8D 45 ??"            //LEA EAX,[EBP-z]
       + " 50"                //PUSH EAX
       + " 8B CF"            //MOV ECX,EDI
-      +  "E8 AB AB AB AB"    //CALL offset
+      +  "E8 ?? ?? ?? ??"    //CALL offset
       ;
 
-    var offset = exe.find(code, PTYPE_HEX, true, "\xAB", foffset - 0x80, foffset);
+    var offset = pe.find(code, foffset - 0x80, foffset);
     if (offset === -1)
         return "Failed in Step 1b - Function not found.";
 
@@ -103,10 +103,10 @@ function UseDefaultBrowser()
     //Step 3a - Find offset where calling ROWebBrowser
     code =
         " 53"                    //PUSG EBX
-      + " FF B5 AB AB FF FF"    //PUSH [EBP-x]
+      + " FF B5 ?? ?? FF FF"    //PUSH [EBP-x]
       ;
 
-    var roffset = exe.find(code, PTYPE_HEX, true, "\xAB", foffset, foffset + 0x50);
+    var roffset = pe.find(code, foffset, foffset + 0x50);
     if (roffset === -1)
         return "Failed in Step 3a - Pattern missing.";
 
@@ -114,10 +114,10 @@ function UseDefaultBrowser()
     code =
         " 8B F0"    //MOV ESI,EAX
       + " 85 F6"    //TEST ESI,ESI
-      + " 74 AB"    //JE offset
+      + " 74 ??"    //JE offset
       ;
 
-    var doffset = exe.find(code, PTYPE_HEX, true, "\xAB", roffset, roffset + 0x20);
+    var doffset = pe.find(code, roffset, roffset + 0x20);
     if (doffset === -1)
         return "Failed in Step 3b - Pattern missing.";
 
