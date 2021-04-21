@@ -28,16 +28,16 @@ function RestoreOldLoginPacket()
     // Step 1b - Force the client to send 0x64
     // search in CLoginMode_virt28
     var code =
-        " 80 3D AB AB AB AB 00" + // cmp g_passwordencrypt, 0
-        " 0F 85 AB AB 00 00" +    // jne addr1
-        " 8B AB" + LANGTYPE +     // mov ecx, clientinfo_lang_type
-        " AB AB" +                // test ecx, ecx  < --  nop code from here
-        " 0F 84 AB AB 00 00" +    // jz addr2
-        " 83 AB 12" +             // cmp ecx, 12h
-        " 0F 84 AB AB 00 00" +    // jz addr2
-        " 83 AB 0C" +             // cmp ecx, 0Ch
-        " 0F 84 AB AB 00 00";     // jz addr2
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        " 80 3D ?? ?? ?? ?? 00" + // cmp g_passwordencrypt, 0
+        " 0F 85 ?? ?? 00 00" +    // jne addr1
+        " 8B ??" + LANGTYPE +     // mov ecx, clientinfo_lang_type
+        " ?? ??" +                // test ecx, ecx  < --  nop code from here
+        " 0F 84 ?? ?? 00 00" +    // jz addr2
+        " 83 ?? 12" +             // cmp ecx, 12h
+        " 0F 84 ?? ?? 00 00" +    // jz addr2
+        " 83 ?? 0C" +             // cmp ecx, 0Ch
+        " 0F 84 ?? ?? 00 00";     // jz addr2
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 1b";
