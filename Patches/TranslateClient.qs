@@ -98,20 +98,20 @@ function TranslateClient()
 
     var code =
         " 83 3D" + LANGTYPE + " 00"   // CMP DWORD PTR DS:[g_serviceType], 0
-      + " B9 AB AB AB 00"             // MOV ECX, addr1
+      + " B9 ?? ?? ?? 00"             // MOV ECX, addr1
       + " 75"                         // JNZ SHORT addr2
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");  //VC9+ Clients
+    offset = pe.findCode(code);  //VC9+ Clients
 
     if (offset === -1)
     {
         code =
             LANGTYPE            // MOV reg32_A, DWORD PTR DS:[g_serviceType] ; Usually reg32_A is EAX
-          + " B9 AB AB AB 00"   // MOV ECX, addr1
-          + " 85 AB"            // TEST reg32_A, reg32_A
+          + " B9 ?? ?? ?? 00"   // MOV ECX, addr1
+          + " 85 ??"            // TEST reg32_A, reg32_A
           + " 75"               // JNZ SHORT addr2
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");  // Older Clients
+        offset = pe.findCode(code);  // Older Clients
     }
 
     if (offset === -1) // This change isn't necessary. [Secret]
