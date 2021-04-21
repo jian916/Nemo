@@ -12,7 +12,7 @@ function UseTildeForMatk()
     return "Failed in Step 1 - Format string missing";
 
   //Step 1b - Find all its references - There should be exactly 5 matches
-  var offsets = exe.findCodes("68" + offset.packToHex(4), PTYPE_HEX, false);
+  var offsets = pe.findCodes("68" + offset.packToHex(4));
   if (offsets.length !== 5)
     return "Failed in Step 1 - Not enough matches";
 
