@@ -33,7 +33,7 @@ function IncreaseHairSprites()
         return "Failed in step 1 - string not found";
 
     consoleLog("step 1b - search string reference");
-    offset = exe.findCode("68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
     if (offset === -1)
         return "Failed in step 1 - string reference missing";
 
@@ -46,24 +46,24 @@ function IncreaseHairSprites()
     code =
         "85 C0" +             // 0 test eax, eax
         "78 05" +             // 2 js short A
-        "83 F8 AB" +          // 4 cmp eax, 1Dh
+        "83 F8 ??" +          // 4 cmp eax, 1Dh
         "7E 06" +             // 7 jle short B
-        "C7 06 AB 00 00 00";  // 9 mov dword ptr [esi], 0Dh
+        "C7 06 ?? 00 00 00";  // 9 mov dword ptr [esi], 0Dh
     var assignOffset = 9;
     var valueOffset = 6;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
+    offset = pe.find(code, refOffset - 0x200, refOffset);
     if (offset === -1)
     {
         code =
             "85 C9" +              // 0 test ecx, ecx
             "78 05" +              // 2 js short A
-            "83 F9 AB" +           // 4 cmp ecx, 21h
-            "AB AB" +              // 7 jle short B
-            "C7 00 AB 00 00 00 " + // 9 mov dword ptr [eax], 21h
-            "B9 AB 00 00 00";      // 15 mov ecx, 21h
+            "83 F9 ??" +           // 4 cmp ecx, 21h
+            "?? ??" +              // 7 jle short B
+            "C7 00 ?? 00 00 00 " + // 9 mov dword ptr [eax], 21h
+            "B9 ?? 00 00 00";      // 15 mov ecx, 21h
 
-            offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
+            offset = pe.find(code, refOffset - 0x200, refOffset);
             addNops = " 90 90 90 90 90"
             newclient = 1;
 
@@ -79,30 +79,30 @@ function IncreaseHairSprites()
     {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
-            "75 AB " +                    // 2 jnz short loc_8D08A9
+            "75 ?? " +                    // 2 jnz short loc_8D08A9
             "83 F8 01 " +                 // 4 cmp eax, 1
             "7C 05 " +                    // 7 jl short loc_8D0840
-            "83 F8 AB " +                 // 9 cmp eax, 7
+            "83 F8 ?? " +                 // 9 cmp eax, 7
             "7C 06 " +                    // 12 jl short loc_8D0846
-            "C7 06 AB 00 00 00 ";         // 14 mov dword ptr [esi], 6
+            "C7 06 ?? 00 00 00 ";         // 14 mov dword ptr [esi], 6
     }
     else
     {
         code =
             "8B 08 " +                    // 0 mov ecx, [eax]
-            "75 AB " +                    // 2 jnz short loc_8D08A9
+            "75 ?? " +                    // 2 jnz short loc_8D08A9
             "83 F9 01 " +                 // 4 cmp ecx, 1
             "7C 05 " +                    // 7 jl short loc_8D0840
-            "83 F9 AB " +                 // 9 cmp ecx, 0Bh
-            "7C AB " +                    // 12 jl short loc_8D0846
-            "C7 00 AB 00 00 00 " +        // 14 mov dword ptr [eax], 0A
-            "B9 AB 00 00 00";             // 20 mov ecx, 0Ah
+            "83 F9 ?? " +                 // 9 cmp ecx, 0Bh
+            "7C ?? " +                    // 12 jl short loc_8D0846
+            "C7 00 ?? 00 00 00 " +        // 14 mov dword ptr [eax], 0A
+            "B9 ?? 00 00 00";             // 20 mov ecx, 0Ah
     }
     var assignOffset = 14;
     var valueOffset = 11;
 
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
+    offset = pe.find(code, refOffset - 0x200, refOffset);
     if (offset === -1)
         return "Failed in step 3 - doram hair limit missing";
 
@@ -117,7 +117,7 @@ function IncreaseHairSprites()
         "00 00" + //
         "34 00" + // "4"
         "00 00";  //
-    offset = exe.find(code, PTYPE_HEX, false);
+    offset = pe.find(code);
     if (offset === -1)
         return "Failed in step 4 - string '2' missing";
 
@@ -129,9 +129,9 @@ function IncreaseHairSprites()
     {
         code =
             "50 " +                                        // 0 push eax
-            "6A AB " +                                     // 1 push 1Eh
+            "6A ?? " +                                     // 1 push 1Eh
             "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // 3 mov dword ptr [ebp+A], offset "2"
-            "E8 AB AB AB AB " +                            // 10 call vector__alloc_mem_and_set_pointer
+            "E8 ?? ?? ?? ?? " +                            // 10 call vector__alloc_mem_and_set_pointer
             "8B 06 " +                                     // 15 mov eax, [esi]
             "C7 00 " + str2Offset.packToHex(4);            // 17 mov dword ptr [eax], offset "2"
         var patchOffset = 0;  // from this offset code will be patched
@@ -144,9 +144,9 @@ function IncreaseHairSprites()
         code =
             "50 " +                                        // 0 push eax
             "56 " +                                        // 1 push esi
-            "6A AB " +                                     // 2 push 21h
+            "6A ?? " +                                     // 2 push 21h
             "8B CE " +                                     // 4 mov ecx,esi
-            "E8 AB AB AB AB " +                            // 6 call vector__alloc_mem_and_set_pointer
+            "E8 ?? ?? ?? ?? " +                            // 6 call vector__alloc_mem_and_set_pointer
             "8B 06 " +                                     // 11 mov eax, [esi]
             "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // 13 mov dword ptr [ebp+A], offset "2"
             "C7 00 " + str2Offset.packToHex(4);            // 20 mov dword ptr [eax], offset "2"
@@ -156,7 +156,7 @@ function IncreaseHairSprites()
         var fetchSize = 7;    // copy this N bytes into own code
     }
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
 
     if (offsets.length === 0)
         return "Failed in step 5 - hair table not found";
@@ -190,40 +190,40 @@ function IncreaseHairSprites()
 {
         code =
             "8B 06" +                 // 0 mov eax, [esi]
-            "8D B7 AB AB 00 00" +     // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
-            "C7 40 AB AB AB AB AB" +  // 8 mov dword ptr [eax+74h], offset a29
-            "8D 45 AB" +              // 15 lea eax, [ebp+var_10]
+            "8D B7 ?? ?? 00 00" +     // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
+            "C7 40 ?? ?? ?? ?? ??" +  // 8 mov dword ptr [eax+74h], offset a29
+            "8D 45 ??" +              // 15 lea eax, [ebp+var_10]
             "50" +                    // 18 push eax
-            "6A AB " +                // 19 push 1Eh
+            "6A ?? " +                // 19 push 1Eh
             "8B CE " +                // 21 mov ecx, esi
-            "E8 AB AB AB AB ";        // 23 call vector__alloc_mem_and_set_pointer
+            "E8 ?? ?? ?? ?? ";        // 23 call vector__alloc_mem_and_set_pointer
         var patchOffset2 = 18;   // from this offset code will be patched
         var callOffset2 = 24;    // in this offset relative call address
 
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
+        offset = pe.find(code, tableCodeOffset, tableCodeOffset + 0x150);
     }
     else
     {
         code =
             "8B 06" +                          // 0 mov eax, [esi]
-            "8D B7 AB AB 00 00" +              // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
+            "8D B7 ?? ?? 00 00" +              // 2 lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
             "8B CE " +                         // 8 mov ecx, esi
-            "C7 80 AB AB AB AB AB AB AB AB" +  // 10 mov dword ptr [eax+80h], offset a32
-            "8D 45 AB" +                       // 20 lea eax, [ebp+var_10]
+            "C7 80 ?? ?? ?? ?? ?? ?? ?? ??" +  // 10 mov dword ptr [eax+80h], offset a32
+            "8D 45 ??" +                       // 20 lea eax, [ebp+var_10]
             "50" +                             // 23 push eax
             "56 " +                            // 24 push esi
-            "6A AB " +                         // 25 push 1Eh
-            "E8 AB AB AB AB ";                 // 27 call vector__alloc_mem_and_set_pointer
+            "6A ?? " +                         // 25 push 1Eh
+            "E8 ?? ?? ?? ?? ";                 // 27 call vector__alloc_mem_and_set_pointer
         var patchOffset2 = 23;   // from this offset code will be patched
         var callOffset2 = 28;    // in this offset relative call address
         esi1 = "56 ";
 
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
+        offset = pe.find(code, tableCodeOffset, tableCodeOffset + 0x150);
 
         if (offset === -1) //newer clients
         {
-            code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
-            offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
+            code = code.replace(" C7 80 ?? ?? ?? ?? ?? ?? ?? ??", " C7 40 ?? ?? ?? ?? ??");   //mov dword ptr [eax+7Ch], offset a31
+            offset = pe.find(code, tableCodeOffset, tableCodeOffset + 0x150);
             patchOffset2 -= 3;
             callOffset2 -= 3;
         }
@@ -279,13 +279,13 @@ function IncreaseHairSprites()
     {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
-            "8D B7 AB AB AB AB " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
-            "C7 40 AB AB AB AB AB " +     // 8 mov dword ptr [eax+7Ch], offset a31
-            "8D 45 AB " +                 // 15 lea eax, [ebp+a3]
+            "8D B7 ?? ?? ?? ?? " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
+            "C7 40 ?? ?? ?? ?? ?? " +     // 8 mov dword ptr [eax+7Ch], offset a31
+            "8D 45 ?? " +                 // 15 lea eax, [ebp+a3]
             "50 " +                       // 18 push eax
             "6A 07 " +                    // 19 push 7
             "8B CE " +                    // 21 mov ecx, esi
-            "E8 AB AB AB AB " +           // 23 call std_vector_char_ptr_resize
+            "E8 ?? ?? ?? ?? " +           // 23 call std_vector_char_ptr_resize
             "8B 06 " +                    // 28 mov eax, [esi]
             "C7 45 ";                     // 30 mov [ebp+a3], offset a1_1
         var str1Offset = 33;
@@ -293,20 +293,20 @@ function IncreaseHairSprites()
         var callOffset = 24;  // in this offset relative call address
         // no fetch code
 
-        var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        var offsets = pe.findCodes(code);
     }
     else
     {
         code =
             "8B 06 " +                             // 0 mov eax, [esi]
-            "8D B7 AB AB AB AB " +                 // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
+            "8D B7 ?? ?? ?? ?? " +                 // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_M]
             "8B CE " +                             // 8 mov ecx, esi
-            "C7 80 AB AB AB AB AB AB AB AB " +     // 10 mov dword ptr [eax+80h], offset a31
-            "8D 45 AB " +                          // 20 lea eax, [ebp+a3]
+            "C7 80 ?? ?? ?? ?? ?? ?? ?? ?? " +     // 10 mov dword ptr [eax+80h], offset a31
+            "8D 45 ?? " +                          // 20 lea eax, [ebp+a3]
             "50 " +                                // 23 push eax
             "56 " +                                // 24 push esi
-            "6A AB " +                             // 25 push 7
-            "E8 AB AB AB AB " +                    // 27 call std_vector_char_ptr_resize
+            "6A ?? " +                             // 25 push 7
+            "E8 ?? ?? ?? ?? " +                    // 27 call std_vector_char_ptr_resize
             "8B 06 " +                             // 32 mov eax, [esi]
             "C7 40 ";                              // 34 mov dword ptr [eax+4], offset a1
         var str1Offset = 37;
@@ -314,12 +314,12 @@ function IncreaseHairSprites()
         var callOffset = 28;  // in this offset relative call address
         // no fetch code
 
-        var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        var offsets = pe.findCodes(code);
 
         if (offsets.length === 0)
         {
-            code = code.replace(" C7 80 AB AB AB AB AB AB AB AB", " C7 40 AB AB AB AB AB");   //mov dword ptr [eax+7Ch], offset a31
-            offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+            code = code.replace(" C7 80 ?? ?? ?? ?? ?? ?? ?? ??", " C7 40 ?? ?? ?? ?? ??");   //mov dword ptr [eax+7Ch], offset a31
+            offsets = pe.findCodes(code);
             str1Offset -= 3;
             patchOffset -= 3;
             callOffset -= 3;
@@ -381,20 +381,20 @@ function IncreaseHairSprites()
     {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
-            "8D B7 AB AB 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
-            "C7 40 AB AB AB AB AB " +     // 8 mov dword ptr [eax+18h], offset a6
-            "8D 45 AB " +                 // 15 lea eax, [ebp+var_10]
+            "8D B7 ?? ?? 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
+            "C7 40 ?? ?? ?? ?? ?? " +     // 8 mov dword ptr [eax+18h], offset a6
+            "8D 45 ?? " +                 // 15 lea eax, [ebp+var_10]
             "50 " +                       // 18 push eax
             "6A 07 " +                    // 19 push 7
             "8B CE " +                    // 21 mov ecx, esi
-            "E8 AB AB AB AB " +           // 23 call std_vector_char_ptr_resize
+            "E8 ?? ?? ?? ?? " +           // 23 call std_vector_char_ptr_resize
             "8B 06 " +                    // 28 mov eax, [esi]
-            "C7 40 AB AB AB AB AB " +     // 30 mov dword ptr [eax+4], offset a1
+            "C7 40 ?? ?? ?? ?? ?? " +     // 30 mov dword ptr [eax+4], offset a1
             "8B 06 " +                    // 37 mov eax, [esi]
-            "8D 8F AB AB AB AB " +        // 39 lea ecx, [edi+CSession.ViewID_sprite_array]
-            "C7 40 AB AB AB AB AB " +     // 45 mov dword ptr [eax+8], offset a2
+            "8D 8F ?? ?? ?? ?? " +        // 39 lea ecx, [edi+CSession.ViewID_sprite_array]
+            "C7 40 ?? ?? ?? ?? ?? " +     // 45 mov dword ptr [eax+8], offset a2
             "8B 06 " +                    // 52 mov eax, [esi]
-            "C7 45 AB AB AB AB AB " +     // 54 mov [ebp+var_10], offset "_병아리모자"
+            "C7 45 ?? ?? ?? ?? ?? " +     // 54 mov [ebp+var_10], offset "_병아리모자"
             "C7 40 ";                     // 61 mov dword ptr [eax+C], offset a3
             var str1Offset = 33;
             var patchOffset2 = 18;   // from this offset code will be patched
@@ -406,18 +406,18 @@ function IncreaseHairSprites()
     {
         code =
             "8B 06 " +                    // 0 mov eax, [esi]
-            "8D B7 AB AB 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
+            "8D B7 ?? ?? 00 00 " +        // 2 lea esi, [edi+CSession.doram_job_hair_sprite_array_F]
             "8B CE " +                    // 8 mov ecx, esi
-            "C7 40 AB AB AB AB AB " +     // 10 mov dword ptr [eax+18h], offset a6
-            "8D 45 AB " +                 // 17 lea eax, [ebp+var_10]
+            "C7 40 ?? ?? ?? ?? ?? " +     // 10 mov dword ptr [eax+18h], offset a6
+            "8D 45 ?? " +                 // 17 lea eax, [ebp+var_10]
             "50 " +                       // 20 push eax
             "56 " +                       // 21 push esi
-            "6A AB " +                    // 22 push 7
-            "E8 AB AB AB AB " +           // 24 call std_vector_char_ptr_resize
+            "6A ?? " +                    // 22 push 7
+            "E8 ?? ?? ?? ?? " +           // 24 call std_vector_char_ptr_resize
             "8B 06 " +                    // 29 mov eax, [esi]
-            "8D 9F AB AB AB AB " +        // 31 lea ebx, [edi+CSession.ViewID_sprite_array]
+            "8D 9F ?? ?? ?? ?? " +        // 31 lea ebx, [edi+CSession.ViewID_sprite_array]
             "8B CB " +                    // 37 mov ecx,ebx
-            "C7 45 AB AB AB AB AB" +      // 39 mov [ebp+var_10], offset "_병아리모자"
+            "C7 45 ?? ?? ?? ?? ??" +      // 39 mov [ebp+var_10], offset "_병아리모자"
             "C7 40 ";                     // 46 mov dword ptr [eax+4], offset a1
 
         var str1Offset = 49;
@@ -427,7 +427,7 @@ function IncreaseHairSprites()
         var fetchSize = 15;    // copy this N bytes into own code
     }
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
+    offset = pe.find(code, tableCodeOffset, tableCodeOffset + 0x150);
     if (offset === -1)
         return "Failed in step 9 - jump location not found";
 
@@ -486,21 +486,21 @@ function IncreaseHairSprites()
 
     var code =
         "8B 06 " +                           // 0 mov eax, [esi]
-        "C7 40 AB AB AB AB AB " +            // 2 mov dword ptr [eax+28h], offset a10
-        "8D 45 AB " +                        // 9 lea eax, [ebp+var_10]
+        "C7 40 ?? ?? ?? ?? ?? " +            // 2 mov dword ptr [eax+28h], offset a10
+        "8D 45 ?? " +                        // 9 lea eax, [ebp+var_10]
         "50 " +                              // 12 push eax
         "68 " + viewID.packToHex(4) + " " +  // 14 push viewID
         "E8 ";                               // 19 call std_vector_char_ptr_resize
 
     if (newclient)
     {
-        code = code.replace("8D 45 AB 50 ", " 8D 45 AB 50 53 ");   //add "push ebx"
+        code = code.replace("8D 45 ?? 50 ", " 8D 45 ?? 50 53 ");   //add "push ebx"
     }
 
     var jumpOffset = 9;    // jump offset
 
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
+    offset = pe.find(code, tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
     if (offset === -1)
         return "Failed in step 10 - jump location not found";
 
