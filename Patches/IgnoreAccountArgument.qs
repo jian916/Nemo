@@ -29,7 +29,7 @@ function IgnoreAccountArgument()
 
     // Step 1b - Find its reference
     var code = " 68" + offset.packToHex(4);
-    offset = exe.findCode(code, PTYPE_HEX, false);
+    offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - Reference not found.";
 
@@ -38,9 +38,9 @@ function IgnoreAccountArgument()
         //" FF D3"   // CALL EBX ; strstr
         " 83 C4 08"  // ADD ESP, 8
     +    " 85 C0"     // TEST EAX, EAX
-    +    " 74 AB"     // JZ loadClientInfo
+    +    " 74 ??"     // JZ loadClientInfo
     ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+    offset = pe.find(code, offset, offset + 0x20);
     if (offset === -1)
         return "Failed in Step 2 - Comparison not found.";
 
