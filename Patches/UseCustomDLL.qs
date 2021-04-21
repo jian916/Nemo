@@ -30,7 +30,7 @@ function UseCustomDLL()
 
     //Step 1e - Get the DLL Name for the import entry
     var offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-    var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
+    var offset3 = pe.find("00", offset2);
     var curDLL = exe.fetch(offset2, offset3 - offset2);
 
     //Step 1f - Make sure there is no duplicate
@@ -146,7 +146,7 @@ function UseCustomDLL()
   exe.insert(free, strSize + dirSize, strData + dirEntryData + dirTableData, PTYPE_HEX);
 
   //Step 4b - Change the PE Table Import Data Directory Address
-  var PEoffset = exe.find("50 45 00 00", PTYPE_HEX, false);
+  var PEoffset = pe.find("50 45 00 00");
   exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, baseAddr + strSize + dirEntryData.hexlength() );
   exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, dirTableData.hexlength() - 20);
 
