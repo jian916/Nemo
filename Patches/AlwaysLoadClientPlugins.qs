@@ -26,23 +26,23 @@ function AlwaysLoadClientPlugins()
         return "Failed in Step 1 - SOUNDMODE not found";
 
     // Step 1b - Find its reference
-    var refoffset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+    var refoffset = pe.findCode("68" + offset.packToHex(4));
     if (refoffset === -1)
         return "Failed in Step 1 - SOUNDMODE reference not found";
 
     // Step 2a - Fetch soundMode variable location
     var code =
-        " 68 AB AB AB AB"    // PUSH soundMode
-    +    " 8D 45 AB"            // LEA EAX, [EBP+Type]
+        " 68 ?? ?? ?? ??"    // PUSH soundMode
+    +    " 8D 45 ??"            // LEA EAX, [EBP+Type]
     +    " 50"                // PUSH EAX
     +    " 6A 00"            // PUSH 0
     ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refoffset - 0x10, refoffset);
+    offset = pe.find(code, refoffset - 0x10, refoffset);
 
     if (offset === -1)
     {
-        code = code.replace(" 50", " C7 45 AB 04 00 00 00 50");
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", refoffset - 0x20, refoffset); //mov [ebp+cbData],4
+        code = code.replace(" 50", " C7 45 ?? 04 00 00 00 50");
+        offset = pe.find(code, refoffset - 0x20, refoffset); //mov [ebp+cbData],4
     }
 
     if (offset === -1)
@@ -54,15 +54,15 @@ function AlwaysLoadClientPlugins()
     code =
         " 8D 40 04"                // LEA EAX, [EAX+4]
     +    " 49"                    // DEC ECX
-    +    " 75 AB"                // JNZ _loop
+    +    " 75 ??"                // JNZ _loop
     +    " 39 0D" + soundMode    // CMP soundMode, ECX
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code = code.replace(" 49", " C7 40 FC 00 00 00 00 83 E9 01"); //mov dword ptr [eax-4],0  sub ecx,1
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
