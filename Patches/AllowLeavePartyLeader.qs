@@ -24,15 +24,15 @@ function AllowLeavelPartyLeader()
     var code =
         "84 C0" +                 // test al, al
         "74 34" +                 // jz addr1
-        "C7 45 AB FF FF FF FF" +  // mov [ebp+A], 0FFFFFFFFh
-        "8D 8D AB AB AB AB" +     // lea ecx, [ebp+fInfo]
-        "E8 AB AB AB AB" +        // call FRIEND_INFO_destructor
+        "C7 45 ?? FF FF FF FF" +  // mov [ebp+A], 0FFFFFFFFh
+        "8D 8D ?? ?? ?? ??" +     // lea ecx, [ebp+fInfo]
+        "E8 ?? ?? ?? ??" +        // call FRIEND_INFO_destructor
         "46" +                    // inc esi
         "3B F3" +                 // cmp esi, ebx
-        "7C AB" +                 // jl addr2
-        "8A 85 AB AB AB AB" +     // mov al, byte ptr [ebp+B]
+        "7C ??" +                 // jl addr2
+        "8A 85 ?? ?? ?? ??" +     // mov al, byte ptr [ebp+B]
         "84 C0" +                 // test al, al
-        "74 AB" +                 // jz addr3    <-- patch here
+        "74 ??" +                 // jz addr3    <-- patch here
         "6A 00" +                 // push 0
         "6A 00" +                 // push 0
         "68 FF 00 00 00" +        // push 0FFh
@@ -40,7 +40,7 @@ function AllowLeavelPartyLeader()
         "E9"                      // jmp addr3
     var jzOffset = 2;
     var friendInfoDestructorOffset = 18;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
