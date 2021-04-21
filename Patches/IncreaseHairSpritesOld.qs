@@ -33,7 +33,7 @@ function IncreaseHairSpritesOld()
         return "Failed in step 1 - string not found";
 
     // step 1b - search string reference
-    offset = exe.findCode("68" + exe.Raw2Rva(offset).packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
     if (offset === -1)
         return "Failed in step 1 - string reference missing";
 
@@ -42,14 +42,14 @@ function IncreaseHairSpritesOld()
     code =
         "85 C0" +             // test eax, eax
         "78 05" +             // js short A
-        "83 F8 AB" +          // cmp eax, 1Dh
+        "83 F8 ??" +          // cmp eax, 1Dh
         "7E 06" +             // jle short B
-        "C7 06 AB 00 00 00";  // mov dword ptr [esi], 0Dh
+        "C7 06 ?? 00 00 00";  // mov dword ptr [esi], 0Dh
     var assignOffset = 9;
     var valueOffset = 6;
 
     // step 2 - search hair limit
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x200, refOffset);
+    offset = pe.find(code, refOffset - 0x200, refOffset);
     if (offset === -1)
         return "Failed in step 2 - hair limit missing";
 
@@ -64,7 +64,7 @@ function IncreaseHairSpritesOld()
         "00 00" + //
         "34 00" + // "4"
         "00 00";  //
-    offset = exe.find(code, PTYPE_HEX, false);
+    offset = pe.find(code);
     if (offset === -1)
         return "Failed in step 3 - string '2' missing";
 
@@ -74,9 +74,9 @@ function IncreaseHairSpritesOld()
     // step 4 - search male hair table allocations in CSession::InitPcNameTable
     code =
         "50 " +                                        // push eax
-        "6A AB " +                                     // push 1Eh
+        "6A ?? " +                                     // push 1Eh
         "C7 45 F0 " + str2Offset.packToHex(4) + " " +  // mov dword ptr [ebp+A], offset "2"
-        "E8 AB AB AB AB " +                            // call vector__alloc_mem_and_set_pointer
+        "E8 ?? ?? ?? ?? " +                            // call vector__alloc_mem_and_set_pointer
         "8B 06 " +                                     // mov eax, [esi]
         "C7 00 " + str2Offset.packToHex(4);            // mov dword ptr [eax], offset "2"
     var patchOffset = 0;  // from this offset code will be patched
@@ -84,7 +84,7 @@ function IncreaseHairSpritesOld()
     var fetchOffset = 3;  // copy into own code from this address
     var fetchSize = 7;    // copy this N bytes into own code
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
 
     if (offsets.length === 0)
         return "Failed in step 4 - hair table not found";
@@ -114,17 +114,17 @@ function IncreaseHairSpritesOld()
     // step 6 - search female hair table and location for jump
     code =
         "8B 06" +                 // mov eax, [esi]
-        "8D B7 AB AB 00 00" +     // lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
-        "C7 40 AB AB AB AB AB" +  // mov dword ptr [eax+74h], offset a29
-        "8D 45 AB" +              // lea eax, [ebp+var_10]
+        "8D B7 ?? ?? 00 00" +     // lea esi, [edi+CSession.normal_job_hair_sprite_array_F]
+        "C7 40 ?? ?? ?? ?? ??" +  // mov dword ptr [eax+74h], offset a29
+        "8D 45 ??" +              // lea eax, [ebp+var_10]
         "50" +                    // push eax
-        "6A AB " +                // push 1Eh
+        "6A ?? " +                // push 1Eh
         "8B CE " +                // mov ecx, esi
-        "E8 AB AB AB AB ";        // call vector__alloc_mem_and_set_pointer
+        "E8 ?? ?? ?? ?? ";        // call vector__alloc_mem_and_set_pointer
     var patchOffset2 = 18;   // from this offset code will be patched
     var callOffset2 = 24;    // in this offset relative call address
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset, tableCodeOffset + 0x150);
+    offset = pe.find(code, tableCodeOffset, tableCodeOffset + 0x150);
     if (offset === -1)
         return "Failed in step 6 - jump location not found";
 
@@ -171,15 +171,15 @@ function IncreaseHairSpritesOld()
     // step 7 - search location for jump
     code =
         "8B 06" +                 // mov eax, [esi]
-        "8D B7 AB AB 00 00" +     // lea esi, [edi+CSession.doram_sex1_hair_sprite_array]
-        "C7 40 AB AB AB AB AB" +  // mov dword ptr [eax+74h], offset a29
+        "8D B7 ?? ?? 00 00" +     // lea esi, [edi+CSession.doram_sex1_hair_sprite_array]
+        "C7 40 ?? ?? ?? ?? ??" +  // mov dword ptr [eax+74h], offset a29
         "8D 45 F0" +              // lea eax, [ebp+var_10]
         "50" +                    // push eax
-        "6A AB" +                 // push 7  - doram hair limit
+        "6A ??" +                 // push 7  - doram hair limit
         "8B CE" +                 // mov ecx, esi
-        "E8 AB AB AB AB";         // call vector__alloc_mem_and_set_pointer
+        "E8 ?? ?? ?? ??";         // call vector__alloc_mem_and_set_pointer
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
+    offset = pe.find(code, tableCodeOffset2 + 5, tableCodeOffset2 + 0x150);
     if (offset === -1)
         return "Failed in step 7 - jump location not found";
 
