@@ -11,7 +11,7 @@ function UseCustomFont()
     return "Failed in Step 1 - Gulim not found";
 
   //Step 1b - Find its reference - We should limit the search to .data section but that would pose a problem with themida clients.
-  var offset = exe.find(goffset.packToHex(4), PTYPE_HEX, false);
+  var offset = pe.find(goffset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Gulim reference not found";
 
