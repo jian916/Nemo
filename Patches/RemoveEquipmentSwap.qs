@@ -27,20 +27,20 @@ function RemoveEquipmentSwap()
 {
     // Step 1 - Find the location where equipment function is called
     var code =
-        "E8 AB AB AB FF " +     // call    sub_59E810
+        "E8 ?? ?? ?? FF " +     // call    sub_59E810
         "8B 47 18 " +           // mov     eax, [edi+18h]
-        "8B 8F AB AB 00 00 " +  // mov     ecx, [edi+100h]
+        "8B 8F ?? ?? 00 00 " +  // mov     ecx, [edi+100h]
         "83 E8 14 " +           // sub     eax, 14h
         "8B 11 " +              // mov     edx, [ecx]
         "50 ";                  // push    eax
 
     var repLoc = 15;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code = code.replace("83 E8 14 8B 11 50 ", "83 E8 14 50 "); // remove MOV EDX, [ECX]
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -50,16 +50,16 @@ function RemoveEquipmentSwap()
 
     // Step 2 - Find the location where costume function is called
     var code =
-        "8B 8E AB AB 00 00 " +  // mov     ecx, [esi+100h]
+        "8B 8E ?? ?? 00 00 " +  // mov     ecx, [esi+100h]
         "85 C9 " +              // test    ecx, ecx
         "74 6F " +              // jz      short loc_66C1FF
-        "8B 86 AB 00 00 00 " +  // mov     eax, [esi+0B8h]
+        "8B 86 ?? 00 00 00 " +  // mov     eax, [esi+0B8h]
         "8B 11 " +              // mov     edx, [ecx]
         "05 93 00 00 00 " +     // add     eax, 93h
         "50 ";                  // push    eax
 
     var repLoc = 19;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
