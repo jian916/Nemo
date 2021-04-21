@@ -48,7 +48,7 @@ function SharedPalettes(prefix, newString)
     return "Failed in Step 1 - Format String missing";
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Format String reference missing";
 
