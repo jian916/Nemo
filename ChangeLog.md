@@ -1,3 +1,23 @@
+# 2021-04-22 Different updates
+
+## Patches
+
+- Add patch [Restore auto follow](http://nemo.herc.ws/patches/RestoreAutoFollow/#success-clients). (by @4144).
+
+## For devs
+
+- Add function pe.find as improvement of exe.find.
+- Add function pe.findAll as improvement of exe.findAll.
+- Add function pe.findCode as improvement of exe.findCode.
+- Add function pe.findCodes as improvement of exe.findCodes.
+- Add function pe.match as improvement of exe.match.
+- Add function pe.vaToRaw as improvement of exe.Raw2Rva.
+- Add function pe.rawToVa as improvement of exe.Rva2Raw.
+- Add function pe.sectionRaw as improvement of exe.getROffset.
+- Add function pe.sectionVa as improvement of exe.getVOffset.
+- Add function pe.dataBaseRaw for return start of data raw address.
+
+
 # 2021-04-07 Patches update
 
 - Fix patch [Disable Auto follow](http://nemo.herc.ws/patches/DisableAutofollow/#success-clients). (fix by @4144).
