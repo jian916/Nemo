@@ -21,6 +21,24 @@
 
 ``getActivePatches()``
 
+## isPatchActive
+
+``isPatchActive(functionName)``
+
+Return true if patch with given function active
+
+## enablePatch
+
+``enablePatch(functionName)``
+
+Enable (turn on) patch with given function name.
+
+## removePatchData
+
+``removePatchData(addrRaw)``
+
+Remove patch data assigned to given raw address.
+
 ## registerGroup
 
 ``registerGroup(id, name, mutualExclude)``

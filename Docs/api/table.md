@@ -115,3 +115,11 @@ Virtual address of CGameMode::ProcessAutoFollow
 ## table.CGameMode_OnUpdate
 
 Virtual address of CGameMode::OnUpdate
+
+## table.g_client_version
+
+Virtual address of g_client_version
+
+## table.packetVersion
+
+Client packet version
