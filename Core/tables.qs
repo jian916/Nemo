@@ -41,6 +41,7 @@ function registerTables()
     table.m_lastLockOnPcGid = 21;
     table.CGameMode_ProcessAutoFollow = 22;
     table.CGameMode_OnUpdate = 23;
+    table.g_client_version = 24;
 
     registerTableFunctions();
 }
