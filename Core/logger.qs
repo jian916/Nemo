@@ -139,6 +139,7 @@ function GlobalInit()
     registerAsm();
     registerExe();
     registerPe();
+    registerStorage();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)

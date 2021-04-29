@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2018-2021  Andrei Karas (4144)
+// Copyright (C) 2020-2021  Andrei Karas (4144)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,20 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function Global_clear()
+function storage_init()
 {
-    delete D2S;
-    delete D2D;
-    delete EspAlloc;
-    delete StrAlloc;
-    delete AllocType;
-    delete LuaState;
-    delete LuaFnCaller;
-    delete Import_Info;
-    delete PEncInsert;
-    delete PEncActive;
+    storage = new Object();
+}
 
-    dllFile = false;
-
+function registerStorage()
+{
     storage_init();
 }
