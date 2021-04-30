@@ -606,4 +606,6 @@ registerPatch(346, "RestoreAutoFollow", "Restore auto follow", "Fix", 0, "4144",
 
 registerPatch(347, "DisableRequireAdmin", "Disable OS Privileges execution level", "Fix", 0, "X-EcutiOnner", "Disable OS Privileges execution level for run client by user account", false);
 
+registerPatch(348, "SendClientFlags", "Send client flags to server", "Custom", 0, "4144", "Send main clients to server for avoid different flags on client and server", true);
+
 GlobalPostInit();

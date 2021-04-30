@@ -163,6 +163,14 @@ function ExtendCashShopPreview()
     consoleLog("update block size");
     exe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
 
+    storage.ExtendCashShop = true;
+
+    return true;
+}
+
+function ExtendCashShopPreview_cancel()
+{
+    storage.ExtendCashShop = false;
     return true;
 }
 
