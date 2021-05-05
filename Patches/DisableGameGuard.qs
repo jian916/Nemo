@@ -38,7 +38,7 @@ function DisableGameGuard()
   + " C6 ?? ?? 01"     //MOV BYTE PTR DS:[reg32+byte], 1; addr2
   ;
 
-  var offsets = pe.findCodes(code, "\xAB");
+  var offsets = pe.findCodes(code);
   if (offsets.length === 0)
     return "Failed in Step 2 - No Calls found matching ProcessFindHack";
 
