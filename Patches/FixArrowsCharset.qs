@@ -26,9 +26,9 @@
 function FixArrowsCharset()
 {
     if (
-            exe.getClientDate() >= 20200121 && !IsZero() && !IsSakray() ||  // !TODO: Replace with IsMain()
-            exe.getClientDate() >= 20200724 && IsSakray() ||
-            exe.getClientDate() >= 20200130 && IsZero()
+            (exe.getClientDate() >= 20200121 && !IsZero() && !IsSakray()) ||  // !TODO: Replace with IsMain()
+            (exe.getClientDate() >= 20200724 && IsSakray()) ||
+            (exe.getClientDate() >= 20200130 && IsZero())
         )
     {
         consoleLog("Step 1-1a - Prep code for finding the Arrows string");
