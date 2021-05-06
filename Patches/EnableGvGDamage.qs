@@ -27,25 +27,36 @@ function EnableGvGDamage()
 {
     consoleLog("Step 1 - Prep code for finding the GvG Damage display");
     var code =
-        "B9 ?? ?? ?? ?? " +    // 00 mov ecx, 11029E0h
-        "E8 ?? ?? ?? 00 " +    // 05 call sub_843990
-        "85 C0 " +             // 10 test eax, eax
-        "74 14 " +             // 12 jz short loc_7174D8
-        "6A 07 " +             // 14 push 7
-        "B9 ?? ?? ?? ?? " +    // 16 mov ecx, 11029E0h
-        "E8 ?? ?? ?? 00 " +    // 21 call sub_829820
-        "85 C0 " +             // 26 test eax, eax
-        "0F 84 ?? ?? 00 00 ";  // 28 jz def_717AF0
+        getEcxSessionHex() +          // 0 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 5 call CSession_IsSiegeMode
+        "85 C0 " +                    // 10 test eax, eax
+        "75 0E " +                    // 12 jnz short loc_99A826
+        getEcxSessionHex() +          // 14 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 19 call CSession_IsBattleFieldMode
+        "85 C0 " +                    // 24 test eax, eax
+        "74 14 " +                    // 26 jz short loc_99A83A
+        "6A 07 " +                    // 28 push 7
+        getEcxSessionHex() +          // 30 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 35 call CSession_IsMasterAid
+        "85 C0 " +                    // 40 test eax, eax
+        "0F 84 ?? ?? 00 00 ";         // 42 jz loc_9A1A84
+    var nopsStart = 0;
+    var nopsEnd = 48;
+    var IsSiegeModeOffset = 6;
+    var IsBattleFieldModeOffset = 20;
+    var isMasterAid = 36;
 
     var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 1 - Pattern not found";
 
-    var csize = code.hexlength();
+    logRawFunc("CSession_IsSiegeMode", offset, IsSiegeModeOffset);
+    logRawFunc("CSession_IsBattleFieldMode", offset, IsBattleFieldModeOffset);
+    logRawFunc("CSession_IsMasterAid", offset, isMasterAid);
 
     consoleLog("Step 2 - Replace offset found in step 1 with NOPs");
-    exe.setNops(offset, csize);
+    exe.setNopsRange(offset + nopsStart, offset + nopsEnd);
 
     return true;
 }
@@ -56,15 +67,19 @@ function EnableGvGDamage()
 function EnableGvGDamage_()
 {
     var code =
-        "B9 ?? ?? ?? ?? " +    // 00 mov ecx, 11029E0h
-        "E8 ?? ?? ?? 00 " +    // 05 call sub_843990
-        "85 C0 " +             // 10 test eax, eax
-        "74 14 " +             // 12 jz short loc_7174D8
-        "6A 07 " +             // 14 push 7
-        "B9 ?? ?? ?? ?? " +    // 16 mov ecx, 11029E0h
-        "E8 ?? ?? ?? 00 " +    // 21 call sub_829820
-        "85 C0 " +             // 26 test eax, eax
-        "0F 84 ?? ?? 00 00 ";  // 28 jz def_717AF0
+        getEcxSessionHex() +          // 0 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 5 call CSession_IsSiegeMode
+        "85 C0 " +                    // 10 test eax, eax
+        "75 0E " +                    // 12 jnz short loc_99A826
+        getEcxSessionHex() +          // 14 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 19 call CSession_IsBattleFieldMode
+        "85 C0 " +                    // 24 test eax, eax
+        "74 14 " +                    // 26 jz short loc_99A83A
+        "6A 07 " +                    // 28 push 7
+        getEcxSessionHex() +          // 30 mov ecx, offset g_session
+        "E8 ?? ?? ?? ?? " +           // 35 call CSession_IsMasterAid
+        "85 C0 " +                    // 40 test eax, eax
+        "0F 84 ?? ?? 00 00 ";         // 42 jz loc_9A1A84
 
     return (pe.findCode(code) !== -1);
 }

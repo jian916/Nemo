@@ -608,6 +608,6 @@ registerPatch(347, "DisableRequireAdmin", "Disable OS Privileges execution level
 
 registerPatch(348, "SendClientFlags", "Send client flags to server", "Custom", 0, "4144", "Send main clients to server for avoid different flags on client and server", true);
 
-registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-EcutiOnner", "Show Damage on GvG Maps during the Guild War", false);
+registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-EcutiOnner, 4144", "Show Damage on GvG Maps during the Guild War", false);
 
 GlobalPostInit();
