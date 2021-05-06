@@ -26,7 +26,7 @@ function RemoveHardcodedHttpIP()
 
   for (var i =0; i < ipaddrs.length; i ++)
   {
-    var offsets = exe.findAll(ipaddrs[i].toHex(), PTYPE_HEX, false);
+    var offsets = pe.findAll(ipaddrs[i].toHex());
     if (offsets.length > 0)
         found = true;
     for (var j = 0; j < offsets.length; j++)
