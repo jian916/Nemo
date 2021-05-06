@@ -25,31 +25,23 @@
 
 function FixArrowsCharset()
 {
-    if (
-            (exe.getClientDate() >= 20200121 && !IsZero() && !IsSakray()) ||  // !TODO: Replace with IsMain()
-            (exe.getClientDate() >= 20200724 && IsSakray()) ||
-            (exe.getClientDate() >= 20200130 && IsZero())
-        )
+    consoleLog("Step 1-1a - Prep code for finding the Arrows string");
+    var code =
+        "A1 E7 00 " +  // 00 asc_D14AEC db '←',0
+        "00 " +        // 03 db 0
+        "A1 E8 00 " +  // 04 asc_D14AF0 db '↑',0
+        "00 " +        // 07 db 0
+        "A1 E6 00 " +  // 08 asc_D14AF4 db '→',0
+        "00 " +        // 11 db 0
+        "A1 E9 00 " +  // 12 asc_D14AF8 db '↓',0
+        "00 " +        // 15 db 0
+        "A2 C7 00 " +  // 16 asc_D14AFC db '▤',0
+        "00 " ;        // 19 db 0
+
+    var offset = pe.find(code);
+
+    if (offset !== -1)
     {
-        consoleLog("Step 1-1a - Prep code for finding the Arrows string");
-        var code =
-            "A1 E7 00 " +  // 00 asc_D14AEC db '←',0
-            "00 " +        // 03 db 0
-            "A1 E8 00 " +  // 04 asc_D14AF0 db '↑',0
-            "00 " +        // 07 db 0
-            "A1 E6 00 " +  // 08 asc_D14AF4 db '→',0
-            "00 " +        // 11 db 0
-            "A1 E9 00 " +  // 12 asc_D14AF8 db '↓',0
-            "00 " +        // 15 db 0
-            "A2 C7 00 " +  // 16 asc_D14AFC db '▤',0
-            "00 " ;        // 19 db 0
-
-        var Short = true;
-        var offset = pe.find(code);
-
-        if (offset === -1)
-            return "Failed in Step 1-1a - Pattern not found";
-
         consoleLog("Step 2-1a - Replace Arrows string for the correct match");
             exe.replace(offset, "20 1B 00 00 20 18 00 00 20 1A 00 00 20 95 00 00 20 0F ", PTYPE_HEX);
     }
@@ -70,7 +62,7 @@ function FixArrowsCharset()
         var offset1 = pe.find(code1);
 
         if (offset1 === -1)
-            return "Failed in Step 1-1b - Pattern not found";
+            return "Failed in Step 1-1 - Pattern not found";
 
         consoleLog("Step 1-2b - Prep code for finding the Arrows string");
         var code2 =
@@ -109,11 +101,11 @@ function FixArrowsCharset()
             return "Failed in Step 1-3b - Pattern not found";
 
         consoleLog("Step 2-1b - Replace Arrows string for the correct match");
-            exe.replace(offset1 - 1 + LeftLoc,  "20 1B ", PTYPE_HEX);
-            exe.replace(offset2 - 1 + UpLoc,    "20 18 ", PTYPE_HEX);
-            exe.replace(offset2 - 1 + RightLoc, "20 1A ", PTYPE_HEX);
-            exe.replace(offset2 - 1 + DownLoc,  "20 95 ", PTYPE_HEX);
-            exe.replace(offset3 - 1 + MenuLoc,  "20 0F ", PTYPE_HEX);
+        exe.replace(offset1 - 1 + LeftLoc,  "20 1B ", PTYPE_HEX);
+        exe.replace(offset2 - 1 + UpLoc,    "20 18 ", PTYPE_HEX);
+        exe.replace(offset2 - 1 + RightLoc, "20 1A ", PTYPE_HEX);
+        exe.replace(offset2 - 1 + DownLoc,  "20 95 ", PTYPE_HEX);
+        exe.replace(offset3 - 1 + MenuLoc,  "20 0F ", PTYPE_HEX);
     }
 
     return true;
