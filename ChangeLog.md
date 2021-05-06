@@ -1,3 +1,24 @@
+# 2021-05-06 Different updates
+
+## Patches
+
+- Add patch [Send client flags to server](http://nemo.herc.ws/patches/SendClientFlags/#success-clients). (by @4144).
+- Add patch [Enable GvG Damage display](http://nemo.herc.ws/patches/EnableGvGDamage/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Disable Adventure Agent button on Party Window](http://nemo.herc.ws/patches/DisableAdventureAgent/#success-clients). (by @X-EcutiOnner, @4144).
+- Add patch [Translate Arrows Charset from korean to english](http://nemo.herc.ws/patches/FixArrowsCharset/#success-clients). (by @X-EcutiOnner, @4144).
+- Remove wrong parameter from patch [Disable Game Guard](http://nemo.herc.ws/patches/DisableGameGuard/#success-clients). (by @4144).
+
+## For devs
+
+- Add script function isPatchActive. Checks if given patch name active.
+- Add script function enablePatch. Enable patch with given name.
+- Add script function removePatchData. Remove patch data from given address.
+- Add functions for patches: NAME_cancel(). Called for patch if patch was enabled and switched to disabled state.
+- Add function ApplyPatches. This function called after apply all patches.
+- Add new variables in tables.
+
+- Update tables with clients support.
+
 # 2021-04-22 Different updates
 
 ## Patches
