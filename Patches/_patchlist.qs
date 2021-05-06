@@ -612,6 +612,6 @@ registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-E
 
 registerPatch(350, "DisableAdventureAgent", "Disable Adventure Agent button on Party Window", "UI", 12, "X-EcutiOnner, 4144", "Disable Adventure Agency button on Party Window", false);
 
-registerPatch(351, "FixArrowsCharset", "Fix Arrows Charset for ASCII Langtype", "UI", 0, "X-EcutiOnner", "Fix Arrows Charset in Hotkey Setting UI wrong display for ASCII Langtype", false);
+registerPatch(351, "FixArrowsCharset", "Translate Arrows Charset from korean to english", "UI", 0, "X-EcutiOnner, 4144", "Trabslate Arrows Charset in Hotkey Setting UI wrong display from korean to english", false);
 
 GlobalPostInit();
