@@ -31,7 +31,7 @@ function DisableRequireAdmin()
     for (var i = 0; i < level.length; i++)
     {
         consoleLog("Step 1 - Search string 'requireAdministrator'");
-        var offsets = exe.findAll(level[i].toHex(), PTYPE_HEX, false);
+        var offsets = pe.findAll(level[i].toHex());
 
         if (offsets.length > 0)
             privileges = true;
@@ -54,5 +54,5 @@ function DisableRequireAdmin()
 //=======================================================//
 function DisableRequireAdmin_()
 {
-    return (exe.findAll("\x72\x65\x71\x75\x69\x72\x65\x41\x64\x6D\x69\x6E\x69\x73\x74\x72\x61\x74\x6F\x72\x22", PTYPE_STRING, false) !== -1);
+    return (pe.findAll("72 65 71 75 69 72 65 41 64 6D 69 6E 69 73 74 72 61 74 6F 72 22") !== -1);
 }
