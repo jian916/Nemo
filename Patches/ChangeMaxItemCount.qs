@@ -44,20 +44,20 @@ function ChangeMaxItemCount(value)
       //Step 2 - Find the max item count.
       var code =
          " 6A 64"          //PUSH 64h
-       + " 8D 45 AB"       //LEA EAX, [EBP+Z]
-       + " 68 AB AB AB 00" //PUSH offset "/%d"
+       + " 8D 45 ??"       //LEA EAX, [EBP+Z]
+       + " 68 ?? ?? ?? ??" //PUSH offset "/%d"
        ;
 
-      var offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB");
+      var offsets = pe.findAll(code);
 
       if (offsets.length === 0)  //new clients
       {
         code =
          " 83 C1 64"          //ADD ECX,64h
        + " 51"                //PUSH ECX
-       + " 68 AB AB AB 00"    //PUSH offset "/%d"
+       + " 68 ?? ?? ?? 00"    //PUSH offset "/%d"
        ;
-       offsets = exe.findAll(code, PTYPE_HEX, true, "\xAB");
+       offsets = pe.findAll(code);
       }
 
       if (offsets.length === 0)
