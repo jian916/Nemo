@@ -227,6 +227,8 @@ Array index 0 contains raw address where bytes was stored.
 
 Array index 1 contains bytes sequence.
 
+Array index 2 contains variables generated from assembler.
+
 ### exe.replaceAsmText
 
 ``exe.replaceAsmText(patchAddr, commands, vars)``

@@ -59,12 +59,12 @@ function exe_insertAsmText(commands, vars)
     if (free === -1)
         throw "Failed in exe.insertAsm - Not enough free space";
 
-    var obj = asm.textToHexRaw(free, commands, vars);
+    var obj = asm.textToObjRaw(free, commands, vars);
     if (obj === false)
         throw "Asm code error";
 
-    exe.insert(free, size, obj, PTYPE_HEX);
-    return [free, obj];
+    exe.insert(free, size, obj.code, PTYPE_HEX);
+    return [free, obj.code, obj.vars];
 }
 
 function exe_replaceAsmText(patchAddr, commands, vars)
