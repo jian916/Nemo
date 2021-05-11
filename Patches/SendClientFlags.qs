@@ -79,7 +79,7 @@ function SendClientFlags_apply()
     if (storage.ExtendCashShop === true)
         flags |= 1;
 
-    removePatchData(storage.g_client_version);
+    patch.removePatchData(storage.g_client_version);
     exe.replace(storage.g_client_version, flags.packToHex(4), PTYPE_HEX);
 
     return true;
