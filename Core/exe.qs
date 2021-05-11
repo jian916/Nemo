@@ -67,6 +67,25 @@ function exe_insertAsmText(commands, vars)
     return [free, obj.code, obj.vars];
 }
 
+function exe_insertAsmTextObj(commands, vars)
+{
+    var size = asm.textToHexVaLength(0, commands, vars);
+    if (size === false)
+        throw "Asm code error";
+
+    var free = exe.findZeros(size);
+    if (free === -1)
+        throw "Failed in exe.insertAsm - Not enough free space";
+
+    var obj = asm.textToObjRaw(free, commands, vars);
+    if (obj === false)
+        throw "Asm code error";
+
+    exe.insert(free, size, obj.code, PTYPE_HEX);
+    obj.free = free;
+    return obj;
+}
+
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
@@ -163,6 +182,7 @@ function registerExe()
     exe.setNops = exe_setNops;
     exe.setNopsRange = exe_setNopsRange;
     exe.insertAsmText = exe_insertAsmText;
+    exe.insertAsmTextObj = exe_insertAsmTextObj;
     exe.replaceAsmText = exe_replaceAsmText;
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;

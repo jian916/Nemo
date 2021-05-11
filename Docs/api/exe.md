@@ -229,6 +229,28 @@ Array index 1 contains bytes sequence.
 
 Array index 2 contains variables generated from assembler.
 
+### exe.insertAsmTextObj
+
+``exe.insertAsmTextObj(commands, vars)``
+
+Insert assembler code in free block in binary.
+
+| Argument | Description |
+| -------- | ----------- |
+| commands  | Assembler text with commands |
+| vars      | Variables for assembler text |
+
+If fail trigger exception.
+
+If success, return object.
+
+| Field    | Description |
+| -------- | ----------- |
+| bytes    | Bytes sequence |
+| code     | Bytes in hex format |
+| vars     | Variables |
+| free     | Raw address where block was inserted |
+
 ### exe.replaceAsmText
 
 ``exe.replaceAsmText(patchAddr, commands, vars)``
