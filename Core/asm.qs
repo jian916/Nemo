@@ -105,6 +105,19 @@ function asm_hexToAsm(code)
     return data;
 }
 
+function asm_stringToAsm(string)
+{
+    var code = string.toHex();
+    code = code.trim();
+    var parts = code.split(" ");
+    var data = ""
+    for (var i = 0; i < parts.length; i ++)
+    {
+        data = data + "db 0x" + parts[i] + "\n";
+    }
+    return data;
+}
+
 function asm_combine()
 {
     var args = Array.prototype.slice.call(arguments);
@@ -131,5 +144,6 @@ function registerAsm()
     asm.cmdToHexVa = asm_cmdToHexVa;
     asm.cmdToHexRaw = asm_cmdToHexRaw;
     asm.hexToAsm = asm_hexToAsm;
+    asm.stringToAsm = asm_stringToAsm;
     asm.combine = asm_combine;
 }

@@ -248,6 +248,18 @@ Convert hex codes into format accepted by assembler.
 
 Returns assembler text command with given bytes.
 
+### asm.stringToAsm
+
+``asm.stringToAsm(code)``
+
+Convert text string into format accepted by assembler.
+
+| Argument | Description |
+| -------- | ----------- |
+| code     | Any bytes sequence in hex format |
+
+Returns assembler text command with given text.
+
 ### asm.combine
 
 ``asm.combine(arguments)``
