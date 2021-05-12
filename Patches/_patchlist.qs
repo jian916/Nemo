@@ -131,11 +131,11 @@ registerPatch( 28, "IncreaseViewID", "Increase Headgear ViewID", "Data", 0, "Shi
 
 registerPatch( 29, "DisableGameGuard", "Disable Game Guard", "Fix", 0, "Neo", "Disables Game Guard from new clients", true);
 
-registerPatch( 30, "IncreaseZoomOut50Per", "Increase Zoom Out 50%", "UI", 3, "Shinryo", "Increases the zoom-out range by 50 percent", false);
+registerPatch( 30, "IncreaseZoomOut50Per", "Increase Zoom Out 50%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 50 percent", false);
 
-registerPatch( 31, "IncreaseZoomOut75Per", "Increase Zoom Out 75%", "UI", 3, "Shinryo", "Increases the zoom-out range by 75 percent", false);
+registerPatch( 31, "IncreaseZoomOut75Per", "Increase Zoom Out 75%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 75 percent", false);
 
-registerPatch( 32, "IncreaseZoomOutMax", "Increase Zoom Out Max", "UI", 3, "Shinryo", "Maximizes the zoom-out range", false);
+registerPatch( 32, "IncreaseZoomOutMax", "Increase Zoom Out Max", "UI", 3, "Shinryo, 4144", "Maximizes the zoom-out range", false);
 
 registerPatch( 33, "KoreaServiceTypeXMLFix", "Always Call SelectKoreaClientInfo()", "Fix", 0, "Shinryo", "Calls SelectKoreaClientInfo() always before SelectClientInfo() allowing you to use features that would be only visible on Korean Service Type", true);
 
@@ -613,5 +613,7 @@ registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-E
 registerPatch(350, "DisableAdventureAgent", "Disable Adventure Agent button on Party Window", "UI", 12, "X-EcutiOnner, 4144", "Disable Adventure Agency button on Party Window", false);
 
 registerPatch(351, "FixArrowsCharset", "Translate arrows buttons text from korean to english", "UI", 0, "X-EcutiOnner, 4144", "Translate arrows buttons in hotkey setting ui from korean to english", false);
+
+registerPatch(352, "IncreaseZoomOut25Per", "Increase Zoom Out 25%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 25 percent", false);
 
 GlobalPostInit();

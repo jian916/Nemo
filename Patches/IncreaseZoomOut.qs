@@ -2,6 +2,11 @@
 // Patch Functions wrapping over IncreaseZoomOut function //
 //========================================================//
 
+function IncreaseZoomOut25Per()
+{
+    return IncreaseZoomOut("80 43");  // 256.0
+}
+
 function IncreaseZoomOut50Per()
 {
     return IncreaseZoomOut("FF 43");  // 510.0
