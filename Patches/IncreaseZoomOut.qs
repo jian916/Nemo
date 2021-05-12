@@ -14,12 +14,18 @@ function IncreaseZoomOut50Per()
 
 function IncreaseZoomOut75Per()
 {
-      return IncreaseZoomOut("00 00 4C 44");  // 816.0
+    return IncreaseZoomOut("00 00 4C 44");  // 816.0
 }
 
 function IncreaseZoomOutMax()
 {
-      return IncreaseZoomOut("00 00 99 44");  // 1224.0
+    return IncreaseZoomOut("00 00 99 44");  // 1224.0
+}
+
+function IncreaseZoomOutCustom()
+{
+    var zoomOut = exe.getUserInput("$zoomOut", XTYPE_DWORD, _("Number Input"), _("Enter zoom out level value (256 - 25%, 510 - 50%, 816 - 75%):"), 1224);
+    return IncreaseZoomOut(floatToHex(zoomOut));
 }
 
 //#########################################################

@@ -616,4 +616,6 @@ registerPatch(351, "FixArrowsCharset", "Translate arrows buttons text from korea
 
 registerPatch(352, "IncreaseZoomOut25Per", "Increase Zoom Out 25%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 25 percent", false);
 
+registerPatch(353, "IncreaseZoomOutCustom", "Increase Zoom Out to custom value", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by custom value", false);
+
 GlobalPostInit();
