@@ -4,22 +4,22 @@
 
 function IncreaseZoomOut25Per()
 {
-    return IncreaseZoomOut("80 43");  // 256.0
+    return IncreaseZoomOut("00 00 80 43");  // 256.0
 }
 
 function IncreaseZoomOut50Per()
 {
-    return IncreaseZoomOut("FF 43");  // 510.0
+    return IncreaseZoomOut("00 00 FF 43");  // 510.0
 }
 
 function IncreaseZoomOut75Per()
 {
-      return IncreaseZoomOut("4C 44");  // 816.0
+      return IncreaseZoomOut("00 00 4C 44");  // 816.0
 }
 
 function IncreaseZoomOutMax()
 {
-      return IncreaseZoomOut("99 44");  // 1224.0
+      return IncreaseZoomOut("00 00 99 44");  // 1224.0
 }
 
 //#########################################################
@@ -41,7 +41,7 @@ function IncreaseZoomOut(newvalue)
         return "Failed in Step 1";
 
     //Step 2 - Modify with the value supplied - Current value is 400.0
-    exe.replace(offset + 6, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
+    exe.replace(offset + 4, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
 
     if (exe.findString("/zoom", RAW) !== -1)
     {   // found zoom command. need do additional patching
@@ -58,7 +58,7 @@ function IncreaseZoomOut(newvalue)
             return "Failed in Step 3. Found wrong number of enabled /zoom usage count.";
         for (var i = 0; i < offsets.length; i++)
         {
-            exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
+            exe.replace(offsets[i] + 6, newvalue, PTYPE_HEX);
         }
 
 
@@ -71,7 +71,7 @@ function IncreaseZoomOut(newvalue)
             return "Failed in Step 3. Found wrong number of disabled /zoom usage count.";
         for (i = 0; i < offsets.length; i++)
         {
-            exe.replace(offsets[i] + 8, newvalue, PTYPE_HEX);
+            exe.replace(offsets[i] + 6, newvalue, PTYPE_HEX);
         }
 
         //Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)
@@ -106,11 +106,11 @@ function IncreaseZoomOut(newvalue)
 
         // patch enabled /zoom configuration limit
         var enebledAddr = exe.Rva2Raw(exe.fetchDWord(offset + enabledOffset));
-        exe.replace(enebledAddr + 2, newvalue, PTYPE_HEX);
+        exe.replace(enebledAddr, newvalue, PTYPE_HEX);
 
         // patch disabled /zoom configuration limit
         var disabledAddr = exe.Rva2Raw(exe.fetchDWord(offset + disabledOffset));
-        exe.replace(disabledAddr + 2, newvalue, PTYPE_HEX);
+        exe.replace(disabledAddr, newvalue, PTYPE_HEX);
     }
 
     return true;
