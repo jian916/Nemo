@@ -1,3 +1,28 @@
+# 2021-05-17 Different updates
+
+## Patches
+
+- Add patch [Increase Zoom Out 25%](http://nemo.herc.ws/patches/IncreaseZoomOut25Per/#success-clients). (by Shinryo, @4144).
+- Add patch [Increase Zoom Out to custom value](http://nemo.herc.ws/patches/IncreaseZoomOutCustom/#success-clients). (by Shinryo, @4144).
+
+## For devs
+
+- Replace exe.findAll to pe.findAll in all files.
+- Updated return value for exe.insertAsmText.
+- Add function asm.stringToAsm for convert string in assembler format.
+- Add function exe.insertAsmTextObj similar to exe.insertAsmText.
+- Add javascript debugger (menu tools/debugger).
+- Move function removePatchData into object patch.
+- Add function patch.replacePatchDataDWord for replaced already patched dword.
+- Add function patch.getPatchDataDWord for read already patched dword.
+
+## Other
+
+- Update tables with clients support.
+- Add shortcut F1 for open patch information.
+- Fix window resize on startup.
+
+
 # 2021-05-06 Different updates
 
 ## Patches
@@ -16,6 +41,8 @@
 - Add functions for patches: NAME_cancel(). Called for patch if patch was enabled and switched to disabled state.
 - Add function ApplyPatches. This function called after apply all patches.
 - Add new variables in tables.
+
+## Other
 
 - Update tables with clients support.
 
