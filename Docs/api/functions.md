@@ -25,7 +25,13 @@
 
 ``isPatchActive(functionName)``
 
-Return true if patch with given function active
+Return true if patch with given function active.
+
+## isOneOfPatchesActive
+
+``isOneOfPatchesActive(functionName, ...)``
+
+Return true if one of patches with given function active.
 
 ## enablePatch
 
@@ -40,6 +46,14 @@ Enable (turn on) patch with given function name.
 Enable (turn on) patch with given function name and check is it really enabled.
 
 If patch failed to enable throw exception.
+
+## enableOneOfPatchAndCheck
+
+``enableOneOfPatchAndCheck(functionName, ...)``
+
+Enable (turn on) one of patches with given function name and check is it really enabled.
+
+If all patches failed to enable throw exception.
 
 ## registerGroup
 
