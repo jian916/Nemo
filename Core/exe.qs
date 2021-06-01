@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function exe_setJmpVa(patchAddr, jmpAddrVa, cmd)
+function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
 {
     if (typeof(cmd) === "undefined")
         cmd = "jmp";
@@ -26,12 +26,23 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd)
     if (code === false)
         throw "Jmp code error";
 
+    if (typeof(codeLen) !== "undefined")
+    {
+        var sz = code.hexlength();
+        if (sz > codeLen)
+            throw "Jmp Code bigger than requested";
+        for (var i = 0; i < codeLen - sz; i ++)
+        {
+            code = code + " 90";
+        }
+    }
+
     exe.replace(patchAddr, code, PTYPE_HEX);
 }
 
-function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd)
+function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
 {
-    exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd);
+    exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd, codeLen);
 }
 
 function exe_setNops(patchAddr, nopsCount)
