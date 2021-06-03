@@ -140,6 +140,7 @@ function GlobalInit()
     registerExe();
     registerPe();
     registerStorage();
+    registerHooks();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)
