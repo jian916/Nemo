@@ -125,3 +125,13 @@ function floatToHex(value)
 {
     return floatToDWord(value).packToHex(4);
 }
+
+function enablePatchAndCheck(name)
+{
+    if (isPatchActive(name) !== true)
+    {
+        enablePatch(name);
+        if (isPatchActive(name) !== true)
+            throw "Patch '" + name + "' must be enabled";
+    }
+}

@@ -33,6 +33,14 @@ Return true if patch with given function active
 
 Enable (turn on) patch with given function name.
 
+## enablePatchAndCheck
+
+``enablePatchAndCheck(functionName)``
+
+Enable (turn on) patch with given function name and check is it really enabled.
+
+If patch failed to enable throw exception.
+
 ## registerGroup
 
 ``registerGroup(id, name, mutualExclude)``
