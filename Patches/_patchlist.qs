@@ -618,4 +618,6 @@ registerPatch(352, "IncreaseZoomOut25Per", "Increase Zoom Out 25%", "UI", 3, "Sh
 
 registerPatch(353, "IncreaseZoomOutCustom", "Increase Zoom Out to custom value", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by custom value", false);
 
+// 354 - 360 reserved
+
 GlobalPostInit();
