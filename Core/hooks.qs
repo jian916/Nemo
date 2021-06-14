@@ -152,9 +152,39 @@ function hooks_matchFunctionEnd(offset)
     return obj;
 }
 
+function hooks_addPostEndHook(patchAddr, text, vars)
+{
+    consoleLog("hooks.addPostEndHook: match function end");
+
+    var matchObj = hooks_matchFunctionEnd(patchAddr);
+
+    consoleLog("hooks.addPostEndHook: insert own hook code");
+    var text = asm.combine(
+        asm.hexToAsm(matchObj.stolenCode1),
+        text,
+        "_ret:",
+        asm.hexToAsm(matchObj.retCode));
+
+    var data = exe.insertAsmText(text, vars);
+    var free = data[0]
+
+    consoleLog("hooks.addPostEndHook: add jump to own code");
+    exe.setJmpRaw(patchAddr, free);
+
+    var obj = new Object();
+    obj.text = text;
+    obj.free = free;
+    obj.vars = data[1];
+    obj.stolenCode = matchObj.stolenCode;
+    obj.stolenCode1 = matchObj.stolenCode1;
+    obj.retCode = matchObj.retCode;
+    return obj;
+}
+
 function registerHooks()
 {
     hooks = new Object();
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
+    hooks.addPostEndHook = hooks_addPostEndHook;
 }

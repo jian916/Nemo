@@ -14,34 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-function addPostHook(patchAddr, stolenCode, retCode, text, vars)
-{
-    var text = asm.combine(
-        asm.hexToAsm(stolenCode),
-        text,
-        "_ret:",
-        asm.hexToAsm(retCode));
-
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
-
-    consoleLog("add jump to own code");
-    exe.setJmpRaw(patchAddr, free);
-}
-
 function EnableSlashAtCommands()
 {
-    consoleLog("Match code for hook");
+    consoleLog("Read table");
 
     var offset = table.getRaw(table.CSession_GetTalkType_ret);
     if (offset < 0)
     {
         return "ret address not found";
     }
-
-    var obj = hooks.matchFunctionEnd(offset);
-    var stolenCode = obj.stolenCode1;
-    var retCode = obj.retCode;
 
     consoleLog("Prepary own code");
 
@@ -59,6 +40,6 @@ function EnableSlashAtCommands()
 
     consoleLog("Set hook");
 
-    addPostHook(offset, stolenCode, retCode, text, {});
+    hooks.addPostEndHook(offset, text, {});
     return true;
 }
