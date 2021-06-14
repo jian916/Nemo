@@ -109,7 +109,7 @@ function ExtendCashShopPreview()
     }
     else
     {
-        next = 0;
+        var next = 0;
     }
 
     consoleLog("add new code");
