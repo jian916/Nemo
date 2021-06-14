@@ -39,31 +39,9 @@ function EnableSlashAtCommands()
         return "ret address not found";
     }
 
-    var code =
-        "8B E5 " +                    // 0 mov esp, ebp
-        "5D " +                       // 2 pop ebp
-        "C2 0C 00 ";                  // 3 retn 0Ch
-    var stolenCodeOffset = [0, 3];
-    var retOffset = [3, 3];
-    var found = pe.match(code, offset);
-
-    if (found !== true)
-    {
-        code =
-            "81 C4 ?? 00 00 00 " +        // 0 add esp, 88h
-            "C2 0C 00 ";                  // 6 retn 0Ch
-        stolenCodeOffset = [0, 6];
-        retOffset = [6, 3];
-        var found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        throw "Pattern not found";
-    }
-
-    var stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
-    var retCode = exe.fetchHexBytes(offset, retOffset);
+    var obj = hooks.matchFunctionEnd(offset);
+    var stolenCode = obj.stolenCode1;
+    var retCode = obj.retCode;
 
     consoleLog("Prepary own code");
 
