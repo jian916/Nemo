@@ -43,7 +43,8 @@ function registerTables()
     table.CGameMode_OnUpdate = 23;
     table.g_client_version = 24;
     table.packetVersion = 25;
-
+    table.CLua_Load = 38;
+    table.CLua_Load_type = 39;
     registerTableFunctions();
 }
 

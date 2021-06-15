@@ -620,4 +620,6 @@ registerPatch(353, "IncreaseZoomOutCustom", "Increase Zoom Out to custom value",
 
 // 354 - 360 reserved
 
+registerPatch(361, "LoadCustomLuaBeforeAfterFiles", "Load custom lua files for most loaded lua files", "Custom", 0, "4144", "Load custom lua files before and after for most loaded lua files", false);
+
 GlobalPostInit();
