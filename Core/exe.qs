@@ -64,7 +64,13 @@ function exe_insertAsmText(commands, vars)
 {
     var size = asm.textToHexVaLength(0, commands, vars);
     if (size === false)
-        throw "Asm code error";
+        throw "Asm code error1";
+
+    var size2 = asm.textToHexVaLength(0xf000000, commands, vars);
+    if (size2 === false)
+        throw "Asm code error2";
+    if (size2 > size)
+        size = size2;
 
     var free = exe.findZeros(size);
     if (free === -1)
