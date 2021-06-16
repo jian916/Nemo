@@ -22,6 +22,12 @@ Returns variable value as hex strings with 4 bytes.
 
 Returns variable value as raw address.
 
+### table.getSessionAbsHex4
+
+``table.getSessionAbsHex4(varId)``
+
+Return variable value as is plus g_session variable value.
+
 ## Variable constants
 
 ## table.g_session

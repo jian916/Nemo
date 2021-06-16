@@ -45,6 +45,7 @@ function registerTables()
     table.packetVersion = 25;
     table.CLua_Load = 38;
     table.CLua_Load_type = 39;
+    table.CSession_m_lua_offset = 40;
     registerTableFunctions();
 }
 
@@ -59,6 +60,11 @@ function table_getRaw(varId)
 function table_getHex4(varId)
 {
     return table.get(varId).packToHex(4);
+}
+
+function table_getSessionAbsHex4(varId)
+{
+    return (table.get(table.g_session) + table.get(varId)).packToHex(4);
 }
 
 function getEcxSessionHex()
@@ -85,4 +91,5 @@ function registerTableFunctions()
 {
     table.getHex4 = table_getHex4;
     table.getRaw = table_getRaw;
+    table.getSessionAbsHex4 = table_getSessionAbsHex4;
 }
