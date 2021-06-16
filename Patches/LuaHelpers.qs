@@ -113,7 +113,6 @@ function _GetLuaAddrs()
 
 function GenLuaCaller(addr, name, nameAddr, format, inReg)
 {
-
   //Step 1a - Get the Global Addresses if not already obtained
   if (typeof(LuaFnCaller) === "undefined")
   {
@@ -185,7 +184,7 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 
   //Step 2d - Change the Indirect StrAlloc CALL to direct ( Non VC9 Clients )
   if (AllocType !== 0)
-    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - exe.Raw2Rva(addr + code.hexlength() - 12)).packToHex(4));//CALL StrAlloc
+    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - exe.Raw2Rva(addr + code.hexlength() - 12)).packToHex(4));  // CALL StrAlloc
 
   //Step 2e - Fill the Lua Function Caller
   code = ReplaceVarHex(code, 1, LuaFnCaller - exe.Raw2Rva(addr + code.hexlength()));
@@ -210,89 +209,86 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 
 function InjectLuaFiles(origFile, nameList, free)
 {
+    //Step 1a - Find offset of origFile
+    var origOffset = exe.findString(origFile, RVA);
+    if (origOffset === -1)
+        return "LUAFL: Filename missing";
 
-  //Step 1a - Find offset of origFile
-  var origOffset = exe.findString(origFile, RVA);
-  if (origOffset === -1)
-    return "LUAFL: Filename missing";
+    //Step 1b - Find its reference
+    var offset = pe.findCode("68" + origOffset.packToHex(4));
+    if (offset === -1)
+        return "LUAFL: Filename Reference missing";
 
-  //Step 1b - Find its reference
-  var offset = pe.findCode("68" + origOffset.packToHex(4));
-  if (offset === -1)
-    return "LUAFL: Filename Reference missing";
+    //Step 1c - Find the ECX assignment before it - which is where we will jmp to our code
+    var hookLoader = pe.find(" 8B 8E ?? ?? 00 00", offset - 10, offset);
 
-  //Step 1c - Find the ECX assignment before it - which is where we will jmp to our code
-  var hookLoader = pe.find(" 8B 8E ?? ?? 00 00", offset - 10, offset);
+    if (hookLoader === -1)
+    {
+        hookLoader = pe.find(" 8B 0D ?? ?? ?? 00", offset - 10, offset);
+    }
 
-  if (hookLoader === -1)
-  {
-    hookLoader = pe.find(" 8B 0D ?? ?? ?? 00", offset - 10, offset);
-  }
+    if (hookLoader === -1)
+        return "LUAFL: ECX assignment missing";
 
-  if (hookLoader === -1)
-    return "LUAFL: ECX assignment missing";
+    //Step 1d - Extract the necessary items. We will use the name CLua::LoadFile for the function
+    var retLoader = offset + 10;  // point after PUSH filename and CALL instruction
+    var loaderFunc = exe.Raw2Rva(retLoader) + exe.fetchDWord(retLoader - 4);  // Lua file loader function
 
-  //Step 1d - Extract the necessary items. We will use the name CLua::LoadFile for the function
-  var retLoader = offset + 10;//point after PUSH filename and CALL instruction
-  var loaderFunc = exe.Raw2Rva(retLoader) + exe.fetchDWord(retLoader - 4);//Lua file loader function
+    //Step 2a - Create template code
+    var template =
+        exe.fetchHex(hookLoader, offset - hookLoader) + //Preparation code before CALL - Contains ECX assignment and other PUSHes before filename PUSH
+        " 68" + GenVarHex(1) +                          //PUSH OFFSET addr; fileName
+        " E8" + GenVarHex(2);                           //CALL CLua::LoadFile
 
-  //Step 2a - Create template code
-  var template =
-    exe.fetchHex(hookLoader, offset - hookLoader) //Preparation code before CALL - Contains ECX assignment and other PUSHes before filename PUSH
-  + " 68" + GenVarHex(1)                          //PUSH OFFSET addr; fileName
-  + " E8" + GenVarHex(2)                          //CALL CLua::LoadFile
-  ;
+    var tSize = template.hexlength();
 
-  var tSize = template.hexlength();
+    //Step 2b - Construct string code.
+    var nCode = nameList.join("\x00").toHex() + " 00";
 
-  //Step 2b - Construct string code.
-  var nCode = nameList.join("\x00").toHex() + " 00";
+    //Step 2c - Allocate space if free space is not provided.
+    //          Size of code needed = size of String offsets + size of Loaders
+    if (typeof(free) === "undefined" || free === -1)
+    {
+        var csize = (nameList.length + 1) * tSize + 6 + nCode.hexlength(); //6 is for the return JMP + a gap
 
-  //Step 2c - Allocate space if free space is not provided.
-  //          Size of code needed = size of String offsets + size of Loaders
-  if (typeof(free) === "undefined" || free === -1)
-  {
-    var csize = (nameList.length + 1) * tSize + 6 + nCode.hexlength(); //6 is for the return JMP + a gap
+        var free = exe.findZeros(csize);
+        if (free === -1)
+            return "LUAFL: Not enough free space";
 
-    var free = exe.findZeros(csize);
-    if (free === -1)
-      return "LUAFL: Not enough free space";
+        var argPresent = false;
+    }
+    else
+    {
+        var argPresent = true;
+    }
 
-    var argPresent = false;
-  }
-  else
-  {
-    var argPresent = true;
-  }
+    offset = exe.Raw2Rva(free);
 
-  offset = exe.Raw2Rva(free);
+    //Step 2d - Create a JMP at hookLoader to the allocated location
+    exe.replace(hookLoader, "90 E9" + (offset - exe.Raw2Rva(hookLoader + 6)).packToHex(4), PTYPE_HEX);
 
-  //Step 2d - Create a JMP at hookLoader to the allocated location
-  exe.replace(hookLoader, "90 E9" + (offset - exe.Raw2Rva(hookLoader + 6)).packToHex(4), PTYPE_HEX);
+    //Step 2e - Construct the file loader code for all the files using the template
+    var lCode = "";
+    loaderFunc -= (offset + tSize);  // Relative offset to CLua::LoadFile
+    offset += (nameList.length + 1) * tSize + 6;  // Offset of first string
 
-  //Step 2e - Construct the file loader code for all the files using the template
-  var lCode = "";
-  loaderFunc -= (offset + tSize);//Relative offset to CLua::LoadFile
-  offset += (nameList.length + 1) * tSize + 6;//Offset of first string
+    for (var i = 0; i < nameList.length; i++)
+    {
+        lCode += ReplaceVarHex(template, [1, 2], [offset, loaderFunc]);
+        offset += nameList[i].length + 1;  // 1 for NULL
+        loaderFunc -= tSize;
+    }
 
-  for (var i = 0; i < nameList.length; i++)
-  {
-    lCode += ReplaceVarHex(template, [1, 2], [offset, loaderFunc]);
-    offset += nameList[i].length + 1;//1 for NULL
-    loaderFunc -= tSize;
-  }
+    lCode += ReplaceVarHex(template, [1, 2], [origOffset, loaderFunc]);  // Load the origFile
 
-  lCode += ReplaceVarHex(template, [1, 2], [origOffset, loaderFunc]);//Load the origFile
+    //Step 2f - Add the return Jump
+    lCode +=
+        " E9" + (exe.Raw2Rva(retLoader) - exe.Raw2Rva(free + lCode.hexlength() + 5)).packToHex(4) +  // JMP retLoader
+        " 00";  // Just a Gap
 
-  //Step 2f - Add the return Jump
-  lCode +=
-    " E9" + (exe.Raw2Rva(retLoader) - exe.Raw2Rva(free + lCode.hexlength() + 5)).packToHex(4)//JMP retLoader
-  + " 00" //Just a Gap
-  ;
-
-  //Step 2g - Insert/Overwrite with the loader + strings.
-  if (argPresent)
-    exe.replace(free, lCode + nCode, PTYPE_HEX);
-  else
-    exe.insert(free, csize, lCode + nCode, PTYPE_HEX);
+    //Step 2g - Insert/Overwrite with the loader + strings.
+    if (argPresent)
+        exe.replace(free, lCode + nCode, PTYPE_HEX);
+    else
+        exe.insert(free, csize, lCode + nCode, PTYPE_HEX);
 }
