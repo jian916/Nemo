@@ -99,6 +99,33 @@ function pe_match(code, addrRaw)
     return true;
 }
 
+function pe_stringRaw(str)
+{
+    checkArgs(arguments, [["String"]]);
+
+    var code = ("\x00" + str + "\x00").toHex();
+    var startRaw = pe.dataBaseRaw();
+    var endRaw = 0x7fffffff;
+    var res = pe.findMaskInternal(code, startRaw, endRaw);
+    if (res === -1)
+    {
+        return -1;
+    }
+    return res + 1;
+}
+
+function pe_stringVa(str)
+{
+    checkArgs(arguments, [["String"]]);
+
+    var res = pe_stringRaw(str);
+    if (res === -1)
+    {
+        return -1;
+    }
+    return pe.rawToVa(res);
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -106,4 +133,6 @@ function registerPe()
     pe.findCode = pe_findCode;
     pe.findCodes = pe_findCodes;
     pe.match = pe_match;
+    pe.stringVa = pe_stringVa;
+    pe.stringRaw = pe_stringRaw;
 }

@@ -99,6 +99,26 @@ If given bytes matched, return true.
 
 In other case return false.
 
+### pe.stringVa
+
+```
+pe.stringVa(pattern)
+```
+
+Find string in whole binary and if found return virtual address of string.
+
+If string not found, return -1.
+
+### pe.stringRaw
+
+```
+pe.stringRaw(pattern)
+```
+
+Find string in whole binary and if found return raw address of string.
+
+If string not found, return -1.
+
 ### pe.rawToVa
 
 ``pe.rawToVa(rawAddr)``

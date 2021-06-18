@@ -52,16 +52,6 @@ Read null terminated string from given address.
 
 Search first empty block in binary with given size.
 
-### exe.findString
-
-```
-exe.findString(pattern)
-exe.findString(pattern, addrType)
-exe.findString(pattern, addrType, prefixZero)
-```
-
-Find string in whole binary.
-
 ### exe.insert
 
 ```
@@ -406,6 +396,16 @@ exe.findAll(code, codeType, useMask, mask, start, finish)
 Search all hex bytes pattern in whole binary.
 
 Recommended to switch to pe.findAll
+
+### exe.findString
+
+```
+exe.findString(pattern)
+exe.findString(pattern, addrType)
+exe.findString(pattern, addrType, prefixZero)
+```
+
+Find string in whole binary.
 
 ### exe.Raw2Rva
 
