@@ -119,6 +119,16 @@ Find string in whole binary and if found return raw address of string.
 
 If string not found, return -1.
 
+### pe.stringHex4
+
+```
+pe.stringHex4(pattern)
+```
+
+Find string in whole binary and if found return virtual address packed into 4 bytes hex string.
+
+If string not found, throw exception.
+
 ### pe.rawToVa
 
 ``pe.rawToVa(rawAddr)``

@@ -126,6 +126,14 @@ function pe_stringVa(str)
     return pe.rawToVa(res);
 }
 
+function pe_stringHex4(str)
+{
+    var addr = pe_stringVa(str);
+    if (addr === -1)
+        throw "String " + str + " not found";
+    return addr.packToHex(4);
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -135,4 +143,5 @@ function registerPe()
     pe.match = pe_match;
     pe.stringVa = pe_stringVa;
     pe.stringRaw = pe_stringRaw;
+    pe.stringHex4 = pe_stringHex4;
 }
