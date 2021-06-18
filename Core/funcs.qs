@@ -164,3 +164,18 @@ function enableOneOfPatchAndCheck()
     }
     throw "One of patches '" + str + "' must be enabled";
 }
+
+function partialCheckRetNeg(func, num)
+{
+    if (typeof(num) === "undefined")
+        num = 0;
+    var proxyFunc = function check1()
+    {
+        var args = Array.prototype.slice.call(arguments);
+        var res = func.apply(func, args);
+        if (res < 0)
+            throw "Error: " + args[num] + " not found";
+        return res;
+    }
+    return proxyFunc;
+}
