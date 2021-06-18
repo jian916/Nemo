@@ -39,7 +39,7 @@ function RemoveItemsEquipPreview()
         "C6 01 00 " +                 // 5 mov byte ptr [ecx], 0
         "E8 ?? ?? ?? ?? " +           // 8 call std_string_assign
         "C7 45 ?? ?? ?? 00 00 " +     // 13 mov [ebp+var_4], 10h
-        "FF 35 ?? ?? ?? ?? " +        // 20 push g_session.m_lua_state
+        "FF 35 ?? ?? ?? ?? " +        // 20 push g_session.m_lua
         "C7 45 ?? FF FF FF FF " +     // 26 mov [ebp+var_4], 0FFFFFFFFh
         "E8 ?? ?? ?? ?? " +           // 33 call lua_call_va
         "83 C4 28 " +                 // 38 add esp, 28h
@@ -58,7 +58,7 @@ function RemoveItemsEquipPreview()
 
     var repLoc = 48;
     var stringAssignOffset = 9;
-    var luaStateOffset = [22, 4];
+    var mLuaOffset = [22, 4];
     var luaCallVaOffset = 34;
     var UIBasicButtonSize = [55, 4];
     var newOffset = 60;
@@ -69,7 +69,7 @@ function RemoveItemsEquipPreview()
         return "Failed in Step 2 - Pattern not found";
 
     logRawFunc("std_string_assign", offset, stringAssignOffset);
-    logField("CSession::m_lua_state", offset, luaStateOffset);
+    logField("CSession::m_lua", offset, mLuaOffset);
     logRawFunc("lua_call_va", offset, luaCallVaOffset);
     logVal("sizeof UIBasicButton", offset, UIBasicButtonSize);
     logRawFunc("operator_new", offset, newOffset);
