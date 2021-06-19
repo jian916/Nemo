@@ -622,6 +622,6 @@ registerPatch(353, "IncreaseZoomOutCustom", "Increase Zoom Out to custom value",
 
 registerPatch(361, "LoadCustomLuaBeforeAfterFiles", "Load custom lua files for most loaded lua files", "Custom", 0, "4144", "Load custom lua files before and after for most loaded lua files", false);
 
-registerPatch(362, "TaekwonJobNameFix", "Fixes the Korean Job name issue with LangType", "UI", 0, "Ai4rei/AN, Neo, 4144", "Fixes the Korean Job name issue with LangType", false);
+registerPatch(362, "TaekwonJobNameFix", "Fixes the Korean Job name issue with LangType", "UI", 0, "Ai4rei/AN, Neo, 4144", "Fixes the Korean Job name issue with LangType", true);
 
 GlobalPostInit();
