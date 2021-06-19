@@ -17,7 +17,7 @@
 
 function AddCustomLua()
 {
-    var retVal = InjectLuaFiles(
+    var retVal = lua.loadBefore(
         "Lua Files\\DataInfo\\accName",
         [
             "lua files\\cls\\accessoryid",
@@ -42,19 +42,14 @@ function AddCustomLua()
             "lua files\\cls\\transparentItem"
         ]
     )
-    if (typeof(retVal) === "string")
+    if (retVal !== true)
         return retVal;
 
-    var retVal = InjectLuaFiles(
+    var retVal = lua.loadAfter(
         "Lua Files\\DataInfo\\WeaponTable",
         [
             "lua files\\cls\\weapontable"
-        ],
-        -1,
-        false
+        ]
     );
-    if (typeof(retVal) === "string")
-        return retVal;
-    else
-        return true;
+    return retVal;
 }
