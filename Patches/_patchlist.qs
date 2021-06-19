@@ -624,4 +624,6 @@ registerPatch(361, "LoadCustomLuaBeforeAfterFiles", "Load custom lua files for m
 
 registerPatch(362, "TaekwonJobNameFix", "Fixes the Korean Job name issue with LangType", "UI", 0, "Ai4rei/AN, Neo, 4144", "Fixes the Korean Job name issue with LangType", true);
 
+registerPatch(363, "AddCustomLua", "Add loading custom lua files", "Custom", 0, "llchrisll, 4144", "Add loading custom lua files for llchrisll", false);
+
 GlobalPostInit();
