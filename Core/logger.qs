@@ -141,6 +141,7 @@ function GlobalInit()
     registerPe();
     registerStorage();
     registerHooks();
+    registerLua();
 }
 
 function proxy_exe_find(pattern, type, useWildCard, wildCard, start, finish)
