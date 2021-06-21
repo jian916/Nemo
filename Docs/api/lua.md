@@ -59,6 +59,24 @@ If error happened, returns string with error.
 
 In other case returns true.
 
+### lua.load
+
+``lua.load(existingName, beforeNamesList, afterNamesList)``
+``lua.load(existingName, beforeNamesList, afterNamesList, free)``
+
+Allow load lua files before and after existingName file name.
+
+| Argument  | Description |
+| --------  | ----------- |
+| existingName | Full path of existing lua file |
+| beforeNamesList | Array of full paths of lua files for load before existingName |
+| afterNamesList | Array of full paths of lua files for load after existingName |
+| free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
+
+If error happened, returns string with error.
+
+In other case returns true.
+
 ### lua_getCLuaLoadInfo
 
 ``lua_getCLuaLoadInfo(stackOffset)``

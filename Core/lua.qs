@@ -20,13 +20,13 @@ function registerLua()
     function lua_loadBefore(existingName, newNamesList, free)
     {
         checkArgs("lua.loadBefore", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
-        return lua.injectLuaFiles(existingName, newNamesList, free, true);
+        return lua.load(existingName, newNamesList, [], free);
     }
 
     function lua_loadAfter(existingName, newNamesList, free)
     {
         checkArgs("lua.loadAfter", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
-        return lua.injectLuaFiles(existingName, newNamesList, free, false);
+        return lua.load(existingName, [], newNamesList, free);
     }
 
     function lua_getCLuaLoadInfo(stackOffset)
@@ -72,9 +72,279 @@ function registerLua()
         return obj;
     }
 
+    function lua_load(origFile, beforeNameList, afterNameList, free)
+    {
+        checkArgs("lua.load",
+            arguments,
+            [
+                ["String", "Object", "Object"],
+                ["String", "Array", "Array"],
+                ["String", "Object", "Object", "Number"],
+                ["String", "Array", "Array", "Number"]
+            ]
+        );
+
+        consoleLog("Find original file name string");
+        var origOffset = exe.findString(origFile, RVA);
+        if (origOffset === -1)
+            return "LUAFL: Filename missing";
+
+        var strHex = origOffset.packToHex(4);
+
+        consoleLog("Find original file name usage");
+        var type = table.get(table.CLua_Load_type);
+        if (type === 0)
+        {
+            throw "CLua_Load type not set";
+        }
+
+        var mLuaAbsHex = table.getSessionAbsHex4(table.CSession_m_lua_offset);
+        var mLuaHex = table.getHex4(table.CSession_m_lua_offset);
+        var CLua_Load = table.get(table.CLua_Load);
+
+        if (type == 4)
+        {
+            var code =
+                "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+                "6A ?? " +                    // 6 push 0
+                "6A ?? " +                    // 8 push 1
+                "68 " + strHex +              // 10 push offset aLuaFilesQues_3
+                "E8 ";                        // 15 call CLua_Load
+            var moveOffset = [0, 6];
+            var pushFlagsOffset = [6, 4];
+            var strPushOffset = 10;
+            var postOffset = 20;
+            var otherOffset = 0;
+            var callOffset = [16, 4];
+            var hookLoader = pe.find(code);
+            if (hookLoader === -1)
+            {
+                code =
+                    "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                    "6A ?? " +                    // 6 push 0
+                    "6A ?? " +                    // 8 push 1
+                    "68 " + strHex +              // 10 push offset aLuaFilesQues_3
+                    "E8 ";                        // 15 call CLua_Load
+                moveOffset = [0, 6];
+                pushFlagsOffset = [6, 4];
+                strPushOffset = 10;
+                postOffset = 20;
+                otherOffset = 0;
+                callOffset = [16, 4];
+                hookLoader = pe.find(code);
+            }
+            if (hookLoader === -1)
+            {
+                var code =
+                    "8B 8E " + mLuaHex +          // 0 mov ecx, [esi+5434h]
+                    "53 " +                       // 6 push ebx
+                    "6A ?? " +                    // 7 push 1
+                    "68 " + strHex +              // 9 push offset aLuaFilesData_0
+                    "E8 ";                        // 14 call CLua_Load
+                moveOffset = [0, 6];
+                pushFlagsOffset = [6, 3];
+                strPushOffset = 9;
+                postOffset = 19;
+                otherOffset = 0;
+                callOffset = [15, 4];
+                hookLoader = pe.find(code);
+            }
+        }
+        else if (type == 3)
+        {
+            var code =
+                "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+                "6A ?? " +                    // 6 push 1
+                "68 " + strHex +              // 8 push offset aLuaFilesQues_3
+                "E8 ";                        // 13 call CLua_Load
+            var moveOffset = [0, 6];
+            var pushFlagsOffset = [6, 2];
+            var strPushOffset = 8;
+            var postOffset = 18;
+            var otherOffset = 0;
+            var callOffset = [14, 4];
+            var hookLoader = pe.find(code);
+            if (hookLoader === -1)
+            {
+                code =
+                    "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                    "6A ?? " +                    // 6 push 1
+                    "68 " + strHex +              // 8 push offset aLuaFilesQues_3
+                    "E8 ";                        // 13 call CLua_Load
+                moveOffset = [0, 6];
+                pushFlagsOffset = [6, 2];
+                strPushOffset = 8;
+                postOffset = 18;
+                otherOffset = 0;
+                callOffset = [14, 4];
+                hookLoader = pe.find(code);
+            }
+        }
+        else if (type == 2)
+        {
+            var code =
+                "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+                "68 " + strHex +              // 6 push offset aLuaFilesQues_3
+                "E8 ";                        // 11 call CLua_Load
+            var moveOffset = [0, 6];
+            var pushFlagsOffset = 0;
+            var strPushOffset = 6;
+            var postOffset = 16;
+            var otherOffset = 0;
+            var callOffset = [12, 4];
+            var hookLoader = pe.find(code);
+            if (hookLoader === -1)
+            {
+                code =
+                    "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                    "68 " + strHex +              // 6 push offset aLuaFilesQues_3
+                    "E8 ";                        // 11 call CLua_Load
+                moveOffset = [0, 6];
+                pushFlagsOffset = 0;
+                strPushOffset = 6;
+                postOffset = 16;
+                otherOffset = 0;
+                callOffset = [12, 4];
+                hookLoader = pe.find(code);
+            }
+            if (hookLoader === -1)
+            {
+                code =
+                    "8B 8E " + mLuaHex +          // 0 mov ecx, [esi+44D8h]
+                    "83 C4 ?? " +                 // 6 add esp, 4
+                    "68 " + strHex +              // 9 push offset aLuaFilesDatain
+                    "E8 ";                        // 14 call CLua_Load
+                moveOffset = [0, 6];
+                pushFlagsOffset = 0;
+                strPushOffset = 9;
+                postOffset = 19;
+                otherOffset = [6, 3];
+                callOffset = [15, 4];
+                hookLoader = pe.find(code);
+            }
+        }
+        else
+        {
+            throw "Unsupported CLua_Load type";
+        }
+
+        if (hookLoader === -1)
+            return "LUAFL: CLua_Load call missing";
+
+        var retLoader = hookLoader + postOffset;
+
+        var callValue = exe.fetchRelativeValue(hookLoader, callOffset);
+        if (callValue !== CLua_Load)
+            throw "LUAFL: found wrong call function";
+
+        consoleLog("Read stolen code");
+        var allStolenCode = exe.fetchHex(hookLoader, strPushOffset);
+        var movStolenCode = exe.fetchHexBytes(hookLoader, moveOffset)
+        if (pushFlagsOffset !== 0)
+        {
+            var pushFlagsStolenCode = exe.fetchHexBytes(hookLoader, pushFlagsOffset);
+        }
+        else
+        {
+            var pushFlagsStolenCode = "";
+        }
+        var shortStolenCode = movStolenCode + pushFlagsStolenCode;
+        if (otherOffset !== 0)
+        {
+            var otherStoleCode = exe.fetchHexBytes(hookLoader, otherOffset);
+        }
+        else
+        {
+            var otherStoleCode = "";
+        }
+
+        consoleLog("Construct asm code with strings");
+        var stringsCode = "";
+        for (var i = 0; i < beforeNameList.length; i++)
+        {
+            stringsCode = asm.combine(
+                stringsCode,
+                "varb" + i + ":",
+                asm.stringToAsm(beforeNameList[i] + "\x00")
+            )
+        }
+        for (var i = 0; i < afterNameList.length; i++)
+        {
+            stringsCode = asm.combine(
+                stringsCode,
+                "vara" + i + ":",
+                asm.stringToAsm(afterNameList[i] + "\x00")
+            )
+        }
+
+        consoleLog("Create own code");
+
+        var asmCode = "";
+
+        consoleLog("Add before code");
+        for (var i = 0; i < beforeNameList.length; i++)
+        {
+            var asmCode = asm.combine(
+                asmCode,
+                asm.hexToAsm(shortStolenCode),
+                "push varb" + i,
+                "call CLua_Load"
+            )
+        }
+
+        consoleLog("Add default code");
+        var asmCode = asm.combine(
+            asmCode,
+            asm.hexToAsm(allStolenCode),
+            "push offset",
+            "call CLua_Load"
+        )
+
+        consoleLog("Add after code");
+        for (var i = 0; i < afterNameList.length; i++)
+        {
+            var asmCode = asm.combine(
+                asmCode,
+                asm.hexToAsm(shortStolenCode),
+                "push vara" + i,
+                "call CLua_Load"
+            )
+        }
+
+        consoleLog("Add jmp and strings");
+        var text = asm.combine(
+            asmCode,
+            "jmp continueAddr",
+            asm.hexToAsm("00"),
+            stringsCode
+        )
+
+        consoleLog("Set own code into exe");
+        var vars = {
+            "offset": origOffset,
+            "CLua_Load": CLua_Load,
+            "continueAddr": pe.rawToVa(retLoader)
+        };
+
+        if (typeof(free) === "undefined" || free === -1)
+        {
+            var obj = exe.insertAsmTextObj(text, vars);
+            var free = obj.free;
+        }
+        else
+        {
+            exe.replaceAsmText(free, text, vars);
+        }
+
+        consoleLog("Set jmp to own code");
+        exe.setJmpRaw(hookLoader, free, "jmp", 6);
+
+        return true;
+    }
+
     lua = new Object();
-    lua.injectLuaFiles = InjectLuaFiles;
     lua.loadBefore = lua_loadBefore;
     lua.loadAfter = lua_loadAfter;
     lua.getCLuaLoadInfo = lua_getCLuaLoadInfo;
+    lua.load = lua_load;
 }
