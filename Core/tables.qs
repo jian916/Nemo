@@ -51,6 +51,7 @@ function registerTables()
 
 function table_getRaw(varId)
 {
+    checkArgs("table.getRaw", arguments, [["Number"]]);
     var ret = table.get(varId);
     if (ret === 0)
         return 0;
@@ -59,11 +60,13 @@ function table_getRaw(varId)
 
 function table_getHex4(varId)
 {
+    checkArgs("table.getHex4", arguments, [["Number"]]);
     return table.get(varId).packToHex(4);
 }
 
 function table_getSessionAbsHex4(varId)
 {
+    checkArgs("table.getSessionAbsHex4", arguments, [["Number"]]);
     return (table.get(table.g_session) + table.get(varId)).packToHex(4);
 }
 
