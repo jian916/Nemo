@@ -122,6 +122,21 @@ If error happened, returns **false**.
 
 In other case returns sequence size.
 
+### asm.textToHexLength
+
+``asm.textToHexLength(commands, vars)``
+
+Convert assembler text into bytes sequence and return length of sequence. Checked automatically some addresses.
+
+| Argument  | Description |
+| --------  | ----------- |
+| commands  | Assembler text with commands |
+| vars      | Variables for assembler text |
+
+If error happened, returns **false**.
+
+In other case returns sequence size.
+
 ### asm.textToHexRaw
 
 ``asm.textToHexRaw(addrRaw, commands, vars)``

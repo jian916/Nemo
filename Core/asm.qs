@@ -64,6 +64,29 @@ function asm_textToHexRawLength(addrRaw, commands, vars)
     return asm_textToHexVaLength(exe.Raw2Rva(addrRaw), commands, vars);
 }
 
+function asm_textToHexLength(commands, vars)
+{
+    checkArgs("asm.textToHexLength", arguments, [["Object", "Object"], ["String", "Object"]]);
+
+    var size = asm.textToHexVaLength(0, commands, vars);
+    if (size === false)
+        throw "Asm code error1";
+
+    var size2 = asm.textToHexVaLength(0x5000000, commands, vars);
+    if (size2 === false)
+        throw "Asm code error2";
+    if (size2 > size)
+        size = size2;
+
+    size2 = asm.textToHexVaLength(0xf000000, commands, vars);
+    if (size2 === false)
+        throw "Asm code error3";
+    if (size2 > size)
+        size = size2;
+
+    return size;
+}
+
 function asm_cmdToObjVa(addrVa, command, vars)
 {
     checkArgs("asm.cmdToObjVa", arguments, [["Number", "Object", "Object"]]);
@@ -153,6 +176,7 @@ function registerAsm()
     asm.textToHexVaLength = asm_textToHexVaLength;
     asm.textToHexRaw = asm_textToHexRaw;
     asm.textToHexRawLength = asm_textToHexRawLength;
+    asm.textToHexLength = asm_textToHexLength;
     asm.cmdToObjVa = asm_cmdToObjVa;
     asm.cmdToObjRaw = asm_cmdToObjRaw;
     asm.cmdToHexVa = asm_cmdToHexVa;
