@@ -17,7 +17,7 @@
 
 function pe_find(code, startRaw, endRaw)
 {
-    checkArgs(arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
+    checkArgs("pe.find", arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
 
     if (typeof(startRaw) === "undefined")
     {
@@ -33,7 +33,7 @@ function pe_find(code, startRaw, endRaw)
 
 function pe_findAll(code, startRaw, endRaw)
 {
-    checkArgs(arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
+    checkArgs("pe.findAll", arguments, [["String"], ["String", "Number"], ["String", "Number", "Number"]]);
 
     if (typeof(startRaw) === "undefined")
     {
@@ -58,7 +58,7 @@ function pe_findAll(code, startRaw, endRaw)
 
 function pe_findCode(code)
 {
-    checkArgs(arguments, [["String"]]);
+    checkArgs("pe.findCode", arguments, [["String"]]);
 
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
@@ -70,7 +70,7 @@ function pe_findCode(code)
 
 function pe_findCodes(code)
 {
-    checkArgs(arguments, [["String"]]);
+    checkArgs("pe.findCodes", arguments, [["String"]]);
 
     var sect = pe.sectionRaw(CODE);
     var startRaw = sect[0];
@@ -91,7 +91,7 @@ function pe_findCodes(code)
 
 function pe_match(code, addrRaw)
 {
-    checkArgs(arguments, [["String", "Number"]]);
+    checkArgs("pe.match", arguments, [["String", "Number"]]);
 
     var offset = pe.findMaskInternal(code, addrRaw, addrRaw + 1);
     if (offset !== addrRaw)
@@ -101,7 +101,7 @@ function pe_match(code, addrRaw)
 
 function pe_stringRaw(str)
 {
-    checkArgs(arguments, [["String"]]);
+    checkArgs("pe.stringRaw", arguments, [["String"]]);
 
     var code = ("\x00" + str + "\x00").toHex();
     var startRaw = pe.dataBaseRaw();
@@ -116,7 +116,7 @@ function pe_stringRaw(str)
 
 function pe_stringVa(str)
 {
-    checkArgs(arguments, [["String"]]);
+    checkArgs("pe.stringVa", arguments, [["String"]]);
 
     var res = pe_stringRaw(str);
     if (res === -1)
@@ -128,6 +128,8 @@ function pe_stringVa(str)
 
 function pe_stringHex4(str)
 {
+    checkArgs("pe.stringHex4", arguments, [["String"]]);
+
     var addr = pe_stringVa(str);
     if (addr === -1)
         throw "String " + str + " not found";

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function checkArgs(args, types2)
+function checkArgs(name, args, types2)
 {
     var args = Array.prototype.slice.call(args);
     var valid = false;
@@ -51,11 +51,11 @@ function checkArgs(args, types2)
     {
         if (err === "")
         {
-            logArgsError("Wrong arguments count: " + args.length);
+            logArgsError("Wrong arguments count in " + name + ": " + args.length);
         }
         else
         {
-            logArgsError("Wrong arguments '" + args.toString() + "': " + err);
+            logArgsError("Wrong arguments  in " + name + ": '" + args.toString() + "': " + err);
         }
     }
 }

@@ -107,6 +107,8 @@ function asm_hexToAsm(code)
 
 function asm_stringToAsm(string)
 {
+    checkArgs("asm.stringToAsm", arguments, [["String"]]);
+
     var code = string.toHex();
     code = code.trim();
     var parts = code.split(" ");

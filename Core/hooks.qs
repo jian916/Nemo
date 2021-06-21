@@ -17,6 +17,8 @@
 
 function hooks_matchFunctionStart(offset)
 {
+    checkArgs("hooks.matchFunctionStart", arguments, [["Number"]]);
+
     var offsetVa = pe.rawToVa(offset)
 
     var code =
@@ -85,6 +87,8 @@ function hooks_matchFunctionStart(offset)
 
 function hooks_matchFunctionEnd(offset)
 {
+    checkArgs("hooks.matchFunctionEnd", arguments, [["Number"]]);
+
     consoleLog("match known second pattern");
     var code =
         "5B " +                       // 0 pop ebx
