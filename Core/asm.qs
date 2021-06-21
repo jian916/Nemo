@@ -17,6 +17,7 @@
 
 function asm_textToObjVa(addrVa, commands, vars)
 {
+    checkArgs("asm.textToObjVa", arguments, [["Number", "Object", "Object"]]);
     var ret = asm.textToBytes(addrVa, commands, vars)
     if (ret === false)
         return false;
@@ -29,11 +30,13 @@ function asm_textToObjVa(addrVa, commands, vars)
 
 function asm_textToObjRaw(addrRaw, commands, vars)
 {
+    checkArgs("asm.textToObjRaw", arguments, [["Number", "Object", "Object"]]);
     return asm_textToObjVa(exe.Raw2Rva(addrRaw), commands, vars);
 }
 
 function asm_textToHexVa(addrVa, commands, vars)
 {
+    checkArgs("asm.textToHexVa", arguments, [["Number", "Object", "Object"]]);
     var ret = asm.textToBytes(addrVa, commands, vars)
     if (ret === false)
         return false;
@@ -42,11 +45,13 @@ function asm_textToHexVa(addrVa, commands, vars)
 
 function asm_textToHexRaw(addrRaw, commands, vars)
 {
+    checkArgs("asm.textToHexRaw", arguments, [["Number", "Object", "Object"]]);
     return asm_textToHexVa(exe.Raw2Rva(addrRaw), commands, vars);
 }
 
 function asm_textToHexVaLength(addrVa, commands, vars)
 {
+    checkArgs("asm.textToHexVaLength", arguments, [["Number", "Object", "Object"]]);
     var ret = asm.textToBytes(addrVa, commands, vars)
     if (ret === false)
         return false;
@@ -55,11 +60,13 @@ function asm_textToHexVaLength(addrVa, commands, vars)
 
 function asm_textToHexRawLength(addrRaw, commands, vars)
 {
+    checkArgs("asm.textToHexRawLength", arguments, [["Number", "Object", "Object"]]);
     return asm_textToHexVaLength(exe.Raw2Rva(addrRaw), commands, vars);
 }
 
 function asm_cmdToObjVa(addrVa, command, vars)
 {
+    checkArgs("asm.cmdToObjVa", arguments, [["Number", "Object", "Object"]]);
     var ret = asm.cmdToBytes(addrVa, command, vars)
     if (ret === false)
         return false;
@@ -77,11 +84,13 @@ function asm_cmdToObjVa(addrVa, command, vars)
 
 function asm_cmdToObjRaw(addrRaw, command, vars)
 {
+    checkArgs("asm.cmdToObjRaw", arguments, [["Number", "Object", "Object"]]);
     return asm_cmdToObjVa(exe.Raw2Rva(addrRaw), command, vars);
 }
 
 function asm_cmdToHexVa(addrVa, command, vars)
 {
+    checkArgs("asm.cmdToHecVa", arguments, [["Number", "Object", "Object"]]);
     var ret = asm.cmdToBytes(addrVa, command, vars)
     if (ret === false)
         return false;
@@ -90,11 +99,14 @@ function asm_cmdToHexVa(addrVa, command, vars)
 
 function asm_cmdToHexRaw(addrRaw, command, vars)
 {
+    checkArgs("asm.cmdToHecRaw", arguments, [["Number", "Object", "Object"]]);
     return asm_cmdToHexVa(exe.Raw2Rva(addrRaw), command, vars);
 }
 
 function asm_hexToAsm(code)
 {
+    checkArgs("asm.hexToAsm", arguments, [["String"]]);
+
     code = code.trim();
     var parts = code.split(" ");
     var data = ""
