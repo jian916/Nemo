@@ -19,16 +19,19 @@ function registerLua()
 {
     function lua_loadBefore(existingName, newNamesList, free)
     {
+        checkArgs("lua.loadBefore", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
         return lua.injectLuaFiles(existingName, newNamesList, free, true);
     }
 
     function lua_loadAfter(existingName, newNamesList, free)
     {
+        checkArgs("lua.loadAfter", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
         return lua.injectLuaFiles(existingName, newNamesList, free, false);
     }
 
     function lua_getCLuaLoadInfo(stackOffset)
     {
+        checkArgs("lua.getCLuaLoadInfo", arguments, [["Number"]]);
         var type = table.get(table.CLua_Load_type);
         if (type == 0)
         {
