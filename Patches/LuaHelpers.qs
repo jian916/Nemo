@@ -243,6 +243,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         var strPushOffset = 10;
         var postOffset = 20;
         var otherOffset = 0;
+        var callOffset = [16, 4];
         var hookLoader = pe.find(code);
         if (hookLoader === -1)
         {
@@ -257,6 +258,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             strPushOffset = 10;
             postOffset = 20;
             otherOffset = 0;
+            callOffset = [16, 4];
             hookLoader = pe.find(code);
         }
         if (hookLoader === -1)
@@ -272,6 +274,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             strPushOffset = 9;
             postOffset = 19;
             otherOffset = 0;
+            callOffset = [15, 4];
             hookLoader = pe.find(code);
         }
     }
@@ -287,6 +290,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         var strPushOffset = 8;
         var postOffset = 18;
         var otherOffset = 0;
+        var callOffset = [14, 4];
         var hookLoader = pe.find(code);
         if (hookLoader === -1)
         {
@@ -300,6 +304,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             strPushOffset = 8;
             postOffset = 18;
             otherOffset = 0;
+            callOffset = [14, 4];
             hookLoader = pe.find(code);
         }
     }
@@ -314,6 +319,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         var strPushOffset = 6;
         var postOffset = 16;
         var otherOffset = 0;
+        var callOffset = [12, 4];
         var hookLoader = pe.find(code);
         if (hookLoader === -1)
         {
@@ -326,6 +332,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             strPushOffset = 6;
             postOffset = 16;
             otherOffset = 0;
+            callOffset = [12, 4];
             hookLoader = pe.find(code);
         }
         if (hookLoader === -1)
@@ -340,6 +347,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             strPushOffset = 9;
             postOffset = 19;
             otherOffset = [6, 3];
+            callOffset = [15, 4];
             hookLoader = pe.find(code);
         }
     }
@@ -352,6 +360,10 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         return "LUAFL: CLua_Load call missing";
 
     var retLoader = hookLoader + postOffset;
+
+    var callValue = exe.fetchRelativeValue(hookLoader, callOffset);
+    if (callValue !== CLua_Load)
+        throw "LUAFL: found wrong call function";
 
     consoleLog("Read stolen code");
     var allStolenCode = exe.fetchHex(hookLoader, strPushOffset);
@@ -374,18 +386,6 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         var otherStoleCode = "";
     }
 
-    consoleLog("Calculate repeat code block size");
-    var text = asm.combine(
-        asm.hexToAsm(allStolenCode),
-        "push offset",
-        "call CLua_Load"
-    )
-    var vars = {
-        "offset": 0x112233,
-        "CLua_Load": CLua_Load
-    };
-    var textSize = asm.textToHexVaLength(0, text, vars);
-
     consoleLog("Construct asm code with strings");
     var stringsCode = "";
     for (var i = 0; i < nameList.length; i++)
@@ -396,26 +396,6 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
             asm.stringToAsm(nameList[i] + "\x00")
         )
     }
-
-    consoleLog("Allocate space for own code");
-    if (typeof(free) === "undefined" || free === -1)
-    {
-        var stringsCodeHex = asm.textToHexVa(0, stringsCode, {});
-        var codeSize = (nameList.length + 1) * textSize + 6 + stringsCodeHex.hexlength(); //6 is for the return JMP + a gap
-
-        var free = exe.findZeros(codeSize);
-        if (free === -1)
-            return "LUAFL: Not enough free space";
-
-        var argPresent = false;
-    }
-    else
-    {
-        var argPresent = true;
-    }
-
-    consoleLog("Set jmp to own code");
-    exe.setJmpRaw(hookLoader, free, "jmp", 6);
 
     consoleLog("Create own code");
 
@@ -474,13 +454,20 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         "CLua_Load": CLua_Load,
         "continueAddr": pe.rawToVa(retLoader)
     };
-    var fullCode = asm.textToHexRaw(free, text, vars)
 
     consoleLog("Set own code into exe");
-    if (argPresent)
-        exe.replace(free, fullCode, PTYPE_HEX);
+    if (typeof(free) === "undefined" || free === -1)
+    {
+        var obj = exe.insertAsmTextObj(text, vars);
+        var free = obj.free;
+    }
     else
-        exe.insert(free, codeSize, fullCode, PTYPE_HEX);
+    {
+        exe.replaceAsmText(free, text, vars);
+    }
+
+    consoleLog("Set jmp to own code");
+    exe.setJmpRaw(hookLoader, free, "jmp", 6);
 
     return true;
 }
