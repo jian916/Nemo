@@ -27,8 +27,51 @@ function registerLua()
         return lua.injectLuaFiles(existingName, newNamesList, free, false);
     }
 
+    function lua_getCLuaLoadInfo(stackOffset)
+    {
+        var type = table.get(table.CLua_Load_type);
+        if (type == 0)
+        {
+            throw "CLua_Load type not set";
+        }
+        var obj = new Object();
+        obj.type = type;
+        obj.pushLine = "push dword ptr [esp + argsOffset + " + stackOffset + "]";
+        if (type == 4)
+        {
+            obj.asmCopyArgs = asm.combine(
+                obj.pushLine,
+                obj.pushLine,
+                obj.pushLine
+            );
+            obj.argsOffset = 0xc;
+        }
+        else if (type == 3)
+        {
+            obj.asmCopyArgs = asm.combine(
+                obj.pushLine,
+                obj.pushLine
+            );
+            obj.argsOffset = 0x8;
+        }
+        else if (type == 2)
+        {
+            obj.asmCopyArgs = asm.combine(
+                obj.pushLine
+            );
+            obj.argsOffset = 0x4;
+        }
+        else
+        {
+            throw "Unsupported CLua_Load type";
+        }
+
+        return obj;
+    }
+
     lua = new Object();
     lua.injectLuaFiles = InjectLuaFiles;
     lua.loadBefore = lua_loadBefore;
     lua.loadAfter = lua_loadAfter;
+    lua.getCLuaLoadInfo = lua_getCLuaLoadInfo;
 }

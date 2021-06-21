@@ -23,19 +23,11 @@ function LoadCustomLuaBeforeAfterFiles()
     {
         return "CLua_Load not set";
     }
-
     var CLua_Load = table.get(table.CLua_Load);
-
-    var type = table.get(table.CLua_Load_type);
-    if (offset < 0)
-    {
-        return "CLua_Load type not set";
-    }
 
     consoleLog("Parse function start");
 
     var matchObj = hooks.matchFunctionStart(offset);
-
 
     consoleLog("allocate buffer");
 
@@ -50,38 +42,11 @@ function LoadCustomLuaBeforeAfterFiles()
 
     consoleLog("Prepary own code");
 
-    if (type == 4)
-    {
-        var copyArgs = asm.combine(
-            "push dword ptr [esp + argsOffset + 0x4]",
-            "push dword ptr [esp + argsOffset + 0x4]",
-            "push dword ptr [esp + argsOffset + 0x4]"
-        );
-        var argsOffset = 0xc;
-    }
-    else if (type == 3)
-    {
-        var copyArgs = asm.combine(
-            "push dword ptr [esp + argsOffset + 0x4]",
-            "push dword ptr [esp + argsOffset + 0x4]"
-        );
-        var argsOffset = 0x8;
-    }
-    else if (type == 2)
-    {
-        var copyArgs = asm.combine(
-            "push dword ptr [esp + argsOffset + 0x4]"
-        );
-        var argsOffset = 0x4;
-    }
-    else
-    {
-        return "Unsupported CLua_Load type";
-    }
+    var info = lua.getCLuaLoadInfo(4);
 
     var text = asm.combine(
         "push ecx",
-        copyArgs,
+        info.asmCopyArgs,
         "push esi",
         "push edi",
         "mov esi, dword ptr [esp + 0x8]",
@@ -99,7 +64,7 @@ function LoadCustomLuaBeforeAfterFiles()
         "_normal_label:",
         "pop ecx",
         "push ecx",
-        copyArgs,
+        info.asmCopyArgs,
         "push _after_label",
         asm.hexToAsm(matchObj.stolenCode),
         "jmp continueItemAddr",
@@ -107,7 +72,7 @@ function LoadCustomLuaBeforeAfterFiles()
         "_after_label:",
         "pop ecx",
         "push eax",
-        copyArgs,
+        info.asmCopyArgs,
         "push esi",
         "push edi",
         "mov esi, dword ptr [esp + 0x8]",
@@ -145,7 +110,7 @@ function LoadCustomLuaBeforeAfterFiles()
         "continueItemAddr": matchObj.continueOffsetVa,
         "CLua_Load": CLua_Load,
         "buffer": buffer,
-        "argsOffset": argsOffset
+        "argsOffset": info.argsOffset
     }
 
     var data = exe.insertAsmText(text, vars);

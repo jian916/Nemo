@@ -32,6 +32,8 @@ In other case returns true.
 
 Allow load lua files before existingName file name.
 
+| Argument  | Description |
+| --------  | ----------- |
 | existingName | Full path of existing lua file |
 | newNamesList | Array of full paths to new lua files |
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
@@ -47,6 +49,8 @@ In other case returns true.
 
 Allow load lua files after existingName file name.
 
+| Argument  | Description |
+| --------  | ----------- |
 | existingName | Full path of existing lua file |
 | newNamesList | Array of full paths to new lua files |
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
@@ -54,3 +58,22 @@ Allow load lua files after existingName file name.
 If error happened, returns string with error.
 
 In other case returns true.
+
+### lua_getCLuaLoadInfo
+
+``lua_getCLuaLoadInfo(stackOffset)``
+
+Return object with push asm code for copy argruments for CLua::Load.
+
+| Argument  | Description |
+| --------  | ----------- |
+| stackOffset | Offset adding to stack pointer for copy CLua::Load arguments |
+
+Return object with this fields:
+
+| Field     | Description |
+| --------  | ----------- |
+| type      | CLua::Load type (pushs count) |
+| pushLine  | Asm code for one push         |
+| asmCopyArgs | All pushed for copy arguments in stack |
+| argsOffset | Offset in bytes for CLua::Load arguments |
