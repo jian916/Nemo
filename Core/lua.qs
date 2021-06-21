@@ -72,15 +72,13 @@ function registerLua()
         return obj;
     }
 
-    function lua_load(origFile, beforeNameList, afterNameList, free)
+    function lua_getLoadObj(origFile, beforeNameList, afterNameList)
     {
-        checkArgs("lua.load",
+        checkArgs("lua.getLoadObj",
             arguments,
             [
                 ["String", "Object", "Object"],
-                ["String", "Array", "Array"],
-                ["String", "Object", "Object", "Number"],
-                ["String", "Array", "Array", "Number"]
+                ["String", "Array", "Array"]
             ]
         );
 
@@ -326,18 +324,41 @@ function registerLua()
             "continueAddr": pe.rawToVa(retLoader)
         };
 
+        var obj = Object();
+        obj.hookAddrRaw = hookLoader;
+        obj.asmText = text;
+        obj.vars = vars;
+        return obj;
+    }
+
+    function lua_load(origFile, beforeNameList, afterNameList, free)
+    {
+        checkArgs("lua.load",
+            arguments,
+            [
+                ["String", "Object", "Object"],
+                ["String", "Array", "Array"],
+                ["String", "Object", "Object", "Number"],
+                ["String", "Array", "Array", "Number"]
+            ]
+        );
+
+        var loadObj = lua.getLoadObj(origFile, beforeNameList, afterNameList);
+        if (typeof(loadObj) === "String")
+            return loadObj;
+
         if (typeof(free) === "undefined" || free === -1)
         {
-            var obj = exe.insertAsmTextObj(text, vars);
+            var obj = exe.insertAsmTextObj(loadObj.asmText, loadObj.vars);
             var free = obj.free;
         }
         else
         {
-            exe.replaceAsmText(free, text, vars);
+            exe.replaceAsmText(free, loadObj.asmText, loadObj.vars);
         }
 
         consoleLog("Set jmp to own code");
-        exe.setJmpRaw(hookLoader, free, "jmp", 6);
+        exe.setJmpRaw(loadObj.hookAddrRaw, free, "jmp", 6);
 
         return true;
     }
@@ -346,5 +367,6 @@ function registerLua()
     lua.loadBefore = lua_loadBefore;
     lua.loadAfter = lua_loadAfter;
     lua.getCLuaLoadInfo = lua_getCLuaLoadInfo;
+    lua.getLoadObj = lua_getLoadObj;
     lua.load = lua_load;
 }

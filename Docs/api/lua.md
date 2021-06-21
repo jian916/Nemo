@@ -77,6 +77,29 @@ If error happened, returns string with error.
 
 In other case returns true.
 
+### lua.getLoadObj
+
+``lua.getLoadObj(existingName, beforeNamesList, afterNamesList)``
+
+Generate asm text for load lua files before and after existingName file name.
+
+| Argument  | Description |
+| --------  | ----------- |
+| existingName | Full path of existing lua file |
+| beforeNamesList | Array of full paths of lua files for load before existingName |
+| afterNamesList | Array of full paths of lua files for load after existingName |
+
+If error happened, returns string with error.
+
+In other case returns object with fields:
+
+| Field     | Description |
+| --------  | ----------- |
+| hookAddrRaw | Raw address where hook for lua load code should be placed |
+| asmText   | Asm text for lua load code |
+| vars      | Variables what should be used for convert asm text into code |
+
+
 ### lua_getCLuaLoadInfo
 
 ``lua_getCLuaLoadInfo(stackOffset)``
