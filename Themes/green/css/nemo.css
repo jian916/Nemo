@@ -243,4 +243,126 @@ QCheckBox::indicator::unchecked {
 
 QCheckBox::indicator::checked {
         image:url(Themes/green/icons/checked.png);
+
+/* new props */
+
+
+QTableView::item:selected {
+    color: rgb(10, 10, 120);
+    background-color: rgb(220, 220, 255);
+}
+
+#bold {
+    background-color: rgb(0, 255, 0);
+    font: bold;
+}
+
+#bolditalic {
+    background-color: rgb(0, 255, 0);
+    font: bold italic;
+}
+
+#italic {
+    background-color: rgb(0, 255, 0);
+    font:italic;
+}
+
+#regular {
+    background-color: rgb(0, 255, 0);
+    font:regular;
+}
+
+#exeInput[cssStyle="default"] {
+}
+
+#exeInput[cssStyle="3629657203"] {
+    color: rgb(255, 0, 0);
+}
+
+#exeInput[cssStyle="2892337636"] {
+    color: rgb(10, 10, 120);
+}
+
+#exeStatus[cssStyle="2802148609"], #exeStatus[cssStyle="3533514090"] {
+    color: rgb(225, 0, 0);
+}
+
+#exeStatus[cssStyle="4182919787"] {
+    color: rgb(0, 180, 0);
+}
+
+#exeStatus[cssStyle="default"] {
+}
+
+#filterInputClear[cssStyle="1709095774"] {
+    border-radius: 0px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top: 1px solid #0A0A80;
+    border-left: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-right: 0px;
+    min-width: 16px;
+}
+
+#filterInputClear[cssStyle="629610772"] {
+    border-radius: 0px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid #0A0A80;
+    border-right: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-left: 0px;
+    min-width: 16px;
+}
+
+#filterInputClear[cssStyle="default"] {
+}
+
+#filterInput[cssStyle="2268811773"] {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top: 1px solid #0A0A80;
+    border-left: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-right: 0px;
+}
+
+#filterInput[cssStyle="408797514"] {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius:0;
+    border-bottom-left-radius:0;
+    border-top: 1px solid #0A0A80;
+    border-right: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-left: 0px;
+}
+
+#filterInput[cssStyle="default"] {
+}
+
+#fontSelect[cssStyle="409888683"] {
+    background-color: rgb(0, 255, 0);
+}
+
+#fontSelect[cssStyle="default"] {
+}
+
+#input[cssStyle="2892337636"] {
+    color: rgb(10, 10, 120);
+}
+
+#input[cssStyle="default"] {
+}
+
+#menuBar[cssStyle="3826588206"] {
+    selection-background-color: rgba(0, 255, 0, 50);
+}
+
+#menuBar[cssStyle="default"] {
+}
+
 }
