@@ -1,3 +1,8 @@
+/*$buttonColor$:#F0F0F0*/
+/*$buttonBackground$:qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255))*/
+/*$buttonHoverBackground$:qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(20, 100, 160, 255), stop: 1  rgba(30, 180, 240, 255))*/
+/*$buttonPressedBackground$:qradialgradient(cx: 0.4, cy: -0.1,fx: 0.4, fy: -0.1,radius: 1.35, stop: 1 rgba(0, 60, 125, 255), stop: 0 rgba(5, 155, 215, 255))*/
+
 QWidget {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255) stop:0.5 rgba(198, 198, 198, 255), stop:1 rgba(255, 255, 255, 255));
     color: rgb(88, 30, 112);
@@ -9,13 +14,13 @@ QMenuBar {
 }
 
 QPushButton {
-    color:#F0F0F0;
+    color:$buttonColor$;
     border-radius: 10px;
     border: 1px solid #386868;
     min-width: 60px;
     min-height: 20px;
     padding:1px;
-    background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255));
+    background: $buttonBackground$;
 }
 
 QPushButton:disabled {
@@ -26,16 +31,16 @@ QPushButton:disabled {
 QToolButton {
     color:#2020A0;
     padding:1px;
-    background: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255));
+    background: $buttonBackground$;
 }
 
 QPushButton:hover, QToolButton:hover {
-   background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(20, 100, 160, 255), stop: 1  rgba(30, 180, 240, 255));
+    background: $buttonHoverBackground$;
 }
 
 QPushButton:pressed, QToolButton:pressed {
-   background: qradialgradient(cx: 0.4, cy: -0.1,fx: 0.4, fy: -0.1,radius: 1.35, stop: 1 rgba(0, 60, 125, 255), stop: 0 rgba(5, 155, 215, 255));
-  padding: 2px 0px 0px 2px
+    background: $buttonPressedBackground$;
+    padding: 2px 0px 0px 2px
 }
 
 QLabel {
@@ -80,7 +85,7 @@ QToolBar {
     background-color: qlineargradient(spread:pad,
         x1:0, y1:0.006, x2:0, y2:1,
         stop:0      rgba(230, 230, 250, 255),
-        stop:0.2   rgba(200, 200, 220, 255),
+        stop:0.2    rgba(200, 200, 220, 255),
         stop:1      rgba(230, 230, 250, 255)
     );
 }
@@ -238,8 +243,8 @@ QTabBar::tab {
 }
 
 QTabBar::tab:selected  {
-    color:#F0F0F0;
-    background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255));
+    color:$buttonColor$;
+    background-color: $buttonBackground$;
 }
 
 QTabWidget::pane {
