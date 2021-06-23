@@ -209,23 +209,6 @@ QSpinBox {
     background-color:white;
 }
 
-QTabBar::tab {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(186, 186, 186, 255), stop:1 rgba(238, 238, 238, 255));
-    border: 1px solid rgb(120, 150, 160);
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    padding: 3px;
-}
-
-QTabBar::tab:selected  {
-    color:#F0F0F0;
-    background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255));
-}
-
-QTabWidget::pane {
-    border: 1px solid rgb(10, 10, 120);
-    padding: 0px;
-}
 
 QCheckBox {
     background: transparent;
@@ -242,6 +225,26 @@ QCheckBox::indicator::unchecked {
 
 QCheckBox::indicator::checked {
     image:url(Themes/default/icons/checked.png);
+}
+
+/* unused */
+
+QTabBar::tab {
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(186, 186, 186, 255), stop:1 rgba(238, 238, 238, 255));
+    border: 1px solid rgb(120, 150, 160);
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    padding: 3px;
+}
+
+QTabBar::tab:selected  {
+    color:#F0F0F0;
+    background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255));
+}
+
+QTabWidget::pane {
+    border: 1px solid rgb(10, 10, 120);
+    padding: 0px;
 }
 
 /* new props */

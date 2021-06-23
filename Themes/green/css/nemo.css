@@ -210,6 +210,25 @@ QSpinBox {
     background-color:green;
 }
 
+
+QCheckBox {
+        background: transparent;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator::unchecked {
+        image:url(Themes/green/icons/unchecked.png);
+}
+
+QCheckBox::indicator::checked {
+        image:url(Themes/green/icons/checked.png);
+
+/* unused */
+
 QTabBar::tab {
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(0, 186, 0, 255), stop:1 rgba(0, 238, 0, 255));
     border: 1px solid rgb(120, 150, 160);
@@ -228,24 +247,7 @@ QTabWidget::pane {
     padding: 0px;
 }
 
-QCheckBox {
-        background: transparent;
-}
-
-QCheckBox::indicator {
-    width: 16px;
-    height: 16px;
-}
-
-QCheckBox::indicator::unchecked {
-        image:url(Themes/green/icons/unchecked.png);
-}
-
-QCheckBox::indicator::checked {
-        image:url(Themes/green/icons/checked.png);
-
 /* new props */
-
 
 QTableView::item:selected {
     color: rgb(10, 10, 120);
