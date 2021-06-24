@@ -20,12 +20,16 @@
 
 function ChangeFadeOutDelay()
 {
+    if (table.get(table.g_renderer) === 0)
+        return "g_renderer not set";
+    var g_rendererHex = table.getHex4(table.g_renderer);
+
     // step 1
     // search for fadeout for cycle in CMode::RunFadeOut
     var code =
         "8B 35 ?? ?? ?? ?? " +        // 0 mov esi, timeGetTime
         "FF D6 " +                    // 6 call esi ; timeGetTime
-        "8B 0D ?? ?? ?? ?? " +        // 8 mov ecx, g_renderer
+        "8B 0D " + g_rendererHex +    // 8 mov ecx, g_renderer
         "A3 ?? ?? ?? ?? " +           // 14 mov dwFadeStart, eax
         "E8 ?? ?? ?? ?? " +           // 19 call CRenderer_BackupFrame
         "FF D6 " +                    // 24 call esi ; timeGetTime
@@ -35,7 +39,6 @@ function ChangeFadeOutDelay()
     var dwFadeStartOffset1 = 15;
     var dwFadeStartOffset2 = 28;
     var fadeOutDelayOffset1 = 33;
-    var g_rendererOffset = 10;
     var offset = pe.findCode(code);
 
     if (offset === -1)
@@ -44,7 +47,7 @@ function ChangeFadeOutDelay()
             "8B 35 ?? ?? ?? ?? " +        // 0 mov esi, ds:timeGetTime
             "83 C4 ?? " +                 // 6 add esp, 18h
             "FF D6 " +                    // 9 call esi
-            "8B 0D ?? ?? ?? ?? " +        // 11 mov ecx, g_renderer
+            "8B 0D " + g_rendererHex +    // 11 mov ecx, g_renderer
             "A3 ?? ?? ?? ?? " +           // 17 mov dwFadeStart, eax
             "E8 ?? ?? ?? ?? " +           // 22 call CRenderer_BackupFrame
             "FF D6 " +                    // 27 call esi
@@ -54,7 +57,6 @@ function ChangeFadeOutDelay()
         var dwFadeStartOffset1 = 18;
         var dwFadeStartOffset2 = 31;
         var fadeOutDelayOffset1 = 36;
-        var g_rendererOffset = 13;
         offset = pe.findCode(code);
     }
 
@@ -72,13 +74,12 @@ function ChangeFadeOutDelay()
     {
         return "Failed in step 1 - found wrong fade out delay: " + fadeOutDelay;
     }
-    var g_renderer = exe.fetchDWord(offset + g_rendererOffset);
 
     // step 2
     // search below in same function second delay usage
 
     var code =
-        "8B 0D " + g_renderer.packToHex(4) +  // 0 mov ecx, g_renderer
+        "8B 0D " + g_rendererHex +            // 0 mov ecx, g_renderer
         "E8 ?? ?? ?? ?? " +                   // 6 call CRenderer_RestoreFrame
         "FF D6 " +                            // 11 call esi ; timeGetTime
         "2B 05 " + dwFadeStart.packToHex(4) + // 13 sub eax, dwFadeStart
@@ -101,7 +102,7 @@ function ChangeFadeOutDelay()
         "73 ?? " +                    // 18 jnb short locret_71FDBC
         "B9 ?? 00 00 00 " +           // 20 mov ecx, 0FFh
         "2B C8 " +                    // 25 sub ecx, eax
-        "A1 " + g_renderer.packToHex(4) + // 27 mov eax, g_renderer
+        "A1 " + g_rendererHex +       // 27 mov eax, g_renderer
         "C1 E1 18 " +                 // 32 shl ecx, 18h
         "51 ";                        // 35 push ecx
     var fadeOutDelayOffset3 = 14;
@@ -118,7 +119,7 @@ function ChangeFadeOutDelay()
             "73 ?? " +                    // 15 jnb short loc_587FF4
             "BA ?? 00 00 00 " +           // 17 mov edx, 0FFh
             "2B D0 " +                    // 22 sub edx, eax
-            "A1 " + g_renderer.packToHex(4) + // 24 mov eax, g_renderer
+            "A1 " + g_rendererHex +       // 24 mov eax, g_renderer
             "8B 48 ?? " +                 // 29 mov ecx, [eax+28h]
             "C1 E2 18 " +                 // 32 shl edx, 18h
             "52 ";                        // 35 push edx
