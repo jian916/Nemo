@@ -143,6 +143,8 @@ function GenMapEffectPlugin()
 
     consoleLog("Save g_renderer & the g_renderer->ClearColor offset");
     var gRenderer = exe.fetchHex(offset, 4);
+    if (gRenderer != table.getHex4(table.g_renderer))
+        throw "Found wrong g_renderer";
     var gR_clrColor = exe.fetchHex(offset+6, 1);
 
     logVaVar("g_renderer", offset, 0);
