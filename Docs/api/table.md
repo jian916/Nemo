@@ -10,6 +10,12 @@
 
 Returns variable value as is or as virtual address.
 
+### table.getHex1
+
+``table.getHex1(varId)``
+
+Returns variable value as hex strings with 1 bytes.
+
 ### table.getHex4
 
 ``table.getHex4(varId)``

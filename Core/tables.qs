@@ -43,9 +43,14 @@ function registerTables()
     table.CGameMode_OnUpdate = 23;
     table.g_client_version = 24;
     table.packetVersion = 25;
+    table.UIWindowMgr_MakeWindow_ret1 = 31;
+    table.UIWindowMgr_MakeWindow_ret2 = 32;
     table.CLua_Load = 38;
     table.CLua_Load_type = 39;
     table.CSession_m_lua_offset = 40;
+    table.g_renderer = 41;
+    table.g_renderer_m_width = 42;
+    table.g_renderer_m_height = 43;
     registerTableFunctions();
 }
 
@@ -56,6 +61,12 @@ function table_getRaw(varId)
     if (ret === 0)
         return 0;
     return exe.Rva2Raw(ret);
+}
+
+function table_getHex1(varId)
+{
+    checkArgs("table.getHex1", arguments, [["Number"]]);
+    return table.get(varId).packToHex(1);
 }
 
 function table_getHex4(varId)
@@ -92,6 +103,7 @@ function getEcxFileMgrHex()
 
 function registerTableFunctions()
 {
+    table.getHex1 = table_getHex1;
     table.getHex4 = table_getHex4;
     table.getRaw = table_getRaw;
     table.getSessionAbsHex4 = table_getSessionAbsHex4;
