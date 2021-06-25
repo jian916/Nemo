@@ -130,6 +130,8 @@ function asm_hexToAsm(code)
 {
     checkArgs("asm.hexToAsm", arguments, [["String"]]);
 
+    if (code.length === 0)
+        return "";
     code = code.trim();
     var parts = code.split(" ");
     var data = ""
