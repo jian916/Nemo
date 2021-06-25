@@ -18,9 +18,10 @@ function MoveCashShopIcon()
 
     consoleLog("Step 1a - Find the XCoord calculation pattern");
     var code =
-        " 81 EA BB 00 00 00" +  // SUB EDX, 0BB
-        " 52";                  // PUSH EDX
-    var reg = "edx";
+        " 81 EA BB 00 00 00" +  // 0 SUB EDX, 0BB
+        " 52";                  // 6 PUSH EDX
+    var patchOffset = 0;
+    var pushReg = "edx";
     var stolenCodeOffset = 0;
     var skipByte = true;
     var offset = pe.find(code, makeWindow, endOffset);
@@ -28,9 +29,10 @@ function MoveCashShopIcon()
     if (offset === -1)
     {
         var code =
-            " 2D BB 00 00 00" +  // SUB EAX, 0BB
-            " 50";               // PUSH EAX
-        reg = "eax";
+            " 2D BB 00 00 00" +  // 0 SUB EAX, 0BB
+            " 50";               // 5 PUSH EAX
+        patchOffset = 0;
+        pushReg = "eax";
         stolenCodeOffset = 0;
         skipByte = false;
         offset = pe.find(code, makeWindow, endOffset);
@@ -39,10 +41,11 @@ function MoveCashShopIcon()
     if (offset === -1)
     {
         var code =
-            " 2D BB 00 00 00" +  // SUB EAX, 0BB
-            " 6A 10" +           // PUSH 10h
-            " 50";               // PUSH EAX
-        reg = "eax";
+            " 2D BB 00 00 00" +  // 0 SUB EAX, 0BB
+            " 6A 10" +           // 5 PUSH 10h
+            " 50";               // 7 PUSH EAX
+        patchOffset = 0;
+        pushReg = "eax";
         stolenCodeOffset = [5, 2];
         skipByte = false;
         offset = pe.find(code, makeWindow, endOffset);
@@ -62,11 +65,11 @@ function MoveCashShopIcon()
 
     consoleLog("Step 1b - Accomodate for extra bytes by NOPing those");
 
-    if (table.get(table.g_renderer) === 0)
+    var g_renderer = table.get(table.g_renderer);
+    if (g_renderer === 0)
         return "g_renderer not set";
-    var g_renderer = table.getHex4(table.g_renderer);
-    var g_renderer_width = table.getHex1(table.g_renderer_m_width);
-    var g_renderer_height = table.getHex1(table.g_renderer_m_height);
+    var g_renderer_width = table.get(table.g_renderer_m_width);
+    var g_renderer_height = table.get(table.g_renderer_m_height);
 
     //Step 2a - Get User Coords
     var xCoord = exe.getUserInput("$cashShopX", XTYPE_WORD, _("Number Input"), _("Enter new X coordinate:"), -0xBB, -0xFFFF, 0xFFFF);
@@ -77,32 +80,36 @@ function MoveCashShopIcon()
 
     consoleLog("Step 2b - Prep code to insert based on the sign of each coordinate (negative values are relative to width and height respectively)");
     var text = "";
-
     if (yCoord < 0)
     {
+        yCoord = -yCoord;
         text = asm.combine(
+            "push ecx",
             "mov ecx, dword ptr [g_renderer]",
-            "mov ecs, dword ptr [ecx + g_renderer_height]",
-            "sub ecx, -yCoord",
-            "mov dword ptr [esp + 4], ecx"
+            "mov ecx, dword ptr [ecx + g_renderer_height]",
+            "sub ecx, yCoord",
+            "mov dword ptr [esp + 8], ecx"
         );
     }
     else
     {
         text = asm.combine(
+            "push ecx",
             "mov ecx, yCoord",
-            "mov dword ptr [esp + 4], ecx"
+            "mov dword ptr [esp + 8], ecx"
         );
     }
 
     if (xCoord < 0)
     {
+        xCoord = -xCoord;
         text = asm.combine(
             text,
             "mov ecx, dword ptr [g_renderer]",
-            "mov ecs, dword ptr [ecx + g_renderer_width]",
-            "sub ecx, -xCoord",
-            "mov " + reg + ", ecx",
+            "mov ecx, dword ptr [ecx + g_renderer_width]",
+            "sub ecx, xCoord",
+            "mov " + pushReg + ", ecx",
+            "pop ecx",
             "ret"
         );
     }
@@ -111,7 +118,8 @@ function MoveCashShopIcon()
         text = asm.combine(
             text,
             "mov ecx, xCoord",
-            "mov " + reg + ", ecx",
+            "mov " + pushReg + ", ecx",
+            "pop ecx",
             "ret"
         );
     }
@@ -150,7 +158,7 @@ function MoveCashShopIcon()
         "free": pe.rawToVa(free)
     };
 
-    exe.replaceAsmText(offset, text, vars);
+    exe.replaceAsmText(offset + patchOffset, text, vars);
 
     return true;
 }
