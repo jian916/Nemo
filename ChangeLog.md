@@ -1,3 +1,35 @@
+# 2021-06-29 Different updates
+
+## Patches
+
+- Add patch [Load custom lua files for most loaded lua files](http://nemo.herc.ws/patches/LoadCustomLuaBeforeAfterFiles/#success-clients). (by @4144).
+- Add patch [Fixes the Korean Job name issue with LangType](http://nemo.herc.ws/patches/TaekwonJobNameFix/#success-clients) from translation patch. (by Ai4rei/AN, Neo, @4144).
+- Add patch [Add loading custom lua files](http://nemo.herc.ws/patches/AddCustomLua/#success-clients). (by @4144).
+- Fix patch [Move Cash Shop Icon](http://nemo.herc.ws/patches/MoveCashShopIcon/#success-clients). (fix by @4144).
+- Fix patch [Disable kRO Site Launch](http://nemo.herc.ws/patches/DisableKROSiteLaunch/#success-clients). (fix by @4144).
+
+## For devs
+
+- Fix exe.insertAsmText with complex asm code.
+- Fix asm.hexToAsm for emptry strings.
+- Add new parameter into exe.setJmpVa and exe.setJmpRaw.
+- Add hooks object.
+- Add lua object.
+- Add functions for check enabled patches.
+- Add functions for search strings pe.stringVa, pe.stringRaw, pe.stringHex4.
+- Add for generic count bytes length in asm text asm.textToHexLength.
+- Reconfigure current themes to use one css file.
+- Add support for additional css attributes in themes.
+- Add proper css usage in selected patch.
+- Add support for custom variables in css theme files.
+
+## Other
+
+- Update Chinese Traditional translation from chinese fork.
+- Update Thai translation by @X-EcutiOnner.
+- Improve loading speed.
+- Partial apply new theme after theme selection without nemo restart.
+
 # 2021-05-17 Different updates
 
 ## Patches
