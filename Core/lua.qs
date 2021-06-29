@@ -20,13 +20,19 @@ function registerLua()
     function lua_loadBefore(existingName, newNamesList, free)
     {
         checkArgs("lua.loadBefore", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
-        return lua.load(existingName, newNamesList, [], free);
+        return lua.load(existingName, newNamesList, [], true, free);
     }
 
     function lua_loadAfter(existingName, newNamesList, free)
     {
         checkArgs("lua.loadAfter", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
-        return lua.load(existingName, [], newNamesList, free);
+        return lua.load(existingName, [], newNamesList, true, free);
+    }
+
+    function lua_replace(existingName, newNamesList, free)
+    {
+        checkArgs("lua.replace", arguments, [["String", "Object"], ["String", "Object", "Number"]]);
+        return lua.load(existingName, newNamesList, [], false, free);
     }
 
     function lua_getCLuaLoadInfo(stackOffset)
@@ -72,13 +78,13 @@ function registerLua()
         return obj;
     }
 
-    function lua_getLoadObj(origFile, beforeNameList, afterNameList)
+    function lua_getLoadObj(origFile, beforeNameList, afterNameList, loadDefault)
     {
         checkArgs("lua.getLoadObj",
             arguments,
             [
-                ["String", "Object", "Object"],
-                ["String", "Array", "Array"]
+                ["String", "Object", "Object", "Boolean"],
+                ["String", "Array", "Array", "Boolean"]
             ]
         );
 
@@ -290,13 +296,16 @@ function registerLua()
             )
         }
 
-        consoleLog("Add default code");
-        var asmCode = asm.combine(
-            asmCode,
-            asm.hexToAsm(allStolenCode),
-            "push offset",
-            "call CLua_Load"
-        )
+        if (loadDefault === true)
+        {
+            consoleLog("Add default code");
+            var asmCode = asm.combine(
+                asmCode,
+                asm.hexToAsm(allStolenCode),
+                "push offset",
+                "call CLua_Load"
+            )
+        }
 
         consoleLog("Add after code");
         for (var i = 0; i < afterNameList.length; i++)
@@ -331,19 +340,19 @@ function registerLua()
         return obj;
     }
 
-    function lua_load(origFile, beforeNameList, afterNameList, free)
+    function lua_load(origFile, beforeNameList, afterNameList, loadDefault, free)
     {
         checkArgs("lua.load",
             arguments,
             [
-                ["String", "Object", "Object"],
-                ["String", "Array", "Array"],
-                ["String", "Object", "Object", "Number"],
-                ["String", "Array", "Array", "Number"]
+                ["String", "Object", "Object", "Boolean"],
+                ["String", "Array", "Array", "Boolean"],
+                ["String", "Object", "Object", "Boolean", "Number"],
+                ["String", "Array", "Array", "Boolean", "Number"]
             ]
         );
 
-        var loadObj = lua.getLoadObj(origFile, beforeNameList, afterNameList);
+        var loadObj = lua.getLoadObj(origFile, beforeNameList, afterNameList, loadDefault);
         if (typeof(loadObj) === "String")
             return loadObj;
 
@@ -366,6 +375,7 @@ function registerLua()
     lua = new Object();
     lua.loadBefore = lua_loadBefore;
     lua.loadAfter = lua_loadAfter;
+    lua.replace = lua_replace;
     lua.getCLuaLoadInfo = lua_getCLuaLoadInfo;
     lua.getLoadObj = lua_getLoadObj;
     lua.load = lua_load;

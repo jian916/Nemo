@@ -59,10 +59,27 @@ If error happened, returns string with error.
 
 In other case returns true.
 
+### lua.replace
+
+``lua.replace(existingName, newNamesList)``
+``lua.replace(existingName, newNamesList, free)``
+
+Allow replace loading existingName to files from newNamesList.
+
+| Argument  | Description |
+| --------  | ----------- |
+| existingName | Full path of existing lua file |
+| newNamesList | Array of full paths to new lua files |
+| free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
+
+If error happened, returns string with error.
+
+In other case returns true.
+
 ### lua.load
 
-``lua.load(existingName, beforeNamesList, afterNamesList)``
-``lua.load(existingName, beforeNamesList, afterNamesList, free)``
+``lua.load(existingName, beforeNamesList, afterNamesList, loadDefault)``
+``lua.load(existingName, beforeNamesList, afterNamesList, loadDefault, free)``
 
 Allow load lua files before and after existingName file name.
 
@@ -71,6 +88,7 @@ Allow load lua files before and after existingName file name.
 | existingName | Full path of existing lua file |
 | beforeNamesList | Array of full paths of lua files for load before existingName |
 | afterNamesList | Array of full paths of lua files for load after existingName |
+| loadDefault | Boolean flag for allow load default lua file.
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 
 If error happened, returns string with error.
