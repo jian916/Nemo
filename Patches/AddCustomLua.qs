@@ -17,39 +17,32 @@
 
 function AddCustomLua()
 {
-    var retVal = lua.loadBefore(
-        "Lua Files\\DataInfo\\accName",
-        [
-            "lua files\\cls\\accessoryid",
-            "lua files\\cls\\accname",
-            "lua files\\cls\\DrawItemOnAura",
-            "lua files\\cls\\enumvar",
-            "lua files\\cls\\hateffect_f",
-            "lua files\\cls\\hateffectinfo",
-            "lua files\\cls\\jobname",
-            "lua files\\cls\\lapineddukddakbox",
-            "lua files\\cls\\LapineUpgradeBox",
-            "lua files\\cls\\npcidentity",
-            "lua files\\cls\\OngoingQuests",
-            "lua files\\cls\\petinfo",
-            "lua files\\cls\\randomoption",
-            "lua files\\cls\\RecommendedQuests",
-            "lua files\\cls\\shadowtable",
-            "lua files\\cls\\spriterobeid",
-            "lua files\\cls\\spriterobename",
-            "lua files\\cls\\TB_Layer_Priority",
-            "lua files\\cls\\titletable",
-            "lua files\\cls\\transparentItem"
-        ]
-    )
-    if (retVal !== true)
-        return retVal;
+    lua.replace("Lua Files\\DataInfo\\accName_F", ["lua files\\cls\\accname_f"]);
+    lua.replace("Lua Files\\DataInfo\\jobName_F", ["lua files\\cls\\jobname_f"]);
+    lua.replace("Lua Files\\DataInfo\\QuestInfo_f", ["lua files\\cls\\questinfo_f"]);
+    lua.replace("Lua Files\\DataInfo\\AddRandomOption_F", ["lua files\\cls\\addrandomoption_f"]);
+    lua.replace("Lua Files\\DataInfo\\ShadowTable_F", ["lua files\\cls\\shadowtable_f"]);
+    lua.replace("Lua Files\\DataInfo\\SpriteRobeName_F", ["lua files\\cls\\spriterobename_f"]);
+    lua.replace("Lua Files\\transparentItem\\transparentItem_f", ["lua files\\cls\\transparentitem_f"]);
+    lua.replace("Lua Files\\DataInfo\\WeaponTable_F", ["lua files\\cls\\weapontable_f"]);
 
-    var retVal = lua.loadAfter(
-        "Lua Files\\DataInfo\\WeaponTable",
-        [
-            "lua files\\cls\\weapontable"
-        ]
-    );
-    return retVal;
+    lua.loadBefore("Lua Files\\DataInfo\\accName", ["lua files\\cls\\accname"]);
+    lua.loadBefore("Lua Files\\DataInfo\\AccessoryId", ["lua files\\cls\\accessoryid"]);
+    lua.loadBefore("Lua Files\\DataInfo\\EnumVAR", ["lua files\\cls\\enumvar"]);
+    lua.loadBefore("Lua Files\\HatEffectInfo\\HatEffectInfo", ["lua files\\cls\\hateffectinfo"]);
+    lua.loadBefore("Lua Files\\DataInfo\\jobName", ["lua files\\cls\\jobname"]);
+    lua.loadBefore("Lua Files\\DataInfo\\NPCIdentity", ["lua files\\cls\\npcidentity"]);
+    lua.loadBefore("Lua Files\\DataInfo\\PetInfo", ["lua files\\cls\\petinfo"]);
+    lua.loadBefore("Lua Files\\datainfo\\LapineDdukDDakBox", ["lua files\\cls\\lapineddukddakbox"]);
+    lua.loadBefore("Lua Files\\datainfo\\LapineUpgradeBox", ["lua files\\cls\\lapineupgradebox"]);
+    lua.loadBefore("Lua Files\\DataInfo\\AddRandomOptionNameTable", ["lua files\\cls\\randomoption"]);
+    lua.loadBefore("Lua Files\\DataInfo\\ShadowTable", ["lua files\\cls\\shadowtable"]);
+    lua.loadBefore("Lua Files\\DataInfo\\SpriteRobeId", ["lua files\\cls\\spriterobeid"]);
+    lua.loadBefore("Lua Files\\DataInfo\\SpriteRobeName", ["lua files\\cls\\spriterobename"]);
+    lua.loadBefore("Lua Files\\DataInfo\\TB_Layer_Priority", ["lua files\\cls\\tb_layer_priority"]);
+    lua.loadBefore("Lua Files\\DataInfo\\TitleTable", ["lua files\\cls\\titletable"]);
+    lua.loadBefore("Lua Files\\transparentItem\\transparentItem", ["lua files\\cls\\transparentitem"]);
+    lua.loadBefore("Lua Files\\DataInfo\\WeaponTable", ["lua files\\cls\\weapontable"]);
+
+    return true;
 }
