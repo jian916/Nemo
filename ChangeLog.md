@@ -1,3 +1,14 @@
+# 2021-06-30 Patches updates
+
+## Patches
+
+- Update patch [Add loading custom lua files](http://nemo.herc.ws/patches/AddCustomLua/#success-clients). (by @4144).
+
+## For devs
+
+- Add function lua.replace for replace existing lua file to custom one.
+
+
 # 2021-06-29 Different updates
 
 ## Patches
