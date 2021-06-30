@@ -33,13 +33,21 @@ function checkArgs(name, args, types2)
         {
             var type = types[idx];
             var obj = Object.prototype.toString.call(args[idx]).replace(/^\[object |\]$/g, '');
-            if (obj != type)
+            if (obj == type)
             {
-                err = args[idx] + ": " + type + " vs " + obj;
-                found = false;
-                break;
+                idx ++;
+                continue;
             }
-            idx ++;
+
+            if (typeof(args[idx]) == "undefined" && type == "Undefined")
+            {
+                idx ++;
+                continue;
+            }
+
+            err = args[idx] + ": " + type + " vs " + obj;
+            found = false;
+            break;
         }
         if (found === true)
         {

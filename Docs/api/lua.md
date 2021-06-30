@@ -21,7 +21,7 @@ Allow load lua files before or after origFile file name.
 | free      | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 | loadBefore | If true, load new files before existing lua file. If false, load new files after existing lua file. By default true |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns true.
 
@@ -38,7 +38,7 @@ Allow load lua files before existingName file name.
 | newNamesList | Array of full paths to new lua files |
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns true.
 
@@ -55,7 +55,7 @@ Allow load lua files after existingName file name.
 | newNamesList | Array of full paths to new lua files |
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns true.
 
@@ -72,7 +72,7 @@ Allow replace loading existingName to files from newNamesList.
 | newNamesList | Array of full paths to new lua files |
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns true.
 
@@ -91,7 +91,7 @@ Allow load lua files before and after existingName file name.
 | loadDefault | Boolean flag for allow load default lua file.
 | free         | Buffer where to put lua loader code. If free is missing or -1 new buffer will be allocated |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns true.
 
@@ -107,7 +107,7 @@ Generate asm text for load lua files before and after existingName file name.
 | beforeNamesList | Array of full paths of lua files for load before existingName |
 | afterNamesList | Array of full paths of lua files for load after existingName |
 
-If error happened, returns string with error.
+If error happened, throw error.
 
 In other case returns object with fields:
 

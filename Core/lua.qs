@@ -91,7 +91,7 @@ function registerLua()
         consoleLog("Find original file name string");
         var origOffset = exe.findString(origFile, RVA);
         if (origOffset === -1)
-            return "LUAFL: Filename missing";
+            throw "LUAFL: Filename missing: " + origFile;
 
         var strHex = origOffset.packToHex(4);
 
@@ -233,13 +233,13 @@ function registerLua()
         }
 
         if (hookLoader === -1)
-            return "LUAFL: CLua_Load call missing";
+            throw "LUAFL: CLua_Load call missing: " + origFile;
 
         var retLoader = hookLoader + postOffset;
 
         var callValue = exe.fetchRelativeValue(hookLoader, callOffset);
         if (callValue !== CLua_Load)
-            throw "LUAFL: found wrong call function";
+            throw "LUAFL: found wrong call function: " + origFile;
 
         consoleLog("Read stolen code");
         var allStolenCode = exe.fetchHex(hookLoader, strPushOffset);
@@ -348,13 +348,13 @@ function registerLua()
                 ["String", "Object", "Object", "Boolean"],
                 ["String", "Array", "Array", "Boolean"],
                 ["String", "Object", "Object", "Boolean", "Number"],
-                ["String", "Array", "Array", "Boolean", "Number"]
+                ["String", "Array", "Array", "Boolean", "Number"],
+                ["String", "Object", "Object", "Boolean", "Undefined"],
+                ["String", "Array", "Array", "Boolean", "Undefined"]
             ]
         );
 
         var loadObj = lua.getLoadObj(origFile, beforeNameList, afterNameList, loadDefault);
-        if (typeof(loadObj) === "String")
-            return loadObj;
 
         if (typeof(free) === "undefined" || free === -1)
         {
