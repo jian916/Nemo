@@ -137,7 +137,7 @@ function asm_hexToAsm(code)
     var data = ""
     for (var i = 0; i < parts.length; i ++)
     {
-        data = data + "db 0x" + parts[i] + "\n";
+        data += "db 0x" + parts[i] + "\n";
     }
     return data;
 }
@@ -146,13 +146,10 @@ function asm_stringToAsm(string)
 {
     checkArgs("asm.stringToAsm", arguments, [["String"]]);
 
-    var code = string.toHex();
-    code = code.trim();
-    var parts = code.split(" ");
     var data = ""
-    for (var i = 0; i < parts.length; i ++)
+    for (var i = 0; i < string.length; i++)
     {
-        data = data + "db 0x" + parts[i] + "\n";
+        data += 'db 0x' + string.charCodeAt(i).toString(16) + "\n";
     }
     return data;
 }
