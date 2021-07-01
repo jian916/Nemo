@@ -1,26 +1,45 @@
-/*$buttonColor$:#F0F0F0*/
-/*$buttonBackground$:qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(0, 70, 130, 255), stop: 1 rgba(0, 150, 210, 255))*/
-/*$buttonHoverBackground$:qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 rgba(20, 100, 160, 255), stop: 1  rgba(30, 180, 240, 255))*/
-/*$buttonPressedBackground$:qradialgradient(cx: 0.4, cy: -0.1,fx: 0.4, fy: -0.1,radius: 1.35, stop: 1 rgba(0, 60, 125, 255), stop: 0 rgba(5, 155, 215, 255))*/
+/*
+* This file is part of NEMO (Neo Exe Modification Organizer).
+* http://nemo.herc.ws - http://gitlab.com/4144/Nemo
+*
+* Copyright (C) 2021 Andrei Karas (4144)
+* Copyright (C) 2021 X-EcutiOnner (xex.ecutionner@gmail.com)
+*
+* Hercules is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+/*#############################################################*/
 
 QWidget {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255) stop:0.5 rgba(198, 198, 198, 255), stop:1 rgba(255, 255, 255, 255));
-    color: rgb(88, 30, 112);
-    font:bold;
+    background-color: rgb(35, 38, 33);
+    color: rgb(0, 148, 255);
+    font: bold;
 }
 
 QMenuBar {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255) stop:0.3 rgba(198, 198, 198, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(199, 0, 199);
+    color: rgb(0, 0, 0);
 }
 
 QPushButton {
-    color:$buttonColor$;
+    color: rgb(255, 106, 0);
     border-radius: 10px;
-    border: 1px solid #386868;
+    border: 1px solid rgb(127, 106, 0);
     min-width: 60px;
     min-height: 20px;
-    padding:1px;
-    background: $buttonBackground$;
+    padding: 1px;
+    background-color: rgb(35, 38, 33);
 }
 
 QPushButton:disabled {
@@ -29,37 +48,35 @@ QPushButton:disabled {
 }
 
 QToolButton {
-    color:#2020A0;
-    padding:1px;
-    background: $buttonBackground$;
+    color: #2020A0;
+    padding: 1px;
 }
 
 QPushButton:hover, QToolButton:hover {
-    background: $buttonHoverBackground$;
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 106, 0);
+    border: 1px solid rgb(76, 255, 0);
 }
 
 QPushButton:pressed, QToolButton:pressed {
-    background: $buttonPressedBackground$;
-    padding: 2px 0px 0px 2px
+    color: rgb(255, 106, 0);
+    background-color: rgb(76, 255, 0);
+    border: 1px solid rgb(255, 106, 0);
+    padding: 2px 0px 0px 2px;
 }
 
 QLabel {
     background-color: rgba(255, 255, 255, 0);
+    color: rgb(182, 255, 0);
 }
 
 QLineEdit {
-    background: qlineargradient(
-        x1:0, y1:0, x2:0, y2:1,
-        stop:0 #8080A0,
-        stop: 0.2 white,
-        stop:0.9 white,
-        stop:1 #8080A0
-    );
+    background-color: rgb(48, 48, 48);
     border-radius: 8px;
-    border: 1px solid #0A0A80;
+    border: 1px solid rgb(127, 106, 0);
     min-height: 20px;
     padding: 1px;
-    color: rgb(10, 10, 120);
+    color: rgb(255, 106, 0);
 }
 
 QLineEdit:disabled {
@@ -73,24 +90,19 @@ QLineEdit:disabled {
 }
 
 QListView, QTableView, QTextEdit {
-    background-color: white;
+    background-color: rgb(48, 48, 48);
     border-radius: 5px;
-    border: 1px solid #0A0A80;
+    border: 1px solid rgb(127, 106, 0);
     min-height: 20px;
     padding: 2px;
-    color: rgb(10, 10, 120);
+    color: rgb(193, 193, 0);
 }
 
 QToolBar {
-    background-color: qlineargradient(spread:pad,
-        x1:0, y1:0.006, x2:0, y2:1,
-        stop:0      rgba(230, 230, 250, 255),
-        stop:0.2    rgba(200, 200, 220, 255),
-        stop:1      rgba(230, 230, 250, 255)
-    );
+    background-color: rgb(48, 48, 48);
 }
 
-QToolBar  QToolButton {
+QToolBar QToolButton {
     background: transparent
 }
 
@@ -101,15 +113,15 @@ QToolBar QToolButton:hover:enabled {
 
 QScrollBar:horizontal {
     border: 1px solid rgb(100, 100, 100);
-    background: rgb(200,200,200);
+    background: rgb(200, 200, 200);
     height: 20px;
     margin: 0 19px 0 19px;
 }
 
 QScrollBar::handle:horizontal {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 245, 255), stop:0.4 rgba(163, 175, 183, 255), stop:1 rgba(255, 255, 255, 255));
+    background-color: rgb(33, 33, 33);
     min-width: 20px;
-    border: 1px solid rgb(100, 100, 100);
+    border: 1px solid rgb(127, 106, 0);
     margin: 0px 0px 0px 0px;
 }
 
@@ -128,35 +140,35 @@ QScrollBar::sub-line:horizontal {
 }
 
 QScrollBar:left-arrow:horizontal {
-    background-image: url(Themes/default/icons/arrowleft.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowleft.png);
 }
 
 QScrollBar:left-arrow:horizontal:pressed {
-    background-image: url(Themes/default/icons/arrowleftpress.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowleftpress.png);
 }
 
 QScrollBar::right-arrow:horizontal {
-    background-image: url(Themes/default/icons/arrowright.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowright.png);
 }
 
 QScrollBar::right-arrow:horizontal:pressed {
-    background-image: url(Themes/default/icons/arrowrightpress.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowrightpress.png);
 }
 
 QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
-    background: none;
+    background-color: rgb(48, 48, 48);
 }
 
 QScrollBar:vertical {
     border: 1px solid rgb(100, 100, 100);
-    background: rgb(200,200,200);
+    background: rgb(200, 200, 200);
     width: 20px;
     margin: 19px 0 19px 0;
 }
 
 QScrollBar::handle:vertical {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(245, 245, 245, 255), stop:0.4 rgba(163, 175, 183, 255), stop:1 rgba(255, 255, 255, 255));
-    border: 1px solid rgb(100, 100, 100);
+    background-color: rgb(33, 33, 33);
+    border: 1px solid rgb(127, 106, 0);
     min-height: 20px;
     margin: 0px 0px 0px 0px;
 }
@@ -176,44 +188,44 @@ QScrollBar::sub-line:vertical {
 }
 
 QScrollBar::up-arrow:vertical {
-    background-image: url(Themes/default/icons/arrowup.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowup.png);
 }
 
 QScrollBar::up-arrow:vertical:pressed {
-    background-image: url(Themes/default/icons/arrowuppress.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowuppress.png);
 }
 
 QScrollBar::down-arrow:vertical {
-    background-image: url(Themes/default/icons/arrowdown.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowdown.png);
 }
 
 QScrollBar::down-arrow:vertical:pressed {
-    background-image: url(Themes/default/icons/arrowdownpress.png);
+    background-image: url(Themes/EXcite Dark/icons/arrowdownpress.png);
 }
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-    background: none;
+    background-color: rgb(48, 48, 48);
 }
 
 QAbstractScrollArea::corner {
-    background-color: transparent;
+    background-color: rgb(48, 48, 48);
 }
 
 QGroupBox {
-    background-color:transparent;
+    background-color: transparent;
 }
 
 QHeaderView::section {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(186, 186, 186, 255), stop:1 rgba(238, 238, 238, 255));
+    background-color: rgb(199, 0, 199);
+    color: rgb(0, 0, 0);
     border: 1px solid rgb(160, 160, 160);
     padding: 1px;
-    padding-left:2px;
+    padding-left: 2px;
 }
 
 QSpinBox {
-    background-color:white;
+    background-color: rgb(255, 255, 255);
 }
-
 
 QCheckBox {
     background: transparent;
@@ -225,43 +237,26 @@ QCheckBox::indicator {
 }
 
 QCheckBox::indicator::unchecked {
-    image:url(Themes/default/icons/unchecked.png);
+    image: url(Themes/EXcite Dark/icons/unchecked.png);
 }
 
 QCheckBox::indicator::checked {
-    image:url(Themes/default/icons/checked.png);
+    image: url(Themes/EXcite Dark/icons/checked.png);
 }
 
-/* unused */
-
-QTabBar::tab {
-    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(186, 186, 186, 255), stop:1 rgba(238, 238, 238, 255));
-    border: 1px solid rgb(120, 150, 160);
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    padding: 3px;
+QTableView::item:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 106, 0);
 }
-
-QTabBar::tab:selected  {
-    color:$buttonColor$;
-    background-color: $buttonBackground$;
-}
-
-QTabWidget::pane {
-    border: 1px solid rgb(10, 10, 120);
-    padding: 0px;
-}
-
-/* new props */
 
 QTableView::item:selected {
-    color: rgb(10, 10, 120);
-    background-color: rgb(220, 220, 255);
+    color: rgb(48, 48, 48);
+    background-color: rgb(146, 204, 0);
 }
 
 #bold {
     background-color: rgb(255, 255, 255);
-    font:bold;
+    font: bold;
 }
 
 #bolditalic {
@@ -287,7 +282,7 @@ QTableView::item:selected {
 }
 
 #exeInput[cssStyle="2892337636"] {
-    color: rgb(10, 10, 120);
+    color: rgb(255, 106, 0);
 }
 
 #exeStatus[cssStyle="2802148609"], #exeStatus[cssStyle="3533514090"] {
@@ -305,9 +300,9 @@ QTableView::item:selected {
     border-radius: 0px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    border-top: 1px solid #0A0A80;
-    border-left: 1px solid #0A0A80;
-    border-bottom: 1px solid #0A0A80;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-left: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
     border-right: 0px;
     min-width: 16px;
 }
@@ -316,9 +311,9 @@ QTableView::item:selected {
     border-radius: 0px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top: 1px solid #0A0A80;
-    border-right: 1px solid #0A0A80;
-    border-bottom: 1px solid #0A0A80;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-right: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
     border-left: 0px;
     min-width: 16px;
 }
@@ -331,9 +326,9 @@ QTableView::item:selected {
     border-bottom-left-radius: 8px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    border-top: 1px solid #0A0A80;
-    border-left: 1px solid #0A0A80;
-    border-bottom: 1px solid #0A0A80;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-left: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
     border-right: 0px;
 }
 
@@ -342,9 +337,9 @@ QTableView::item:selected {
     border-bottom-right-radius: 8px;
     border-top-left-radius:0;
     border-bottom-left-radius:0;
-    border-top: 1px solid #0A0A80;
-    border-right: 1px solid #0A0A80;
-    border-bottom: 1px solid #0A0A80;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-right: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
     border-left: 0px;
 }
 
