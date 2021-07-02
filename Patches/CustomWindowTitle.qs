@@ -5,35 +5,45 @@
 
 function CustomWindowTitle()
 {
-    //Step 1a - Find the offset of the URL to overwrite
-    var strOff = exe.findString("http://ro.hangame.com/login/loginstep.asp?prevURL=/NHNCommon/NHN/Memberjoin.asp", RAW);
-    if (strOff === -1)
-        return "Failed in Step 1";
+    consoleLog("Search old title");
+    if (IsZero())
+    {
+        var oldTitle = "Ragnarok : Zero";
+        var titleOffset = pe.stringVa(oldTitle);
+        if (titleOffset === -1)
+        {
+            oldTitle = "Ragnarok";
+            titleOffset = pe.stringVa(oldTitle);
+        }
+    }
+    else
+    {
+        var oldTitle = "Ragnarok";
+        var titleOffset = pe.stringVa(oldTitle);
+    }
+    if (titleOffset === -1)
+        return "Old title not found";
 
-    //Step 1b - Get the new Title of 'Ragnarok' or 'Ragnarok : Zero' from User
-    var getUserInput = "Ragnarok";
-        if (IsZero())
-        getUserInput = "Ragnarok : Zero";
-
-    var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, _("String Input - maximum 60 characters"), _("Enter the new window Title"), getUserInput, 1, 60);
-    if (title.trim() === getUserInput)
+    consoleLog("Request new title");
+    var title = exe.getUserInput("$customWindowTitle", XTYPE_STRING, _("String Input - maximum 200 characters"), _("Enter the new window Title"), oldTitle, 1, 200);
+    if (title.trim() === oldTitle)
         return "Patch Cancelled - New Title is same as old";
 
-    //Step 1c - Overwrite URL with the new Title
-    exe.replace(strOff, "$customWindowTitle", PTYPE_STRING);
+    consoleLog("Store new title");
+    var newTitle = exe.findZeros(title.length);
+    if (newTitle === -1)
+        return "Not enough free space";
 
-    //Step 2a - Find offset of of 'Ragnarok' or 'Ragnarok : Zero'
-    var code = " C7 05 ?? ?? ?? 00" + exe.findString("Ragnarok", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
-    if (IsZero())
-        code = " C7 05 ?? ?? ?? 00" + exe.findString("Ragnarok : Zero", RVA).packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok : Zero"
+    exe.insert(newTitle, title.length, title, PTYPE_STRING);
 
-    //Step 2b - Find its reference
+    consoleLog("Search title usage");
+    var code = " C7 05 ?? ?? ?? 00" + titleOffset.packToHex(4); //MOV DWORD PTR DS:[g_title], OFFSET addr; ASCII "Ragnarok"
     var offset = pe.findCode(code);
-    if ( offset === -1)
+    if (offset === -1)
         return "Failed in Step 2";
 
-    //Step 3 - Replace the original reference with the URL offset.
-    exe.replaceDWord(offset + code.hexlength() - 4, exe.Raw2Rva(strOff));
+    consoleLog("Update title address");
+    exe.replaceDWord(offset + code.hexlength() - 4, pe.rawToVa(newTitle));
 
     return true;
 }

@@ -87,7 +87,7 @@ registerPatch(  6, "ForceSendClientHash", "Force Send Client Hash Packet", "Pack
 
 //registerPatch(  7, "ChangeGravityErrorHandler", "Change Gravity Error Handler", "Fix", 0, " ", "It changes the Gravity Error Handler Mesage for a Custom One Pre-Defined by Diff Team", false);
 
-registerPatch(  8, "CustomWindowTitle", "Custom Window Title", "UI", 0, "Shinryo", "Changes window title. Normally, the window title is 'Ragnarok'", false);
+registerPatch(  8, "CustomWindowTitle", "Custom Window Title", "UI", 0, "Shinryo, 4144", "Changes window title. Normally, the window title is 'Ragnarok'", false);
 
 registerPatch(  9, "Disable1rag1Params", "Disable 1rag1 type parameters", "Fix", 0, "Shinryo", "Enable this to launch the client directly without patching or any 1rag1, 1sak1 etc parameters", true);
 
