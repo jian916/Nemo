@@ -17,6 +17,8 @@ function DisableMultipleWindows()
       + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
     ;
     var resetTimerOffset = 1;
+    var stolenCodeOffset = 0;
+    var continueOffset = 5;
     var offset = pe.findCode(code);
 
     if (offset === -1)
@@ -27,7 +29,8 @@ function DisableMultipleWindows()
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
-
+        continueOffset = 5;
+        stolenCodeOffset = 0;
         offset = pe.findCode(code);
     }
 
@@ -39,19 +42,21 @@ function DisableMultipleWindows()
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
-
+        continueOffset = 5;
+        stolenCodeOffset = 0;
         offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            " 8B 35 ?? ?? ?? ??" //CALL [func]
-          + " 6A 00 "            //PUSH 0
+            " 8B 35 ?? ?? ?? ??" // mov esi, ds:CreateDirectoryA
+          + " 6A 00 "            // PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 2;
-
+        continueOffset = 6;
+        stolenCodeOffset = [0, 6];
         offset = pe.findCode(code);
     }
 
@@ -74,12 +79,18 @@ function DisableMultipleWindows()
     //=====================================================================================//
 
     consoleLog("Step 2a - Extract the ResetTimer function address (called before CoInitialize)");
-    offset += 5;
-    var resetTimer = exe.fetchDWord(offset-4) + exe.Raw2Rva(offset);
+    if (stolenCodeOffset === 0)
+    {
+        var resetTimer = exe.fetchDWord(offset-4+5) + exe.Raw2Rva(offset+5);
+        code = " E8" + GenVarHex(0)          //CALL ResetTimer
+    }
+    else
+    {
+        code = exe.fetchHexBytes(offset, stolenCodeOffset);
+    }
 
     consoleLog("Step 2b - Prepare code for mutex windows");
-    code =
-        " E8" + GenVarHex(0)          //CALL ResetTimer
+    code = code +
       + " 56"                         //PUSH ESI
       + " 33 F6"                      //XOR ESI,ESI
       + " 68" + GenVarHex(1)          //PUSH addr ; "KERNEL32"
@@ -122,11 +133,11 @@ function DisableMultipleWindows()
         return "Failed in Step 2 - Not enough free space";
 
     consoleLog("Step 2d - Replace the resetTimer call with our code");
-    exe.replace(offset - 5, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset)).packToHex(4), PTYPE_HEX);
+    exe.replace(offset, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4), PTYPE_HEX);
 
     consoleLog("Step 2e - Fill in the blanks");
     code = ReplaceVarHex(code, 0, resetTimer - exe.Raw2Rva(free + 5));
-    code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset));
+    code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset + continueOffset));
 
     code = ReplaceVarHex(code, 4, GetFunction("WaitForSingleObject", "KERNEL32.dll"));
 
