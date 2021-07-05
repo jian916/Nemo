@@ -1,3 +1,19 @@
+# 2021-07-05 Different updates
+
+## Patches
+
+- Fix patch [Custom Window Title](http://nemo.herc.ws/patches/CustomWindowTitle/#success-clients). (fix by @4144).
+- Fix patch [Disable Multiple Windows](http://nemo.herc.ws/patches/DisableMultipleWindows/#success-clients). (fix by @4144).
+
+## Themes
+
+- Add theme EXcite Dark (by @X-EcutiOnner).
+
+## Other
+
+- Improve speed in asm.stringToAsm.
+
+
 # 2021-06-30 Patches updates
 
 ## Patches
