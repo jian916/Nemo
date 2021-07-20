@@ -18,6 +18,7 @@
 function storage_init()
 {
     storage = new Object();
+    storage.hooks = {};
 }
 
 function registerStorage()

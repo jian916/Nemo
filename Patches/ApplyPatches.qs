@@ -17,5 +17,12 @@
 
 function ApplyPatches()
 {
+    hooks.applyAllFinal();
+    return true;
+}
+
+function CancelPatches()
+{
+    hooks.removePatchHooks();
     return true;
 }

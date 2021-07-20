@@ -15,147 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function hooks_matchFunctionStart(offset)
-{
-    checkArgs("hooks.matchFunctionStart", arguments, [["Number"]]);
-
-    var offsetVa = pe.rawToVa(offset)
-
-    var code =
-        "55 " +                       // 0 push ebp
-        "8B EC " +                    // 1 mov ebp, esp
-        "53 " +                       // 3 push ebx
-        "8B D9 ";                     // 4 mov ebx, ecx
-    var stolenCodeOffset = [0, 6];
-    var continueOffset = 6;
-    var found = pe.match(code, offset);
-
-    if (found !== true)
-    {
-        code =
-            "53 " +                       // 0 push ebx
-            "56 " +                       // 1 push esi
-            "8B F1 " +                    // 2 mov esi, ecx
-            "8B 4E ??";                   // 4 mov ecx, [esi+18h]
-        stolenCodeOffset = [0, 7];
-        continueOffset = 7;
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        code =
-            "55 " +                       // 0 push ebp
-            "8B EC " +                    // 1 mov ebp, esp
-            "53 " +                       // 3 push ebx
-            "56";                         // 4 push esi
-        stolenCodeOffset = [0, 5];
-        continueOffset = 5;
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        code =
-            "55 " +                       // 0 push ebp
-            "8B EC " +                    // 1 mov ebp, esp
-            "6A FF ";                     // 3 push 0FFFFFFFFh
-        stolenCodeOffset = [0, 5];
-        continueOffset = 5;
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        var code =
-            "6A FF " +                    // 0 push 0FFFFFFFFh
-            "68 ?? ?? ?? ??";             // 2 push offset loc_79D8EF
-        stolenCodeOffset = [0, 7];
-        continueOffset = 7;
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        throw "First pattern not found: 0x" + offsetVa.toString(16);
-    }
-    var obj = new Object();
-    obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
-    obj.continueOffsetVa = offsetVa + continueOffset;
-    return obj;
-}
-
-function hooks_matchFunctionEnd(offset)
-{
-    checkArgs("hooks.matchFunctionEnd", arguments, [["Number"]]);
-
-    consoleLog("match known second pattern");
-    var code =
-        "5B " +                       // 0 pop ebx
-        "5D " +                       // 1 pop ebp
-        "C2 ?? ??";                   // 2 retn 8
-    var stolenCodeOffset = [0, 5];
-    var stolenCode1Offset = [0, 2];
-    var retOffset = [2, 3];
-    var found = pe.match(code, offset);
-
-    if (found !== true)
-    {
-        code =
-            "5E " +                       // 0 pop esi
-            "5B " +                       // 1 pop ebx
-            "C2 ?? ??";                   // 2 retn 8
-        stolenCodeOffset = [0, 5];
-        stolenCode1Offset = [0, 2];
-        retOffset = [2, 3];
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        code =
-            "8B E5 " +                    // 0 mov esp, ebp
-            "5D " +                       // 2 pop ebp
-            "C2 ?? ?? ";                  // 3 retn 4
-        stolenCodeOffset = [0, 6];
-        stolenCode1Offset = [0, 3];
-        retOffset = [3, 3];
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        code =
-            "83 C4 ?? " +                 // 0 add esp, 20h
-            "C2 ?? ??";                   // 3 retn 4
-        stolenCodeOffset = [0, 6];
-        stolenCode1Offset = [0, 3];
-        retOffset = [3, 3];
-        found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        code =
-            "81 C4 ?? 00 00 00 " +        // 0 add esp, 88h
-            "C2 ?? ?? ";                  // 6 retn 0Ch
-        stolenCodeOffset = [0, 9];
-        stolenCode1Offset = [0, 6];
-        retOffset = [6, 3];
-        var found = pe.match(code, offset);
-    }
-
-    if (found !== true)
-    {
-        throw "Second pattern not found";
-    }
-    var obj = new Object();
-    obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
-    obj.stolenCode1 = exe.fetchHexBytes(offset, stolenCode1Offset);
-    obj.retCode = exe.fetchHexBytes(offset, retOffset);
-    return obj;
-}
-
 function hooks_addPostEndHook(patchAddr, text, vars)
 {
     consoleLog("hooks.addPostEndHook: match function end");
@@ -185,10 +44,184 @@ function hooks_addPostEndHook(patchAddr, text, vars)
     return obj;
 }
 
+function hooks_initHook(patchAddr, matchFunc)
+{
+    consoleLog("hooks.initHook start");
+    if (patchAddr in storage.hooks)
+    {
+        consoleLog("hooks.initHook found existing hook");
+        var obj = storage.hooks[patchAddr];
+        if (obj.matchFunc !== matchFunc)
+            throw "Other type of hook registered for address: 0x" + pe.rawToVa(patchAddr).toString(16);
+        return obj;
+    }
+    else
+    {
+        consoleLog("hooks.initHook match new hook");
+        var obj = matchFunc(patchAddr);
+    }
+
+    if (obj.endHook !== true)
+        throw "Not supported endHook value: " + obj.endHook;
+
+    function createEntry(text, vars)
+    {
+        var obj = new Object();
+        obj.text = text;
+        obj.vars = vars;
+        obj.patch = patch.getName();
+        return obj;
+    }
+
+    obj.matchFunc = matchFunc;
+    obj.preEntries = [];
+    obj.postEntries = [];
+    obj.stolenEntry = createEntry(asm.hexToAsm(obj.stolenCode1), {});
+    if (obj.retCode != "")
+    {
+        obj.finalEntry = createEntry(asm.hexToAsm(obj.retCode), {});
+        obj.finalEntry.isFinal = true;
+    }
+    else
+    {
+        obj.finalEntry = false;
+    }
+
+    obj.addPre = function(text, vars)
+    {
+        var asmObj = exe.insertAsmTextObj(text, vars, 5);
+        asmObj.patch = patch.getName();
+        this.preEntries.push(asmObj);
+    }
+    obj.addPost = function(text, vars)
+    {
+        var asmObj = exe.insertAsmTextObj(text, vars, 5);
+        asmObj.patch = patch.getName();
+        this.postEntries.push(asmObj);
+    }
+    obj.applyFinal = function()
+    {
+        hooks_applyFinal(this);
+    }
+    storage.hooks[patchAddr] = obj;
+    return obj;
+}
+
+function hooks_initEndHook(patchAddr)
+{
+    return hooks_initHook(patchAddr, hooks_matchFunctionEnd);
+}
+
+function hooks_applyFinal(obj)
+{
+    consoleLog("hooks.applyFinal start");
+    if (obj.endHook !== true)
+        throw "Not supported endHook value: " + obj.endHook;
+
+    function entryToAsm(obj)
+    {
+        if (typeof(obj.code) === "undefined")
+        {
+            print("entryToAsm: " + obj.text + ", " + obj.vars);
+            return exe.insertAsmTextObj(obj.text, obj.vars, 5);
+        }
+        else
+        {
+            return obj;
+        }
+    }
+
+    obj.allEntries = [];
+
+    consoleLog("hooks.applyFinal add pre entries");
+    var sz = obj.preEntries.length;
+    for (var i = 0; i < sz; i ++)
+    {
+        obj.allEntries.push(entryToAsm(obj.preEntries[i]));
+    }
+
+    consoleLog("hooks.applyFinal add stolen entry");
+    obj.allEntries.push(entryToAsm(obj.stolenEntry));
+
+    consoleLog("hooks.applyFinal add post entries");
+    var sz = obj.postEntries.length;
+    for (var i = 0; i < sz; i ++)
+    {
+        obj.allEntries.push(entryToAsm(obj.postEntries[i]));
+    }
+
+    consoleLog("hooks.applyFinal add final entry");
+    if (obj.finalEntry !== false)
+    {
+        var entry = entryToAsm(obj.finalEntry);
+        entry.isFinal = obj.finalEntry.isFinal;
+        obj.allEntries.push(entry);
+    }
+
+    var sz = obj.allEntries.length;
+    if (sz == 0)
+        throw "No entried in hook object";
+
+    consoleLog("hooks.applyFinal initial jmp");
+    exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+
+    consoleLog("hooks.applyFinal loop jumps");
+    for (var i = 0; i < sz - 1; i ++)
+    {
+        var entry = obj.allEntries[i];
+        var nextEntry = obj.allEntries[i + 1];
+        if (entry.isFinal === true)
+            continue;
+        exe.setJmpRaw(entry.free + entry.bytes.length, nextEntry.free);
+    }
+    var lastEntry = obj.allEntries[sz - 1];
+    if (lastEntry.isFinal === false)
+    {
+        throw "Not supported non final last entry";
+    }
+}
+
+function hooks_applyAllFinal()
+{
+    storage.zero = exe.findZeros(0x1000);
+    for (var patchAddr in storage.hooks)
+    {
+        hooks_applyFinal(storage.hooks[patchAddr]);
+    }
+}
+
+function hooks_removePatchHooks()
+{
+    consoleLog("hooks.removePatchHooks start");
+    var name = patch.getName();
+
+    function filterArray(obj)
+    {
+        return obj.patch != name;
+    }
+
+    for (var patchAddr in storage.hooks)
+    {
+        var obj = storage.hooks[patchAddr];
+        obj.preEntries = obj.preEntries.filter(filterArray);
+        print("len1: " + Object.keys(obj.postEntries).length + ", " + typeof obj.postEntries);
+        obj.postEntries = obj.postEntries.filter(filterArray);
+        print("len2: " + Object.keys(obj.postEntries).length + ", " + typeof obj.postEntries);
+        print(typeof obj.preEntries);
+        print(typeof obj.postEntries);
+    }
+    consoleLog("hooks.removePatchHooks end");
+}
+
 function registerHooks()
 {
     hooks = new Object();
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
     hooks.addPostEndHook = hooks_addPostEndHook;
+    hooks.initHook = hooks_initHook;
+    hooks.initEndHook = hooks_initEndHook;
+    hooks.applyFinal = hooks_applyFinal;
+    hooks.applyAllFinal = hooks_applyAllFinal;
+    hooks.removePatchHooks = hooks_removePatchHooks;
 }
