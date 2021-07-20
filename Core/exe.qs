@@ -37,7 +37,10 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
         }
     }
 
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    if (patch.getState() !== 2)
+        exe.replace(patchAddr, code, PTYPE_HEX);
+    else
+        pe.directReplace(patchAddr, code);
 }
 
 function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
@@ -60,12 +63,15 @@ function exe_setNopsRange(patchStartAddr, patchEndAddr)
     exe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
 }
 
-function exe_insertAsmText(commands, vars)
+function exe_insertAsmText(commands, vars, freeSpace)
 {
+    if (typeof(freeSpace) === "undefined")
+        freeSpace = 0;
     var size = asm.textToHexLength(commands, vars);
     if (size === false)
         throw "Asm code error1";
 
+    size = size + freeSpace;
     var free = exe.findZeros(size);
     if (free === -1)
         throw "Failed in exe.insertAsm - Not enough free space";
@@ -78,12 +84,15 @@ function exe_insertAsmText(commands, vars)
     return [free, obj.code, obj.vars];
 }
 
-function exe_insertAsmTextObj(commands, vars)
+function exe_insertAsmTextObj(commands, vars, freeSpace)
 {
+    if (typeof(freeSpace) === "undefined")
+        freeSpace = 0;
     var size = asm.textToHexLength(commands, vars);
     if (size === false)
         throw "Asm code error";
 
+    size = size + freeSpace;
     var free = exe.findZeros(size);
     if (free === -1)
         throw "Failed in exe.insertAsm - Not enough free space";
@@ -94,6 +103,7 @@ function exe_insertAsmTextObj(commands, vars)
 
     exe.insert(free, size, obj.code, PTYPE_HEX);
     obj.free = free;
+    obj.isFinal = false;
     return obj;
 }
 
