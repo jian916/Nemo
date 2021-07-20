@@ -51,6 +51,20 @@ function registerTables()
     table.g_renderer = 41;
     table.g_renderer_m_width = 42;
     table.g_renderer_m_height = 43;
+    table.UIBalloonTextConstructor_ret = 44;
+    table.UINameBalloonTextConstructor_ret = 45;
+    table.UITransBalloonTextConstructor_ret = 46;
+    table.UIAchBalloonTextConstructor_ret = 47;
+    table.UICharInfoBalloonTextConstructor_ret = 48;
+    table.UIVerticalNameBalloonTextConstructor_ret = 49;
+    table.UIBalloonText_m_fontSize = 50;
+    table.UIBalloonText_m_fontColor = 51;
+    table.UIBalloonText_m_bgColor = 52;
+    table.UINameBalloonText_m_iconType = 53;
+    table.UINameBalloonText_m_textWidth = 54;
+    table.UITransBalloonText_m_drawTextDecoration = 55;
+    table.UITransBalloonText_m_backFillColor = 56;
+
     registerTableFunctions();
 }
 
