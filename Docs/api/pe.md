@@ -162,3 +162,23 @@ Return array with start and end virtual addresses of given section.
 ``pe.dataBaseRaw()``
 
 Return raw address for data start. Most time start of data segment or end of code segment.
+
+### pe.directReplaceBytes
+
+``pe.directReplaceBytes(rawAddr, bytes)``
+
+Allow replace data in bytes format in exe at given raw address.
+
+No rollback is possible. If patch disabled or cleared, changed data still present.
+
+This function can be usefull for apply changes outside of patches.
+
+### pe.directReplace
+
+``pe.directReplace(rawAddr, hexData)``
+
+Allow replace data in hex format in exe at given raw address.
+
+No rollback is possible. If patch disabled or cleared, changed data still present.
+
+This function can be usefull for apply changes outside of patches.

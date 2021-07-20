@@ -136,6 +136,11 @@ function pe_stringHex4(str)
     return addr.packToHex(4);
 }
 
+function pe_directReplace(addrRaw, code)
+{
+    return pe.directReplaceBytes(addrRaw, code.toAscii());
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -146,4 +151,5 @@ function registerPe()
     pe.stringVa = pe_stringVa;
     pe.stringRaw = pe_stringRaw;
     pe.stringHex4 = pe_stringHex4;
+    pe.directReplace = pe_directReplace;
 }
