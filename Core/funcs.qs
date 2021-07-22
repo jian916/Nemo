@@ -111,6 +111,14 @@ Number.prototype.toBE = function(size)
   return this.packToHex(size).toBE();
 }
 
+Number.prototype.reverseRGB = function()
+{
+    var r = (this >> 16) & 0xff;
+    var g = (this >> 8) & 0xff;
+    var b = this & 0xff;
+    return (b << 16) + (g << 8) + r;
+}
+
 Array.prototype.toRvaBE = function()
 {
   var result = [];
