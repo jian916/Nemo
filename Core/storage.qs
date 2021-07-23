@@ -20,6 +20,7 @@ function storage_init()
     storage = new Object();
     storage.hooks = {};
     storage.zero = 0;
+    storage.multiHooks = {};
 }
 
 function registerStorage()

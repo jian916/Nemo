@@ -92,12 +92,14 @@ function hooks_initHook(patchAddr, matchFunc)
         var asmObj = exe.insertAsmTextObj(text, vars, 5);
         asmObj.patch = patch.getName();
         this.preEntries.push(asmObj);
+        storage.multiHooks[asmObj.patch] = true;
     }
     obj.addPost = function(text, vars)
     {
         var asmObj = exe.insertAsmTextObj(text, vars, 5);
         asmObj.patch = patch.getName();
         this.postEntries.push(asmObj);
+        storage.multiHooks[asmObj.patch] = true;
     }
     obj.applyFinal = function()
     {
@@ -198,20 +200,21 @@ function hooks_removePatchHooks()
     consoleLog("hooks.removePatchHooks start");
     var name = patch.getName();
 
+    if (!(name in storage.multiHooks))
+        return;
+
     function filterArray(obj)
     {
         return obj.patch != name;
     }
 
+    consoleLog("hooks.removePatchHooks filter patches");
+
     for (var patchAddr in storage.hooks)
     {
         var obj = storage.hooks[patchAddr];
         obj.preEntries = obj.preEntries.filter(filterArray);
-        print("len1: " + Object.keys(obj.postEntries).length + ", " + typeof obj.postEntries);
         obj.postEntries = obj.postEntries.filter(filterArray);
-        print("len2: " + Object.keys(obj.postEntries).length + ", " + typeof obj.postEntries);
-        print(typeof obj.preEntries);
-        print(typeof obj.postEntries);
     }
     consoleLog("hooks.removePatchHooks end");
 }
