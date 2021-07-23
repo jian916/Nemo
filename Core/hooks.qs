@@ -118,6 +118,11 @@ function hooks_applyFinal(obj)
     if (obj.endHook !== true)
         throw "Not supported endHook value: " + obj.endHook;
 
+    var szPre = obj.preEntries.length;
+    var szPost = obj.postEntries.length;
+    if (obj.alwaysHook !== true && szPre + szPost === 0)
+        return;
+
     function entryToAsm(obj)
     {
         if (typeof(obj.code) === "undefined")
@@ -134,8 +139,7 @@ function hooks_applyFinal(obj)
     obj.allEntries = [];
 
     consoleLog("hooks.applyFinal add pre entries");
-    var sz = obj.preEntries.length;
-    for (var i = 0; i < sz; i ++)
+    for (var i = 0; i < szPre; i ++)
     {
         obj.allEntries.push(entryToAsm(obj.preEntries[i]));
     }
@@ -144,8 +148,7 @@ function hooks_applyFinal(obj)
     obj.allEntries.push(entryToAsm(obj.stolenEntry));
 
     consoleLog("hooks.applyFinal add post entries");
-    var sz = obj.postEntries.length;
-    for (var i = 0; i < sz; i ++)
+    for (var i = 0; i < szPost; i ++)
     {
         obj.allEntries.push(entryToAsm(obj.postEntries[i]));
     }
