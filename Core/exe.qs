@@ -93,15 +93,32 @@ function exe_insertAsmTextObj(commands, vars, freeSpace)
         throw "Asm code error";
 
     size = size + freeSpace;
-    var free = exe.findZeros(size);
-    if (free === -1)
-        throw "Failed in exe.insertAsm - Not enough free space";
+    if (patch.getState() !== 2)
+    {
+        var free = exe.findZeros(size);
+        if (free === -1)
+            throw "Failed in exe.insertAsm - Not enough free space";
+    }
+    else
+    {
+        if (storage.zero == 0)
+            throw "Failed in exe.insertAsm - Not enough free space";
+        free = storage.zero;
+    }
 
     var obj = asm.textToObjRaw(free, commands, vars);
     if (obj === false)
         throw "Asm code error";
 
-    exe.insert(free, size, obj.code, PTYPE_HEX);
+    if (patch.getState() !== 2)
+    {
+        exe.insert(free, size, obj.code, PTYPE_HEX);
+    }
+    else
+    {
+        pe.directReplace(free, obj.code);
+        storage.zero = storage.zero + size + 4;
+    }
     obj.free = free;
     obj.isFinal = false;
     return obj;
