@@ -35,11 +35,14 @@ function EnableSlashAtCommands()
         "jnz _ret",
         "xor eax, eax",
         "mov ecx, dword ptr [esp + 0xc - 4]",
-        "mov dword ptr [ecx], eax"
+        "mov dword ptr [ecx], eax",
+        "_ret:"
     );
 
     consoleLog("Set hook");
 
-    hooks.addPostEndHook(offset, text, {});
+    var hook = hooks.initEndHook(offset);
+    hook.addPost(text, {});
+
     return true;
 }
