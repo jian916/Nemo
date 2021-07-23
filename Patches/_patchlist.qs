@@ -626,4 +626,51 @@ registerPatch(362, "TaekwonJobNameFix", "Fixes the Korean Job name issue with La
 
 registerPatch(363, "AddCustomLua", "Add loading custom lua files", "Custom", 0, "llchrisll, 4144", "Add loading custom lua files for llchrisll", false);
 
+registerPatch(364, "ChangeUIBalloonTextFontSize", "Change default font size for base class of all balloons", "Size", 0, "4144", "Change default font size for class UIBalloonText", false);
+
+//registerPatch(365, "ChangeUINameBalloonTextFontSize", "Change default font size for class UINameBalloonText", "Size", 0, "4144", "Change default font size for class UINameBalloonText", false);
+
+registerPatch(366, "ChangeUITransBalloonTextFontSize", "Change default font size for class UITransBalloonText", "Size", 0, "4144", "Change default font size for class UITransBalloonText", false);
+
+//registerPatch(367, "ChangeUIAchBalloonTextFontSize", "Change default font size for class UIAchBalloonText", "Size", 0, "4144", "Change default font size for class UIAchBalloonText", false);
+
+registerPatch(368, "ChangeUICharInfoBalloonTextFontSize", "Change default font size for class UICharInfoBalloonText", "Size", 0, "4144", "Change default font size for class UICharInfoBalloonText", false);
+
+//registerPatch(369, "ChangeUIVerticalNameBalloonTextFontSize", "Change default font size for class UIVerticalNameBalloonText", "Size", 0, "4144", "Change default font size for class UIVerticalNameBalloonText", false);
+
+registerPatch(370, "ChangeUIBalloonTextFontColor", "Change default font color for base class of all balloons", "Color", 0, "4144", "Change default font color for class UIBalloonText", false);
+
+//registerPatch(371, "ChangeUINameBalloonTextFontColor", "Change default font color for class UINameBalloonText", "Color", 0, "4144", "Change default font color for class UINameBalloonText", false);
+
+registerPatch(372, "ChangeUITransBalloonTextFontColor", "Change default font color for class UITransBalloonText", "Color", 0, "4144", "Change default font color for class UITransBalloonText", false);
+
+//registerPatch(373, "ChangeUIAchBalloonTextFontColor", "Change default font color for class UIAchBalloonText", "Color", 0, "4144", "Change default font color for class UIAchBalloonText", false);
+
+registerPatch(374, "ChangeUICharInfoBalloonTextFontColor", "Change default font color for class UICharInfoBalloonText", "Color", 0, "4144", "Change default font color for class UICharInfoBalloonText", false);
+
+//registerPatch(375, "ChangeUIVerticalNameBalloonTextFontColor", "Change default font color for class UIVerticalNameBalloonText", "Color", 0, "4144", "Change default font color for class UIVerticalNameBalloonText", false);
+
+registerPatch(376, "ChangeUIBalloonTextBgColor", "Change default shadow color for base class of all balloons", "Color", 0, "4144", "Change default shadow color for class UIBalloonText", false);
+
+//registerPatch(377, "ChangeUINameBalloonTextBgColor", "Change default shadow color for class UINameBalloonText", "Color", 0, "4144", "Change default shadow color for class UINameBalloonText", false);
+
+registerPatch(378, "ChangeUITransBalloonTextBgColor", "Change default shadow color for class UITransBalloonText", "Color", 0, "4144", "Change default shadow color for class UITransBalloonText", false);
+
+//registerPatch(379, "ChangeUIAchBalloonTextBgColor", "Change default shadow color for class UIAchBalloonText", "Color", 0, "4144", "Change default shadow color for class UIAchBalloonText", false);
+
+registerPatch(380, "ChangeUICharInfoBalloonTextBgColor", "Change default shadow color for class UICharInfoBalloonText", "Color", 0, "4144", "Change default shadow color for class UICharInfoBalloonText", false);
+
+//registerPatch(381, "ChangeUIVerticalNameBalloonTextBgColor", "Change default shadow color for class UIVerticalNameBalloonText", "Color", 0, "4144", "Change default shadow color for class UIVerticalNameBalloonText", false);
+
+registerPatch(382, "ChangeUINameBalloonTextIconType", "Change default icon type for class UINameBalloonText", "Icon", 0, "4144", "Change default icon type for class UINameBalloonText", false);
+
+registerPatch(383, "ChangeUINameBalloonTextWidth", "Change default text width for class UINameBalloonText", "Font", 0, "4144", "Change default text width class UINameBalloonText", false);
+
+registerPatch(384, "ChangeUIVerticalNameBalloonTextWidth", "Change default text width for class UIVerticalNameBalloonText", "Font", 0, "4144", "Change default text width class UIVerticalNameBalloonText", false);
+
+registerPatch(385, "ChangeUITransBalloonTextDecoration", "Change default text decoration for class UITransBalloonText", "Font", 0, "4144", "Change default text decoration for class UITransBalloonText", false);
+
+registerPatch(386, "ChangeUITransBalloonTextFillColor", "Change default border color for class UITransBalloonText", "Color", 0, "4144", "Change default border color for class UITransBalloonText", false);
+
+
 GlobalPostInit();
