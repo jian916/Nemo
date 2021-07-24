@@ -43,7 +43,7 @@ function ReplaceVarHex(code, nums, values)
 
 function IsSakray()
 {
-    return(exe.findString("rdata.grf", RAW) !== -1);
+    return(pe.stringRaw("rdata.grf") !== -1);
 }
 
 //###########################################################
@@ -64,7 +64,7 @@ function IsZero()
 function GetLangType()
 {
   //Step 1a - Get address of the string 'america'
-  var offset = exe.findString("america", RVA);
+  var offset = pe.stringVa("america");
   if (offset === -1)
     return ["'america' not found"];
 
@@ -95,7 +95,7 @@ function GetServerType()
 {
 
   //Step 1a - Get address of the string 'sakray'
-  var offset = exe.findString("sakray", RVA);
+  var offset = pe.stringVa("sakray");
   if (offset === -1)
     throw "'sakray' not found";
 
@@ -126,7 +126,7 @@ function GetWinMgrInfo(skipError)
     if (skipError !== true)
         logError("legacy function GetWinMgrInfo");
     //Step 1a - Find offset of NUMACCOUNT
-    var offset = exe.findString("NUMACCOUNT", RVA);
+    var offset = pe.stringVa("NUMACCOUNT");
     if (offset === -1)
         return "NUMACCOUNT missing";
 
@@ -209,7 +209,7 @@ function FetchPacketKeyInfo()
 
   //Step 1a - Find address of string 'PACKET_CZ_ENTER' .
   //          If its not present then its probably new client and chances are packet keys will need a map
-  var offset = exe.findString("PACKET_CZ_ENTER", RVA);
+  var offset = pe.stringVa("PACKET_CZ_ENTER");
 
   //Step 1b - Find its reference
   if (offset !== -1)
