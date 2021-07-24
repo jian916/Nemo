@@ -5,7 +5,6 @@
 
 function ChangeItemInfo()
 {
-
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
     if (IsSakray())
     {
@@ -15,7 +14,7 @@ function ChangeItemInfo()
     {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
-        if (exe.findString(iiName, RVA) === -1)
+        if (pe.stringVa(iiName) === -1)
         {
             // iteminfo in new clients
             iiName = "System/iteminfo_true.lub";
@@ -23,7 +22,7 @@ function ChangeItemInfo()
     }
 
     //Step 1b - Find offset of the original string
-    var offset = exe.findString(iiName, RVA);
+    var offset = pe.stringVa(iiName);
     if (offset === -1)
         return "Failed in Step 1 - iteminfo file name not found";
 
@@ -64,10 +63,10 @@ function ChangeItemInfo_()
     {
         // iteminfo in old clients
         var iiName = "System/iteminfo.lub";
-        if (exe.findString(iiName, RAW) !== -1)
+        if (pe.stringRaw(iiName) !== -1)
             return true;
         // iteminfo in new clients
         iiName = "System/iteminfo_true.lub";
     }
-    return (exe.findString(iiName, RAW) !== -1);
+    return (pe.stringRaw(iiName) !== -1);
 }
