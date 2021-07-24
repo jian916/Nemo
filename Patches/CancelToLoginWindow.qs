@@ -7,7 +7,7 @@ function CancelToLoginWindow()
 {
     //Step 1a - Sanity Check. Make Sure Restore Login Window is enabled.
     if (getActivePatches().indexOf(40) === -1)
-    return "Patch Cancelled - Restore Login Window patch is necessary but not enabled";
+        return "Patch Cancelled - Restore Login Window patch is necessary but not enabled";
 
     //Step 1b - Find the case branch that occurs before the Cancel Button case.
     //          The pattern will match multiple locations of which 1 (or recently 2) is the one we need
@@ -70,7 +70,7 @@ function CancelToLoginWindow()
     var ccon = (offset + 15) + exe.fetchDWord(offset + 11);
 
     //Step 2c - Find address of 메시지 => Korean version of "Message"
-    offset = exe.findString("\xB8\xDE\xBD\xC3\xC1\xF6", RVA);
+    offset = pe.stringVa("\xB8\xDE\xBD\xC3\xC1\xF6");
     if (offset === -1)
         return "Failed in Step 2 - Message not found";
 
