@@ -27,7 +27,7 @@ function IncreaseHairSprites()
 
     consoleLog("step 1a search for spr/act string");
     var code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s"
-    var offset = exe.findString(code, RAW);
+    var offset = pe.stringRaw(code);
 
     if (offset === -1)
         return "Failed in step 1 - string not found";
