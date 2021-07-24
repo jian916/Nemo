@@ -420,7 +420,7 @@ registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons"
 
 registerPatch(254, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
-registerPatch(255, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
+registerPatch(255, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc, 4144", "Can reduce auto follow delay.", false);
 
 registerPatch(256, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
 

@@ -1,5 +1,6 @@
 //
 // Copyright (C) 2018  CH.C
+// Copyright (C) 2021  Andrei Karas (4144)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,33 +19,33 @@
 // Patch Functions wrapping over ChangeAutoFollowDelay function   //
 //================================================================//
 
-
-
 function SetAutoFollowDelay()
 {
-  return ChangeAutoFollowDelay(exe.getUserInput("$followDelay", XTYPE_WORD, _("Number Input"), _("Enter the new autofollow delay(0-1000) - snaps to closest valid value"), 200, 0, 1000));
-}
+    var value = exe.getUserInput("$followDelay", XTYPE_DWORD, _("Number Input"), _("Enter the new autofollow move delay in ms."), 1000, 0, 0x7fffffff);
+    if (value === 1000)
+        return "New delay is same with old value";
 
-//##############################################################################
-//# Purpose: Find the autofollow delay and replace it with the value specified #
-//##############################################################################
+    var oldFollowTime = table.getHex4(table.m_oldFollowTime);
 
-function ChangeAutoFollowDelay(value)
-{
+    consoleLog("Find the delay comparison");
+    var code =
+        "FF ?? " +                    // 0 call edi ; timeGetTime
+        "2B 05 " + oldFollowTime +    // 2 sub eax, m_oldFollowTime
+        "3D E8 03 00 00 ";            // 8 cmp eax, 3E8h
+    var delayOffset = [9, 4];
+    var offsets = pe.findCodes(code);
 
-  //Step 1a - Find the delay comparison
-  var code =
-    " FF D7"                //CALL EDI                     ;  timeGetTime
-  + " 2B 05 ?? ?? ?? ??"    //SUB EAX, DWORD PRT DS:[addr] ;  lastFollowTime
-  + " 3D E8 03 00 00"       //CMP EAX, 3E8h                ;  1000ms
-  ;
+    if (offsets.length === 0)
+        return "Auto follow delay code not found.";
 
-  var offset = pe.findCode(code);
-  if (offset === -1)
-    return "Failed in Step 1 - AutoFollow Delay Code not found.";
+    if (offsets.length > 2)
+        return "Found too much auto follow delay code.";
 
-  //Step 2 - Replace the value
-  exe.replace(offset + 9, value.packToHex(4) , PTYPE_HEX);
+    consoleLog("Replace the value");
+    for (var i = 0; i < offsets.length; i++)
+    {
+        exe.setValue(offsets[i], delayOffset, value);
+    }
 
-  return true;
+    return true;
 }

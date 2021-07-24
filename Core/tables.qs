@@ -64,6 +64,8 @@ function registerTables()
     table.UINameBalloonText_m_textWidth = 54;
     table.UITransBalloonText_m_drawTextDecoration = 55;
     table.UITransBalloonText_m_backFillColor = 56;
+    table.m_oldFollowTime = 57;
+    table.m_oldDisappearTime = 58;
 
     registerTableFunctions();
 }
