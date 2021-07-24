@@ -5,7 +5,7 @@
 function Disable1rag1Params()
 {
     consoleLog("Step 1 - Search string '1rag1'");
-    var offset = exe.findString("1rag1", RVA);
+    var offset = pe.stringVa("1rag1");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -73,5 +73,5 @@ function Disable1rag1Params()
 //=======================================================//
 function Disable1rag1Params_()
 {
-    return (exe.findString("1rag1", RAW) !== -1);
+    return (pe.stringRaw("1rag1") !== -1);
 }
