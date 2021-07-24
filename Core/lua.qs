@@ -89,7 +89,7 @@ function registerLua()
         );
 
         consoleLog("Find original file name string");
-        var origOffset = exe.findString(origFile, RVA);
+        var origOffset = pe.stringVa(origFile);
         if (origOffset === -1)
             throw "LUAFL: Filename missing: " + origFile;
 
