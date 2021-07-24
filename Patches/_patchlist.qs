@@ -420,7 +420,7 @@ registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons"
 
 registerPatch(254, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
-registerPatch(255, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc, 4144", "Can reduce auto follow delay.", false);
+registerPatch(255, "SetAutoFollowDelay", "Change auto follow delay", "Custom", 0, "Jchcc, 4144", "Can reduce auto follow delay.", false);
 
 registerPatch(256, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
 
@@ -671,6 +671,8 @@ registerPatch(384, "ChangeUIVerticalNameBalloonTextWidth", "Change default text 
 registerPatch(385, "ChangeUITransBalloonTextDecoration", "Change default text decoration for class UITransBalloonText", "Font", 0, "4144", "Change default text decoration for class UITransBalloonText", false);
 
 registerPatch(386, "ChangeUITransBalloonTextFillColor", "Change default border color for class UITransBalloonText", "Color", 0, "4144", "Change default border color for class UITransBalloonText", false);
+
+registerPatch(387, "SetAutoFollowStopDelay", "Change auto follow stop delay", "Custom", 0, "4144", "Can change auto follow disappear delay.", false);
 
 
 GlobalPostInit();
