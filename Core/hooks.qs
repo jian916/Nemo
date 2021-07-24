@@ -87,19 +87,20 @@ function hooks_initHook(patchAddr, matchFunc)
         obj.finalEntry = false;
     }
 
-    obj.addPre = function(text, vars)
+    obj.addEntry = function(text, vars, entries)
     {
         var asmObj = exe.insertAsmTextObj(text, vars, 5);
         asmObj.patch = patch.getName();
-        this.preEntries.push(asmObj);
+        entries.push(asmObj);
         storage.multiHooks[asmObj.patch] = true;
+    }
+    obj.addPre = function(text, vars)
+    {
+        this.addEntry(text, vars, this.preEntries);
     }
     obj.addPost = function(text, vars)
     {
-        var asmObj = exe.insertAsmTextObj(text, vars, 5);
-        asmObj.patch = patch.getName();
-        this.postEntries.push(asmObj);
-        storage.multiHooks[asmObj.patch] = true;
+        this.addEntry(text, vars, this.postEntries);
     }
     obj.applyFinal = function()
     {
@@ -128,32 +129,30 @@ function hooks_applyFinal(obj)
     function entryToAsm(obj)
     {
         if (typeof(obj.code) === "undefined")
-        {
-            print("entryToAsm: " + obj.text + ", " + obj.vars);
             return exe.insertAsmTextObj(obj.text, obj.vars, 5);
-        }
         else
-        {
             return obj;
+    }
+
+    function convertArray(entries)
+    {
+        var sz = entries.length;
+        for (var i = 0; i < sz; i ++)
+        {
+            obj.allEntries.push(entryToAsm(entries[i]));
         }
     }
 
     obj.allEntries = [];
 
     consoleLog("hooks.applyFinal add pre entries");
-    for (var i = 0; i < szPre; i ++)
-    {
-        obj.allEntries.push(entryToAsm(obj.preEntries[i]));
-    }
+    convertArray(obj.preEntries);
 
     consoleLog("hooks.applyFinal add stolen entry");
     obj.allEntries.push(entryToAsm(obj.stolenEntry));
 
     consoleLog("hooks.applyFinal add post entries");
-    for (var i = 0; i < szPost; i ++)
-    {
-        obj.allEntries.push(entryToAsm(obj.postEntries[i]));
-    }
+    convertArray(obj.postEntries);
 
     consoleLog("hooks.applyFinal add final entry");
     if (obj.finalEntry !== false)
