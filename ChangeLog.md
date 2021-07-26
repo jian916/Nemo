@@ -1,3 +1,37 @@
+# 2021-07-26 Different updates
+
+## Patches
+
+- Fix patch [Change auto follow delay](http://nemo.herc.ws/patches/SetAutoFollowDelay/#success-clients). (fix by @4144).
+- Add patch [Change default font size for base class of all balloons](http://nemo.herc.ws/patches/ChangeUIBalloonTextFontSize/#success-clients). (by @4144).
+- Add patch [Change default font size for class UITransBalloonText](http://nemo.herc.ws/patches/ChangeUITransBalloonTextFontSize/#success-clients). (by @4144).
+- Add patch [Change default font size for class UICharInfoBalloonText](http://nemo.herc.ws/patches/ChangeUICharInfoBalloonTextFontSize/#success-clients). (by @4144).
+- Add patch [Change default font color for base class of all balloons](http://nemo.herc.ws/patches/ChangeUIBalloonTextFontColor/#success-clients). (by @4144).
+- Add patch [Change default font color for class UITransBalloonText](http://nemo.herc.ws/patches/ChangeUITransBalloonTextFontColor/#success-clients). (by @4144).
+- Add patch [Change default font color for class UICharInfoBalloonText](http://nemo.herc.ws/patches/ChangeUICharInfoBalloonTextFontColor/#success-clients). (by @4144).
+- Add patch [Change default shadow color for base class of all balloons](http://nemo.herc.ws/patches/ChangeUIBalloonTextBgColor/#success-clients). (by @4144).
+- Add patch [Change default shadow color for class UITransBalloonText](http://nemo.herc.ws/patches/ChangeUITransBalloonTextBgColor/#success-clients). (by @4144).
+- Add patch [Change default shadow color for class UICharInfoBalloonText](http://nemo.herc.ws/patches/ChangeUICharInfoBalloonTextBgColor/#success-clients). (by @4144).
+- Add patch [Change default icon type for class UINameBalloonText](http://nemo.herc.ws/patches/ChangeUINameBalloonTextIconType/#success-clients). (by @4144).
+- Add patch [Change default text width for class UINameBalloonText](http://nemo.herc.ws/patches/ChangeUINameBalloonTextWidth/#success-clients). (by @4144).
+- Add patch [Change default text width for class UIVerticalNameBalloonText](http://nemo.herc.ws/patches/ChangeUIVerticalNameBalloonTextWidth/#success-clients). (by @4144).
+- Add patch [Change default text decoration for class UITransBalloonText](http://nemo.herc.ws/patches/ChangeUITransBalloonTextDecoration/#success-clients). (by @4144).
+- Add patch [Change default border color for class UITransBalloonText](http://nemo.herc.ws/patches/ChangeUITransBalloonTextFillColor/#success-clients). (by @4144).
+- Add patch [Change auto follow stop delay](http://nemo.herc.ws/patches/SetAutoFollowStopDelay/#success-clients). (by @4144).
+
+## For devs
+
+- Add into Number type function for reverse RGB color: reverseRGB.
+- Add support for multi hooks (for now only part of hooks supported).
+- Add functions for direct changes in binary: pe.directReplace, pe.directReplaceBytes.
+- Add function patch.getName for get current patch name.
+- Add function patch.getState for get current patch state.
+
+## Other
+
+- Update tables.
+
+
 # 2021-07-05 Different updates
 
 ## Patches
