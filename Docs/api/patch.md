@@ -40,3 +40,19 @@ Read dword in already patched data in current patch.
 Return last value from patched data blocks.
 
 If address was not patched, return false.
+
+## patch.getName
+``patch.getName()``
+
+Return current patch name.
+
+## patch.getState
+``patch.getState()``
+
+Return current patch state constant.
+
+| Value | Description |
+| ----- | ----------- |
+| 0     | Called from patch functions |
+| 1     | Called from apply patch functions |
+| 2     | Called from ApplyPatches function |

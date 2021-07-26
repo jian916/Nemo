@@ -16,8 +16,12 @@ If address matched, return object with fields:
 
 | field | Description |
 | -------- | ----------- |
-| stolenCode | Code hex bytes stolen for apply hook |
+| patchAddr | Matched raw address |
+| stolenCode | All code hex bytes stolen for apply hook |
+| stolenCode1 | Same with stolenCode |
 | continueOffsetVa | Virtual address to next instruction after stolen code |
+| retCode  | Empty string |
+| endHook  | false |
 
 If matching failed, throw error.
 
@@ -34,9 +38,12 @@ If address matched, return object with fields:
 
 | field | Description |
 | -------- | ----------- |
+| patchAddr | Matched raw address |
 | stolenCode | Code hex bytes stolen for apply hook |
 | stolenCode1 | Code hex bytes stolen for apply hook except retCode |
+| continueOffsetVa | 0 |
 | retCode | ret code after restored stack |
+| endHook  | true |
 
 If matching failed, throw error.
 
@@ -44,7 +51,7 @@ If matching failed, throw error.
 ### hooks.addPostEndHook
 
 ```
- hooks.addPostEndHook(rawAddr, text, vars)
+hooks.addPostEndHook(rawAddr, text, vars)
 ```
 
 Add hook on function before call to ret/retn.
@@ -67,3 +74,49 @@ If hook set success, return object with fields:
 | retCode | ret code after restored stack |
 
 If hook set failed, throw exception with error.
+
+
+### hooks.initHook
+
+```
+hooks.initHook(patchAddr, matchFunc)
+```
+
+Create hook object with given address and match function.
+
+Return created hook object or throw error.
+
+### hooks.initEndHook
+
+```
+hooks.initEndHook(patchAddr)
+```
+
+Create hook object with given address at end of function.
+
+Return created hook object or throw error.
+
+
+### hooks.applyFinal
+
+```
+hooks.applyFinal(obj)
+```
+
+Apply final changes for given hook object.
+
+### hooks.applyAllFinal
+
+```
+hooks.applyAllFinal()
+```
+
+Apply final changes for all existing hook objects.
+
+### hooks.removePatchHooks
+
+```
+hooks.removePatchHooks()
+```
+
+Remove current patch changes fro all hook objects.

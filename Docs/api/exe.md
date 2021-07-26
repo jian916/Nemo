@@ -206,7 +206,7 @@ Store nops from address **patchStartAddr** to **patchEndAddr**.
 
 ### exe.insertAsmText
 
-``exe.insertAsmText(commands, vars)``
+``exe.insertAsmText(commands, vars, freeSpace)``
 
 Insert assembler code in free block in binary.
 
@@ -214,6 +214,7 @@ Insert assembler code in free block in binary.
 | -------- | ----------- |
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
+| freeSpace | How many bytes reserve after asm code. If freeSpace missing then reserved 0 bytes |
 
 If fail trigger exception.
 
@@ -235,6 +236,7 @@ Insert assembler code in free block in binary.
 | -------- | ----------- |
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
+| freeSpace | How many bytes reserve after asm code. If freeSpace missing then reserved 0 bytes |
 
 If fail trigger exception.
 
