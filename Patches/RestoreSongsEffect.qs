@@ -99,7 +99,7 @@ function RestoreSongsEffect()
   logField("CSkill::m_LoopEffect", offset, loopOffset);
 
   var patchAddr = offset + patchOffset;
-  var retAddr = exe.Raw2Rva(patchAddr + 5).packToHex(4);
+  var retAddr = pe.rawToVa(patchAddr + 5).packToHex(4);
 
   //Step 3 - get skill id offset
   code =
@@ -135,9 +135,9 @@ function RestoreSongsEffect()
     return "Failed in Step 4 - No enough free space";
 
   //Step 4c - Find free space
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
   var swTable = free + case1Offset + (effectID.length * 12);
-  ins = ins.replace(" XX XX XX XX", exe.Raw2Rva(swTable).packToHex(4));
+  ins = ins.replace(" XX XX XX XX", pe.rawToVa(swTable).packToHex(4));
 
   //Step 4d - Add switch cases
   for (var i = 0; i < effectID.length; i++)
@@ -156,11 +156,11 @@ function RestoreSongsEffect()
   for (var i = 0; i < effectID.length; i++)
   {
     var swAddr = free + case1Offset + (i * 12);
-    ins += exe.Raw2Rva(swAddr).packToHex(4);
+    ins += pe.rawToVa(swAddr).packToHex(4);
   }
 
   //Step 4f - Inject the code
-  code = " E9" + (freeRva - exe.Raw2Rva(patchAddr + 5)).packToHex(4);
+  code = " E9" + (freeRva - pe.rawToVa(patchAddr + 5)).packToHex(4);
 
   exe.insert(free, size, ins, PTYPE_HEX);
   exe.replace(patchAddr, code, PTYPE_HEX);
@@ -169,11 +169,11 @@ function RestoreSongsEffect()
   var firstUnitID = 126;
   var LPUnirID = 157;
   var firstSongUnitID = 158;
-  var LPtblOffset = exe.fetchHex(exe.Rva2Raw(iswTable + (LPUnirID - firstUnitID)), 1);
+  var LPtblOffset = exe.fetchHex(pe.vaToRaw(iswTable + (LPUnirID - firstUnitID)), 1);
 
   code = LPtblOffset.repeat(effectID.length - 1);
 
-  exe.replace(exe.Rva2Raw(iswTable + (firstSongUnitID - firstUnitID)), code, PTYPE_HEX);
+  exe.replace(pe.vaToRaw(iswTable + (firstSongUnitID - firstUnitID)), code, PTYPE_HEX);
 
   return true;
 }
