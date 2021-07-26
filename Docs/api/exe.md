@@ -228,7 +228,7 @@ Array index 2 contains variables generated from assembler.
 
 ### exe.insertAsmTextObj
 
-``exe.insertAsmTextObj(commands, vars)``
+``exe.insertAsmTextObj(commands, vars, freeSpace, dryRun)``
 
 Insert assembler code in free block in binary.
 
@@ -237,6 +237,7 @@ Insert assembler code in free block in binary.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 | freeSpace | How many bytes reserve after asm code. If freeSpace missing then reserved 0 bytes |
+| dryRun    | If true, not run actual insertion of asm code. If missing dryRun considered false |
 
 If fail trigger exception.
 

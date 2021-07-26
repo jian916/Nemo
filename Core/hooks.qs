@@ -106,6 +106,10 @@ function hooks_initHook(patchAddr, matchFunc)
     {
         hooks_applyFinal(this);
     }
+    obj.validate = function()
+    {
+        hooks_applyFinal(this, true);
+    }
     storage.hooks[patchAddr] = obj;
     return obj;
 }
@@ -115,11 +119,14 @@ function hooks_initEndHook(patchAddr)
     return hooks_initHook(patchAddr, hooks_matchFunctionEnd);
 }
 
-function hooks_applyFinal(obj)
+function hooks_applyFinal(obj, dryRun)
 {
     consoleLog("hooks.applyFinal start");
     if (obj.endHook !== true)
         throw "Not supported endHook value: " + obj.endHook;
+
+    if (typeof(dryRun) === "undefined")
+        dryRun = false;
 
     var szPre = obj.preEntries.length;
     var szPost = obj.postEntries.length;
@@ -129,7 +136,7 @@ function hooks_applyFinal(obj)
     function entryToAsm(obj)
     {
         if (typeof(obj.code) === "undefined")
-            return exe.insertAsmTextObj(obj.text, obj.vars, 5);
+            return exe.insertAsmTextObj(obj.text, obj.vars, 5, dryRun);
         else
             return obj;
     }
@@ -167,7 +174,8 @@ function hooks_applyFinal(obj)
         throw "No entried in hook object";
 
     consoleLog("hooks.applyFinal initial jmp");
-    exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+    if (dryRun !== true)
+        exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
 
     consoleLog("hooks.applyFinal loop jumps");
     for (var i = 0; i < sz - 1; i ++)
@@ -176,7 +184,8 @@ function hooks_applyFinal(obj)
         var nextEntry = obj.allEntries[i + 1];
         if (entry.isFinal === true)
             continue;
-        exe.setJmpRaw(entry.free + entry.bytes.length, nextEntry.free);
+        if (dryRun !== true)
+            exe.setJmpRaw(entry.free + entry.bytes.length, nextEntry.free);
     }
     var lastEntry = obj.allEntries[sz - 1];
     if (lastEntry.isFinal === false)

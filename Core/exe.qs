@@ -84,10 +84,12 @@ function exe_insertAsmText(commands, vars, freeSpace)
     return [free, obj.code, obj.vars];
 }
 
-function exe_insertAsmTextObj(commands, vars, freeSpace)
+function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
 {
     if (typeof(freeSpace) === "undefined")
         freeSpace = 0;
+    if (typeof(dryRun) === "undefined")
+        dryRun = false;
     var size = asm.textToHexLength(commands, vars);
     if (size === false)
         throw "Asm code error";
@@ -110,14 +112,17 @@ function exe_insertAsmTextObj(commands, vars, freeSpace)
     if (obj === false)
         throw "Asm code error";
 
-    if (patch.getState() !== 2)
+    if (dryRun !== true)
     {
-        exe.insert(free, size, obj.code, PTYPE_HEX);
-    }
-    else
-    {
-        pe.directReplace(free, obj.code);
-        storage.zero = storage.zero + size + 4;
+        if (patch.getState() !== 2)
+        {
+            exe.insert(free, size, obj.code, PTYPE_HEX);
+        }
+        else
+        {
+            pe.directReplace(free, obj.code);
+            storage.zero = storage.zero + size + 4;
+        }
     }
     obj.free = free;
     obj.isFinal = false;
