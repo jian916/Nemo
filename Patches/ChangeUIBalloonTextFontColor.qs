@@ -40,6 +40,7 @@ function UIBalloonTextFontColor(addrId, name)
 
     var hook = hooks.initEndHook(addrRaw);
     hook.addPost(text, vars);
+    hook.validate();
 }
 
 function ChangeUIBalloonTextFontColor()

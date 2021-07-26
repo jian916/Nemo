@@ -43,6 +43,7 @@ function EnableSlashAtCommands()
 
     var hook = hooks.initEndHook(offset);
     hook.addPost(text, {});
+    hook.validate();
 
     return true;
 }
