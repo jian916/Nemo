@@ -158,9 +158,8 @@ function GetWinMgrInfo(skipError)
 
 function HasFramePointer()
 {
-
-  //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
-  return (exe.fetch(exe.getROffset(CODE), 3) === "\x55\x8B\xEC");
+    //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
+    return (exe.fetch(exe.getROffset(CODE), 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
 }
 
 //#################################################################################################
