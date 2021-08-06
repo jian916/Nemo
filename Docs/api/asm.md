@@ -280,3 +280,20 @@ Returns assembler text command with given text.
 ``asm.combine(arguments)``
 
 Combine any assembler commands in separate lines into ready to use assembler text.
+
+
+### asm.loadHex
+
+``asm.loadHex(fileName)``
+
+Load assembler code from given file name and return as hex codes.
+
+Load mask is: "Patches/" + fileName + ".asm"
+
+### asm.load
+
+``asm.load(fileName)``
+
+Load assembler code from given file name and return as text.
+
+Load mask is: "Patches/" + fileName + ".asm"

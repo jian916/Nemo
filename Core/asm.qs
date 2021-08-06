@@ -167,6 +167,24 @@ function asm_combine()
     return code;
 }
 
+function asm_loadHex(fileName)
+{
+    if (typeof(fileName) === "undefined" || fileName === "")
+        fileName = patch.getName();
+    var file = new BinFile();
+    if (!file.open(APP_PATH + "/Patches/asm/" + fileName + ".asm"))
+        throw "Cant load asm file: " + fileName;
+    var text = file.readHex(0, 0);
+    file.close();
+    return text;
+}
+
+function asm_load(fileName)
+{
+    var text = asm_loadHex(fileName).toAscii();
+    return text;
+}
+
 function registerAsm()
 {
     asm.textToObjVa = asm_textToObjVa;
@@ -183,4 +201,6 @@ function registerAsm()
     asm.hexToAsm = asm_hexToAsm;
     asm.stringToAsm = asm_stringToAsm;
     asm.combine = asm_combine;
+    asm.load = asm_load;
+    asm.loadHex = asm_loadHex;
 }
