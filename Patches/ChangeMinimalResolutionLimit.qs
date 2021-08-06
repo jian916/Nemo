@@ -165,22 +165,13 @@ function ChangeMinimalResolutionLimit()
 
     var codeIns = exe.fetchHex(offset, retAdd);
 
-    var text = asm.combine(
-        "cmp eax, 0",
-        "jnl _no",
-        "xor eax, eax",
-        "_no: " + asm.hexToAsm(codeIns),
-        "push retAddr",
-        "ret"
-    );
     var vars = {
         "retAddr": exe.Raw2Rva(offset + retAdd),
+        "codeIns": asm.hexToAsm(codeIns)
     };
 
-    var data = exe.insertAsmText(text, vars);
-
-    var free = data[0];
-    exe.setJmpRaw(offset, free);
+    var data = exe.insertAsmFile("", vars);
+    exe.setJmpRaw(offset, data.free);
 
     return true;
 }
