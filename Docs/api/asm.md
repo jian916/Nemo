@@ -6,11 +6,31 @@ It can be used for crafting patch code.
 
 ## Functions
 
+### asm.textToBytesInternal
+
+``asm.textToBytesInternal(addrVa, commands, vars)``
+
+Convert simple assembler text into bytes sequence.
+
+| Argument  | Description |
+| --------  | ----------- |
+| addrVa    | Virtual address where code should be located |
+| commands  | Assembler text with commands |
+| vars      | Variables for assembler text |
+
+If error happened, returns **false**.
+
+In other case returns array.
+
+Array index 0 contains bytes sequence.
+
+Array index 1 contains variables.
+
 ### asm.textToBytes
 
 ``asm.textToBytes(addrVa, commands, vars)``
 
-Convert assembler text into bytes sequence.
+Convert assembler text with macroses into bytes sequence.
 
 | Argument  | Description |
 | --------  | ----------- |
@@ -297,3 +317,12 @@ Load mask is: "Patches/" + fileName + ".asm"
 Load assembler code from given file name and return as text.
 
 Load mask is: "Patches/" + fileName + ".asm"
+
+
+### asm.replaceVars
+
+``asm.replaceVars(commands, vars)``
+
+Replace macroses in given asm text based on vars dictionary.
+
+This function used internally in asm.textToBytes.
