@@ -89,6 +89,8 @@ function hooks_initHook(patchAddr, matchFunc)
 
     obj.addEntry = function(text, vars, entries)
     {
+        if (typeof(vars) === "undefined")
+            vars = {};
         var asmObj = exe.insertAsmTextObj(text, vars, 5);
         asmObj.patch = patch.getName();
         entries.push(asmObj);
