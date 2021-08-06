@@ -104,6 +104,16 @@ function hooks_initHook(patchAddr, matchFunc)
     {
         this.addEntry(text, vars, this.postEntries);
     }
+    obj.addFilePre = function(fileName, vars)
+    {
+        var text = asm.load(fileName);
+        this.addEntry(text, vars, this.preEntries);
+    }
+    obj.addFilePost = function(fileName, vars)
+    {
+        var text = asm.load(fileName);
+        this.addEntry(text, vars, this.postEntries);
+    }
     obj.applyFinal = function()
     {
         hooks_applyFinal(this);
