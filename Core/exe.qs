@@ -145,6 +145,12 @@ function exe_replaceAsmText(patchAddr, commands, vars)
     return obj;
 }
 
+function exe_replaceAsmFile(fileName, vars)
+{
+    var commands = asm.load(fileName);
+    return exe_replaceAsmText(commands, vars);
+}
+
 function exe_match(code, useMask, addrRaw)
 {
     reportLegacy("Please replace exe.match to pe.match");
@@ -234,6 +240,7 @@ function registerExe()
     exe.insertAsmTextObj = exe_insertAsmTextObj;
     exe.insertAsmFile = exe_insertAsmFile;
     exe.replaceAsmText = exe_replaceAsmText;
+    exe.replaceAsmFile = exe_replaceAsmFile;
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;
     exe.fetchHexBytes = exe_fetchHexBytes;

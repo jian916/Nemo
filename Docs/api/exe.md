@@ -258,10 +258,10 @@ Insert assembler code from given file name in free block in binary.
 
 | Argument | Description |
 | -------- | ----------- |
-| commands  | Assembler text with commands |
-| vars      | Variables for assembler text |
+| fileName | File name with assembler code |
+| vars     | Variables for assembler text |
 | freeSpace | How many bytes reserve after asm code. If freeSpace missing then reserved 0 bytes |
-| dryRun    | If true, not run actual insertion of asm code. If missing dryRun considered false |
+| dryRun   | If true, not run actual insertion of asm code. If missing dryRun considered false |
 
 File with code loaded by mask: "Patches/" + fileName + ".asm"
 
@@ -285,6 +285,20 @@ Replace bytes at raw address patchAddr to given assembler code.
 | Argument | Description |
 | -------- | ----------- |
 | patchAddr| Raw address where code should be stored |
+| commands | Assembler text with commands |
+| vars     | Variables for assembler text |
+
+On success return bytes in hex format from assembler text.
+
+### exe.replaceAsmFile
+
+``exe.replaceAsmFile(fileName, commands, vars)``
+
+Replace bytes at raw address patchAddr to assembler code from given file name.
+
+| Argument | Description |
+| -------- | ----------- |
+| fileName | File name with assembler code |
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
