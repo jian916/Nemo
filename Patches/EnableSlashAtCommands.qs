@@ -16,33 +16,8 @@
 
 function EnableSlashAtCommands()
 {
-    consoleLog("Read table");
-
-    var offset = table.getRaw(table.CSession_GetTalkType_ret);
-    if (offset < 0)
-    {
-        return "ret address not found";
-    }
-
-    consoleLog("Prepary own code");
-
-    var text = asm.combine(
-        "cmp eax, 0xFFFFFFFF",
-        "jnz _ret",
-        "mov ecx, dword ptr [esp + 0xc - 4]",
-        "mov ecx, dword ptr [ecx]",
-        "cmp ecx, 3",
-        "jnz _ret",
-        "xor eax, eax",
-        "mov ecx, dword ptr [esp + 0xc - 4]",
-        "mov dword ptr [ecx], eax",
-        "_ret:"
-    );
-
-    consoleLog("Set hook");
-
-    var hook = hooks.initEndHook(offset);
-    hook.addPost(text, {});
+    var hook = hooks.initTableEndHook(table.CSession_GetTalkType_ret);
+    hook.addFilePost();
     hook.validate();
 
     return true;
