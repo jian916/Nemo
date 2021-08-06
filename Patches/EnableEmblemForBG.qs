@@ -65,21 +65,10 @@ function EnableEmblemForBG_Small(offset)
         "CSession_IsSiegeMode": exe.fetchRelativeValue(offset, [IsSiegeModeOffset, 4]),
         "CSession_IsBattleFieldMode": table.get(table.CSession_IsBattleFieldMode)
     };
-    var text = asm.combine(
-        "call CSession_IsSiegeMode",
-        "test eax, eax",
-        "jnz drawAddr",
-        "mov ecx, g_session",
-        "call CSession_IsBattleFieldMode",
-        "test eax, eax",
-        "jz continueAddr",
-        "jmp drawAddr");
-
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
+    var data = exe.insertAsmFile("", vars);
 
     consoleLog("Change call to CSession_IsSiegeMode to jmp to own code");
-    exe.setJmpRaw(offset + patchOffset, free);
+    exe.setJmpRaw(offset + patchOffset, data.free);
 }
 
 function EnableEmblemForBG()
