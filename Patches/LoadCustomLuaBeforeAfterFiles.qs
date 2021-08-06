@@ -40,84 +40,25 @@ function LoadCustomLuaBeforeAfterFiles()
     exe.insert(free, 300, str, PTYPE_STRING);
     var buffer = pe.rawToVa(free);
 
-    consoleLog("Prepary own code");
+    consoleLog("Prepare own code");
 
     var info = lua.getCLuaLoadInfo(4);
 
-    var text = asm.combine(
-        "push ecx",
-        info.asmCopyArgs,
-        "push esi",
-        "push edi",
-        "mov esi, dword ptr [esp + 0x8]",
-        "mov edi, buffer",
-        "call func_strcpy",
-        "mov esi, str_before",
-        "call func_strcpy",
-        "mov dword ptr [esp + 0x8], buffer",
-        "pop edi",
-        "pop esi",
-        "push _normal_label",
-        asm.hexToAsm(matchObj.stolenCode),
-        "jmp continueItemAddr",
-
-        "_normal_label:",
-        "pop ecx",
-        "push ecx",
-        info.asmCopyArgs,
-        "push _after_label",
-        asm.hexToAsm(matchObj.stolenCode),
-        "jmp continueItemAddr",
-
-        "_after_label:",
-        "pop ecx",
-        "push eax",
-        info.asmCopyArgs,
-        "push esi",
-        "push edi",
-        "mov esi, dword ptr [esp + 0x8]",
-        "mov edi, buffer",
-        "call func_strcpy",
-        "mov esi, str_after",
-        "call func_strcpy",
-        "mov dword ptr [esp + 0x8], buffer",
-        "pop edi",
-        "pop esi",
-        "push _exit_label",
-        asm.hexToAsm(matchObj.stolenCode),
-        "jmp continueItemAddr",
-
-        "_exit_label:",
-        "pop eax",
-        "ret argsOffset",
-
-        "func_strcpy:",
-        "mov al, [esi]",
-        "mov [edi], al",
-        "inc esi",
-        "inc edi",
-        "cmp byte ptr [esi], 0",
-        "jne func_strcpy",
-        "mov byte ptr [edi], 0",
-        "ret",
-
-        "str_before:",
-        asm.stringToAsm("_before\x00"),
-        "str_after:",
-        asm.stringToAsm("_after\x00")
-    );
     var vars = {
         "continueItemAddr": matchObj.continueOffsetVa,
         "CLua_Load": CLua_Load,
         "buffer": buffer,
-        "argsOffset": info.argsOffset
+        "argsOffset": info.argsOffset,
+        "asmCopyArgs": info.asmCopyArgs,
+        "stolenCode": asm.hexToAsm(matchObj.stolenCode),
+        "strBefore": asm.stringToAsm("_before\x00"),
+        "strAfter": asm.stringToAsm("_after\x00")
     }
 
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
+    var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset, free);
+    exe.setJmpRaw(offset, data.free);
 
     return true;
 }
