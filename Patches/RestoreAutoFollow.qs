@@ -123,23 +123,16 @@ function RestoreAutoFollow()
 
     consoleLog("add new code");
 
-    var text = asm.combine(
-        "call CGameMode_ProcessInput",
-        "mov ecx, " + gameModeReg,
-        "call CGameMode_ProcessAutoFollow",
-        "ret"
-    );
-
     var vars = {
         "CGameMode_ProcessInput": CGameMode_ProcessInput,
-        "CGameMode_ProcessAutoFollow": CGameMode_ProcessAutoFollow
+        "CGameMode_ProcessAutoFollow": CGameMode_ProcessAutoFollow,
+        "gameModeReg": gameModeReg
     };
 
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
+    var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset + patchOffset, free, "call");
+    exe.setJmpRaw(offset + patchOffset, data.free, "call");
 
     return true;
 }
