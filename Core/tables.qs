@@ -82,10 +82,16 @@ function table_getRaw(varId)
 function table_getRawValidated(varId)
 {
     checkArgs("table.getRawValidated", arguments, [["Number"]]);
+    return pe.vaToRaw(table_getValidated(varId));
+}
+
+function table_getValidated(varId)
+{
+    checkArgs("table.getValidated", arguments, [["Number"]]);
     var ret = table.get(varId);
     if (ret <= 0)
         throw "Incorrect table var given: " + varId;
-    return exe.Rva2Raw(ret);
+    return ret;
 }
 
 function table_getHex1(varId)
@@ -128,6 +134,7 @@ function getEcxFileMgrHex()
 
 function registerTableFunctions()
 {
+    table.getValidated = table_getValidated;
     table.getHex1 = table_getHex1;
     table.getHex4 = table_getHex4;
     table.getRaw = table_getRaw;

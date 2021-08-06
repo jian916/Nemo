@@ -10,6 +10,14 @@
 
 Returns variable value as is or as virtual address.
 
+### table.getValidated
+
+``table.getValidated(varId)``
+
+If variable not exists throw error.
+
+Returns variable value as is or as virtual address.
+
 ### table.getHex1
 
 ``table.getHex1(varId)``
