@@ -129,6 +129,12 @@ function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
     return obj;
 }
 
+function exe_insertAsmFile(fileName, vars, freeSpace, dryRun)
+{
+    var commands = asm.load(fileName);
+    return exe_insertAsmTextObj(commands, vars, freeSpace, dryRun);
+}
+
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
@@ -226,6 +232,7 @@ function registerExe()
     exe.setNopsRange = exe_setNopsRange;
     exe.insertAsmText = exe_insertAsmText;
     exe.insertAsmTextObj = exe_insertAsmTextObj;
+    exe.insertAsmFile = exe_insertAsmFile;
     exe.replaceAsmText = exe_replaceAsmText;
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;

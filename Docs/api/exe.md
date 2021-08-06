@@ -250,6 +250,32 @@ If success, return object.
 | vars     | Variables |
 | free     | Raw address where block was inserted |
 
+### exe.insertAsmFile
+
+``exe.insertAsmFile(fileName, vars, freeSpace, dryRun)``
+
+Insert assembler code from given file name in free block in binary.
+
+| Argument | Description |
+| -------- | ----------- |
+| commands  | Assembler text with commands |
+| vars      | Variables for assembler text |
+| freeSpace | How many bytes reserve after asm code. If freeSpace missing then reserved 0 bytes |
+| dryRun    | If true, not run actual insertion of asm code. If missing dryRun considered false |
+
+File with code loaded by mask: "Patches/" + fileName + ".asm"
+
+If fail trigger exception.
+
+If success, return object.
+
+| Field    | Description |
+| -------- | ----------- |
+| bytes    | Bytes sequence |
+| code     | Bytes in hex format |
+| vars     | Variables |
+| free     | Raw address where block was inserted |
+
 ### exe.replaceAsmText
 
 ``exe.replaceAsmText(patchAddr, commands, vars)``
