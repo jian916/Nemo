@@ -21,30 +21,12 @@
 function ExtendCashShopPreview()
 {
     consoleLog("get patch addresses");
-    var offset1 = table.getRaw(table.cashShopPreviewPatch1);
-    if (offset1 === 0)
-    {
-        return "Cash shop address 1 not found";
-    }
-    var offset2 = table.getRaw(table.cashShopPreviewPatch2);
-    if (offset2 === 0)
-    {
-        return "Cash shop address 2 not found";
-    }
+    var offset1 = table.getRawValidated(table.cashShopPreviewPatch1);
+    var offset2 = table.getRawValidated(table.cashShopPreviewPatch2);
     var offset3 = table.getRaw(table.cashShopPreviewPatch3);
 
-    var location = table.get(table.ITEM_INFO_location);
-    if (location === 0)
-    {
-        return "ITEM_INFO::location not found";
-    }
-
-    var viewSprite = table.get(table.ITEM_INFO_view_sprite);
-    if (viewSprite === 0)
-    {
-        return "ITEM_INFO::view_sprite not found";
-    }
-
+    var location = table.getValidated(table.ITEM_INFO_location);
+    var viewSprite = table.getValidated(table.ITEM_INFO_view_sprite);
     var flag = table.get(table.cashShopPreviewFlag);
 
     consoleLog("search first pattern");
@@ -117,48 +99,24 @@ function ExtendCashShopPreview()
     var stolenCode = exe.fetchHex(offset1, stolenCodeSize);
 
     if (flag === 1)
-    {
-        var text = asm.combine(
-            asm.hexToAsm(stolenCode),
-            "push eax",
-            "movzx eax, word ptr [" + register + "+block_size]",
-            "mov [ebp + itemInfo + view_sprite], eax",
-            "mov eax, [" + register + "+block_size+2]",
-            "mov [ebp + itemInfo + location], eax",
-            "pop eax",
-            "jmp continueItemAddr"
-        );
-    }
+        var name = "1";
     else
-    {
-        var text = asm.combine(
-            asm.hexToAsm(stolenCode),
-            "push eax",
-            "push ecx",
-            "mov ecx, dword ptr [ebp + next + 0]",
-            "movzx eax, word ptr [ecx + block_size]",
-            "mov [ebp + itemInfo + view_sprite], eax",
-            "mov eax, dword ptr [ecx + block_size + 2]",
-            "mov [ebp + itemInfo + location], eax",
-            "pop ecx",
-            "pop eax",
-            "jmp continueItemAddr"
-        );
-    }
+        var name = "0";
     var vars = {
-        "continueItemAddr": exe.Raw2Rva(offset1 + stolenCodeSize),
+        "continueItemAddr": pe.rawToVa(offset1 + stolenCodeSize),
         "location": location,
         "view_sprite": viewSprite,
         "itemInfo": exe.fetchValue(offset1, itemInfoOffset),
         "next": next,
-        "block_size": blockSize
+        "block_size": blockSize,
+        "register": register,
+        "stolenCode": asm.hexToAsm(stolenCode)
     };
 
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
+    var data = exe.insertAsmFile("ExtendCashShopPreview_" + name, vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset1, free);
+    exe.setJmpRaw(offset1, data.free);
 
     consoleLog("update block size");
     exe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
