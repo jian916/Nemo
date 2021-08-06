@@ -278,26 +278,13 @@ function SkipHiddenMenuButtons()
         "continueAddr": continueAddr,
         "a9JmpAddr": a9JmpAddr,
         "nonA9JmpAddr": nonA9JmpAddr,
+        "regName": regName,
+        "stolenCode": asm.hexToAsm(exe.fetchHex(patchAddr, stoleSize))
     };
-    var text = asm.combine(
-        "push eax",
-        "mov eax, [" + regName + "]",  // strlen
-        "cmp al, 0",
-        "pop eax",
-        "jne _continue1",
-        "jmp continueAddr",
-        "_continue1:",
-        asm.hexToAsm(exe.fetchHex(patchAddr, stoleSize)),  // cmp ebx, 0A9
-        "jne _continue2",
-        "jmp a9JmpAddr",
-        "_continue2:",
-        "jmp nonA9JmpAddr");
-
-    var data = exe.insertAsmText(text, vars);
-    var free = data[0]
+    var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(patchAddr, free);
+    exe.setJmpRaw(patchAddr, data.free);
 
     return true;
 }
