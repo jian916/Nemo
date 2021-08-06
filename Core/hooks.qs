@@ -44,9 +44,14 @@ function hooks_addPostEndHook(patchAddr, text, vars)
     return obj;
 }
 
-function hooks_initHook(patchAddr, matchFunc)
+function hooks_initHook(patchAddr, matchFunc, searchAddrFunc)
 {
     consoleLog("hooks.initHook start");
+    if (typeof(searchAddrFunc) !== "undefined")
+    {
+        patchAddr = searchAddrFunc(patchAddr);
+    }
+
     if (patchAddr in storage.hooks)
     {
         consoleLog("hooks.initHook found existing hook");
@@ -129,6 +134,11 @@ function hooks_initHook(patchAddr, matchFunc)
 function hooks_initEndHook(patchAddr)
 {
     return hooks_initHook(patchAddr, hooks_matchFunctionEnd);
+}
+
+function hooks_initTableEndHook(varId)
+{
+    return hooks_initHook(varId, hooks_matchFunctionEnd, table.getRawValidated);
 }
 
 function hooks_applyFinal(obj, dryRun)
@@ -247,6 +257,7 @@ function registerHooks()
     hooks.addPostEndHook = hooks_addPostEndHook;
     hooks.initHook = hooks_initHook;
     hooks.initEndHook = hooks_initEndHook;
+    hooks.initTableEndHook = hooks_initTableEndHook;
     hooks.applyFinal = hooks_applyFinal;
     hooks.applyAllFinal = hooks_applyAllFinal;
     hooks.removePatchHooks = hooks_removePatchHooks;

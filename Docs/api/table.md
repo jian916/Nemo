@@ -28,6 +28,15 @@ Returns variable value as hex strings with 4 bytes.
 
 Returns variable value as raw address.
 
+### table.getRawValidated
+
+``table_getRawValidated(varId)``
+
+If variable not exists throw error.
+
+Returns variable value as raw address.
+
+
 ### table.getSessionAbsHex4
 
 ``table.getSessionAbsHex4(varId)``

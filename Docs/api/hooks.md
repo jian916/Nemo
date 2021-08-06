@@ -97,6 +97,17 @@ Create hook object with given address at end of function.
 Return created hook object or throw error.
 
 
+### hooks.initTableEndHook
+
+```
+hooks.initTableEndHook(varId)
+```
+
+Create hook object with given table variable id at end of function.
+
+Return created hook object or throw error.
+
+
 ### hooks.applyFinal
 
 ```
