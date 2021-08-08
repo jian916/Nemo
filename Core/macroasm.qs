@@ -17,31 +17,26 @@
 
 function macroAsm_convert(obj)
 {
-    macroAsm_replaceVars(obj);
-    macroAsm_replaceCmds(obj);
+    obj.update = true;
+    while (obj.update)
+    {
+        obj.update = false;
+        macroAsm_replaceVars(obj);
+        macroAsm_replaceCmds(obj);
+    }
 }
 
 function macroAsm_replaceVars(obj)
 {
     var vars = obj.vars;
-    obj.update = true;
-    var cnt = 0;
-    while (obj.update)
+    macroAsm_removeComments(obj);
+    for (var name in vars)
     {
-        cnt = cnt + 1;
-        obj.update = false;
-        macroAsm_removeComments(obj);
-        for (var name in vars)
-        {
-            var value = vars[name];
-            if (typeof(value) !== "string")
-                continue;
-            macroAsm_replaceVar(obj, name, value);
-            macroAsm_macro_instAsm(obj, name, value);
-            macroAsm_macro_instHex(obj, name, value);
-        }
+        var value = vars[name];
+        if (typeof(value) !== "string")
+            continue;
+        macroAsm_replaceVar(obj, name, value);
     }
-    return cnt;
 }
 
 function macroAsm_replaceCmds(obj)
@@ -53,10 +48,12 @@ function macroAsm_replaceCmds(obj)
     var text = "";
     for (var i = 0; i < parts.length; i ++)
     {
-        var line = parts[i].trim();
-        // macro commands
-        text += line + "\n";
+        obj.line = parts[i].trim();
+        macroAsm_macro_instAsm(obj);
+        macroAsm_macro_instHex(obj);
+        text += obj.line + "\n";
     }
+    obj.line = "";
     obj.text = text;
 }
 
@@ -70,27 +67,33 @@ function macroAsm_replaceVar(obj, name, value)
     }
 }
 
-function macroAsm_macro_instAsm(obj, name, value)
+function macroAsm_getCmdArg(cmd, line)
 {
-    var text = obj.text.replaceAll("%insasm " + name + "\n", value);
-    if (text != obj.text)
-    {
-        obj.text = text;
-        obj.update = true;
-    }
+    if (cmd.indexOf(cmd) != 0)
+        return false;
+    return line.substring(cmd.length);
 }
 
-function macroAsm_macro_instHex(obj, name, value)
+function macroAsm_macro_instAsm(obj)
 {
-    if (obj.text.indexOf("%inshex " + name + "\n") < 0)
+    var arg = macroAsm_getCmdArg("%insasm ", obj.line);
+    if (arg === false)
         return;
-    var value = asm.hexToAsm(value);
-    var text = obj.text.replaceAll("%inshex " + name + "\n", value);
-    if (text != obj.text)
-    {
-        obj.text = text;
-        obj.update = true;
-    }
+    if (!(arg in obj.vars))
+        return;
+    obj.line = obj.vars[arg];
+    obj.update = true;
+}
+
+function macroAsm_macro_instHex(obj)
+{
+    var arg = macroAsm_getCmdArg("%inshex ", obj.line);
+    if (arg === false)
+        return;
+    if (!(arg in obj.vars))
+        return;
+    obj.line = asm.hexToAsm(obj.vars[arg]);
+    obj.update = true;
 }
 
 function macroAsm_removeComments(obj)
@@ -105,6 +108,7 @@ function registerMacroAsm()
     macroAsm.replaceVar = macroAsm_replaceVar;
     macroAsm.replaceVars = macroAsm_replaceVars;
     macroAsm.removeComments = macroAsm_removeComments;
+    macroAsm.getCmdArg = macroAsm_getCmdArg;
     macroAsm.macro_instAsm = macroAsm_macro_instAsm;
     macroAsm.macro_instHex = macroAsm_macro_instHex;
 }
