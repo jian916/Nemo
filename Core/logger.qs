@@ -43,6 +43,7 @@ function GlobalInit()
 {
     registerTables();
     registerAsm();
+    registerMacroAsm();
     registerExe();
     registerPe();
     registerStorage();

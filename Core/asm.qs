@@ -52,7 +52,7 @@ function asm_textToHexRaw(addrRaw, commands, vars)
 function asm_textToHexVaLength(addrVa, commands, vars)
 {
     checkArgs("asm.textToHexVaLength", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
-    var ret = asm_textToBytes(addrVa, commands, vars)
+    var ret = asm_textToBytes(addrVa, commands, vars);
     if (ret === false)
         return false;
     return ret[0].length;
@@ -187,23 +187,12 @@ function asm_load(fileName)
 
 function asm_textToBytes(addrVa, commands, vars)
 {
-    commands = asm_replaceVars(commands, vars);
-    return asm.textToBytesInternal(addrVa, commands, vars)
-}
-
-function asm_replaceVars(commands, vars)
-{
-    commands = commands.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n")
-    for (var name in vars)
-    {
-        var value = vars[name];
-        if (typeof(value) !== "string")
-            continue;
-        commands = commands.replaceAll("{" + name + "}", value);
-        commands = commands.replaceAll("%insasm " + name + "\n", value);
-    }
-    commands = commands.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n")
-    return commands;
+    var obj = new Object();
+    obj.addrVa = addrVa;
+    obj.text = commands;
+    obj.vars = vars;
+    macroAsm.convert(obj);
+    return asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars)
 }
 
 function registerAsm()
@@ -225,5 +214,4 @@ function registerAsm()
     asm.combine = asm_combine;
     asm.load = asm_load;
     asm.loadHex = asm_loadHex;
-    asm.replaceVars = asm_replaceVars;
 }
