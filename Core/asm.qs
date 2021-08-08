@@ -18,7 +18,7 @@
 function asm_textToObjVa(addrVa, commands, vars)
 {
     checkArgs("asm.textToObjVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
-    var ret = asm_textToBytes(addrVa, commands, vars)
+    var ret = asm_textToBytes(addrVa, commands, vars);
     if (ret === false)
         return false;
     var obj = new Object();
@@ -37,7 +37,7 @@ function asm_textToObjRaw(addrRaw, commands, vars)
 function asm_textToHexVa(addrVa, commands, vars)
 {
     checkArgs("asm.textToHexVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
-    var ret = asm_textToBytes(addrVa, commands, vars)
+    var ret = asm_textToBytes(addrVa, commands, vars);
     if (ret === false)
         return false;
     return ret[0].toHex();
@@ -90,7 +90,7 @@ function asm_textToHexLength(commands, vars)
 function asm_cmdToObjVa(addrVa, command, vars)
 {
     checkArgs("asm.cmdToObjVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
-    var ret = asm.cmdToBytes(addrVa, command, vars)
+    var ret = asm.cmdToBytes(addrVa, command, vars);
     if (ret === false)
         return false;
     var obj = new Object();
@@ -114,7 +114,7 @@ function asm_cmdToObjRaw(addrRaw, command, vars)
 function asm_cmdToHexVa(addrVa, command, vars)
 {
     checkArgs("asm.cmdToHecVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
-    var ret = asm.cmdToBytes(addrVa, command, vars)
+    var ret = asm.cmdToBytes(addrVa, command, vars);
     if (ret === false)
         return false;
     return ret[ret[0]].toHex();
@@ -192,7 +192,7 @@ function asm_textToBytes(addrVa, commands, vars)
     obj.text = commands;
     obj.vars = vars;
     macroAsm.convert(obj);
-    return asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars)
+    return asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars);
 }
 
 function registerAsm()
