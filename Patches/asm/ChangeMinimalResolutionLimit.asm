@@ -19,7 +19,7 @@ jnl _no
 xor eax, eax
 
 _no:
-%codeIns
+%insasm codeIns
 
 push retAddr
 ret

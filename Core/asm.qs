@@ -200,7 +200,7 @@ function asm_replaceVars(commands, vars)
         if (typeof(value) !== "string")
             continue;
         commands = commands.replaceAll("{" + name + "}", value);
-        commands = commands.replaceAll("%" + name + "\n", value);
+        commands = commands.replaceAll("%insasm " + name + "\n", value);
     }
     commands = commands.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n")
     return commands;

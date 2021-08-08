@@ -15,7 +15,7 @@
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 push ecx
-%asmCopyArgs
+%insasm asmCopyArgs
 push esi
 push edi
 mov esi, dword ptr [esp + 0x8]
@@ -27,21 +27,21 @@ mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
 push _normal_label
-%stolenCode
+%insasm stolenCode
 jmp continueItemAddr
 
 _normal_label:
 pop ecx
 push ecx
-%asmCopyArgs
+%insasm asmCopyArgs
 push _after_label
-%stolenCode
+%insasm stolenCode
 jmp continueItemAddr
 
 _after_label:
 pop ecx
 push eax
-%asmCopyArgs
+%insasm asmCopyArgs
 push esi
 push edi
 mov esi, dword ptr [esp + 0x8]
@@ -53,7 +53,7 @@ mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
 push _exit_label
-%stolenCode
+%insasm stolenCode
 jmp continueItemAddr
 
 _exit_label:
@@ -71,6 +71,6 @@ mov byte ptr [edi], 0
 ret
 
 str_before:
-%strBefore
+%insasm strBefore
 str_after:
-%strAfter
+%insasm strAfter

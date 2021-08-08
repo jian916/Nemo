@@ -14,7 +14,7 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-%stolenCode
+%insasm stolenCode
 push eax
 movzx eax, word ptr [{register} + block_size]
 mov [ebp + itemInfo + view_sprite], eax
