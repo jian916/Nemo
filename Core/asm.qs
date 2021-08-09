@@ -187,10 +187,7 @@ function asm_load(fileName)
 
 function asm_textToBytes(addrVa, commands, vars)
 {
-    var obj = new Object();
-    obj.addrVa = addrVa;
-    obj.text = commands;
-    obj.vars = vars;
+    var obj = new macroAsm.create(addrVa, commands, vars)
     macroAsm.convert(obj);
     return asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars);
 }

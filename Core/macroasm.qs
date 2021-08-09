@@ -15,6 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+function macroAsm_create(addrVa, commands, vars)
+{
+    var obj = new Object();
+    obj.addrVa = addrVa;
+    obj.text = commands;
+    obj.vars = vars;
+    obj.line = "";
+    obj.update = false;
+    return obj;
+}
+
 function macroAsm_convert(obj)
 {
     obj.update = true;
@@ -158,6 +169,7 @@ function macroAsm_addMacroses()
 function registerMacroAsm()
 {
     macroAsm = new Object();
+    macroAsm.create = macroAsm_create;
     macroAsm.convert = macroAsm_convert;
     macroAsm.replaceVar = macroAsm_replaceVar;
     macroAsm.replaceVars = macroAsm_replaceVars;
