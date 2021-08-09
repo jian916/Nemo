@@ -31,4 +31,5 @@ function Global_clear()
     dllFile = false;
 
     storage_init();
+    registerHooks();
 }
