@@ -71,6 +71,6 @@ mov byte ptr [edi], 0
 ret
 
 str_before:
-%insasm strBefore
+%insstr strBefore
 str_after:
-%insasm strAfter
+%insstr strAfter

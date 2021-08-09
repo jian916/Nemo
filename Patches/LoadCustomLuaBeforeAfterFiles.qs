@@ -51,8 +51,8 @@ function LoadCustomLuaBeforeAfterFiles()
         "argsOffset": info.argsOffset,
         "asmCopyArgs": info.asmCopyArgs,
         "stolenCode": matchObj.stolenCode,
-        "strBefore": asm.stringToAsm("_before\x00"),
-        "strAfter": asm.stringToAsm("_after\x00")
+        "strBefore": "_before\x00",
+        "strAfter": "_after\x00"
     }
 
     var data = exe.insertAsmFile("", vars);

@@ -107,6 +107,17 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_instStr(obj)
+    {
+        var arg = getCmdArg("%insstr ", obj.line);
+        if (arg === false)
+            return;
+        if (!(arg in obj.vars))
+            return;
+        obj.line = asm.stringToAsm(obj.vars[arg]);
+        obj.update = true;
+    }
+
     function macro_tableVar(obj)
     {
         var arg = getCmdArg("%tablevar ", obj.line);
@@ -139,6 +150,7 @@ function macroAsm_addMacroses()
     macroAsm.macroses = [
         macro_instAsm,
         macro_instHex,
+        macro_instStr,
         macro_tableVar,
     ];
 }
