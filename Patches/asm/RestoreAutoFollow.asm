@@ -14,6 +14,8 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+%tablevar CGameMode_ProcessAutoFollow
+
 call CGameMode_ProcessInput
 mov ecx, {gameModeReg}
 call CGameMode_ProcessAutoFollow

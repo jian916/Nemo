@@ -124,9 +124,8 @@ function RestoreAutoFollow()
     consoleLog("add new code");
 
     var vars = {
-        "CGameMode_ProcessInput": CGameMode_ProcessInput,
-        "CGameMode_ProcessAutoFollow": CGameMode_ProcessAutoFollow,
-        "gameModeReg": gameModeReg
+        "gameModeReg": gameModeReg,
+        "CGameMode_ProcessInput": CGameMode_ProcessInput
     };
 
     var data = exe.insertAsmFile("", vars);
