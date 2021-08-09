@@ -57,7 +57,7 @@ function hooks_initHook(patchAddr, matchFunc, searchAddrFunc)
         consoleLog("hooks.initHook found existing hook");
         var obj = storage.hooks[patchAddr];
         if (obj.matchFunc !== matchFunc)
-            throw "Other type of hook registered for address: 0x" + pe.rawToVa(patchAddr).toString(16);
+            fatalError("Other type of hook registered for address: 0x" + pe.rawToVa(patchAddr).toString(16));
         return obj;
     }
     else
@@ -67,7 +67,7 @@ function hooks_initHook(patchAddr, matchFunc, searchAddrFunc)
     }
 
     if (obj.endHook !== true)
-        throw "Not supported endHook value: " + obj.endHook;
+        fatalError("Not supported endHook value: " + obj.endHook);
 
     function createEntry(text, vars)
     {
@@ -145,7 +145,7 @@ function hooks_applyFinal(obj, dryRun)
 {
     consoleLog("hooks.applyFinal start");
     if (obj.endHook !== true)
-        throw "Not supported endHook value: " + obj.endHook;
+        fatalError("Not supported endHook value: " + obj.endHook);
 
     if (typeof(dryRun) === "undefined")
         dryRun = false;
@@ -193,7 +193,7 @@ function hooks_applyFinal(obj, dryRun)
 
     var sz = obj.allEntries.length;
     if (sz == 0)
-        throw "No entried in hook object";
+        fatalError("No entried in hook object");
 
     consoleLog("hooks.applyFinal initial jmp");
     if (dryRun !== true)
@@ -212,7 +212,7 @@ function hooks_applyFinal(obj, dryRun)
     var lastEntry = obj.allEntries[sz - 1];
     if (lastEntry.isFinal === false)
     {
-        throw "Not supported non final last entry";
+        fatalError("Not supported non final last entry");
     }
 }
 

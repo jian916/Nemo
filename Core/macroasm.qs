@@ -121,14 +121,14 @@ function macroAsm_addMacroses()
         }
         if (!(arg in table))
         {
-            throw "Variable " + arg + " not in table";
+            fatalError("Variable " + arg + " not in table");
         }
         var value = table.getValidated(table[arg]);
         if (varName in obj.vars)
         {
             if (obj.vars[varName] !== value)
             {
-                throw "Asm variable " + arg + " already exists: " + obj.vars[varName] + " vs " + table[arg];
+                fatalError("Asm variable " + arg + " already exists: " + obj.vars[varName] + " vs " + table[arg]);
             }
         }
         obj.vars[varName] = value;

@@ -38,11 +38,7 @@ function registerLua()
     function lua_getCLuaLoadInfo(stackOffset)
     {
         checkArgs("lua.getCLuaLoadInfo", arguments, [["Number"]]);
-        var type = table.get(table.CLua_Load_type);
-        if (type == 0)
-        {
-            throw "CLua_Load type not set";
-        }
+        var type = table.getValidated(table.CLua_Load_type);
         var obj = new Object();
         obj.type = type;
         obj.pushLine = "push dword ptr [esp + argsOffset + " + stackOffset + "]";
@@ -72,7 +68,7 @@ function registerLua()
         }
         else
         {
-            throw "Unsupported CLua_Load type";
+            fatalError("Unsupported CLua_Load type");
         }
 
         return obj;
@@ -96,12 +92,7 @@ function registerLua()
         var strHex = origOffset.packToHex(4);
 
         consoleLog("Find original file name usage");
-        var type = table.get(table.CLua_Load_type);
-        if (type === 0)
-        {
-            throw "CLua_Load type not set";
-        }
-
+        var type = table.getValidated(table.CLua_Load_type);
         var mLuaAbsHex = table.getSessionAbsHex4(table.CSession_m_lua_offset);
         var mLuaHex = table.getHex4(table.CSession_m_lua_offset);
         var CLua_Load = table.get(table.CLua_Load);
@@ -229,7 +220,7 @@ function registerLua()
         }
         else
         {
-            throw "Unsupported CLua_Load type";
+            fatalError("Unsupported CLua_Load type");
         }
 
         if (hookLoader === -1)

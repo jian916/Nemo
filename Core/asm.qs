@@ -70,17 +70,17 @@ function asm_textToHexLength(commands, vars)
 
     var size = asm.textToHexVaLength(0, commands, vars);
     if (size === false)
-        throw "Asm code error1";
+        fatalError("Asm code error1");
 
     var size2 = asm.textToHexVaLength(0x5000000, commands, vars);
     if (size2 === false)
-        throw "Asm code error2";
+        fatalError("Asm code error2");
     if (size2 > size)
         size = size2;
 
     size2 = asm.textToHexVaLength(0xf000000, commands, vars);
     if (size2 === false)
-        throw "Asm code error3";
+        fatalError("Asm code error3");
     if (size2 > size)
         size = size2;
 
@@ -173,7 +173,7 @@ function asm_loadHex(fileName)
         fileName = patch.getName();
     var file = new BinFile();
     if (!file.open(APP_PATH + "/Patches/asm/" + fileName + ".asm"))
-        throw "Cant load asm file: " + fileName;
+        fatalError("Cant load asm file: " + fileName);
     var text = file.readHex(0, 0);
     file.close();
     return text;

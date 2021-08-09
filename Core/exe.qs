@@ -24,13 +24,13 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
     };
     var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
     if (code === false)
-        throw "Jmp code error";
+        fatalError("Jmp code error");
 
     if (typeof(codeLen) !== "undefined")
     {
         var sz = code.hexlength();
         if (sz > codeLen)
-            throw "Jmp Code bigger than requested";
+            fatalError("Jmp Code bigger than requested");
         for (var i = 0; i < codeLen - sz; i ++)
         {
             code = code + " 90";
@@ -69,16 +69,16 @@ function exe_insertAsmText(commands, vars, freeSpace)
         freeSpace = 0;
     var size = asm.textToHexLength(commands, vars);
     if (size === false)
-        throw "Asm code error1";
+        fatalError("Asm code error1");
 
     size = size + freeSpace;
     var free = exe.findZeros(size);
     if (free === -1)
-        throw "Failed in exe.insertAsm - Not enough free space";
+        fatalError("Failed in exe.insertAsm - Not enough free space");
 
     var obj = asm.textToObjRaw(free, commands, vars);
     if (obj === false)
-        throw "Asm code error";
+        fatalError("Asm code error");
 
     exe.insert(free, size, obj.code, PTYPE_HEX);
     return [free, obj.code, obj.vars];
@@ -92,25 +92,25 @@ function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
         dryRun = false;
     var size = asm.textToHexLength(commands, vars);
     if (size === false)
-        throw "Asm code error";
+        fatalError("Asm code error");
 
     size = size + freeSpace;
     if (patch.getState() !== 2)
     {
         var free = exe.findZeros(size);
         if (free === -1)
-            throw "Failed in exe.insertAsm - Not enough free space";
+            fatalError("Failed in exe.insertAsm - Not enough free space");
     }
     else
     {
         if (storage.zero == 0)
-            throw "Failed in exe.insertAsm - Not enough free space";
+            fatalError("Failed in exe.insertAsm - Not enough free space");
         free = storage.zero;
     }
 
     var obj = asm.textToObjRaw(free, commands, vars);
     if (obj === false)
-        throw "Asm code error";
+        fatalError("Asm code error");
 
     if (dryRun !== true)
     {
@@ -139,7 +139,7 @@ function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
     if (obj === false)
-        throw "Asm code error";
+        fatalError("Asm code error");
 
     exe.replace(patchAddr, obj, PTYPE_HEX);
     return obj;
@@ -183,7 +183,7 @@ function exe_fetchValue(offset, offset2)
     }
     else
     {
-        throw "Unknown size in exe.fetchValue: " + size;
+        fatalError("Unknown size in exe.fetchValue: " + size);
     }
 }
 
@@ -203,10 +203,10 @@ function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
     };
     var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
     if (code === false)
-        throw "Jmp code error";
+        fatalError("Jmp code error");
 
     if (code.hexlength() !== 2)
-        throw cmd + " is not short";
+        fatalError(cmd + " is not short");
 
     exe.replace(patchAddr, code, PTYPE_HEX);
 }

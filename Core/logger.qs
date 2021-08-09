@@ -62,6 +62,13 @@ function consoleLog(message)
     console2.log(message);
 }
 
+function fatalError(text)
+{
+    if (typeof(console2) !== "undefined")
+        console2.fatalError(text);
+    throw text;
+}
+
 function logVaVar(name, offset, offset2)
 {
     if (typeof(console2) === "undefined")
