@@ -20,9 +20,9 @@ push esi
 push edi
 mov esi, dword ptr [esp + 0x8]
 mov edi, buffer
-call func_strcpy
+call simple_strcpy
 mov esi, str_before
-call func_strcpy
+call simple_strcpy
 mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
@@ -46,9 +46,9 @@ push esi
 push edi
 mov esi, dword ptr [esp + 0x8]
 mov edi, buffer
-call func_strcpy
+call simple_strcpy
 mov esi, str_after
-call func_strcpy
+call simple_strcpy
 mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
@@ -60,15 +60,7 @@ _exit_label:
 pop eax
 ret argsOffset
 
-func_strcpy:
-mov al, [esi]
-mov [edi], al
-inc esi
-inc edi
-cmp byte ptr [esi], 0
-jne func_strcpy
-mov byte ptr [edi], 0
-ret
+%include simple_strcpy
 
 str_before:
 db "_before", 0

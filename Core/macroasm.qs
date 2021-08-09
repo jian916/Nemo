@@ -143,6 +143,16 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_include(obj)
+    {
+        var arg = getCmdArg("%include ", obj.line);
+        if (arg === false)
+            return;
+
+        obj.line = asm.load("include/" + arg);
+        obj.update = true;
+    }
+
     function macro_tableVar(obj)
     {
         var arg = getCmdArg("%tablevar ", obj.line);
@@ -210,6 +220,7 @@ function macroAsm_addMacroses()
     }
 
     macroAsm.macroses = [
+        macro_include,
         macro_instAsm,
         macro_instHex,
         macro_instStr,
