@@ -167,7 +167,7 @@ function ChangeMinimalResolutionLimit()
 
     var vars = {
         "retAddr": exe.Raw2Rva(offset + retAdd),
-        "codeIns": asm.hexToAsm(codeIns)
+        "codeIns": codeIns
     };
 
     var data = exe.insertAsmFile("", vars);
