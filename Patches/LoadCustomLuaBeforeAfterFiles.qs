@@ -50,7 +50,7 @@ function LoadCustomLuaBeforeAfterFiles()
         "buffer": buffer,
         "argsOffset": info.argsOffset,
         "asmCopyArgs": info.asmCopyArgs,
-        "stolenCode": asm.hexToAsm(matchObj.stolenCode),
+        "stolenCode": matchObj.stolenCode,
         "strBefore": asm.stringToAsm("_before\x00"),
         "strAfter": asm.stringToAsm("_after\x00")
     }

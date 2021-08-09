@@ -27,7 +27,7 @@ mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
 push _normal_label
-%insasm stolenCode
+%inshex stolenCode
 jmp continueItemAddr
 
 _normal_label:
@@ -35,7 +35,7 @@ pop ecx
 push ecx
 %insasm asmCopyArgs
 push _after_label
-%insasm stolenCode
+%inshex stolenCode
 jmp continueItemAddr
 
 _after_label:
@@ -53,7 +53,7 @@ mov dword ptr [esp + 0x8], buffer
 pop edi
 pop esi
 push _exit_label
-%insasm stolenCode
+%inshex stolenCode
 jmp continueItemAddr
 
 _exit_label:
