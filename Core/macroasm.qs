@@ -93,7 +93,21 @@ function macroAsm_addMacroses()
     {
         if (line.indexOf(cmd) !== 0)
             return false;
-        return line.substring(cmd.length);
+        return line.substring(cmd.length).trim();
+    }
+
+    function getCmdArgs(cmd, line)
+    {
+        if (line.indexOf(cmd) !== 0)
+            return false;
+        line = line.substring(cmd.length);
+        var args = line.match(/(?:[^,"]+|"[^"]*")+/g);
+        var args2 = [];
+        for (var i = 0; i < args.length; i ++)
+        {
+            args2.push(args[i].trim());
+        }
+        return args2;
     }
 
     function macro_instAsm(obj)
@@ -158,11 +172,49 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_db(obj)
+    {
+        var args = getCmdArgs("db ", obj.line);
+        if (args === false)
+            return;
+
+        if (args.length == 1)
+        {
+            // if one arg and not string, then skip parsing
+            if (args[0][0] != "\"")
+                return;
+        }
+
+        var line = "";
+        for (var i = 0; i < args.length; i ++)
+        {
+            var arg = args[i];
+            var sz = arg.length;
+            if (sz < 1)
+                fatalError("Wrong macro asm line1: " + obj.line);
+            if (arg[0] === "\"")
+            {
+                if (sz < 3)
+                    fatalError("Wrong macro asm line2: " + obj.line);
+                if (arg[sz - 1] !== "\"")
+                    fatalError("Wrong macro asm line3: " + obj.line);
+                arg = arg.substring(1, sz - 1);
+                line += asm.stringToAsm(arg) + "\n";
+                continue;
+            }
+            var arg = parseInt(arg).packToHex(1);
+            line += asm.hexToAsm(arg);
+        }
+        obj.line = line;
+        obj.update = true;
+    }
+
     macroAsm.macroses = [
         macro_instAsm,
         macro_instHex,
         macro_instStr,
         macro_tableVar,
+        macro_db
     ];
 }
 
