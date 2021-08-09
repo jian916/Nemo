@@ -59,11 +59,9 @@ function EnableEmblemForBG_Small(offset)
     consoleLog("Add own check code");
 
     var vars = {
-        "g_session": table.get(table.g_session),
         "continueAddr": exe.fetchRelativeValue(offset, [continueOffset, 1]),
         "drawAddr": exe.Raw2Rva(offset + drawOffset),
         "CSession_IsSiegeMode": exe.fetchRelativeValue(offset, [IsSiegeModeOffset, 4]),
-        "CSession_IsBattleFieldMode": table.get(table.CSession_IsBattleFieldMode)
     };
     var data = exe.insertAsmFile("", vars);
 
