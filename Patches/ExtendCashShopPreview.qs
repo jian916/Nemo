@@ -106,7 +106,7 @@ function ExtendCashShopPreview()
         "next": next,
         "block_size": blockSize,
         "register": register,
-        "stolenCode": asm.hexToAsm(stolenCode)
+        "stolenCode": stolenCode
     };
 
     var data = exe.insertAsmFile("ExtendCashShopPreview_" + name, vars);

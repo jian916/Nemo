@@ -17,7 +17,7 @@
 %tablevar location = ITEM_INFO_location
 %tablevar view_sprite = ITEM_INFO_view_sprite
 
-%insasm stolenCode
+%inshex stolenCode
 push eax
 movzx eax, word ptr [{register} + block_size]
 mov [ebp + itemInfo + view_sprite], eax
