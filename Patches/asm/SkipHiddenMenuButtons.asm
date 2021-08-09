@@ -22,7 +22,7 @@ jne _continue1
 jmp continueAddr
 
 _continue1:
-%insasm stolenCode  // cmp ebx, 0A9
+%inshex stolenCode  // cmp ebx, 0A9
 jne _continue2
 jmp a9JmpAddr
 

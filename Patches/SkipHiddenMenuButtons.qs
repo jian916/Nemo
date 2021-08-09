@@ -279,7 +279,7 @@ function SkipHiddenMenuButtons()
         "a9JmpAddr": a9JmpAddr,
         "nonA9JmpAddr": nonA9JmpAddr,
         "regName": regName,
-        "stolenCode": asm.hexToAsm(exe.fetchHex(patchAddr, stoleSize))
+        "stolenCode": exe.fetchHex(patchAddr, stoleSize)
     };
     var data = exe.insertAsmFile("", vars);
 
