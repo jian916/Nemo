@@ -49,8 +49,12 @@ function macroAsm_replaceCmds(obj)
     for (var i = 0; i < parts.length; i ++)
     {
         obj.line = parts[i].trim();
-        macroAsm_macro_instAsm(obj);
-        macroAsm_macro_instHex(obj);
+        for (var j = 0; j < macroAsm.macroses.length; j ++)
+        {
+            macroAsm.macroses[j](obj);
+        }
+        if (obj.line === "")
+            continue;
         text += obj.line + "\n";
     }
     obj.line = "";
@@ -67,38 +71,76 @@ function macroAsm_replaceVar(obj, name, value)
     }
 }
 
-function macroAsm_getCmdArg(cmd, line)
-{
-    if (cmd.indexOf(cmd) != 0)
-        return false;
-    return line.substring(cmd.length);
-}
-
-function macroAsm_macro_instAsm(obj)
-{
-    var arg = macroAsm_getCmdArg("%insasm ", obj.line);
-    if (arg === false)
-        return;
-    if (!(arg in obj.vars))
-        return;
-    obj.line = obj.vars[arg];
-    obj.update = true;
-}
-
-function macroAsm_macro_instHex(obj)
-{
-    var arg = macroAsm_getCmdArg("%inshex ", obj.line);
-    if (arg === false)
-        return;
-    if (!(arg in obj.vars))
-        return;
-    obj.line = asm.hexToAsm(obj.vars[arg]);
-    obj.update = true;
-}
-
 function macroAsm_removeComments(obj)
 {
     obj.text = obj.text.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n");
+}
+
+function macroAsm_addMacroses()
+{
+    function getCmdArg(cmd, line)
+    {
+        if (line.indexOf(cmd) !== 0)
+            return false;
+        return line.substring(cmd.length);
+    }
+
+    function macro_instAsm(obj)
+    {
+        var arg = getCmdArg("%insasm ", obj.line);
+        if (arg === false)
+            return;
+        if (!(arg in obj.vars))
+            return;
+        obj.line = obj.vars[arg];
+        obj.update = true;
+    }
+
+    function macro_instHex(obj)
+    {
+        var arg = getCmdArg("%inshex ", obj.line);
+        if (arg === false)
+            return;
+        if (!(arg in obj.vars))
+            return;
+        obj.line = asm.hexToAsm(obj.vars[arg]);
+        obj.update = true;
+    }
+
+    function macro_tableVar(obj)
+    {
+        var arg = getCmdArg("%tablevar ", obj.line);
+        if (arg === false)
+            return;
+        var idx = arg.indexOf("=");
+        var varName = arg;
+        if (idx > 0)
+        {
+            varName = arg.substring(0, idx).trim();
+            arg = arg.substring(idx + 1).trim();
+        }
+        if (!(arg in table))
+        {
+            throw "Variable " + arg + " not in table";
+        }
+        var value = table.getValidated(table[arg]);
+        if (varName in obj.vars)
+        {
+            if (obj.vars[varName] !== value)
+            {
+                throw "Asm variable " + arg + " already exists: " + obj.vars[varName] + " vs " + table[arg];
+            }
+        }
+        obj.vars[varName] = value;
+        obj.line = "";
+        obj.update = true;
+    }
+
+    macroAsm.macroses = [
+        macro_instAsm,
+        macro_instHex,
+        macro_tableVar,
+    ];
 }
 
 function registerMacroAsm()
@@ -108,7 +150,7 @@ function registerMacroAsm()
     macroAsm.replaceVar = macroAsm_replaceVar;
     macroAsm.replaceVars = macroAsm_replaceVars;
     macroAsm.removeComments = macroAsm_removeComments;
-    macroAsm.getCmdArg = macroAsm_getCmdArg;
-    macroAsm.macro_instAsm = macroAsm_macro_instAsm;
-    macroAsm.macro_instHex = macroAsm_macro_instHex;
+    macroAsm.addMacroses = macroAsm_addMacroses;
+
+    macroAsm_addMacroses();
 }
