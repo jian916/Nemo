@@ -25,8 +25,6 @@ function ExtendCashShopPreview()
     var offset2 = table.getRawValidated(table.cashShopPreviewPatch2);
     var offset3 = table.getRaw(table.cashShopPreviewPatch3);
 
-    var location = table.getValidated(table.ITEM_INFO_location);
-    var viewSprite = table.getValidated(table.ITEM_INFO_view_sprite);
     var flag = table.get(table.cashShopPreviewFlag);
 
     consoleLog("search first pattern");
@@ -104,8 +102,6 @@ function ExtendCashShopPreview()
         var name = "0";
     var vars = {
         "continueItemAddr": pe.rawToVa(offset1 + stolenCodeSize),
-        "location": location,
-        "view_sprite": viewSprite,
         "itemInfo": exe.fetchValue(offset1, itemInfoOffset),
         "next": next,
         "block_size": blockSize,
