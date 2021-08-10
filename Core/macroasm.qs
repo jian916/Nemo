@@ -28,25 +28,25 @@ function macroAsm_create(addrVa, commands, vars)
 
 function macroAsm_convert(obj)
 {
-    obj.update = true;
-    while (obj.update)
-    {
-        obj.update = false;
-        macroAsm_replaceVars(obj);
-    }
     macroAsm_replaceCmds(obj);
 }
 
 function macroAsm_replaceVars(obj)
 {
+    if (obj.line.indexOf("{") < 0)
+        return;
+
     var vars = obj.vars;
-    macroAsm_removeComments(obj);
-    for (var name in vars)
+    obj.update = true;
+    while (obj.update)
     {
-        var value = vars[name];
-        if (typeof(value) !== "string")
-            continue;
-        macroAsm_replaceVar(obj, name, value);
+        obj.update = false;
+
+        for (var name in vars)
+        {
+            var value = vars[name];
+            macroAsm_replaceVar(obj, name, value);
+        }
     }
 }
 
@@ -62,7 +62,9 @@ function macroAsm_replaceCmds(obj)
     while (i < parts.length)
     {
         obj.line = parts[i].trim();
-        var tmp = parts[i];
+        macroAsm_removeComments(obj);
+        macroAsm_replaceVars(obj);
+
         for (var j = 0; j < macroAsm.macroses.length; j ++)
         {
             macroAsm.macroses[j](obj);
@@ -96,10 +98,10 @@ function macroAsm_replaceCmds(obj)
 
 function macroAsm_replaceVar(obj, name, value)
 {
-    var text = obj.text.replaceAll("{" + name + "}", value);
-    if (text != obj.text)
+    var line = obj.line.replaceAll("{" + name + "}", value);
+    if (line != obj.line)
     {
-        obj.text = text;
+        obj.line = line;
         obj.update = true;
     }
 }
@@ -116,7 +118,7 @@ function macroAsm_addNewLine(text)
 
 function macroAsm_removeComments(obj)
 {
-    obj.text = obj.text.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n");
+    obj.line = obj.line.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n");
 }
 
 function macroAsm_addMacroses()
