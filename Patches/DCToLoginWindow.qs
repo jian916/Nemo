@@ -28,7 +28,7 @@ function DCToLoginWindow()
   //******* First we will work on DC during Login/Char Selection screens ********//
 
   //Step 2a - Find the format string address
-  var offset = exe.findString("%s(%d)", RVA);
+  var offset = pe.stringVa("%s(%d)");
   if (offset === -1)
     return "Failed in Part 2 - Format string missing";
 
@@ -96,7 +96,7 @@ function DCToLoginWindow()
   + " 6A 00".repeat(zeroPushes.length)        //PUSH 0 - n times
   + " 68 1D 27 00 00"                         //PUSH 271D
   + " C7 41 0C 03 00 00 00"                   //MOV DWORD PTR DS:[ECX+0C],3
-  + " 68" + exe.Raw2Rva(offset2).packToHex(4) //PUSH offset2
+  + " 68" + pe.rawToVa(offset2).packToHex(4)  //PUSH offset2
   + " FF 60 18"                               //JMP DWORD PTR DS:[EAX+18]
   ;
 
@@ -109,7 +109,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 3d - Change the MOV ECX to a JMP to above code
-  exe.replace(offset, " 90 E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 6)).packToHex(4), PTYPE_HEX);
+  exe.replace(offset, " 90 E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 6)).packToHex(4), PTYPE_HEX);
 
   //******* Next we will work on DC during Gameplay *******//
 
@@ -194,7 +194,7 @@ function DCToLoginWindow()
   + " 8B 01"                                  //MOV EAX, DWORD PTR DS:[ECX]
   + " 6A 00".repeat(zeroPushes.length)        //PUSH 0 - n times
   + " 68 8D 00 00 00"                         //PUSH 8D
-  + " 68" + exe.Raw2Rva(offset2).packToHex(4) //PUSH offset2
+  + " 68" + pe.rawToVa(offset2).packToHex(4)  //PUSH offset2
   + " FF 60 18"                               //JMP DWORD PTR DS:[EAX+18]
   ;
 
@@ -207,7 +207,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 5d - Replace the code at offset with JMP to our code.
-  exe.replace(joffset, " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(joffset + 5)).packToHex(4), PTYPE_HEX);
+  exe.replace(joffset, " E9" + (pe.rawToVa(free) - pe.rawToVa(joffset + 5)).packToHex(4), PTYPE_HEX);
 
   return true;
 }
