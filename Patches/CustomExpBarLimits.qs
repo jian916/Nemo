@@ -55,7 +55,7 @@ function CustomExpBarLimits()
 
   //Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable
   var gSession = exe.fetchDWord(offset + 1);
-  var jobIdFunc = exe.Raw2Rva(offset + 10) + exe.fetchDWord(offset + 6);
+  var jobIdFunc = pe.rawToVa(offset + 10) + exe.fetchDWord(offset + 6);
   var baseBegin = offset;
 
   offset += code.hexlength() + suffix.hexlength();
@@ -259,17 +259,17 @@ function CustomExpBarLimits()
     return "Failed in Step 5 - Not enough free space";
 
   //Step 5c - Setup tblAddr
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
   var tblAddr = baseBegin + code.hexlength() + 4;
 
   //Step 5d - Fill in the blanks
   code = code.replace(/ XX/g, funcOff.packToHex(1));
 
   code = ReplaceVarHex(code, 1, gSession);
-  code = ReplaceVarHex(code, 2, jobIdFunc - exe.Raw2Rva(baseBegin + 12));
+  code = ReplaceVarHex(code, 2, jobIdFunc - pe.rawToVa(baseBegin + 12));
 
-  code = ReplaceVarHex(code, 3, exe.Raw2Rva(tblAddr));
-  code = ReplaceVarHex(code, 4, exe.Raw2Rva(tblAddr - 4));//defAddr = tblAddr - 4
+  code = ReplaceVarHex(code, 3, pe.rawToVa(tblAddr));
+  code = ReplaceVarHex(code, 4, pe.rawToVa(tblAddr - 4));//defAddr = tblAddr - 4
 
   code = ReplaceVarHex(code, 5, gLevel);
   code = ReplaceVarHex(code, [6,7] , [gNoBase, gBarOn]);
