@@ -33,8 +33,8 @@ function macroAsm_convert(obj)
     {
         obj.update = false;
         macroAsm_replaceVars(obj);
-        macroAsm_replaceCmds(obj);
     }
+    macroAsm_replaceCmds(obj);
 }
 
 function macroAsm_replaceVars(obj)
@@ -57,16 +57,38 @@ function macroAsm_replaceCmds(obj)
 
     var parts = obj.text.split("\n");
     var text = "";
-    for (var i = 0; i < parts.length; i ++)
+    var i = 0;
+    var reparse = false;
+    while (i < parts.length)
     {
         obj.line = parts[i].trim();
+        var tmp = parts[i];
         for (var j = 0; j < macroAsm.macroses.length; j ++)
         {
             macroAsm.macroses[j](obj);
+            if (obj.update)
+            {
+                obj.update = false;
+                var parts2 = obj.line.split("\n");
+                if (i > 0)
+                {
+                    parts = parts.slice(0, i).concat(parts2).concat(parts.slice(i + 1));
+                }
+                else
+                {
+                    parts = parts2.concat(parts.slice(i + 1));
+                }
+                obj.line = "";
+                reparse = true;
+                break;
+            }
         }
-        if (obj.line === "")
-            continue;
-        text += macroAsm_addNewLine(obj.line);
+        if (obj.line !== "")
+            text += macroAsm_addNewLine(obj.line);
+        if (reparse)
+            reparse = false;
+        else
+            i ++;
     }
     obj.line = "";
     obj.text = text;
@@ -126,7 +148,10 @@ function macroAsm_addMacroses()
         if (arg === false)
             return;
         if (!(arg in obj.vars))
+        {
+            fatalError("Variable " + arg + " not in vars");
             return;
+        }
         obj.line = obj.vars[arg];
         obj.update = true;
     }
@@ -137,8 +162,12 @@ function macroAsm_addMacroses()
         if (arg === false)
             return;
         if (!(arg in obj.vars))
+        {
+            fatalError("Variable " + arg + " not in vars");
             return;
+        }
         obj.line = asm.hexToAsm(obj.vars[arg]);
+        obj.update = true;
     }
 
     function macro_instStr(obj)
@@ -147,8 +176,12 @@ function macroAsm_addMacroses()
         if (arg === false)
             return;
         if (!(arg in obj.vars))
+        {
+            fatalError("Variable " + arg + " not in vars");
             return;
+        }
         obj.line = asm.stringToAsm(obj.vars[arg]);
+        obj.update = true;
     }
 
     function macro_include(obj)
@@ -223,6 +256,7 @@ function macroAsm_addMacroses()
             line += asm.hexToAsm(arg);
         }
         obj.line = line;
+        obj.update = true;
     }
 
     macroAsm.macroses = [
