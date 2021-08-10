@@ -42,7 +42,7 @@ function FixChatAt()
       return "Failed in Step 2 - Function call missing";
 
     //Step 2b - Extract the called address (RVA).
-    var func = exe.Raw2Rva(offset + 7) + exe.fetchDWord(offset + 3);
+    var func = pe.rawToVa(offset + 7) + exe.fetchDWord(offset + 3);
 
     //Step 3a - Construct our function.
     code =
@@ -79,7 +79,7 @@ function FixChatAt()
     code = ReplaceVarHex(code, 2, func);
 
     //Step 4b - Change called address from func to our function.
-    exe.replaceDWord(offset + 3, exe.Raw2Rva(free) - exe.Raw2Rva(offset + 7));
+    exe.replaceDWord(offset + 3, pe.rawToVa(free) - pe.rawToVa(offset + 7));
 
     //Step 4c - Insert our function
     exe.insert(free, csize, code, PTYPE_HEX);
