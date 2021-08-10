@@ -7,7 +7,7 @@ function DisableHallucinationWavyScreen()
 { //Missing Comparison in pre-2010 clients
 
   //Step 1a - Find offset of 'xmas_fild01.rsw'
-  var offset = exe.findString("xmas_fild01.rsw", RVA);
+  var offset = pe.stringVa("xmas_fild01.rsw");
   if (offset === -1)
     return "Failed in Step 1 - xmas_fild01 not found";
 
