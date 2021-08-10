@@ -5,6 +5,7 @@
   - [exe](api/exe.md)
   - [hooks](api/hooks.md)
   - [lua](api/lua.md)
+  - [macroasm](api/macroasm.md)
   - [patch](api/patch.md)
   - [pe](api/pe.md)
   - [table](api/table.md)
