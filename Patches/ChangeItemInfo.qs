@@ -45,7 +45,7 @@ function ChangeItemInfo()
 
     //Step 3 - Insert the new name and replace the iteminfo reference
     exe.insert(free, myfile.length, "$newItemInfo", PTYPE_STRING);
-    exe.replace(offset+1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+    exe.replace(offset+1, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
 
     return true;
 }
