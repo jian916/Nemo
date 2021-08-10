@@ -53,7 +53,7 @@ function macroAsm_replaceVars(obj)
 function macroAsm_replaceCmds(obj)
 {
     if (obj.text.length === 0)
-        return 0;
+        return;
 
     var parts = obj.text.split("\n");
     var text = "";
@@ -66,7 +66,7 @@ function macroAsm_replaceCmds(obj)
         }
         if (obj.line === "")
             continue;
-        text += obj.line + "\n";
+        text += macroAsm_addNewLine(obj.line);
     }
     obj.line = "";
     obj.text = text;
@@ -80,6 +80,16 @@ function macroAsm_replaceVar(obj, name, value)
         obj.text = text;
         obj.update = true;
     }
+}
+
+function macroAsm_addNewLine(text)
+{
+    var sz = text.length;
+    if (sz < 1)
+        return text;
+    if (text[sz - 1] == "\n")
+        return text;
+    return text + "\n";
 }
 
 function macroAsm_removeComments(obj)
@@ -129,7 +139,6 @@ function macroAsm_addMacroses()
         if (!(arg in obj.vars))
             return;
         obj.line = asm.hexToAsm(obj.vars[arg]);
-        obj.update = true;
     }
 
     function macro_instStr(obj)
@@ -140,7 +149,6 @@ function macroAsm_addMacroses()
         if (!(arg in obj.vars))
             return;
         obj.line = asm.stringToAsm(obj.vars[arg]);
-        obj.update = true;
     }
 
     function macro_include(obj)
@@ -179,7 +187,6 @@ function macroAsm_addMacroses()
         }
         obj.vars[varName] = value;
         obj.line = "";
-        obj.update = true;
     }
 
     function macro_db(obj)
@@ -209,14 +216,13 @@ function macroAsm_addMacroses()
                 if (arg[sz - 1] !== "\"")
                     fatalError("Wrong macro asm line3: " + obj.line);
                 arg = arg.substring(1, sz - 1);
-                line += asm.stringToAsm(arg) + "\n";
+                line += macroAsm_addNewLine(asm.stringToAsm(arg));
                 continue;
             }
             var arg = parseInt(arg).packToHex(1);
             line += asm.hexToAsm(arg);
         }
         obj.line = line;
-        obj.update = true;
     }
 
     macroAsm.macroses = [
@@ -238,6 +244,7 @@ function registerMacroAsm()
     macroAsm.replaceVars = macroAsm_replaceVars;
     macroAsm.removeComments = macroAsm_removeComments;
     macroAsm.addMacroses = macroAsm_addMacroses;
+    macroAsm.addNewLine = macroAsm_addNewLine;
 
     macroAsm_addMacroses();
 }

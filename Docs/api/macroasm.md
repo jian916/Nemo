@@ -77,6 +77,12 @@ Replace inline comments in assembler text.
 
 Register all macro commands in global macro assembler state.
 
+### macroAsm.addNewLine
+
+``macroAsm_addNewLine(text)``
+
+Add new line at end of string if it not present and return string.
+
 
 ## Macro assembler commands
 
