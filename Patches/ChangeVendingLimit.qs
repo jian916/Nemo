@@ -7,11 +7,11 @@ function ChangeVendingLimit()
 {
 
   //Step 1a - Find the address of 1,000,000,000
-  var offset = exe.findString("1,000,000,000", RVA);
+  var offset = pe.stringVa("1,000,000,000");
   if (offset === -1)
     return "Failed in Step 1 - OneB string missing";
 
-  var oneb = exe.Rva2Raw(offset);//Needed later to change the string
+  var oneb = pe.vaToRaw(offset);//Needed later to change the string
 
   //Step 1b - Find its reference
   var offset = pe.findCode("68" + offset.packToHex(4));
@@ -110,5 +110,5 @@ function ChangeVendingLimit()
 //===================================================================//
 function ChangeVendingLimit_()
 {
-  return (exe.findString("1,000,000,000", RAW) !== -1);
+  return (pe.stringRaw("1,000,000,000") !== -1);
 }
