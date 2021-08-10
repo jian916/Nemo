@@ -130,6 +130,14 @@ function macroAsm_addMacroses()
         return line.substring(cmd.length).trim();
     }
 
+    function getCmdArgEq(cmd, line)
+    {
+        if (line.indexOf(cmd) !== 0)
+            return false;
+        line = line.substring(cmd.length).trim();
+        return splitArgEq(line);
+    }
+
     function getCmdArgs(cmd, line)
     {
         if (line.indexOf(cmd) !== 0)
@@ -142,6 +150,19 @@ function macroAsm_addMacroses()
             args2.push(args[i].trim());
         }
         return args2;
+    }
+
+    function splitArgEq(arg)
+    {
+        var idx = arg.indexOf("=");
+        var data0 = arg;
+        var data1 = arg;
+        if (idx > 0)
+        {
+            data0 = arg.substring(0, idx).trim();
+            data1 = arg.substring(idx + 1).trim();
+        }
+        return [data0, data1];
     }
 
     function macro_instAsm(obj)
@@ -198,16 +219,11 @@ function macroAsm_addMacroses()
 
     function macro_tableVar(obj)
     {
-        var arg = getCmdArg("%tablevar ", obj.line);
+        var arg = getCmdArgEq("%tablevar ", obj.line);
         if (arg === false)
             return;
-        var idx = arg.indexOf("=");
-        var varName = arg;
-        if (idx > 0)
-        {
-            varName = arg.substring(0, idx).trim();
-            arg = arg.substring(idx + 1).trim();
-        }
+        var varName = arg[0];
+        var arg = arg[1];
         if (!(arg in table))
         {
             fatalError("Variable " + arg + " not in table");
@@ -221,6 +237,21 @@ function macroAsm_addMacroses()
             }
         }
         obj.vars[varName] = value;
+        obj.line = "";
+    }
+
+    function macro_setVar(obj)
+    {
+        var arg = getCmdArgEq("%setvar ", obj.line);
+        if (arg === false)
+            return;
+        var varName = arg[0];
+        var arg = arg[1];
+        var value = parseInt(arg);
+        if (isNaN(value))
+            obj.vars[varName] = arg;
+        else
+            obj.vars[varName] = value;
         obj.line = "";
     }
 
@@ -267,6 +298,7 @@ function macroAsm_addMacroses()
         macro_instHex,
         macro_instStr,
         macro_tableVar,
+        macro_setVar,
         macro_db
     ];
 }

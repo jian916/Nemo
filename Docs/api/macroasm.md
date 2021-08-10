@@ -124,7 +124,13 @@ Assign to variable ``VAR`` value from table with table variable name ``table.TAB
 
 ``%tablevar TABLEVAR``
 
-Assign to variable ``TABLEVAR`` value from table with table variable name ``table.TABLEVAR``
+Assign to variable ``TABLEVAR`` value from table with table variable name ``table.TABLEVAR``.
+
+### %setvar
+
+``%setvar VAR=VALUE``
+
+Assign to variable ``VAR`` value ``VALUE``.
 
 ### db
 
