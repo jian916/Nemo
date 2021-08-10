@@ -7,7 +7,7 @@ function DisableGameGuard()
 {
 
   //Step 1a - Find the Error String
-  var offset = exe.findString("GameGuard Error: %lu", RVA);
+  var offset = pe.stringVa("GameGuard Error: %lu");
   if (offset === -1)
     return "Failed in Step 1 - GameGuard String missing";
 
@@ -28,7 +28,7 @@ function DisableGameGuard()
   if (offset === -1)
     return "Failed in Step 1 - ProcessFindHack Function missing";
 
-  offset = exe.Raw2Rva(offset);
+  offset = pe.rawToVa(offset);
 
   //Step 2a - Find pattern matching ProcessFindHack call
   code =
@@ -47,7 +47,7 @@ function DisableGameGuard()
 
   for (var i = 0; i < offsets.length; i++)
   {
-    var offset2 = exe.fetchDWord(offsets[i] + 1) + exe.Raw2Rva(offsets[i] + 5);
+    var offset2 = exe.fetchDWord(offsets[i] + 1) + pe.rawToVa(offsets[i] + 5);
     if (offset2 === offset)
     {
       exe.replace(offsets[i], code, PTYPE_HEX);
@@ -59,7 +59,7 @@ function DisableGameGuard()
     return "Failed in Step 2 - No Matched calls are to ProcessFindHack";
 
   //Step 3a - Find address of nProtect string
-  offset = exe.findString("nProtect GameGuard", RVA);
+  offset = pe.stringVa("nProtect GameGuard");
   if (offset === -1)
     return "Failed in Step 3 - nProtect string missing";
 
@@ -100,5 +100,5 @@ function DisableGameGuard()
 //============================//
 function DisableGameGuard_()
 {
-  return (exe.findString("GameGuard Error: %lu", RAW) !== -1);
+  return (pe.stringRaw("GameGuard Error: %lu") !== -1);
 }
