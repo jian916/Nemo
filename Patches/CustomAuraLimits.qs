@@ -68,7 +68,7 @@ function CustomAuraLimits()
 
     //Step 3a - Extract g_session and job Id getter addresses
     var gSession = exe.fetchDWord(cmpBegin + 1);
-    var jobIdFunc = exe.Raw2Rva(cmpBegin + 10) + exe.fetchDWord(cmpBegin + 6);
+    var jobIdFunc = pe.rawToVa(cmpBegin + 10) + exe.fetchDWord(cmpBegin + 6);
 
     //Step 3b - Find the Level address comparison
     code = " A1 ?? ?? ?? 00"; //MOV EAX, DWORD PTR DS:[g_level] ; EAX is later compared with 96
@@ -168,7 +168,7 @@ function CustomAuraLimits()
       return "Failed in Step 4 - g_session reference missing";
 
     //Step 4e - Extract job Id getter address (we dont need the gSession for this one)
-    var jobIdFunc = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
+    var jobIdFunc = pe.rawToVa(offset + 5) + exe.fetchDWord(offset + 1);
 
     //Step 4f - Find the Zero assignment at the end of the function
     code = " C7 86 ?? ?? 00 00 00 00 00 00"; //MOV DWORD PTR DS:[ESI + const], 0
@@ -321,7 +321,7 @@ function CustomAuraLimits()
   if (free === -1)
     return "Failed in Step 6 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 6c - Fill in the blanks
   code = ReplaceVarHex(code, 1, gSession);
@@ -352,7 +352,7 @@ function CustomAuraLimits()
   //Step 7b - Since there was no existing Function CALL, We add a CALL to our function after ECX assignment
     code =
       " 8B CE" //MOV ECX, ESI
-    + " E8" + (freeRva - exe.Raw2Rva(cmpBegin + 7)).packToHex(4) //CALL func
+    + " E8" + (freeRva - pe.rawToVa(cmpBegin + 7)).packToHex(4) //CALL func
     + " EB" + (cmpEnd - (cmpBegin + 9)).packToHex(1) //JMP SHORT cmpEnd
     ;
 
@@ -362,7 +362,7 @@ function CustomAuraLimits()
   {
     //Step 7c - Find the function call... again and replace it with a CALL to our Function
     offset = pe.find(" E8 ?? ?? ?? FF", cmpBegin, cmpBegin + 0x30);
-    exe.replaceDWord(offset + 1, freeRva - exe.Raw2Rva(offset + 5));
+    exe.replaceDWord(offset + 1, freeRva - pe.rawToVa(offset + 5));
 
     offset += 5;
 
