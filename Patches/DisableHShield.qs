@@ -8,7 +8,7 @@ delete Import_Info;  // Removing any stray values before Patches are selected
 function DisableHShield()
 {
     consoleLog("Step 1a - Search string 'webclinic.ahnlab.com'");
-    var offset = exe.findString("webclinic.ahnlab.com", RVA);
+    var offset = pe.stringVa("webclinic.ahnlab.com");
 
     if (offset === -1)
         return "Failed in Step 1a - String not found";
@@ -69,7 +69,7 @@ function DisableHShield()
     }
 
     consoleLog("Step 3a - Search failure message - this is there in newer clients");
-    offset = exe.findString("CHackShieldMgr::Monitoring() failed", RVA);
+    offset = pe.stringVa("CHackShieldMgr::Monitoring() failed");
 
     if (offset !== -1)
     {
@@ -103,7 +103,7 @@ function DisableHShield()
     }
 
     consoleLog("Step 4a - Search address of 'ERROR'");
-    offset = exe.findString("ERROR", RVA);
+    offset = pe.stringVa("ERROR");
 
     if (offset === -1)
         return "Failed in Step 4a - String not found";
@@ -159,13 +159,13 @@ function DisableHShield()
         return true;
 
     consoleLog("Step 5a - Search address of the 'aossdk.dll'");
-    var aOffset = exe.findString("aossdk.dll", PTYPE_STRING, false);
+    var aOffset = pe.stringRaw("aossdk.dll");
 
     if (aOffset === -1)
         return "Failed in Step 5a - String not found";
 
     consoleLog("Step 5b - Construct the Image Descriptor Pattern (Relative Virtual Address prefixed by 8 zeros)");
-    aOffset = "00 ".repeat(8) + (exe.Raw2Rva(aOffset) - exe.getImageBase()).packToHex(4);
+    aOffset = "00 ".repeat(8) + (pe.rawToVa(aOffset) - exe.getImageBase()).packToHex(4);
 
     consoleLog("Step 5c - Check for Use Custom DLL patch needed since it modifies the import table location");
     var hasCustomDLL = (getActivePatches().indexOf(211) !== -1);
@@ -214,7 +214,7 @@ function DisableHShield()
         for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
         {
             consoleLog("Step 5e - Get the DLL Name for the import entry");
-            offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
+            offset2 = pe.vaToRaw(exe.fetchDWord(offset + 12) + exe.getImageBase());
             var offset3 = pe.find("00 ", offset2);
             var curDLL = exe.fetch(offset2, offset3 - offset2);
 
@@ -241,7 +241,7 @@ function DisableHShield()
 //=======================================================//
 function DisableHShield_()
 {
-    return (exe.findString("aossdk.dll", RAW) !== -1);
+    return (pe.stringRaw("aossdk.dll") !== -1);
 }
 
 //###########################################################################
