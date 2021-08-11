@@ -21,6 +21,7 @@ function macroAsm_create(addrVa, commands, vars)
     obj.addrVa = addrVa;
     obj.text = commands;
     obj.vars = vars;
+    obj.defines = {};
     obj.line = "";
     obj.update = false;
     return obj;
@@ -253,6 +254,12 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_def(obj, cmd, arg)
+    {
+        obj.defines[arg[0]] = arg[1];
+        obj.line = "";
+    }
+
     function macro_removeComments(obj, cmd)
     {
         var oldLine = obj.line;
@@ -280,9 +287,26 @@ function macroAsm_addMacroses()
         }
     }
 
+    function macro_replaceDefs(obj, cmd)
+    {
+        var defines = obj.defines;
+        for (var name in defines)
+        {
+            var value = defines[name];
+            var line = obj.line.replaceAll(name, value);
+            if (line != obj.line)
+            {
+                obj.line = line;
+                obj.update = true;
+            }
+        }
+    }
+
     macroAsm.macroses = [
         [macro_removeComments, undefined,   undefined,       undefined],
         [macro_replaceVars,    undefined,   undefined,       undefined],
+        [macro_replaceDefs,    undefined,   undefined,       undefined],
+        [macro_def,            "%def",      parse_cmd_argEq, undefined],
         [macro_include,        "%include",  parse_cmd_arg,   undefined],
         [macro_instAsm,        "%insasm",   parse_cmd_arg,   check_arg_var],
         [macro_instHex,        "%inshex",   parse_cmd_arg,   check_arg_var],

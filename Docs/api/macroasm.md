@@ -59,7 +59,7 @@ Add new line at end of string if it not present and return string.
 
 ## Macro assembler commands
 
-### {}
+### {VARIABLE}
 
 ``{VARIABLE}``
 
@@ -104,6 +104,12 @@ Assign to variable ``TABLEVAR`` value from table with table variable name ``tabl
 ``%setvar VAR=VALUE``
 
 Assign to variable ``VAR`` value ``VALUE``.
+
+### %def
+
+``%def VAR=VALUE``
+
+Register define for replace in all code ``VAR`` to ``VALUE``.
 
 ### db
 
