@@ -18,7 +18,7 @@ Convert simple assembler text into bytes sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns array.
 
@@ -38,7 +38,7 @@ Convert assembler text with macroses into bytes sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns array.
 
@@ -78,7 +78,7 @@ Convert assembler text into bytes sequence and put into object.
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns object.
 
@@ -100,7 +100,7 @@ Convert assembler text into bytes sequence and put into object.
 | commands | Assembler text with commands |
 | vars     | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns object.
 
@@ -122,7 +122,7 @@ Convert assembler text into bytes sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns bytes sequence in hex format.
 
@@ -138,7 +138,7 @@ Convert assembler text into bytes sequence and return length of sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns sequence size.
 
@@ -153,7 +153,7 @@ Convert assembler text into bytes sequence and return length of sequence. Checke
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns sequence size.
 
@@ -169,7 +169,7 @@ Convert assembler text into bytes sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns bytes sequence in hex format.
 
@@ -185,7 +185,7 @@ Convert assembler text into bytes sequence and return length of sequence.
 | commands  | Assembler text with commands |
 | vars      | Variables for assembler text |
 
-If error happened, returns **false**.
+If error happened, throw error.
 
 In other case returns sequence size.
 

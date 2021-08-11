@@ -23,9 +23,6 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
         "offset": jmpAddrVa,
     };
     var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
-    if (code === false)
-        fatalError("Jmp code error");
-
     if (typeof(codeLen) !== "undefined")
     {
         var sz = code.hexlength();
@@ -67,19 +64,12 @@ function exe_insertAsmText(commands, vars, freeSpace)
 {
     if (typeof(freeSpace) === "undefined")
         freeSpace = 0;
-    var size = asm.textToHexLength(commands, vars);
-    if (size === false)
-        fatalError("Asm code error1");
-
-    size = size + freeSpace;
+    var size = asm.textToHexLength(commands, vars) + freeSpace;
     var free = exe.findZeros(size);
     if (free === -1)
         fatalError("Failed in exe.insertAsm - Not enough free space");
 
     var obj = asm.textToObjRaw(free, commands, vars);
-    if (obj === false)
-        fatalError("Asm code error");
-
     exe.insert(free, size, obj.code, PTYPE_HEX);
     return [free, obj.code, obj.vars];
 }
@@ -90,11 +80,7 @@ function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
         freeSpace = 0;
     if (typeof(dryRun) === "undefined")
         dryRun = false;
-    var size = asm.textToHexLength(commands, vars);
-    if (size === false)
-        fatalError("Asm code error");
-
-    size = size + freeSpace;
+    var size = asm.textToHexLength(commands, vars) + freeSpace;
     if (patch.getState() !== 2)
     {
         var free = exe.findZeros(size);
@@ -109,9 +95,6 @@ function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
     }
 
     var obj = asm.textToObjRaw(free, commands, vars);
-    if (obj === false)
-        fatalError("Asm code error");
-
     if (dryRun !== true)
     {
         if (patch.getState() !== 2)
@@ -138,9 +121,6 @@ function exe_insertAsmFile(fileName, vars, freeSpace, dryRun)
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
-    if (obj === false)
-        fatalError("Asm code error");
-
     exe.replace(patchAddr, obj, PTYPE_HEX);
     return obj;
 }
@@ -202,9 +182,6 @@ function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
         "offset": jmpAddrVa,
     };
     var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
-    if (code === false)
-        fatalError("Jmp code error");
-
     if (code.hexlength() !== 2)
         fatalError(cmd + " is not short");
 

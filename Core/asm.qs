@@ -19,8 +19,6 @@ function asm_textToObjVa(addrVa, commands, vars)
 {
     checkArgs("asm.textToObjVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
     var ret = asm_textToBytes(addrVa, commands, vars);
-    if (ret === false)
-        return false;
     var obj = new Object();
     obj.bytes = ret[0];
     obj.code = obj.bytes.toHex();
@@ -38,8 +36,6 @@ function asm_textToHexVa(addrVa, commands, vars)
 {
     checkArgs("asm.textToHexVa", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
     var ret = asm_textToBytes(addrVa, commands, vars);
-    if (ret === false)
-        return false;
     return ret[0].toHex();
 }
 
@@ -53,8 +49,6 @@ function asm_textToHexVaLength(addrVa, commands, vars)
 {
     checkArgs("asm.textToHexVaLength", arguments, [["Number", "Object", "Object"], ["Number", "String", "Object"]]);
     var ret = asm_textToBytes(addrVa, commands, vars);
-    if (ret === false)
-        return false;
     return ret[0].length;
 }
 
@@ -69,18 +63,10 @@ function asm_textToHexLength(commands, vars)
     checkArgs("asm.textToHexLength", arguments, [["Object", "Object"], ["String", "Object"]]);
 
     var size = asm.textToHexVaLength(0, commands, vars);
-    if (size === false)
-        fatalError("Asm code error1");
-
     var size2 = asm.textToHexVaLength(0x5000000, commands, vars);
-    if (size2 === false)
-        fatalError("Asm code error2");
     if (size2 > size)
         size = size2;
-
     size2 = asm.textToHexVaLength(0xf000000, commands, vars);
-    if (size2 === false)
-        fatalError("Asm code error3");
     if (size2 > size)
         size = size2;
 
@@ -189,7 +175,12 @@ function asm_textToBytes(addrVa, commands, vars)
 {
     var obj = new macroAsm.create(addrVa, commands, vars)
     macroAsm.convert(obj);
-    return asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars);
+    var res = asm.textToBytesInternal(obj.addrVa, obj.text, obj.vars);
+    if (res === false)
+    {
+        fatalError("Asm compilation failed:\n-----------------\n" + obj.text + "\n-----------------\n");
+    }
+    return res;
 }
 
 function registerAsm()
