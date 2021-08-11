@@ -116,3 +116,10 @@ Register define for replace in all code ``VAR`` to ``VALUE``.
 ``db arg[, arg, ...]``
 
 Allow put into assembler any bytes or strings given in arguments.
+
+
+### asciz
+
+``asciz "string without null terminator"``
+
+Allow put string into assembler. After string add null terminate char.

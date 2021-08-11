@@ -254,6 +254,20 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_asciz(obj, cmd, arg)
+    {
+        if (arg[0] != "\"")
+            fatalError("Not string in asm command: " + cmd);
+        var sz = arg.length;
+        if (sz < 3)
+            fatalError("Wrong macro asm line2: " + obj.line);
+        if (arg[sz - 1] !== "\"")
+            fatalError("Wrong macro asm line3: " + obj.line);
+        arg = arg.substring(1, sz - 1);
+        obj.line = macroAsm_addNewLine(asm.stringToAsm(arg) + "db 0");
+        obj.update = true;
+    }
+
     function macro_def(obj, cmd, arg)
     {
         obj.defines[arg[0]] = arg[1];
@@ -313,7 +327,8 @@ function macroAsm_addMacroses()
         [macro_instStr,        "%insstr",   parse_cmd_arg,   check_arg_var],
         [macro_tableVar,       "%tablevar", parse_cmd_argEq, check_arg_table2],
         [macro_setVar,         "%setvar",   parse_cmd_argEq, undefined],
-        [macro_db,             "db",        parse_cmd_args,  undefined]
+        [macro_db,             "db",        parse_cmd_args,  undefined],
+        [macro_asciz,          "asciz",     parse_cmd_arg,   undefined]
     ];
 }
 

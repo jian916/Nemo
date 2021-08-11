@@ -63,6 +63,6 @@ ret argsOffset
 %include simple_strcpy
 
 str_before:
-db "_before", 0
+asciz "_before"
 str_after:
-db "_after", 0
+asciz "_after"
