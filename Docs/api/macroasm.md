@@ -34,24 +34,6 @@ Convert macro assembler object for usage with normal assembler.
 
 If error happened, throw error.
 
-### macroAsm.replaceVars
-
-``macroAsm.replaceVars(obj)``
-
-Accept macro assembler object.
-
-Replace variables ``{VARNAME}`` in macro assembler text.
-
-If error happened, throw error.
-
-### macroAsm.replaceVar
-
-``macroAsm.replaceVar(obj, name, value)``
-
-Accept macro assembler object and variable name and value.
-
-Replace variable ``{NAME}`` in macro assembler text to ``value``.
-
 ### macroAsm.replaceCmds
 
 ``macroAsm.replaceCmds(obj)``
@@ -61,15 +43,6 @@ Accept macro assembler object.
 Replace all support macro assembler commands except variables in assembler text.
 
 If error happened, throw error.
-
-### macroAsm.removeComments
-
-``macroAsm.removeComments(obj)``
-
-Accept macro assembler object.
-
-Replace inline comments in assembler text.
-
 
 ### macroAsm.addMacroses
 

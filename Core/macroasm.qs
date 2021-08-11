@@ -31,24 +31,6 @@ function macroAsm_convert(obj)
     macroAsm_replaceCmds(obj);
 }
 
-function macroAsm_replaceVars(obj)
-{
-    if (obj.line.indexOf("{") < 0)
-        return;
-
-    var vars = obj.vars;
-    obj.update = true;
-    while (obj.update)
-    {
-        obj.update = false;
-
-        for (var name in vars)
-        {
-            var value = vars[name];
-            macroAsm_replaceVar(obj, name, value);
-        }
-    }
-}
 
 function macroAsm_replaceCmds(obj)
 {
@@ -62,9 +44,6 @@ function macroAsm_replaceCmds(obj)
     while (i < parts.length)
     {
         obj.line = parts[i].trim();
-        macroAsm_removeComments(obj);
-        macroAsm_replaceVars(obj);
-
         for (var j = 0; j < macroAsm.macroses.length; j ++)
         {
             macroAsm.macroses[j](obj);
@@ -96,16 +75,6 @@ function macroAsm_replaceCmds(obj)
     obj.text = text;
 }
 
-function macroAsm_replaceVar(obj, name, value)
-{
-    var line = obj.line.replaceAll("{" + name + "}", value);
-    if (line != obj.line)
-    {
-        obj.line = line;
-        obj.update = true;
-    }
-}
-
 function macroAsm_addNewLine(text)
 {
     var sz = text.length;
@@ -114,11 +83,6 @@ function macroAsm_addNewLine(text)
     if (text[sz - 1] == "\n")
         return text;
     return text + "\n";
-}
-
-function macroAsm_removeComments(obj)
-{
-    obj.line = obj.line.replaceAll(/[ ][ ][//][//][ ].+\n/g, "\n");
 }
 
 function macroAsm_addMacroses()
@@ -292,7 +256,36 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
+    function macro_removeComments(obj)
+    {
+        var oldLine = obj.line;
+        obj.line = obj.line.replaceAll(/[ ][ ][//][//][ ].+$/g, "\n");
+        if (obj.line !== oldLine)
+            obj.update = true;
+    }
+
+    function macro_replaceVars(obj)
+    {
+        if (obj.line.indexOf("{") < 0)
+            return;
+
+        var vars = obj.vars;
+        for (var name in vars)
+        {
+            var value = vars[name];
+
+            var line = obj.line.replaceAll("{" + name + "}", value);
+            if (line != obj.line)
+            {
+                obj.line = line;
+                obj.update = true;
+            }
+        }
+    }
+
     macroAsm.macroses = [
+        macro_removeComments,
+        macro_replaceVars,
         macro_include,
         macro_instAsm,
         macro_instHex,
@@ -308,9 +301,6 @@ function registerMacroAsm()
     macroAsm = new Object();
     macroAsm.create = macroAsm_create;
     macroAsm.convert = macroAsm_convert;
-    macroAsm.replaceVar = macroAsm_replaceVar;
-    macroAsm.replaceVars = macroAsm_replaceVars;
-    macroAsm.removeComments = macroAsm_removeComments;
     macroAsm.addMacroses = macroAsm_addMacroses;
     macroAsm.addNewLine = macroAsm_addNewLine;
 
