@@ -580,7 +580,7 @@ registerPatch(333, "ChangeMaxFriendsValue", "Change Max Friends Value", "UI", 0,
 
 registerPatch(334, "RemoveHardcodedHttpIP", "Remove Hardcoded HTTP IP", "Fix", 0, "jchcc", "Remove hardcoded HTTP service ip address, Prevent client from sending HTTP request to official server.", false);
 
-registerPatch(335, "EnableRagHTTPEmblem", "Enable HTTP Emblem on Ragexe", "Fix", 0, "jchcc", "Enable HTTP Emblem on Ragexe, HTTP service required.", false);
+registerPatch(335, "EnableRagHTTPEmblem", "Fix HTTP Emblems in clients", "Fix", 0, "jchcc", "Fix HTTP Emblem client clients with cheat defender. HTTP service required.", false);
 
 registerPatch(336, "RemoveItemsEquipPreview", "Remove Equipment Preview Button", "UI", 12, "X-EcutiOnner", "Remove equipment preview button on the items description window", false);
 
