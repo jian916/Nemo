@@ -1,3 +1,33 @@
+# 2021-08-12 Different updates
+
+## Patches
+
+- Fix patch [Increase Screenshot Quality](http://nemo.herc.ws/patches/IncreaseScreenshotQuality/#success-clients) for some clients. (fix by @4144).
+- Fix patch [Extend Npc Dialog Box](http://nemo.herc.ws/patches/ExtendNpcBox/#success-clients) for some clients. (fix by @4144).
+- Fix patch [Disable HShield](http://nemo.herc.ws/patches/DisableHShield/#success-clients) for some clients. (fix by @4144).
+- Rename patch [Enable HTTP Emblem on Ragexe](http://nemo.herc.ws/patches/EnableRagHTTPEmblem/#success-clients) to [Fix HTTP Emblems in clients](http://nemo.herc.ws/patches/EnableRagHTTPEmblem/#success-clients) for better describe what it doing.
+
+## For devs
+
+- Remove old unused functions from logger.qs.
+- Fix frame pointer detection for 2019+ clients.
+- Fix patch.getName() for return patch function name.
+- Add function patch.getDescription() for return patch text name.
+- Add macro assembler support. See macroasm docs.
+- Add assembler commands: long, short.
+- Add functions for load asm code from file: asm.load, asm.loadHex.
+- Add function for insert asm code into free space from file: exe.insertAsmFile.
+- Add function for apply patch based on asm code from file: exe.replaceAsmFile.
+- Add function hooks.initTableEndHook.
+- Add functions for validate table values: table.getValidated, table.getRawValidated.
+- Different improvments in multi hooks.
+- Move many asm code into separate asm files.
+
+## Other
+
+- Update tables.
+
+
 # 2021-07-26 Different updates
 
 ## Patches
