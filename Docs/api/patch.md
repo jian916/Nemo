@@ -44,7 +44,12 @@ If address was not patched, return false.
 ## patch.getName
 ``patch.getName()``
 
-Return current patch name.
+Return current patch function name.
+
+## patch.getDescription
+``patch.getDescription()``
+
+Return current patch text name.
 
 ## patch.getState
 ``patch.getState()``
