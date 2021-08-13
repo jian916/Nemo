@@ -174,6 +174,11 @@ function exe_setValue(offset, offset2, value)
     exe.replace(addr, value.packToHex(size), PTYPE_HEX);
 }
 
+function exe_setValueSimple(offset, value)
+{
+    exe_setValue(0, offset, value);
+}
+
 function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
 {
     if (typeof(cmd) === "undefined")
@@ -222,6 +227,7 @@ function registerExe()
     exe.fetchValue = exe_fetchValue;
     exe.fetchHexBytes = exe_fetchHexBytes;
     exe.setValue = exe_setValue;
+    exe.setValueSimple = exe_setValueSimple;
     exe.setShortJmpRaw = exe_setShortJmpRaw;
     exe.setShortJmpVa = exe_setShortJmpVa;
     exe.fetchRelativeValue = exe_fetchRelativeValue;

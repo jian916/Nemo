@@ -379,6 +379,19 @@ In offset2 also exists size of saved value in bytes.
 | offset2  | additional offset and size (two ints) |
 | value    | Saved value in hex |
 
+### exe.setValueSimple
+
+``exe.setValueSimple(offset, value)``
+
+Set value into binary with raw address offset.
+
+In offset also exists size of saved value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset2  | Raw address and size (two ints) |
+| value    | Saved value in hex |
+
 
 ## Legacy functions
 
