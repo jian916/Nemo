@@ -93,11 +93,29 @@ Insert assembler text from given file name from ``include`` directory.
 
 ``%tablevar VAR=TABLEVAR``
 
-Assign to variable ``VAR`` value from table with table variable name ``table.TABLEVAR``
+Assign to variable ``VAR`` value from table with table variable name ``table.TABLEVAR``.
+
+If table var not exists throw error.
 
 ``%tablevar TABLEVAR``
 
 Assign to variable ``TABLEVAR`` value from table with table variable name ``table.TABLEVAR``.
+
+If table var not exists throw error.
+
+### %tablevar0
+
+``%tablevar0 VAR=TABLEVAR``
+
+Assign to variable ``VAR`` value from table with table variable name ``table.TABLEVAR``
+
+If value not exists, return 0 or -1.
+
+``%tablevar0 TABLEVAR``
+
+Assign to variable ``TABLEVAR`` value from table with table variable name ``table.TABLEVAR``.
+
+If value not exists, return 0 or -1.
 
 ### %setvar
 

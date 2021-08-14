@@ -193,11 +193,11 @@ function macroAsm_addMacroses()
         obj.update = true;
     }
 
-    function macro_tableVar(obj, cmd, arg)
+    function macro_tableVarInternal(obj, cmd, arg, tableFunc)
     {
         var varName = arg[0];
         var arg = arg[1];
-        var value = table.getValidated(table[arg]);
+        var value = tableFunc(table[arg]);
         if (varName in obj.vars)
         {
             if (obj.vars[varName] !== value)
@@ -207,6 +207,16 @@ function macroAsm_addMacroses()
         }
         obj.vars[varName] = value;
         obj.line = "";
+    }
+
+    function macro_tableVar(obj, cmd, arg)
+    {
+        macro_tableVarInternal(obj, cmd, arg, table.getValidated);
+    }
+
+    function macro_tableVar0(obj, cmd, arg)
+    {
+        macro_tableVarInternal(obj, cmd, arg, table.get);
     }
 
     function macro_setVar(obj, cmd, arg)
@@ -317,18 +327,19 @@ function macroAsm_addMacroses()
     }
 
     macroAsm.macroses = [
-        [macro_removeComments, undefined,   undefined,       undefined],
-        [macro_replaceVars,    undefined,   undefined,       undefined],
-        [macro_replaceDefs,    undefined,   undefined,       undefined],
-        [macro_def,            "%def",      parse_cmd_argEq, undefined],
-        [macro_include,        "%include",  parse_cmd_arg,   undefined],
-        [macro_instAsm,        "%insasm",   parse_cmd_arg,   check_arg_var],
-        [macro_instHex,        "%inshex",   parse_cmd_arg,   check_arg_var],
-        [macro_instStr,        "%insstr",   parse_cmd_arg,   check_arg_var],
-        [macro_tableVar,       "%tablevar", parse_cmd_argEq, check_arg_table2],
-        [macro_setVar,         "%setvar",   parse_cmd_argEq, undefined],
-        [macro_db,             "db",        parse_cmd_args,  undefined],
-        [macro_asciz,          "asciz",     parse_cmd_arg,   undefined]
+        [macro_removeComments, undefined,    undefined,       undefined],
+        [macro_replaceVars,    undefined,    undefined,       undefined],
+        [macro_replaceDefs,    undefined,    undefined,       undefined],
+        [macro_def,            "%def",       parse_cmd_argEq, undefined],
+        [macro_include,        "%include",   parse_cmd_arg,   undefined],
+        [macro_instAsm,        "%insasm",    parse_cmd_arg,   check_arg_var],
+        [macro_instHex,        "%inshex",    parse_cmd_arg,   check_arg_var],
+        [macro_instStr,        "%insstr",    parse_cmd_arg,   check_arg_var],
+        [macro_tableVar,       "%tablevar",  parse_cmd_argEq, check_arg_table2],
+        [macro_tableVar0,      "%tablevar0", parse_cmd_argEq, check_arg_table2],
+        [macro_setVar,         "%setvar",    parse_cmd_argEq, undefined],
+        [macro_db,             "db",         parse_cmd_args,  undefined],
+        [macro_asciz,          "asciz",      parse_cmd_arg,   undefined]
     ];
 }
 
