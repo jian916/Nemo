@@ -167,6 +167,11 @@ function exe_fetchValue(offset, offset2)
     }
 }
 
+function exe_fetchValueSimple(offset)
+{
+    return exe_fetchValue(0, offset);
+}
+
 function exe_setValue(offset, offset2, value)
 {
     var size = offset2[1];
@@ -225,6 +230,7 @@ function registerExe()
     exe.replaceAsmFile = exe_replaceAsmFile;
     exe.match = exe_match;
     exe.fetchValue = exe_fetchValue;
+    exe.fetchValueSimple = exe_fetchValueSimple;
     exe.fetchHexBytes = exe_fetchHexBytes;
     exe.setValue = exe_setValue;
     exe.setValueSimple = exe_setValueSimple;
