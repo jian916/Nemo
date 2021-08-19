@@ -112,7 +112,8 @@ function macroAsm_addMacroses()
     function parse_cmd_arg(cmd, line)
     {
         cmd = cmd + " ";
-        if (line.indexOf(cmd) !== 0)
+        var idx = line.indexOf(cmd);
+        if (idx !== 0 && idx !== 1)
             return false;
         return line.substring(cmd.length).trim();
     }
@@ -120,7 +121,8 @@ function macroAsm_addMacroses()
     function parse_cmd_argEq(cmd, line)
     {
         cmd = cmd + " ";
-        if (line.indexOf(cmd) !== 0)
+        var idx = line.indexOf(cmd);
+        if (idx !== 0 && idx !== 1)
             return false;
         line = line.substring(cmd.length).trim();
         return splitArgEq(line);
@@ -129,7 +131,7 @@ function macroAsm_addMacroses()
     function parse_cmd_args(cmd, line)
     {
         cmd = cmd + " ";
-        if (line.indexOf(cmd) !== 0)
+        var idx = line.indexOf(cmd);
             return false;
         line = line.substring(cmd.length);
         var args = line.match(/(?:[^,"]+|"[^"]*")+/g);
