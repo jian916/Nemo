@@ -173,6 +173,14 @@ function pe_fetchUByte(addrRaw)
     return value & 0xff;
 }
 
+function pe_fetchString(addrRaw)
+{
+    var endOffset = pe.find("00", addrRaw);
+    if (endOffset == -1)
+        throw "String end not found";
+    return exe.fetch(addrRaw, endOffset - addrRaw);
+}
+
 function pe_getImportTable()
 {
     if (typeof(pe.importTable) !== "undefined")
@@ -270,6 +278,7 @@ function registerPe()
     pe.fetchUDWord = pe_fetchUDWord;
     pe.fetchUWord = pe_fetchUWord;
     pe.fetchUByte = pe_fetchUByte;
+    pe.fetchString = pe_fetchString;
     pe.getPeHeader = pe_getPeHeader;
     pe.getOptHeader = pe_getOptHeader;
     pe.getSubSection = pe_getSubSection;

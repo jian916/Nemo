@@ -242,6 +242,12 @@ Read unsigned dword from given address.
 
 Read unsigned word from given address.
 
+### pe.fetchString
+
+``pe.fetchString(rawAddr)``
+
+Read null terminated string from given address.
+
 ### pe.fetchUByte
 
 ``pe.fetchUByte(rawAddr)``
