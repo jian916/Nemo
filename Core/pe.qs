@@ -141,6 +141,38 @@ function pe_directReplace(addrRaw, code)
     return pe.directReplaceBytes(addrRaw, code.toAscii());
 }
 
+function pe_fetchUQWord(addrRaw)
+{
+    var value = pe.fetchQWord(addrRaw);
+    if (value === false)
+        return false;
+    return value >>> 0;
+}
+
+function pe_fetchUDWord(addrRaw)
+{
+    var value = pe.fetchDWord(addrRaw);
+    if (value === false)
+        return false;
+    return value >>> 0;
+}
+
+function pe_fetchUWord(addrRaw)
+{
+    var value = pe.fetchWord(addrRaw);
+    if (value === false)
+        return false;
+    return value & 0xffff;
+}
+
+function pe_fetchUByte(addrRaw)
+{
+    var value = pe.fetchByte(addrRaw);
+    if (value === false)
+        return false;
+    return value & 0xff;
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -152,4 +184,8 @@ function registerPe()
     pe.stringRaw = pe_stringRaw;
     pe.stringHex4 = pe_stringHex4;
     pe.directReplace = pe_directReplace;
+    pe.fetchUQWord = pe_fetchUQWord;
+    pe.fetchUDWord = pe_fetchUDWord;
+    pe.fetchUWord = pe_fetchUWord;
+    pe.fetchUByte = pe_fetchUByte;
 }

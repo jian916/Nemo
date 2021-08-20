@@ -4,36 +4,6 @@
 
 ## Actual functions
 
-### exe.fetchDWord
-
-``exe.fetchDWord(rawAddr)``
-
-Read dword from given address.
-
-### exe.fetchQWord
-
-``exe.fetchQWord(rawAddr)``
-
-Read qword from given address.
-
-### exe.fetchWord
-
-``exe.fetchWord(rawAddr)``
-
-Read word from given address.
-
-### exe.fetchUByte
-
-``exe.fetchUByte(rawAddr)``
-
-Read unsigned byte from given address.
-
-### exe.fetchByte
-
-``exe.fetchByte(rawAddr)``
-
-Read signed byte from given address.
-
 ### exe.fetchHex
 
 ``exe.fetchHex(rawAddr, size)``
@@ -409,7 +379,37 @@ In offset also exists size of saved value in bytes.
 
 ## Legacy functions
 
-Better not use this functions. This functions can be removed in future.
+Better not use this functions. This functions working with bugs or can be removed in future.
+
+### exe.fetchDWord
+
+``exe.fetchDWord(rawAddr)``
+
+Read dword from given address.
+
+### exe.fetchQWord
+
+``exe.fetchQWord(rawAddr)``
+
+Read qword from given address.
+
+### exe.fetchWord
+
+``exe.fetchWord(rawAddr)``
+
+Read word from given address.
+
+### exe.fetchUByte
+
+``exe.fetchUByte(rawAddr)``
+
+Read unsigned byte from given address.
+
+### exe.fetchByte
+
+``exe.fetchByte(rawAddr)``
+
+Read signed byte from given address.
 
 ### exe.findCode
 

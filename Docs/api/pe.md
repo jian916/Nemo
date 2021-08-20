@@ -1,6 +1,6 @@
-# **exe** object reference
+# **pe** object reference
 
-**exe** object allow different manipulation with loaded client exe.
+**pe** object allow different manipulation with loaded client exe.
 
 ## Functions
 
@@ -182,3 +182,51 @@ Allow replace data in hex format in exe at given raw address.
 No rollback is possible. If patch disabled or cleared, changed data still present.
 
 This function can be usefull for apply changes outside of patches.
+
+### pe.fetchQWord
+
+``pe.fetchQWord(rawAddr)``
+
+Read signed qword from given address.
+
+### pe.fetchDWord
+
+``pe.fetchDWord(rawAddr)``
+
+Read signed dword from given address.
+
+### pe.fetchWord
+
+``pe.fetchWord(rawAddr)``
+
+Read signed word from given address.
+
+### pe.fetchByte
+
+``pe.fetchByte(rawAddr)``
+
+Read signed byte from given address.
+
+### pe.fetchUQWord
+
+``pe.fetchUQWord(rawAddr)``
+
+Read unsigned qword from given address.
+
+### pe.fetchUDWord
+
+``pe.fetchUDWord(rawAddr)``
+
+Read unsigned dword from given address.
+
+### pe.fetchUWord
+
+``pe.fetchUWord(rawAddr)``
+
+Read unsigned word from given address.
+
+### pe.fetchUByte
+
+``pe.fetchUByte(rawAddr)``
+
+Read unsigned byte from given address.
