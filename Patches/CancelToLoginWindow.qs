@@ -66,8 +66,8 @@ function CancelToLoginWindow()
         return "Failed in Step 2 - connection functions missing";
 
     //Step 2b - Extract the RAW addresses. Not much point in converting to RVA (same section -_-)
-    var crag = (offset +  8) + exe.fetchDWord(offset + 4);
-    var ccon = (offset + 15) + exe.fetchDWord(offset + 11);
+    var crag = (offset +  8) + pe.fetchDWord(offset + 4);
+    var ccon = (offset + 15) + pe.fetchDWord(offset + 11);
 
     //Step 2c - Find address of 메시지 => Korean version of "Message"
     offset = pe.stringVa("\xB8\xDE\xBD\xC3\xC1\xF6");
