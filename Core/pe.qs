@@ -173,6 +173,57 @@ function pe_fetchUByte(addrRaw)
     return value & 0xff;
 }
 
+function pe_getImportTable()
+{
+    var data = pe.getSubSection(1);
+    if (data === false)
+        throw "Cant get import table address";
+    return data;
+}
+
+function pe_getSubSection(index)
+{
+    var opt = pe.getOptHeader();
+    if (opt.size <= 92)
+        throw "Pe opt header too small for sub sections";
+
+    var count = pe.fetchUDWord(opt.offset + 92);
+    if (count <= index)
+        return false;
+
+    var offset = opt.offset + 96 + 8 * index;
+    return {
+        "offset" : pe.vaToRaw(pe.fetchUDWord(offset) + pe.getImageBase()),
+        "size" : pe.fetchUDWord(offset + 4)
+    };
+}
+
+function pe_getImageBase()
+{
+    var opt = pe.getOptHeader();
+    if (opt.size <= 28)
+        throw "Pe opt header too small for image base";
+    return pe.fetchUDWord(opt.offset + 28);
+}
+
+function pe_getPeHeader()
+{
+    var offset = pe.fetchUDWord(0x3c);
+    if (pe.fetchUDWord(offset) !== 0x4550)
+        throw "Wrong PE header found";
+    return offset;
+}
+
+function pe_getOptHeader()
+{
+    var offset = pe.getPeHeader() + 4 + 0x14;
+    var size = pe.fetchUWord(offset - 4);
+    return {
+        "offset" : offset,
+        "size" : size
+    };
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -188,4 +239,9 @@ function registerPe()
     pe.fetchUDWord = pe_fetchUDWord;
     pe.fetchUWord = pe_fetchUWord;
     pe.fetchUByte = pe_fetchUByte;
+    pe.getPeHeader = pe_getPeHeader;
+    pe.getOptHeader = pe_getOptHeader;
+    pe.getSubSection = pe_getSubSection;
+    pe.getImageBase = pe_getImageBase;
+    pe.getImportTable = pe_getImportTable;
 }

@@ -230,3 +230,52 @@ Read unsigned word from given address.
 ``pe.fetchUByte(rawAddr)``
 
 Read unsigned byte from given address.
+
+### pe.getImportTable
+
+``pe.getImportTable()``
+
+Return information about location and size of import table.
+
+If import table cant be found, throw exception.
+
+Returned fields:
+
+| Field   | Description |
+| ------- | ----------- |
+| offset  | Raw address where import table located. |
+| size    | Size of import table in bytes. |
+
+### pe.getSubSection
+
+``pe.getSubSection(Id)``
+
+Return information about location and size of sub section with given id/index.
+
+If sub section cant be found, throw exception.
+
+Returned fields:
+
+| Field   | Description |
+| ------- | ----------- |
+| offset  | Raw address where sub section located. |
+| size    | Size of sub section in bytes. |
+
+### pe.getImageBase
+
+``pe.getImageBase()``
+
+Return image base.
+
+### pe.getPeHeader
+
+``pe.getPeHeader()``
+
+Return PE header raw address.
+
+### pe.getOptHeader
+
+``pe.getOptHeader()``
+
+Return PE optional header raw address.
+
