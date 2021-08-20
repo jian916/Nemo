@@ -33,7 +33,7 @@ function AllowSpaceInGuildName()
 
     //Step 2 - Overwrite Conditional Jump after TEST. Skip JNEs and change JZ to JMP
     code = "";
-    switch (exe.fetchUByte(offset))
+    switch (pe.fetchUByte(offset))
     {
         case 0x74:
         {
@@ -47,7 +47,7 @@ function AllowSpaceInGuildName()
         }
         case 0x0F:
         {
-            switch(exe.fetchUByte(offset+1))
+            switch(pe.fetchUByte(offset+1))
             {
                 case 0x84:
                 {
