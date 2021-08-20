@@ -193,7 +193,7 @@ function pe_getSubSection(index)
 
     var offset = opt.offset + 96 + 8 * index;
     return {
-        "offset" : pe.vaToRaw(pe.fetchUDWord(offset) + pe.getImageBase()),
+        "offset" : pe.rvaToRaw(pe.fetchUDWord(offset)),
         "size" : pe.fetchUDWord(offset + 4)
     };
 }
@@ -224,6 +224,16 @@ function pe_getOptHeader()
     };
 }
 
+function pe_rvaToVa(offsetRva)
+{
+    return offsetRva + pe.getImageBase();
+}
+
+function pe_rvaToRaw(offsetRva)
+{
+    return pe.vaToRaw(offsetRva + pe.getImageBase());
+}
+
 function registerPe()
 {
     pe.find = pe_find;
@@ -244,4 +254,6 @@ function registerPe()
     pe.getSubSection = pe_getSubSection;
     pe.getImageBase = pe_getImageBase;
     pe.getImportTable = pe_getImportTable;
+    pe.rvaToVa = pe_rvaToVa;
+    pe.rvaToRaw = pe_rvaToRaw;
 }

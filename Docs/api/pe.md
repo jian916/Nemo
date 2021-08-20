@@ -145,6 +145,23 @@ Convert virtual address into raw address.
 
 If address wrong, return -1.
 
+### pe.rvaToVa
+
+``pe.rvaToRaw(vaAddr)``
+
+Convert relative virtual address into virtual address.
+
+If address wrong, return -1.
+
+### pe.rvaToRaw
+
+``pe.rvaToRaw(vaAddr)``
+
+Convert relative virtual address into raw address.
+
+If address wrong, return -1.
+
+
 ### pe.sectionRaw
 
 ``pe.sectionRaw(section)``
