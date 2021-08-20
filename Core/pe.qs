@@ -175,7 +175,11 @@ function pe_fetchUByte(addrRaw)
 
 function pe_getImportTable()
 {
+    if (typeof(pe.importTable) !== "undefined")
+        return pe.importTable;
+
     var data = pe.getSubSection(1);
+    pe.importTable = data;
     if (data === false)
         throw "Cant get import table address";
     return data;
@@ -200,28 +204,40 @@ function pe_getSubSection(index)
 
 function pe_getImageBase()
 {
+    if (typeof(pe.imageBase) !== "undefined")
+        return pe.imageBase;
+
     var opt = pe.getOptHeader();
     if (opt.size <= 28)
         throw "Pe opt header too small for image base";
-    return pe.fetchUDWord(opt.offset + 28);
+    pe.imageBase = pe.fetchUDWord(opt.offset + 28);
+    return pe.imageBase;
 }
 
 function pe_getPeHeader()
 {
+    if (typeof(pe.peHeader) !== "undefined")
+        return pe.peHeader;
+
     var offset = pe.fetchUDWord(0x3c);
     if (pe.fetchUDWord(offset) !== 0x4550)
         throw "Wrong PE header found";
+    pe.peHeader = offset;
     return offset;
 }
 
 function pe_getOptHeader()
 {
+    if (typeof(pe.optHeader) !== "undefined")
+        return pe.optHeader;
+
     var offset = pe.getPeHeader() + 4 + 0x14;
     var size = pe.fetchUWord(offset - 4);
-    return {
+    pe.optHeader = {
         "offset" : offset,
         "size" : size
     };
+    return pe.optHeader;
 }
 
 function pe_rvaToVa(offsetRva)
@@ -236,6 +252,11 @@ function pe_rvaToRaw(offsetRva)
 
 function registerPe()
 {
+    pe.importTable = undefined;
+    pe.imageBase = undefined;
+    pe.peHeader = undefined;
+    pe.optHeader = undefined;
+
     pe.find = pe_find;
     pe.findAll = pe_findAll;
     pe.findCode = pe_findCode;
