@@ -32,7 +32,7 @@ function CustomAuraLimits()
   offset2 += code.hexlength();
 
   //Step 1c - Extract the RAW address of ReLaunchBlurEffects
-  offset = offset2 + exe.fetchDWord(offset2 - 4);
+  offset = offset2 + pe.fetchDWord(offset2 - 4);
 
   //Step 2a - Find the first JE inside the function
   offset = pe.find(" 0F 84 ?? ?? 00 00", offset, offset + 0x80);
@@ -40,7 +40,7 @@ function CustomAuraLimits()
     return "Failed in Step 2 - First JE missing";
 
   //Step 2b - Save the Raw location
-  var cmpEnd = (offset + 6) + exe.fetchDWord(offset + 2);
+  var cmpEnd = (offset + 6) + pe.fetchDWord(offset + 2);
 
   //Step 2c - Find PUSH 2E2 after it (only there in 2010+)
   offset = pe.find(" 68 E2 02 00 00", offset + 6, offset + 0x100);
@@ -53,7 +53,7 @@ function CustomAuraLimits()
     return "Failed in Step 2 - JE missing";
 
   //Step 2e - Save the Raw location
-  var cmpBegin = (offset + 6) + exe.fetchDWord(offset + 2);
+  var cmpBegin = (offset + 6) + pe.fetchDWord(offset + 2);
 
   //---------------------------------------------------------------------
   // Now we Check for the comparison style.
@@ -61,14 +61,14 @@ function CustomAuraLimits()
   //   New Clients do it in a seperate function (by New i mean 2013+)
   //---------------------------------------------------------------------
 
-  if (exe.fetchUByte(cmpBegin) === 0xB9)
+  if (pe.fetchUByte(cmpBegin) === 0xB9)
   { //MOV ECX, g_session ; Old Style
 
     var directComparison = true;
 
     //Step 3a - Extract g_session and job Id getter addresses
-    var gSession = exe.fetchDWord(cmpBegin + 1);
-    var jobIdFunc = pe.rawToVa(cmpBegin + 10) + exe.fetchDWord(cmpBegin + 6);
+    var gSession = pe.fetchDWord(cmpBegin + 1);
+    var jobIdFunc = pe.rawToVa(cmpBegin + 10) + pe.fetchDWord(cmpBegin + 6);
 
     //Step 3b - Find the Level address comparison
     code = " A1 ?? ?? ?? 00"; //MOV EAX, DWORD PTR DS:[g_level] ; EAX is later compared with 96
@@ -86,7 +86,7 @@ function CustomAuraLimits()
     offset += code.hexlength();
 
     //Step 3c - Extract g_level address
-    var gLevel = exe.fetchDWord(offset - 4);
+    var gLevel = pe.fetchDWord(offset - 4);
 
     //Step 3d - Find the Aura Displayer Call (its a reg call so dunno the name of the function)
     code =
@@ -133,7 +133,7 @@ function CustomAuraLimits()
     var directComparison = false;
 
     //Step 4a - Extract g_level address
-    var gLevel = exe.fetchDWord(cmpBegin + 3);
+    var gLevel = pe.fetchDWord(cmpBegin + 3);
 
     //Step 4b - Find the comparison function call
     offset = pe.find(" E8 ?? ?? ?? FF", cmpBegin, cmpBegin + 0x30);
@@ -141,7 +141,7 @@ function CustomAuraLimits()
       return "Failed in Step 4 - Function call missing";
 
     //Step 4c - Go inside the function
-    offset = (offset + 5) + exe.fetchDWord(offset + 1);
+    offset = (offset + 5) + pe.fetchDWord(offset + 1);
 
     var offset0 = offset
     //Step 4d - Find g_session assignment
@@ -168,7 +168,7 @@ function CustomAuraLimits()
       return "Failed in Step 4 - g_session reference missing";
 
     //Step 4e - Extract job Id getter address (we dont need the gSession for this one)
-    var jobIdFunc = pe.rawToVa(offset + 5) + exe.fetchDWord(offset + 1);
+    var jobIdFunc = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
 
     //Step 4f - Find the Zero assignment at the end of the function
     code = " C7 86 ?? ?? 00 00 00 00 00 00"; //MOV DWORD PTR DS:[ESI + const], 0
