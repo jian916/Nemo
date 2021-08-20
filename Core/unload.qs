@@ -32,4 +32,6 @@ function Global_clear()
 
     storage_init();
     registerHooks();
+    registerImports();
+    registerPe();
 }

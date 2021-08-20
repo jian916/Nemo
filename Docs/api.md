@@ -4,6 +4,7 @@
   - [asm](api/asm.md)
   - [exe](api/exe.md)
   - [hooks](api/hooks.md)
+  - [imports](api/imports.md)
   - [lua](api/lua.md)
   - [macroasm](api/macroasm.md)
   - [patch](api/patch.md)

@@ -47,6 +47,7 @@ function GlobalInit()
     registerExe();
     registerPe();
     registerStorage();
+    registerImports();
     registerHooks();
     registerLua();
 }
