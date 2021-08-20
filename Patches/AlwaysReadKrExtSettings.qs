@@ -32,7 +32,7 @@ function AlwaysReadKrExtSettings()
         filePath = "Lua Files\\service_korea\\zero_server\\ExternalSettings_kr";
 
     consoleLog("Step 1 - Search filePath string");
-    var offset = exe.findString(filePath, RVA);
+    var offset = pe.stringVa(filePath);
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -102,16 +102,16 @@ function AlwaysReadKrExtSettings()
     consoleLog("Step 4b - Get switch jmp address for value 0");
     if (switch1Offset !== 0)
     {
-        var addr1 = exe.Rva2Raw(exe.fetchDWord(offset + switch1Offset));
-        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
-        var offset1 = exe.fetchUByte(addr1);
+        var addr1 = pe.vaToRaw(pe.fetchDWord(offset + switch1Offset));
+        var addr2 = pe.vaToRaw(pe.fetchDWord(offset + switch2Offset));
+        var offset1 = pe.fetchUByte(addr1);
     }
     else
     {
-        var addr2 = exe.Rva2Raw(exe.fetchDWord(offset + switch2Offset));
+        var addr2 = pe.vaToRaw(pe.fetchDWord(offset + switch2Offset));
         var offset1 = 0;
     }
-    var jmpAddr = exe.fetchDWord(addr2 + 4 * offset1);
+    var jmpAddr = pe.fetchDWord(addr2 + 4 * offset1);
 
     code =
         "B8 " + jmpAddr.packToHex(4) +  // 00 mov eax, addr
@@ -133,5 +133,5 @@ function AlwaysReadKrExtSettings_()
     if (IsZero())
         filePath = "Lua Files\\service_korea\\zero_server\\ExternalSettings_kr";
 
-    return (exe.findString(filePath, RAW) !== -1);
+    return (pe.stringRaw(filePath) !== -1);
 }
