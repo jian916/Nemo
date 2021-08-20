@@ -5,9 +5,8 @@
 
 function ResizeFont()
 {
-
   //Step 1a - Find CreateFontA function address
-  var offset = GetFunction("CreateFontA", "GDI32.dll");
+  var offset = imports.ptrByName("CreateFontA", "GDI32.dll");
   if (offset === -1)
     return "Failed in Step 1 - CreateFontA not found";
 
