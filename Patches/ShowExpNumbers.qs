@@ -55,13 +55,13 @@ function ShowExpNumbers()
   //Step 2b - Extract the PUSHed addresses (For Base Exp)
   if (newclient !== 1)
   {
-  var curExpBase = exe.fetchDWord(offset2 - 9);
-  var totExpBase = exe.fetchDWord(offset2 - 14);
+  var curExpBase = pe.fetchDWord(offset2 - 9);
+  var totExpBase = pe.fetchDWord(offset2 - 14);
   }
   else
   {
-  var curExpBase = exe.fetchDWord(offset2 - 9);
-  var totExpBase = exe.fetchDWord(offset2 - 21);
+  var curExpBase = pe.fetchDWord(offset2 - 9);
+  var totExpBase = pe.fetchDWord(offset2 - 21);
   }
   //Step 2c - Look for the double PUSH pattern again after the first one.
   offset2 = pe.find(code, offset2, offset + 0x300);
@@ -73,17 +73,17 @@ function ShowExpNumbers()
   //Step 2d - Extract the PUSHed addresses (For Job Exp)
   if (newclient !== 1)
   {
-  var curExpJob = exe.fetchDWord(offset2 - 9);
-  var totExpJob = exe.fetchDWord(offset2 - 14);
+  var curExpJob = pe.fetchDWord(offset2 - 9);
+  var totExpJob = pe.fetchDWord(offset2 - 14);
   }
   else
   {
-  var curExpJob = exe.fetchDWord(offset2 - 9);
-  var totExpJob = exe.fetchDWord(offset2 - 21);
+  var curExpJob = pe.fetchDWord(offset2 - 9);
+  var totExpJob = pe.fetchDWord(offset2 - 21);
   }
 
   //Step 3a - Find address of "SP"
-  offset = exe.findString("SP", RVA);
+  offset = pe.stringVa("SP");
 
   //Step 3b - Find the pattern using the string inside OnDraw function  after which we need to inject
   code =
@@ -102,17 +102,17 @@ function ShowExpNumbers()
   //          else extract reg code from the MOV ECX, reg32 and update offset
   var rcode = " CE";//for MOV ECX, ESI
 
-  if (exe.fetchUByte(offset) !== 0xE8)
+  if (pe.fetchUByte(offset) !== 0xE8)
   { //MOV ECX, reg32 comes in between
     rcode = exe.fetchHex(offset + 1, 1);
     offset += 2;
   }
 
-  if (exe.fetchUByte(offset) !== 0xE8)
+  if (pe.fetchUByte(offset) !== 0xE8)
     return "Failed in Step 3 - Call missing";
 
   //Step 3d - Extract UIWindow::TextOutA address and address where the CALL is made
-  var uiTextOut = exe.Raw2Rva(offset+5) + exe.fetchDWord(offset+1);
+  var uiTextOut = pe.rawToVa(offset+5) + pe.fetchDWord(offset+1);
   var injectAddr = offset;
 
   //Step 3e - Check if Extra PUSH 0 is there (only for clients > 20140116)
@@ -161,10 +161,10 @@ function ShowExpNumbers()
   ;
 
   //Step 4b - Fill in common values
-  var printFunc = GetFunction("sprintf");
+  var printFunc = imports.ptr("sprintf");
 
   if (printFunc === -1)
-    printFunc = GetFunction("wsprintfA");
+    printFunc = imports.ptr("wsprintfA");
 
   if (printFunc === -1)
     return "Failed in Step 4 - No print functions found";
@@ -192,7 +192,7 @@ function ShowExpNumbers()
   if (free === -1)
     return "Failed in Step 4 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 4e - Fill in the remaining blanks
   code = ReplaceVarHex(code, [1, 2, 3], [totExpBase, curExpBase, curExpBase]);
@@ -204,13 +204,13 @@ function ShowExpNumbers()
   code = code.replace("YC", "68");
 
   code = ReplaceVarHex(code, 0, uiTextOut - (freeRva + 5));
-  code = ReplaceVarHex(code, 7, exe.Raw2Rva(injectAddr + 5) - (freeRva + size));
+  code = ReplaceVarHex(code, 7, pe.rawToVa(injectAddr + 5) - (freeRva + size));
 
   //Step 5a - Insert the new code into the allocated area
   exe.insert(free, size, code, PTYPE_HEX);
 
   //Step 5b - Replace the CALL at injectAddr with a JMP to our new code.
-  exe.replace(injectAddr, "E9" + (freeRva - exe.Raw2Rva(injectAddr + 5)).packToHex(4), PTYPE_HEX);
+  exe.replace(injectAddr, "E9" + (freeRva - pe.rawToVa(injectAddr + 5)).packToHex(4), PTYPE_HEX);
 
   return true;
 }
