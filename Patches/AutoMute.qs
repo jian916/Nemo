@@ -99,9 +99,9 @@ function AutoMute()
 
   //Fetch all informations for later
   var soundMgr = exe.fetchHex(offset + soundMgrOffsets[0], 4);
-  var SetBgmFuncAddr = exe.Raw2Rva(offset + SetStreamVolumeOffset + 4) + exe.fetchDWord(offset + SetStreamVolumeOffset);
-  var SetEff2DFuncAddr = exe.Raw2Rva(offset + Set2DEffectVolumeOffset + 4) + exe.fetchDWord(offset + Set2DEffectVolumeOffset);
-  var SetEff3DFuncAddr = exe.Raw2Rva(offset + Set3DEffectVolumeOffset + 4) + exe.fetchDWord(offset + Set3DEffectVolumeOffset);
+  var SetBgmFuncAddr = pe.rawToVa(offset + SetStreamVolumeOffset + 4) + pe.fetchDWord(offset + SetStreamVolumeOffset);
+  var SetEff2DFuncAddr = pe.rawToVa(offset + Set2DEffectVolumeOffset + 4) + pe.fetchDWord(offset + Set2DEffectVolumeOffset);
+  var SetEff3DFuncAddr = pe.rawToVa(offset + Set3DEffectVolumeOffset + 4) + pe.fetchDWord(offset + Set3DEffectVolumeOffset);
 
   //Step 2 - Find the CGameMode::OnUpdate function
     code =
@@ -177,9 +177,7 @@ function AutoMute()
   var varCode = exe.fetchHex(jumpAddr, 5);
 
   //Step 3 - Find the API:GetActiveWindow pointer
-  var GetActiveWindow = GetFunction("GetActiveWindow", "User32.dll");
-  if (GetActiveWindow === -1)
-    return "Failed in Step 3 - GetActiveWindow not found";
+  var GetActiveWindow = imports.ptrValidated("GetActiveWindow", "User32.dll");
 
   //Step 4 - Prepare the custom code
   code =
@@ -238,7 +236,7 @@ function AutoMute()
   if (free === -1)
     return "Failed in Step 4 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
   var ins = buffer + code;
 
   //Fill in the blanks
@@ -283,7 +281,7 @@ function AutoMute()
   //Insert the code & jump
   exe.insert(free, size, ins, PTYPE_HEX);
 
-  code = " E8" + ((freeRva + 16) - exe.Raw2Rva(jumpAddr + 5)).packToHex(4);
+  code = " E8" + ((freeRva + 16) - pe.rawToVa(jumpAddr + 5)).packToHex(4);
 
   exe.replace(jumpAddr, code, PTYPE_HEX);
 
