@@ -52,19 +52,20 @@ function DisableNagleAlgorithm()
   if (free === -1)
     return "Failed in Step 2 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 2b - Find address of ws2_32.socket (#23 when imported by ordinal)
-  var sockFunc = GetFunction("socket", "ws2_32.dll", 23);
+  var sockFunc = imports.ptr("socket", "ws2_32.dll", 23);
+
   if (sockFunc === -1)
     return "Failed in Step 2 - socket function missing";
 
   //Step 2c - Fill in the blanks
   code = ReplaceVarHex(code, 0, freeRva + 4);//Actual Function address
   code = ReplaceVarHex(code, 1, sockFunc);
-  code = ReplaceVarHex(code, 2, exe.findString("ws2_32.dll", RVA));
-  code = ReplaceVarHex(code, 3, GetFunction("GetModuleHandleA", "KERNEL32.dll"));
-  code = ReplaceVarHex(code, 4, GetFunction("GetProcAddress", "KERNEL32.dll"));
+  code = ReplaceVarHex(code, 2, pe.stringVa("ws2_32.dll"));
+  code = ReplaceVarHex(code, 3, imports.ptr("GetModuleHandleA", "KERNEL32.dll"));
+  code = ReplaceVarHex(code, 4, imports.ptr("GetProcAddress", "KERNEL32.dll"));
 
   //Step 2d - Insert the code to allocated area
   exe.insert(free, size, code, PTYPE_HEX);
