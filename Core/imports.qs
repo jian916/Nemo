@@ -142,7 +142,9 @@ function imports_loadDescriptor(offset)
 function imports_importByName(funcName, dllName)
 {
     imports.load();
-    var key = [dllName.toLowerCase(), funcName];
+    if (typeof(dllName) !== "undefined")
+        dllName = dllName.toLowerCase();
+    var key = [dllName, funcName];
     if (key in imports.nameToPtr)
     {
         var arr = imports.nameToPtr[key];
