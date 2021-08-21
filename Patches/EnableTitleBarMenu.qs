@@ -6,9 +6,7 @@ function EnableTitleBarMenu()
 {
 
   //Step 1a - Find the function's address
-  var offset = GetFunction("CreateWindowExA", "USER32.dll");
-  if (offset === -1)
-    return "Failed in Step 1 - CreateWindowExA not found";
+  var offset = imports.ptrValidated("CreateWindowExA", "USER32.dll");
 
   //Step 1b - Find the Style pushes
   var code = " 68 00 00 C2 02"; //PUSH 2C200000 - Style
