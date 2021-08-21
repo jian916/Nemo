@@ -49,11 +49,11 @@ function ChangeDisplayCharDelDelay()
 
   // Step 2 - Get "MSVCR110._time32" address
 
-  var time32Func = GetFunction("_time32", "MSVCR110.dll");
+  var time32Func = imports.ptr("_time32", "MSVCR110.dll");
 
   if (time32Func === -1) //2019+ clients
   {
-    time32Func = GetFunction("_time32", "api-ms-win-crt-time-l1-1-0.dll");
+    time32Func = imports.ptr("_time32", "api-ms-win-crt-time-l1-1-0.dll");
   }
 
   if (time32Func === -1)
