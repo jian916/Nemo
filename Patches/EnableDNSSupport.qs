@@ -6,7 +6,7 @@
 function EnableDNSSupport()
 {
   //Step 1a - Find the common IP address across all clients
-    var offset = exe.findString("211.172.247.115", RVA);
+    var offset = pe.stringVa("211.172.247.115");
     if (offset === -1)
         return "Failed in Step 1 - IP not found";
 
@@ -82,7 +82,7 @@ function EnableDNSSupport()
         return "Failed in Step 2";
 
     //Step 2b - Extract g_resMgr
-    var gResMgr = exe.Raw2Rva(offset+5) + exe.fetchDWord(offset+1);
+    var gResMgr = pe.rawToVa(offset+5) + pe.fetchDWord(offset + 1);
 
     //Step 3a - Construct our function
     var dnscode =
@@ -122,23 +122,23 @@ function EnableDNSSupport()
         return "Failed in Step 3 - Not enough free space";
 
     //Step 4a - Create a call to our function at CALL g_ResMgr
-    exe.replace(offset+1, (exe.Raw2Rva(free) - exe.Raw2Rva(offset+5)).packToHex(4), PTYPE_HEX);
+    exe.replace(offset+1, (pe.rawToVa(free) - pe.rawToVa(offset+5)).packToHex(4), PTYPE_HEX);
 
     //Step 4b - Find gethostbyname function address (#52 when imported by ordinal)
-    var uGethostbyname = GetFunction("gethostbyname", "ws2_32.dll", 52);//By Ordinal
+    var uGethostbyname = imports.ptr("gethostbyname", "ws2_32.dll", 52);//By Ordinal
     if (uGethostbyname === -1)
         return "Failed in Step 4 - gethostbyname not found";
 
     //Step 4c - Find the IP address format string
-    var ipFormat = exe.findString("%d.%d.%d.%d", RVA);
+    var ipFormat = pe.stringVa("%d.%d.%d.%d");
     if (ipFormat === -1)
         return "Failed in Step 4 - IP string missing";
 
     //Step 4d - Adjust g_resMgr relative to function
-    gResMgr = gResMgr - exe.Raw2Rva(free + 5);
+    gResMgr = gResMgr - pe.rawToVa(free + 5);
 
     //Step 4e - addr2 value
-    offset = exe.Raw2Rva(free + size - (3*1 + 4*3 + 1));//3 Dots, 4 3digits, NULL
+    offset = pe.rawToVa(free + size - (3*1 + 4*3 + 1));//3 Dots, 4 3digits, NULL
 
     //Step 4g - Replace all the variables
     dnscode = ReplaceVarHex(dnscode, 1, gResMgr);
@@ -146,7 +146,7 @@ function EnableDNSSupport()
     dnscode = ReplaceVarHex(dnscode, 3, uGethostbyname);
     dnscode = ReplaceVarHex(dnscode, 4, ipFormat);
     dnscode = ReplaceVarHex(dnscode, 5, offset);
-    dnscode = ReplaceVarHex(dnscode, 6, GetFunction("wsprintfA", "USER32.dll"));
+    dnscode = ReplaceVarHex(dnscode, 6, imports.ptr("wsprintfA", "USER32.dll"));
     dnscode = ReplaceVarHex(dnscode, 7, gAccountAddr);
     dnscode = ReplaceVarHex(dnscode, 8, offset);
 
