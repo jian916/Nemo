@@ -164,6 +164,14 @@ function imports_ptr(funcName, dllName, ordinal)
     return entry.ptr;
 }
 
+function imports_ptrValidated(funcName, dllName, ordinal)
+{
+    var entry = imports_ptr(funcName, dllName, ordinal)
+    if (entry === false)
+        throw "Import function " + dllName + ":" + funcName + " not found";
+    return entry;
+}
+
 function registerImports()
 {
     imports = new Object();
@@ -177,4 +185,5 @@ function registerImports()
     imports.add = imports_add;
     imports.importByName = imports_importByName;
     imports.ptr = imports_ptr;
+    imports.ptrValidated = imports_ptrValidated;
 }

@@ -71,18 +71,38 @@ If function found return dictionary with fields:
 | name  | Function name. |
 | ptr   | Function pointer. |
 
-### imports.ptrByName
+### imports.ptr
 
-``imports.ptrByName(funcName)``
-``imports.ptrByName(funcName, dllName)``
+``imports.ptr(funcName)``
+``imports.ptr(funcName, dllName)``
+``imports.ptr(funcName, dllName, ordinal)``
 
 Search function pointer address for given import function name.
 
 | Argument  | Description |
 | --------  | ----------- |
-| funcName  | Function name. |
+| funcName  | Function name. Can be missing. |
 | dllName   | Function dll name. Can be missing. |
+| ordinal   | Function ordinal. Can be missing. |
 
 If function not found, return -1.
+
+If function found, return virtual address of function pointer.
+
+### imports.ptrValidated
+
+``imports.ptr(funcName)``
+``imports.ptr(funcName, dllName)``
+``imports.ptr(funcName, dllName, ordinal)``
+
+Search function pointer address for given import function name.
+
+| Argument  | Description |
+| --------  | ----------- |
+| funcName  | Function name. Can be missing. |
+| dllName   | Function dll name. Can be missing. |
+| ordinal   | Function ordinal. Can be missing. |
+
+If function not found, throw error.
 
 If function found, return virtual address of function pointer.
