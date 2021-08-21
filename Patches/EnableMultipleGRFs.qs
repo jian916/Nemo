@@ -22,7 +22,7 @@ function EnableMultipleGRFs()
 {
 
     //Step 1a - Find data.grf location
-    var grf = exe.findString("data.grf", RVA).packToHex(4);
+    var grf = pe.stringHex4("data.grf");
 
     //Step 1b - Find its reference
     var code =
@@ -91,7 +91,7 @@ function EnableMultipleGRFs()
         return "Failed in Step 2";
 
     //Step 2c - Extract AddPak function address
-    var AddPak = exe.Raw2Rva(fnoffset + addpackOffset + 4) + exe.fetchDWord(fnoffset + addpackOffset);
+    var AddPak = pe.rawToVa(fnoffset + addpackOffset + 4) + pe.fetchDWord(fnoffset + addpackOffset);
 
     //Step 3a - Prep code for reading INI file and loading GRFs
     var code =
@@ -181,17 +181,17 @@ function EnableMultipleGRFs()
     if (free === -1)
         return "Failed in Step 3 - Not enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 5d - Create a call to the free space that was found before
     exe.replace(offset + pushOffset, " B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + addpackOffset, freeRva - exe.Raw2Rva(fnoffset + addpackOffset + 4));
+    exe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
 
     //Step 5e - Replace the variables used in code
     var memPosition = freeRva + code.hexlength();
     code = ReplaceVarHex(code, 1, memPosition);//KERNEL32
-    code = ReplaceVarHex(code, 2, GetFunction("GetModuleHandleA", "KERNEL32.dll"));
-    code = ReplaceVarHex(code, 3, GetFunction("GetProcAddress", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 2, imports.ptr("GetModuleHandleA", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 3, imports.ptr("GetProcAddress", "KERNEL32.dll"));
 
     memPosition = memPosition + strings[0].length + 1;//1 for null
     code = ReplaceVarHex(code, 4, memPosition);//GetPrivateProfileStringA
@@ -220,7 +220,7 @@ function EnableMultipleGRFs()
     exe.insert(free, size + 8, code, PTYPE_HEX);
 
     //Step 7 - Find offset of rdata.grf (if present zero it out)
-    offset = exe.findString("rdata.grf", RAW);
+    offset = pe.stringRaw("rdata.grf");
     if (offset !== -1)
         exe.replace(offset, "00", PTYPE_HEX);
 
