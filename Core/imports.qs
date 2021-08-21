@@ -40,14 +40,13 @@ function imports_load()
     return;
 }
 
-function imports_add(dllName, funcId, funcName, funcPtr)
+function imports_add(dllName, funcName, funcPtr)
 {
     dllName = dllName.toLowerCase();
-    imports.allImports.push(dllName, funcId, funcName, funcPtr);
+    imports.allImports.push(dllName, funcName, funcPtr);
 
     var value = {
         "dll": dllName,
-        "id": funcId,
         "name": funcName,
         "ptr": funcPtr
     }
@@ -75,17 +74,27 @@ function imports_parseDescriptor(descriptor)
         var offset = pe.fetchUDWord(nameOffset);
         if (offset == 0)
             return;
-        offset = pe.rvaToRaw(offset);
-        if (offset < 0)
+
+        if ((offset & 0x80000000) != 0)
         {
-            consoleLog("Possible import table corruption");
-            return;
+            var ordinal = (offset & 0x7fffffff);
+            var funcPtr = pe.rawToVa(funcOffset);
+            consoleLog("Found import ordinal: " + dllName + ", " + ordinal + ", " + funcPtr.toString(16));
+            imports.add(dllName, ordinal, funcPtr);
         }
-        var funcId = pe.fetchUWord(offset);
-        var funcName = pe.fetchString(offset + 2);
-        var funcPtr = pe.rawToVa(funcOffset);
-        consoleLog("Found import: " + dllName + ", " + funcId.toString(16) + ", " + funcName + ", " + funcPtr.toString(16));
-        imports.add(dllName, funcId, funcName, funcPtr);
+        else
+        {
+            offset = pe.rvaToRaw(offset);
+            if (offset < 0)
+            {
+                consoleLog("Possible import table corruption");
+                return;
+            }
+            var funcName = pe.fetchString(offset + 2);
+            var funcPtr = pe.rawToVa(funcOffset);
+            consoleLog("Found import name: " + dllName + ", " + funcName + ", " + funcPtr.toString(16));
+            imports.add(dllName, funcName, funcPtr);
+        }
         nameOffset += 4;
         funcOffset += 4;
     }
@@ -145,9 +154,11 @@ function imports_importByName(funcName, dllName)
     }
 }
 
-function imports_ptrByName(funcName, dllName)
+function imports_ptr(funcName, dllName, ordinal)
 {
     var entry = imports.importByName(funcName, dllName);
+    if (entry === false && typeof(ordinal) !== "undefined")
+        entry = imports.importByName(ordinal, dllName);
     if (entry === false)
         return -1;
     return entry.ptr;
@@ -165,5 +176,5 @@ function registerImports()
     imports.parseDescriptor = imports_parseDescriptor;
     imports.add = imports_add;
     imports.importByName = imports_importByName;
-    imports.ptrByName = imports_ptrByName
+    imports.ptr = imports_ptr;
 }
