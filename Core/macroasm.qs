@@ -35,6 +35,7 @@ function macroAsm_convert(obj)
 function macroAsm_invokeMacros(obj, index)
 {
     var macro = macroAsm.macroses[index];
+    obj.macro = macro;
     var macroFunc = macro[0];
     var cmd = macro[1];
     var getArgFunc = macro[2];
@@ -132,6 +133,7 @@ function macroAsm_addMacroses()
     {
         cmd = cmd + " ";
         var idx = line.indexOf(cmd);
+        if (idx !== 0 && idx !== 1)
             return false;
         line = line.substring(cmd.length);
         var args = line.match(/(?:[^,"]+|"[^"]*")+/g);
@@ -141,6 +143,25 @@ function macroAsm_addMacroses()
             args2.push(args[i].trim());
         }
         return args2;
+    }
+
+    function parse_cmd_eqArgs(cmd, line)
+    {
+        cmd = cmd + " ";
+        var idx = line.indexOf(cmd);
+        if (idx !== 0 && idx !== 1)
+            return false;
+        line = line.substring(cmd.length);
+        line = splitArgEq(line);
+        if (line[0] === line[1])
+            line[0] = undefined;
+        var args = line[1].match(/(?:[^,"]+|"[^"]*")+/g);
+        var args2 = [];
+        for (var i = 0; i < args.length; i ++)
+        {
+            args2.push(args[i].trim());
+        }
+        return [line[0], args2];
     }
 
     function splitArgEq(arg)
@@ -159,7 +180,7 @@ function macroAsm_addMacroses()
     function check_arg_var(obj, arg)
     {
         if (!(arg in obj.vars))
-            fatalError("Variable " + arg + " not in vars");
+            fatalError("Variable " + arg + " not in vars: " + obj.line);
     }
 
     function check_arg_table2(obj, arg)
@@ -167,8 +188,14 @@ function macroAsm_addMacroses()
         var arg = arg[1];
         if (!(arg in table))
         {
-            fatalError("Variable " + arg + " not in table");
+            fatalError("Variable " + arg + " not in table: " + obj.line);
         }
+    }
+
+    function check_exists_args(obj, args)
+    {
+        if (args.length < 1)
+            fatalError("No args in macro asm command: " + obj.line);
     }
 
     function macro_instAsm(obj, cmd, arg)
@@ -200,14 +227,7 @@ function macroAsm_addMacroses()
         var varName = arg[0];
         var arg = arg[1];
         var value = tableFunc(table[arg]);
-        if (varName in obj.vars)
-        {
-            if (obj.vars[varName] !== value)
-            {
-                fatalError("Asm variable " + arg + " already exists: " + obj.vars[varName] + " vs " + table[arg]);
-            }
-        }
-        obj.vars[varName] = value;
+        assign_var(obj, varName, value);
         obj.line = "";
     }
 
@@ -328,20 +348,44 @@ function macroAsm_addMacroses()
         }
     }
 
+    function macro_import(obj, cmd, args)
+    {
+        var varName = args[0];
+        args = args[1];
+        if (typeof(varName) === "undefined")
+            varName = args[0];
+        var value = imports.ptrValidated(args[0], args[1], args[2]);
+        assign_var(obj, varName, value);
+        obj.line = "";
+    }
+
+    function assign_var(obj, varName, value)
+    {
+        if (varName in obj.vars)
+        {
+            if (obj.vars[varName] !== value)
+            {
+                fatalError("Asm variable " + arg + " already exists: " + obj.vars[varName] + " vs " + value);
+            }
+        }
+        obj.vars[varName] = value;
+    }
+
     macroAsm.macroses = [
-        [macro_removeComments, undefined,    undefined,       undefined],
-        [macro_replaceVars,    undefined,    undefined,       undefined],
-        [macro_replaceDefs,    undefined,    undefined,       undefined],
-        [macro_def,            "%def",       parse_cmd_argEq, undefined],
-        [macro_include,        "%include",   parse_cmd_arg,   undefined],
-        [macro_instAsm,        "%insasm",    parse_cmd_arg,   check_arg_var],
-        [macro_instHex,        "%inshex",    parse_cmd_arg,   check_arg_var],
-        [macro_instStr,        "%insstr",    parse_cmd_arg,   check_arg_var],
-        [macro_tableVar,       "%tablevar",  parse_cmd_argEq, check_arg_table2],
-        [macro_tableVar0,      "%tablevar0", parse_cmd_argEq, check_arg_table2],
-        [macro_setVar,         "%setvar",    parse_cmd_argEq, undefined],
-        [macro_db,             "db",         parse_cmd_args,  undefined],
-        [macro_asciz,          "asciz",      parse_cmd_arg,   undefined]
+        [macro_removeComments, undefined,    undefined,        undefined],
+        [macro_replaceVars,    undefined,    undefined,        undefined],
+        [macro_replaceDefs,    undefined,    undefined,        undefined],
+        [macro_def,            "%def",       parse_cmd_argEq,  undefined],
+        [macro_include,        "%include",   parse_cmd_arg,    undefined],
+        [macro_instAsm,        "%insasm",    parse_cmd_arg,    check_arg_var],
+        [macro_instHex,        "%inshex",    parse_cmd_arg,    check_arg_var],
+        [macro_instStr,        "%insstr",    parse_cmd_arg,    check_arg_var],
+        [macro_tableVar,       "%tablevar",  parse_cmd_argEq,  check_arg_table2],
+        [macro_tableVar0,      "%tablevar0", parse_cmd_argEq,  check_arg_table2],
+        [macro_setVar,         "%setvar",    parse_cmd_argEq,  undefined],
+        [macro_db,             "db",         parse_cmd_args,   undefined],
+        [macro_asciz,          "asciz",      parse_cmd_arg,    undefined],
+        [macro_import,         "%import",    parse_cmd_eqArgs, check_exists_args]
     ];
 }
 

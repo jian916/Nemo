@@ -141,3 +141,18 @@ Allow put into assembler any bytes or strings given in arguments.
 ``asciz "string without null terminator"``
 
 Allow put string into assembler. After string add null terminate char.
+
+### %import
+
+``%import FUNC``
+``%import FUNC, DLL``
+``%import FUNC, DLL, ORDINAL``
+``%import VAR=FUNC``
+``%import VAR=FUNC, DLL``
+``%import VAR=FUNC, DLL, ORDINAL``
+
+Assign to variable address of import function
+
+Any arguments except FUNC can be missing.
+
+If VAR argument missing, for var named used FUNC.
