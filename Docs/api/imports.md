@@ -91,9 +91,9 @@ If function found, return virtual address of function pointer.
 
 ### imports.ptrValidated
 
-``imports.ptr(funcName)``
-``imports.ptr(funcName, dllName)``
-``imports.ptr(funcName, dllName, ordinal)``
+``imports.ptrValidated(funcName)``
+``imports.ptrValidated(funcName, dllName)``
+``imports.ptrValidated(funcName, dllName, ordinal)``
 
 Search function pointer address for given import function name.
 
@@ -106,3 +106,21 @@ Search function pointer address for given import function name.
 If function not found, throw error.
 
 If function found, return virtual address of function pointer.
+
+### imports.ptrHexValidated
+
+``imports.ptrHexValidated(funcName)``
+``imports.ptrHexValidated(funcName, dllName)``
+``imports.ptrHexValidated(funcName, dllName, ordinal)``
+
+Search function pointer address for given import function name.
+
+| Argument  | Description |
+| --------  | ----------- |
+| funcName  | Function name. Can be missing. |
+| dllName   | Function dll name. Can be missing. |
+| ordinal   | Function ordinal. Can be missing. |
+
+If function not found, throw error.
+
+If function found, return hex value of virtual address of function pointer.

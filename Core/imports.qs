@@ -169,9 +169,17 @@ function imports_ptr(funcName, dllName, ordinal)
 function imports_ptrValidated(funcName, dllName, ordinal)
 {
     var entry = imports_ptr(funcName, dllName, ordinal)
-    if (entry === false)
+    if (entry === -1)
         throw "Import function " + dllName + ":" + funcName + " not found";
     return entry;
+}
+
+function imports_ptrHexValidated(funcName, dllName, ordinal)
+{
+    var entry = imports_ptr(funcName, dllName, ordinal)
+    if (entry === -1)
+        throw "Import function " + dllName + ":" + funcName + " not found";
+    return entry.packToHex(4);
 }
 
 function registerImports()
@@ -188,4 +196,5 @@ function registerImports()
     imports.importByName = imports_importByName;
     imports.ptr = imports_ptr;
     imports.ptrValidated = imports_ptrValidated;
+    imports.ptrHexValidated = imports_ptrHexValidated;
 }
