@@ -27,7 +27,7 @@ function ResizeFont()
     if (free === -1)
         return "Failed in Step 2 - Not enough space";
 
-    var freeVa = exe.Raw2Rva(free);
+    var freeVa = pe.rawToVa(free);
 
     consoleLog("Step 2c - Get the new Font height");
     var newHeight = exe.getUserInput("$newFontHgt", XTYPE_BYTE, _("Number Input"), _("Enter the new Font Height(1-127) - snaps to closest valid value"), 10, 1, 127);
