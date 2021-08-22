@@ -49,23 +49,17 @@ function UseDefaultBrowser()
 
     //Step 1c - Move offset to next instruction after reference where going place CALL later
     var coffset = offset + code.hexlength();    //and check instruction
-    if (exe.fetchUByte(coffset) !== 0xC7 )    //Should be a MOV [EBP-z],y
+    if (pe.fetchUByte(coffset) !== 0xC7 )    //Should be a MOV [EBP-z],y
         return "Failed in Step 1c - Unknown instruction after reference.";
 
     //Step 1d - Save original instruction for later use
     var store1 = exe.fetchHex(coffset, 7);
 
     //Step 2a - Get SHELL32.ShellExecuteA address
-    var seoffset = GetFunction("ShellExecuteA", "SHELL32.dll");
-    if (seoffset === -1)
-        return "Failed in Step 2a - Function SHELL32.ShellExecuteA not found.";
-    seoffset = seoffset.packToHex(4);
+    var seoffset = imports.ptrHexValidated("ShellExecuteA", "SHELL32.dll");
 
     //Step 2b - Get address of string "open" for lpOperation
-    var opoffset = exe.findString("open", RVA, true);
-    if (opoffset === -1)
-        return "Failed in Step 2b - String 'open' not found.";
-    opoffset = opoffset.packToHex(4);
+    var opoffset = pe.stringHex4("open");
 
     //Step 2c - Prep the code for CALL ShellExecuteA
     code =
@@ -90,8 +84,8 @@ function UseDefaultBrowser()
         return "Failed in Step 2d - Not enough free space.";
 
     //Step 2e - Prep CALL instruction and insert everything
-    var freeRva = exe.Raw2Rva(free);
-    var joffset = (freeRva - exe.Raw2Rva(coffset + 5)).packToHex(4);
+    var freeRva = pe.rawToVa(free);
+    var joffset = (freeRva - pe.rawToVa(coffset + 5)).packToHex(4);
     var call =
         " E8" + joffset    //CALL our code
       + " 90 90"        //NOPS
@@ -123,7 +117,7 @@ function UseDefaultBrowser()
 
     //Step 3c - Calculate distance for jump
     doffset = doffset + 4;
-    var dist = exe.fetchByte(doffset + 1);
+    var dist = pe.fetchByte(doffset + 1);
     dist = (dist + doffset - roffset).packToHex(1);
 
     //Step 3d - Place the JMP to skip ROWebBrowser
