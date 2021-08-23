@@ -51,11 +51,17 @@ function hooks_initHook(offset, matchFunc, searchAddrFunc)
     var data = offset;
     if (typeof(searchAddrFunc) !== "undefined")
     {
-        var ret = searchAddrFunc(offset);
-        storageKey = ret[0];
-        data = ret[1];
+        var arr = searchAddrFunc(offset);
+        if (arr.length !== 1)
+            throw "Found wrong number of objects in hooks.initHook for offset: 0x" + offset.toString(16) + ": " + arr.length;
+        storageKey = arr[0][0];
+        data = arr[0][1];
     }
+    return hooks_initHookInternal(offset, matchFunc, storageKey, data);
+}
 
+function hooks_initHookInternal(offset, matchFunc, storageKey, data)
+{
     if (storageKey in storage.hooks)
     {
         consoleLog("hooks.initHook found existing hook");
