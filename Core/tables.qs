@@ -114,7 +114,8 @@ function table_getSessionAbsHex4(varId)
 
 function table_varToHook(varId)
 {
-    return table.getRawValidated(varId);
+    var offset = table.getRawValidated(varId);
+    return [offset, offset];
 }
 
 function getEcxSessionHex()

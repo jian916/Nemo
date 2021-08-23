@@ -15,9 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function hooks_matchFunctionStart(offset)
+function hooks_matchFunctionStart(storageKey, offset)
 {
-    checkArgs("hooks.matchFunctionStart", arguments, [["Number"]]);
+    checkArgs("hooks.matchFunctionStart", arguments, [["Number", "Number"]]);
 
     var offsetVa = pe.rawToVa(offset)
 
@@ -89,9 +89,9 @@ function hooks_matchFunctionStart(offset)
     return obj;
 }
 
-function hooks_matchFunctionEnd(offset)
+function hooks_matchFunctionEnd(storageKey, offset)
 {
-    checkArgs("hooks.matchFunctionEnd", arguments, [["Number"]]);
+    checkArgs("hooks.matchFunctionEnd", arguments, [["Number", "Number"]]);
 
     consoleLog("match known second pattern");
     var code =

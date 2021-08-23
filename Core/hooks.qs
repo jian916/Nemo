@@ -44,26 +44,30 @@ function hooks_addPostEndHook(patchAddr, text, vars)
     return obj;
 }
 
-function hooks_initHook(patchAddr, matchFunc, searchAddrFunc)
+function hooks_initHook(offset, matchFunc, searchAddrFunc)
 {
     consoleLog("hooks.initHook start");
+    var storageKey = offset;
+    var data = offset;
     if (typeof(searchAddrFunc) !== "undefined")
     {
-        patchAddr = searchAddrFunc(patchAddr);
+        var ret = searchAddrFunc(offset);
+        storageKey = ret[0];
+        data = ret[1];
     }
 
-    if (patchAddr in storage.hooks)
+    if (storageKey in storage.hooks)
     {
         consoleLog("hooks.initHook found existing hook");
-        var obj = storage.hooks[patchAddr];
+        var obj = storage.hooks[storageKey];
         if (obj.matchFunc !== matchFunc)
-            fatalError("Other type of hook registered for address: 0x" + pe.rawToVa(patchAddr).toString(16));
+            fatalError("Other type of hook registered for address: 0x" + pe.rawToVa(storageAddr).toString(16));
         return obj;
     }
     else
     {
         consoleLog("hooks.initHook match new hook");
-        var obj = matchFunc(patchAddr);
+        var obj = matchFunc(storageKey, data);
     }
 
     if (obj.endHook !== true)
@@ -127,7 +131,7 @@ function hooks_initHook(patchAddr, matchFunc, searchAddrFunc)
     {
         hooks_applyFinal(this, true);
     }
-    storage.hooks[patchAddr] = obj;
+    storage.hooks[storageKey] = obj;
     return obj;
 }
 
