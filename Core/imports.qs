@@ -141,6 +141,15 @@ function imports_loadDescriptor(offset)
 
 function imports_importByName(funcName, dllName)
 {
+    if (typeof(testGetImport) !== "undefined")
+    {
+        var offset = testGetImport(funcName, dllName);
+        if (offset === -1)
+            return false;
+        if (offset !== false)
+            return offset;
+    }
+
     imports.load();
     if (typeof(dllName) !== "undefined")
         dllName = dllName.toLowerCase();
@@ -148,10 +157,14 @@ function imports_importByName(funcName, dllName)
     if (key in imports.nameToPtr)
     {
         var arr = imports.nameToPtr[key];
+        if (typeof(testSetImport) !== "undefined")
+            testSetImport(funcName, dllName, arr[0]);
         return arr[0];
     }
     else
     {
+        if (typeof(testSetImport) !== "undefined")
+            testSetImport(funcName, dllName, false);
         return false;
     }
 }
