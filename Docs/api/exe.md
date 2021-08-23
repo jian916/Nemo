@@ -274,6 +274,14 @@ Replace bytes at raw address patchAddr to assembler code from given file name.
 
 On success return bytes in hex format from assembler text.
 
+### exe.insertDWord
+
+``exe.insertDWord(value, dryRun)``
+
+Insert given dword value into free block in binary.
+
+Return raw address where dword was inserter.
+
 ### exe.match
 
 ``exe.match(code, useMask, rawAddr)``
