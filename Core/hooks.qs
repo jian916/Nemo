@@ -34,7 +34,7 @@ function hooks_addPostEndHook(patchAddr, text, vars)
     consoleLog("hooks.addPostEndHook: add jump to own code");
     exe.setJmpRaw(patchAddr, free);
 
-    var obj = new Object();
+    var obj = hooks.createHookObj();
     obj.text = text;
     obj.free = free;
     obj.vars = data[1];
@@ -249,12 +249,28 @@ function hooks_removePatchHooks()
     consoleLog("hooks.removePatchHooks end");
 }
 
+function hooks_createHookObj()
+{
+    var obj = new Object();
+    obj.patchAddr = 0;
+    obj.free = 0;
+    obj.text = "";
+    obj.vars = {};
+    obj.continueOffsetVa = 0;
+    obj.stolenCode = "";
+    obj.stolenCode1 = "";
+    obj.retCode = "";
+    // obj.endHook = true;
+    return obj;
+}
+
 function registerHooks()
 {
     hooks = new Object();
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
     hooks.addPostEndHook = hooks_addPostEndHook;
+    hooks.createHookObj = hooks_createHookObj;
     hooks.initHook = hooks_initHook;
     hooks.initEndHook = hooks_initEndHook;
     hooks.initTableEndHook = hooks_initTableEndHook;

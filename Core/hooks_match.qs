@@ -79,7 +79,7 @@ function hooks_matchFunctionStart(offset)
     {
         throw "First pattern not found: 0x" + offsetVa.toString(16);
     }
-    var obj = new Object();
+    var obj = hooks.createHookObj();
     obj.patchAddr = offset;
     obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
     obj.stolenCode1 = obj.stolenCode;
@@ -190,7 +190,7 @@ function hooks_matchFunctionEnd(offset)
     {
         throw "Pattern not found for address: 0x" + pe.rawToVa(offset).toString(16);
     }
-    var obj = new Object();
+    var obj = hooks.createHookObj();
     obj.patchAddr = offset;
     obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
     obj.stolenCode1 = exe.fetchHexBytes(offset, stolenCode1Offset);

@@ -131,3 +131,12 @@ hooks.removePatchHooks()
 ```
 
 Remove current patch changes fro all hook objects.
+
+
+### hooks.createHookObj
+
+```
+hooks.createHookObj()
+```
+
+Create initial hook object. Can be used in hook match functions.
