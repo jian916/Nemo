@@ -60,11 +60,35 @@ function hooks_initHook(offset, matchFunc, searchAddrFunc)
     return hooks_initHookInternal(offset, matchFunc, storageKey, data);
 }
 
+function hooks_initHooks(offset, matchFunc, searchAddrFunc)
+{
+    consoleLog("hooks.initHooks start");
+    var objs = [];
+    if (typeof(searchAddrFunc) !== "undefined")
+    {
+        var arr = searchAddrFunc(offset);
+        for (var i = 0; i < arr.length; i ++)
+        {
+            var storageKey = arr[i][0];
+            var data = arr[i][1];
+            objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
+        }
+    }
+    else
+    {
+        var storageKey = offset;
+        var data = offset;
+        objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
+    }
+    return objs;
+}
+
 function hooks_initHookInternal(offset, matchFunc, storageKey, data)
 {
+    consoleLog("hooks.initHookInternal start");
     if (storageKey in storage.hooks)
     {
-        consoleLog("hooks.initHook found existing hook");
+        consoleLog("hooks.initHookInternal found existing hook");
         var obj = storage.hooks[storageKey];
         if (obj.matchFunc !== matchFunc)
             fatalError("Other type of hook registered for address: 0x" + pe.rawToVa(storageAddr).toString(16));
@@ -72,7 +96,7 @@ function hooks_initHookInternal(offset, matchFunc, storageKey, data)
     }
     else
     {
-        consoleLog("hooks.initHook match new hook");
+        consoleLog("hooks.initHookInternal match new hook");
         var obj = matchFunc(storageKey, data);
     }
 
@@ -302,6 +326,8 @@ function registerHooks()
     hooks.addPostEndHook = hooks_addPostEndHook;
     hooks.createHookObj = hooks_createHookObj;
     hooks.initHook = hooks_initHook;
+    hooks.initHooks = hooks_initHooks;
+    hooks.initHookInternal = hooks_initHookInternal;
     hooks.initEndHook = hooks_initEndHook;
     hooks.initTableEndHook = hooks_initTableEndHook;
     hooks.applyFinal = hooks_applyFinal;
