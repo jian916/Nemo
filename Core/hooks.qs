@@ -138,7 +138,7 @@ function hooks_initEndHook(patchAddr)
 
 function hooks_initTableEndHook(varId)
 {
-    return hooks_initHook(varId, hooks_matchFunctionEnd, table.getRawValidated);
+    return hooks_initHook(varId, hooks_matchFunctionEnd, table.varToHook);
 }
 
 function hooks_applyFinal(obj, dryRun)
@@ -197,7 +197,21 @@ function hooks_applyFinal(obj, dryRun)
 
     consoleLog("hooks.applyFinal initial jmp");
     if (dryRun !== true)
-        exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+    {
+        switch (obj.firstJmpType)
+        {
+            case hooks.jmpTypes.JMP:
+                exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+                break;
+            case hooks.jmpTypes.IMPORT:
+                var importOffset = exe.insertDWord(obj.importOffset);
+                obj.importOffsetPatched = importOffset;
+                exe.replaceDWord(obj.patchAddr, importOffset);
+                break;
+            default:
+                fatalError("Unknown jmp type: " + obj.firstJmpType);
+        };
+    }
 
     consoleLog("hooks.applyFinal loop jumps");
     for (var i = 0; i < sz - 1; i ++)
@@ -261,12 +275,18 @@ function hooks_createHookObj()
     obj.stolenCode1 = "";
     obj.retCode = "";
     // obj.endHook = true;
+    obj.firstJmpType = hooks.jmpTypes.JMP;
     return obj;
 }
 
 function registerHooks()
 {
     hooks = new Object();
+    hooks.jmpTypes = {
+        JMP : 0,
+        IMPORT : 1
+    };
+
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
     hooks.addPostEndHook = hooks_addPostEndHook;

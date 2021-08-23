@@ -112,6 +112,11 @@ function table_getSessionAbsHex4(varId)
     return (table.get(table.g_session) + table.get(varId)).packToHex(4);
 }
 
+function table_varToHook(varId)
+{
+    return table.getRawValidated(varId);
+}
+
 function getEcxSessionHex()
 {
     return "B9 " + table.getHex4(table.g_session);  // mov ecx, g_session
@@ -140,4 +145,5 @@ function registerTableFunctions()
     table.getRaw = table_getRaw;
     table.getRawValidated = table_getRawValidated;
     table.getSessionAbsHex4 = table_getSessionAbsHex4;
+    table.varToHook = table_varToHook;
 }
