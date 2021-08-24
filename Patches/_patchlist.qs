@@ -680,4 +680,6 @@ registerPatch(389, "ResizeFontSizeMinL", "Limit all fonts logical minimal size",
 
 registerPatch(390, "ResizeFontSizeMaxL", "Limit all fonts logical maximum size", "Size", 0, "4144", "Limit all fonts logical maximum size", false);
 
+registerPatch(391, "ResizeFontSizeAdjL", "Adjust all fonts logical size", "Size", 0, "4144", "Adjust all fonts logical size", false);
+
 GlobalPostInit();
