@@ -324,7 +324,7 @@ registerPatch(205, "EnableMonsterTables", "Enable Monster Tables", "Custom", 0, 
 
 registerPatch(206, "LoadCustomQuestLua", "Load Custom Quest Lua/Lub files", "Custom", 0, "Neo", "Enables loading of custom lua files used for quests. You need to specify a txt file containing list of files in the 'lua files\\quest' folder to load (one file per line)", false);
 
-registerPatch(207, "ResizeFont", "Change font size to fixed value", "Size", 0, "Yommy, Neo, 4144", "Resizes font height to fixed size", false);
+registerPatch(207, "ResizeFont", "Change all fonts size to fixed value", "Size", 0, "Yommy, Neo, 4144", "Resizes all fonts height to fixed size", false);
 
 registerPatch(208, "RestoreCashShop", "Restore Cash Shop Icon", "Special", 0, "Neo", "Restores the Cash Shop Icon in RE clients that can have them", false);
 
