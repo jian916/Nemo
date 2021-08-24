@@ -19,16 +19,12 @@ function ResizeFont()
     var hooksList = hooks.initImportCallHooks("CreateFontA", "GDI32.dll");
     if (hooksList.length === 0)
         throw "CreateFontA call usages not found";
-    for (var i = 0; i < hooksList.length; i ++)
-    {
-        hooksList[i].addFilePre("", vars);
-    }
+    hooksList.addFilePre("", vars);
+    hooksList.validate();
 
-    var hooksList = hooks.initImportJmpHooks("CreateFontA", "GDI32.dll");
-    for (var i = 0; i < hooksList.length; i ++)
-    {
-        hooksList[i].addFilePre("", vars);
-    }
+    hooksList = hooks.initImportJmpHooks("CreateFontA", "GDI32.dll");
+    hooksList.addFilePre("", vars);
+    hooksList.validate();
 
     return true;
 }
