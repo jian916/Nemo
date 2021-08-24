@@ -199,3 +199,29 @@ function hooks_matchFunctionEnd(storageKey, offset)
     obj.endHook = true;
     return obj;
 }
+
+function hooks_matchImportUsage_code(code, offset, importOffset)
+{
+    var found = pe.match(code, offset);  // call dword ptr [offset]
+    var addrOffset = 2;
+    if (found !== true)
+        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+
+    var obj = hooks.createHookObj();
+    obj.patchAddr = offset + addrOffset;
+    obj.retCode = "FF 25" + importOffset.packToHex(4);
+    obj.endHook = true;
+    obj.importOffset = importOffset;
+    obj.firstJmpType = hooks.jmpTypes.IMPORT;
+    return obj;
+}
+
+function hooks_matchImportCallUsage(offset, importOffset)
+{
+    return hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)
+}
+
+function hooks_matchImportJmpUsage(offset, importOffset)
+{
+    return hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)
+}

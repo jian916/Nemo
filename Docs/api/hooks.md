@@ -48,6 +48,27 @@ If address matched, return object with fields:
 If matching failed, throw error.
 
 
+### hooks.matchImportCallUsage
+
+```
+hooks.matchImportCallUsage(offset, importOffset)
+```
+
+Match import calls.
+
+If address matched, return object with match fields.
+
+### hooks.matchImportJmpUsage
+
+```
+hooks.matchImportJmpUsage(offset, importOffset)
+```
+
+Match import jmps.
+
+If address matched, return object with match fields.
+
+
 ### hooks.addPostEndHook
 
 ```
@@ -107,6 +128,26 @@ Create hook object with given table variable id at end of function.
 
 Return created hook object or throw error.
 
+
+### hooks.initImportCallHooks
+
+```
+hooks.initImportCallHooks(funcName, dllName, ordinal)
+```
+
+Create hook for import function calls usage with given import name.
+
+Return created hook object or throw error.
+
+### hooks.initImportJmpHooks
+
+```
+hooks.initImportJmpHooks(funcName, dllName, ordinal)
+```
+
+Create hook for import function jmps usage with given import name.
+
+Return created hook object or throw error.
 
 ### hooks.applyFinal
 

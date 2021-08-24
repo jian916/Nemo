@@ -115,7 +115,14 @@ function hooks_initHookInternal(offset, matchFunc, storageKey, data)
     obj.matchFunc = matchFunc;
     obj.preEntries = [];
     obj.postEntries = [];
-    obj.stolenEntry = createEntry(asm.hexToAsm(obj.stolenCode1), {});
+    if (obj.stolenCode1 != "")
+    {
+        obj.stolenEntry = createEntry(asm.hexToAsm(obj.stolenCode1), {});
+    }
+    else
+    {
+        obj.stolenEntry = "";
+    }
     if (obj.retCode != "")
     {
         obj.finalEntry = createEntry(asm.hexToAsm(obj.retCode), {});
@@ -175,6 +182,20 @@ function hooks_initTableEndHook(varId)
     return hooks_initHook(varId, hooks_matchFunctionEnd, table.varToHook);
 }
 
+function hooks_initImportCallHooks(funcName, dllName, ordinal)
+{
+    return hooks_initHooks([funcName, dllName, ordinal],
+        hooks.matchImportCallUsage,
+        hooks.searchImportCallUsage);
+}
+
+function hooks_initImportJmpHooks(funcName, dllName, ordinal)
+{
+    return hooks_initHooks([funcName, dllName, ordinal],
+        hooks.matchImportJmpUsage,
+        hooks.searchImportJmpUsage);
+}
+
 function hooks_applyFinal(obj, dryRun)
 {
     consoleLog("hooks.applyFinal start");
@@ -212,7 +233,8 @@ function hooks_applyFinal(obj, dryRun)
     convertArray(obj.preEntries);
 
     consoleLog("hooks.applyFinal add stolen entry");
-    obj.allEntries.push(entryToAsm(obj.stolenEntry));
+    if (obj.stolenEntry != "")
+        obj.allEntries.push(entryToAsm(obj.stolenEntry));
 
     consoleLog("hooks.applyFinal add post entries");
     convertArray(obj.postEntries);
@@ -238,9 +260,10 @@ function hooks_applyFinal(obj, dryRun)
                 exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
                 break;
             case hooks.jmpTypes.IMPORT:
-                var importOffset = exe.insertDWord(obj.importOffset);
-                obj.importOffsetPatched = importOffset;
-                exe.replaceDWord(obj.patchAddr, importOffset);
+                var freeVa = pe.rawToVa(obj.allEntries[0].free);
+                var importOffset = exe.insertDWord(freeVa);
+                obj.importOffsetPatchedVa = pe.rawToVa(importOffset);
+                exe.replaceDWord(obj.patchAddr, obj.importOffsetPatchedVa);
                 break;
             default:
                 fatalError("Unknown jmp type: " + obj.firstJmpType);
@@ -323,6 +346,10 @@ function registerHooks()
 
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
+    hooks.matchImportCallUsage = hooks_matchImportCallUsage;
+    hooks.matchImportJmpUsage = hooks_matchImportJmpUsage;
+    hooks.searchImportCallUsage = hooks_searchImportCallUsage;
+    hooks.searchImportJmpUsage = hooks_searchImportJmpUsage;
     hooks.addPostEndHook = hooks_addPostEndHook;
     hooks.createHookObj = hooks_createHookObj;
     hooks.initHook = hooks_initHook;
@@ -330,6 +357,8 @@ function registerHooks()
     hooks.initHookInternal = hooks_initHookInternal;
     hooks.initEndHook = hooks_initEndHook;
     hooks.initTableEndHook = hooks_initTableEndHook;
+    hooks.initImportCallHooks = hooks_initImportCallHooks;
+    hooks.initImportJmpHooks = hooks_initImportJmpHooks;
     hooks.applyFinal = hooks_applyFinal;
     hooks.applyAllFinal = hooks_applyAllFinal;
     hooks.removePatchHooks = hooks_removePatchHooks;
