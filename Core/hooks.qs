@@ -80,6 +80,45 @@ function hooks_initHooks(offset, matchFunc, searchAddrFunc)
         var data = offset;
         objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
     }
+
+    objs.addPre = function(text, vars)
+    {
+        this.forEach(function(obj)
+        {
+            obj.addEntry(text, vars, obj.preEntries);
+        })
+    }
+    objs.addPost = function(text, vars)
+    {
+        this.forEach(function(obj)
+        {
+            obj.addEntry(text, vars, obj.postEntries);
+        })
+    }
+    objs.addFilePre = function(fileName, vars)
+    {
+        var text = asm.load(fileName);
+        this.forEach(function(obj)
+        {
+            obj.addEntry(text, vars, obj.preEntries);
+        })
+    }
+    objs.addFilePost = function(fileName, vars)
+    {
+        var text = asm.load(fileName);
+        this.forEach(function(obj)
+        {
+            obj.addEntry(text, vars, obj.postEntries);
+        })
+    }
+    objs.validate = function()
+    {
+        this.forEach(function(obj)
+        {
+            hooks_applyFinal(obj, true);
+        })
+    }
+
     return objs;
 }
 
