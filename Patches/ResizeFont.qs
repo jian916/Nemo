@@ -20,17 +20,15 @@
 //#          height before Jumping to actual CreateFontA                 #
 //########################################################################
 
-function ResizeFont()
+function ResizeFont_imp(name, text, def)
 {
-    var newHeight = exe.getUserInput("$newFontHgt", XTYPE_BYTE,
+    var value = exe.getUserInput(name, XTYPE_DWORD,
         _("Number Input"),
-        _("Enter the new Font Height(1-127) - snaps to closest valid value"),
-        10, 1, 127);
-    if (newHeight === 10)
-        return "Patch Cancelled - New value is same as old";
+        text,
+        def, 0, 1000);
 
     var vars = {
-        "newHeight": newHeight
+        "value": value
     }
 
     var hooksList = hooks.initImportCallHooks("CreateFontA", "GDI32.dll");
@@ -44,4 +42,24 @@ function ResizeFont()
     hooksList.validate();
 
     return true;
+}
+
+function ResizeFont()
+{
+    return ResizeFont_imp("$newFontHgt", _("Enter fixed abs font height"), 10);
+}
+
+function ResizeFontL()
+{
+    return ResizeFont_imp("$newFontHgtL", _("Enter fixed logical font height"), 10);
+}
+
+function ResizeFontSizeMinL()
+{
+    return ResizeFont_imp("$newFontSizeMinL", _("Enter minimal logical font height"), 10);
+}
+
+function ResizeFontSizeMaxL()
+{
+    return ResizeFont_imp("$newFontSizeMaxL", _("Enter maximum logical font height"), 10);
 }

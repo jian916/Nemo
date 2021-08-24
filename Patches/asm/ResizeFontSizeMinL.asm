@@ -16,4 +16,13 @@
 
 %include CreateFontA_params
 
-mov dword ptr [esp + height], -value
+mov eax, dword ptr [esp + height]
+cmp eax, 0
+js skip
+
+cmp eax, value
+jge skip
+
+mov dword ptr [esp + height], value
+
+skip:

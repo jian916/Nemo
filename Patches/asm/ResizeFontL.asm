@@ -16,4 +16,4 @@
 
 %include CreateFontA_params
 
-mov dword ptr [esp + height], -value
+mov dword ptr [esp + height], value

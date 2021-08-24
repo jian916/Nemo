@@ -324,7 +324,7 @@ registerPatch(205, "EnableMonsterTables", "Enable Monster Tables", "Custom", 0, 
 
 registerPatch(206, "LoadCustomQuestLua", "Load Custom Quest Lua/Lub files", "Custom", 0, "Neo", "Enables loading of custom lua files used for quests. You need to specify a txt file containing list of files in the 'lua files\\quest' folder to load (one file per line)", false);
 
-registerPatch(207, "ResizeFont", "Change all fonts size to fixed value", "Size", 0, "Yommy, Neo, 4144", "Resizes all fonts height to fixed size", false);
+registerPatch(207, "ResizeFont", "Change all fonts abs size to fixed value", "Size", 0, "Yommy, Neo, 4144", "Resizes all fonts abs height to fixed value", false);
 
 registerPatch(208, "RestoreCashShop", "Restore Cash Shop Icon", "Special", 0, "Neo", "Restores the Cash Shop Icon in RE clients that can have them", false);
 
@@ -674,5 +674,10 @@ registerPatch(386, "ChangeUITransBalloonTextFillColor", "Change default border c
 
 registerPatch(387, "SetAutoFollowStopDelay", "Change auto follow stop delay", "Custom", 0, "4144", "Can change auto follow disappear delay.", false);
 
+registerPatch(388, "ResizeFontL", "Change all fonts logical size to fixed value", "Size", 0, "4144", "Resizes all fonts logical height to fixed value", false);
+
+registerPatch(389, "ResizeFontSizeMinL", "Limit all fonts logical minimal size", "Size", 0, "4144", "Limit all fonts logical minimal size", false);
+
+registerPatch(390, "ResizeFontSizeMaxL", "Limit all fonts logical maximum size", "Size", 0, "4144", "Limit all fonts logical maximum size", false);
 
 GlobalPostInit();
