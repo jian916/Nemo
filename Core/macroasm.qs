@@ -35,22 +35,24 @@ function macroAsm_convert(obj)
 function macroAsm_invokeMacros(obj, index)
 {
     var macro = macroAsm.macroses[index];
-    obj.macro = macro;
-    var macroFunc = macro[0];
     var cmd = macro[1];
     var getArgFunc = macro[2];
-    var checkArgFunc = macro[3];
     if (typeof(getArgFunc) !== "undefined")
     {
         var arg = getArgFunc(cmd, obj.line);
         if (arg === false)
             return;
+        obj.macro = macro;
+        var checkArgFunc = macro[3];
         if (typeof(checkArgFunc) !== "undefined")
             checkArgFunc(obj, arg);
+        var macroFunc = macro[0];
         macroFunc(obj, cmd, arg);
     }
     else
     {
+        obj.macro = macro;
+        var macroFunc = macro[0];
         macroFunc(obj, cmd);
     }
 }
@@ -67,6 +69,12 @@ function macroAsm_replaceCmds(obj)
     while (i < parts.length)
     {
         obj.line = parts[i].trim();
+        if (obj.line.length === 0 || obj.line[0] === ";")
+        {
+            reparse = false;
+            i ++;
+            continue;
+        }
         for (var j = 0; j < macroAsm.macroses.length; j ++)
         {
             macroAsm_invokeMacros(obj, j);
