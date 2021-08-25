@@ -128,3 +128,14 @@ Array.prototype.toRvaBE = function()
     }
     return result;
 }
+
+Array.prototype.pushSorted = function(value)
+{
+    var weight = value.weight;
+    for (var i = 0; i < this.length; i++)
+    {
+        if (this[i].weight > weight)
+            break;
+    }
+    this.splice(i, 0, value);
+}
