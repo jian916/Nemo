@@ -27,7 +27,7 @@ function LoadCustomLuaBeforeAfterFiles()
 
     consoleLog("Parse function start");
 
-    var matchObj = hooks.matchFunctionStart(offset);
+    var matchObj = hooks.matchFunctionStart(offset, offset);
 
     consoleLog("allocate buffer");
 

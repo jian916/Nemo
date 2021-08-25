@@ -19,7 +19,7 @@ function hooks_addPostEndHook(patchAddr, text, vars)
 {
     consoleLog("hooks.addPostEndHook: match function end");
 
-    var matchObj = hooks_matchFunctionEnd(patchAddr);
+    var matchObj = hooks_matchFunctionEnd(patchAddr, patchAddr);
 
     consoleLog("hooks.addPostEndHook: insert own hook code");
     var text = asm.combine(
