@@ -81,34 +81,34 @@ function hooks_initHooks(offset, matchFunc, searchAddrFunc)
         objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
     }
 
-    objs.addPre = function(text, vars)
+    objs.addPre = function(text, vars, weight)
     {
         this.forEach(function(obj)
         {
-            obj.addEntry(text, vars, obj.preEntries);
+            obj.addEntry(text, vars, obj.preEntries, weight);
         })
     }
-    objs.addPost = function(text, vars)
+    objs.addPost = function(text, vars, weight)
     {
         this.forEach(function(obj)
         {
-            obj.addEntry(text, vars, obj.postEntries);
+            obj.addEntry(text, vars, obj.postEntries, weight);
         })
     }
-    objs.addFilePre = function(fileName, vars)
+    objs.addFilePre = function(fileName, vars, weight)
     {
         var text = asm.load(fileName);
         this.forEach(function(obj)
         {
-            obj.addEntry(text, vars, obj.preEntries);
+            obj.addEntry(text, vars, obj.preEntries, weight);
         })
     }
-    objs.addFilePost = function(fileName, vars)
+    objs.addFilePost = function(fileName, vars, weight)
     {
         var text = asm.load(fileName);
         this.forEach(function(obj)
         {
-            obj.addEntry(text, vars, obj.postEntries);
+            obj.addEntry(text, vars, obj.postEntries, weight);
         })
     }
     objs.validate = function()
@@ -172,32 +172,36 @@ function hooks_initHookInternal(offset, matchFunc, storageKey, data)
         obj.finalEntry = false;
     }
 
-    obj.addEntry = function(text, vars, entries)
+    obj.addEntry = function(text, vars, entries, weight)
     {
         if (typeof(vars) === "undefined")
             vars = {};
         var asmObj = exe.insertAsmTextObj(text, vars, 5);
         asmObj.patch = patch.getName();
-        entries.push(asmObj);
+        if (typeof(weight) === "undefined")
+            asmObj.weight = 10000;
+        else
+            asmObj.weight = weight;
+        entries.pushSorted(asmObj);
         storage.multiHooks[asmObj.patch] = true;
     }
-    obj.addPre = function(text, vars)
+    obj.addPre = function(text, vars, weight)
     {
-        this.addEntry(text, vars, this.preEntries);
+        this.addEntry(text, vars, this.preEntries, weight);
     }
-    obj.addPost = function(text, vars)
+    obj.addPost = function(text, vars, weight)
     {
-        this.addEntry(text, vars, this.postEntries);
+        this.addEntry(text, vars, this.postEntries, weight);
     }
-    obj.addFilePre = function(fileName, vars)
+    obj.addFilePre = function(fileName, vars, weight)
     {
         var text = asm.load(fileName);
-        this.addEntry(text, vars, this.preEntries);
+        this.addEntry(text, vars, this.preEntries, weight);
     }
-    obj.addFilePost = function(fileName, vars)
+    obj.addFilePost = function(fileName, vars, weight)
     {
         var text = asm.load(fileName);
-        this.addEntry(text, vars, this.postEntries);
+        this.addEntry(text, vars, this.postEntries, weight);
     }
     obj.applyFinal = function()
     {
