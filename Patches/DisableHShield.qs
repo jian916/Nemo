@@ -109,10 +109,7 @@ function DisableHShield()
         return "Failed in Step 4a - String not found";
 
     consoleLog("Step 4b - Search address of MessageBoxA function");
-    var offset2 = imports.ptr("MessageBoxA", "USER32.dll");
-
-    if (offset2 === -1)
-        return "Failed in Step 4b - Function not found";
+    var offset2 = imports.ptrValidated("MessageBoxA", "USER32.dll");
 
     consoleLog("Step 4c - Search ERROR reference followed by MessageBoxA call");
     var strHex1 = offset.packToHex(4);
