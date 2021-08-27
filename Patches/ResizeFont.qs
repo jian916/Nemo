@@ -20,7 +20,7 @@
 //#          height before Jumping to actual CreateFontA                 #
 //########################################################################
 
-function ResizeFont_imp(name, text, def, min, max)
+function CreateFontAHook_imp(name, text, def, min, max)
 {
     var value = exe.getUserInput(name, XTYPE_DWORD,
         _("Number Input"),
@@ -46,25 +46,25 @@ function ResizeFont_imp(name, text, def, min, max)
 
 function ResizeFont()
 {
-    return ResizeFont_imp("$newFontHgt", _("Enter fixed abs font height"), 10, 0, 1000);
+    return CreateFontAHook_imp("$newFontHgt", _("Enter fixed abs font height"), 10, 0, 1000);
 }
 
 function ResizeFontL()
 {
-    return ResizeFont_imp("$newFontHgtL", _("Enter fixed logical font height"), 10, 0, 1000);
+    return CreateFontAHook_imp("$newFontHgtL", _("Enter fixed logical font height"), 10, 0, 1000);
 }
 
 function ResizeFontSizeMinL()
 {
-    return ResizeFont_imp("$newFontSizeMinL", _("Enter minimal logical font height"), 10, 0, 1000);
+    return CreateFontAHook_imp("$newFontSizeMinL", _("Enter minimal logical font height"), 10, 0, 1000);
 }
 
 function ResizeFontSizeMaxL()
 {
-    return ResizeFont_imp("$newFontSizeMaxL", _("Enter maximum logical font height"), 10, 0, 1000);
+    return CreateFontAHook_imp("$newFontSizeMaxL", _("Enter maximum logical font height"), 10, 0, 1000);
 }
 
 function ResizeFontSizeAdjL()
 {
-    return ResizeFont_imp("$newFontSizeAdjL", _("Enter number for adjust font size height (-100, +100)"), 10, -1000, 1000);
+    return CreateFontAHook_imp("$newFontSizeAdjL", _("Enter number for adjust font size height (-100, +100)"), 10, -1000, 1000);
 }
