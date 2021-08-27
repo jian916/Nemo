@@ -125,9 +125,7 @@ function EnableDNSSupport()
     exe.replace(offset+1, (pe.rawToVa(free) - pe.rawToVa(offset+5)).packToHex(4), PTYPE_HEX);
 
     //Step 4b - Find gethostbyname function address (#52 when imported by ordinal)
-    var uGethostbyname = imports.ptr("gethostbyname", "ws2_32.dll", 52);//By Ordinal
-    if (uGethostbyname === -1)
-        return "Failed in Step 4 - gethostbyname not found";
+    var uGethostbyname = imports.ptrValidated("gethostbyname", "ws2_32.dll", 52);  // By Ordinal
 
     //Step 4c - Find the IP address format string
     var ipFormat = pe.stringVa("%d.%d.%d.%d");
@@ -146,7 +144,7 @@ function EnableDNSSupport()
     dnscode = ReplaceVarHex(dnscode, 3, uGethostbyname);
     dnscode = ReplaceVarHex(dnscode, 4, ipFormat);
     dnscode = ReplaceVarHex(dnscode, 5, offset);
-    dnscode = ReplaceVarHex(dnscode, 6, imports.ptr("wsprintfA", "USER32.dll"));
+    dnscode = ReplaceVarHex(dnscode, 6, imports.ptrValidated("wsprintfA", "USER32.dll"));
     dnscode = ReplaceVarHex(dnscode, 7, gAccountAddr);
     dnscode = ReplaceVarHex(dnscode, 8, offset);
 
