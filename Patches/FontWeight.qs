@@ -19,3 +19,8 @@ function SetFontWeight()
 {
     return CreateFontAHook_imp("$SetFontWeight", _("Enter fixed font weight (0 - any, 400 - normal, 700 - bold)"), 400, 0, 1000);
 }
+
+function SetBoldFontWeight()
+{
+    return CreateFontAHook_imp("$SetBoldFontWeight", _("Enter fixed weight for bold font (0 - any, 400 - normal, 700 - bold)"), 700, 0, 1000);
+}
