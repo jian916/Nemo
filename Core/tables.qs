@@ -90,7 +90,7 @@ function table_getValidated(varId)
     checkArgs("table.getValidated", arguments, [["Number"]]);
     var ret = table.get(varId);
     if (ret <= 0)
-        fatalError("Incorrect table var given: " + varId);
+        throw "Incorrect table var given: " + varId;
     return ret;
 }
 
