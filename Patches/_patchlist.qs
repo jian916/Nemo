@@ -692,4 +692,6 @@ registerPatch(395, "SetFontWeightAdjust", "Adjust all fonts weight to fixed valu
 
 registerPatch(396, "SetFontCharset", "Change all fonts charset", "Size", 0, "4144", "Change all fonts charset", false);
 
+registerPatch(397, "SetFontName", "Change all fonts face", "Size", 0, "4144", "Change all fonts face name", false);
+
 GlobalPostInit();

@@ -14,7 +14,12 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-%setvar height = 4
-%setvar weight = 20
-%setvar charset = 36
-%setvar faceName = 56
+%include CreateFontA_params
+
+mov dword ptr [esp + faceName], fontName
+jmp skip
+
+fontName:
+asciz "{value}"
+
+skip:
