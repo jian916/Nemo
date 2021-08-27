@@ -75,7 +75,7 @@ function FixChatAt()
       return "Failed in Step 3 - Not enough free space";
 
     //Step 4a - Fill in the blanks
-    code = ReplaceVarHex(code, 1, imports.ptr("GetAsyncKeyState", "USER32.dll"));
+    code = ReplaceVarHex(code, 1, imports.ptrValidated("GetAsyncKeyState", "USER32.dll"));
     code = ReplaceVarHex(code, 2, func);
 
     //Step 4b - Change called address from func to our function.
