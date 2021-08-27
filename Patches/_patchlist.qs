@@ -688,4 +688,6 @@ registerPatch(393, "SetBoldFontWeight", "Change all bold fonts weight to fixed v
 
 registerPatch(394, "SetNormalFontWeight", "Change all normal fonts weight to fixed value", "Font", 0, "4144", "Change all normal (regular) fonts weight to fixed value", false);
 
+registerPatch(395, "SetFontWeightAdjust", "Adjust all fonts weight to fixed value", "Size", 0, "4144", "Adjust all fonts weight to fixed value", false);
+
 GlobalPostInit();
