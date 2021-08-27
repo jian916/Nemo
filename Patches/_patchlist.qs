@@ -690,10 +690,10 @@ registerPatch(394, "SetNormalFontWeight", "Change all normal fonts weight to fix
 
 registerPatch(395, "SetFontWeightAdjust", "Adjust all fonts weight to fixed value", "Size", 0, "4144", "Adjust all fonts weight to fixed value", false);
 
-registerPatch(396, "SetFontCharset", "Change all fonts charset", "Size", 0, "4144", "Change all fonts charset", false);
+registerPatch(396, "SetFontCharset", "Change all fonts charset", "Font", 0, "4144", "Change all fonts charset", false);
 
-registerPatch(397, "SetFontName", "Change all fonts face", "Size", 0, "4144", "Change all fonts face name", false);
+registerPatch(397, "SetFontName", "Change all fonts face", "Font", 0, "4144", "Change all fonts face name", false);
 
-registerPatch(398, "HideDebugger", "Hide debugger", "Size", 0, "4144", "Hide presence of debugger (IsDebuggerPresent)", false);
+registerPatch(398, "HideDebugger", "Hide debugger", "Hacks", 0, "4144", "Hide presence of debugger (IsDebuggerPresent)", false);
 
 GlobalPostInit();
