@@ -6,9 +6,7 @@
 function DisableMultipleWindows()
 {
     consoleLog("Step 1a - Find Address of ole32.CoInitialize function");
-    var funcOffset = imports.ptr("CoInitialize", "ole32.dll");
-    if (funcOffset === -1)
-        return "Failed in Step 1 - CoInitialize not found";
+    var funcOffset = imports.ptrValidated("CoInitialize", "ole32.dll");
 
     consoleLog("Step 1b - Find where it is called from.");
     var code =
@@ -139,17 +137,17 @@ function DisableMultipleWindows()
     code = ReplaceVarHex(code, 0, resetTimer - exe.Raw2Rva(free + 5));
     code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset + continueOffset));
 
-    code = ReplaceVarHex(code, 4, imports.ptr("WaitForSingleObject", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 4, imports.ptrValidated("WaitForSingleObject", "KERNEL32.dll"));
 
     offset = exe.Raw2Rva(free + csize - 9);
     code = ReplaceVarHex(code, 1, offset);
     code = ReplaceVarHex(code, 5, offset);
 
-    offset = imports.ptr("GetModuleHandleA", "KERNEL32.dll");
+    offset = imports.ptrValidated("GetModuleHandleA", "KERNEL32.dll");
     code = ReplaceVarHex(code, 2, offset);
     code = ReplaceVarHex(code, 6, offset);
 
-    offset = imports.ptr("GetProcAddress", "KERNEL32.dll");
+    offset = imports.ptrValidated("GetProcAddress", "KERNEL32.dll");
     code = ReplaceVarHex(code, 3, offset);
     code = ReplaceVarHex(code, 7, offset);
 
