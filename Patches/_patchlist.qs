@@ -700,4 +700,8 @@ registerPatch(399, "SetPriorityClassHigh", "Set high priority class for active c
 
 registerPatch(400, "SetPriorityClassNormal", "Set normal priority class for inactive client", "Perf", 0, "4144", "Set normal priority class for inactive client window", false);
 
+registerPatch(401, "ChangeSleep0", "Add input delay", "Perf", 0, "4144", "Add input delay in Sleep", false);
+
+registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0, "4144", "Change Sleep delay in game loop", false);
+
 GlobalPostInit();
