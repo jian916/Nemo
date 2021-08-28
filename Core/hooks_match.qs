@@ -225,3 +225,27 @@ function hooks_matchImportJmpUsage(offset, importOffset)
 {
     return hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)
 }
+
+function hooks_matchImportMovUsage(offset, importOffset)
+{
+    var hexImportOffset = importOffset.packToHex(4);
+    var found = pe.match("8B 3D" + hexImportOffset, offset);  // mov edi, dword ptr [offset]
+    var addrOffset = 2;
+
+    if (found === false)
+    {
+        found = pe.match("8B 35" + hexImportOffset, offset);  // mov esi, dword ptr [offset]
+        addrOffset = 2;
+    }
+
+    if (found === false)
+        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+
+    var obj = hooks.createHookObj();
+    obj.patchAddr = offset + addrOffset;
+    obj.retCode = "FF 25" + importOffset.packToHex(4);
+    obj.endHook = true;
+    obj.importOffset = importOffset;
+    obj.firstJmpType = hooks.jmpTypes.IMPORT;
+    return obj;
+}

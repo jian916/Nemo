@@ -239,6 +239,13 @@ function hooks_initImportJmpHooks(funcName, dllName, ordinal)
         hooks.searchImportJmpUsage);
 }
 
+function hooks_initImportMovHooks(funcName, dllName, ordinal)
+{
+    return hooks_initHooks([funcName, dllName, ordinal],
+        hooks.matchImportMovUsage,
+        hooks.searchImportMovUsage);
+}
+
 function hooks_applyFinal(obj, dryRun)
 {
     consoleLog("hooks.applyFinal start");
@@ -391,8 +398,10 @@ function registerHooks()
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
     hooks.matchImportCallUsage = hooks_matchImportCallUsage;
     hooks.matchImportJmpUsage = hooks_matchImportJmpUsage;
+    hooks.matchImportMovUsage = hooks_matchImportMovUsage;
     hooks.searchImportCallUsage = hooks_searchImportCallUsage;
     hooks.searchImportJmpUsage = hooks_searchImportJmpUsage;
+    hooks.searchImportMovUsage = hooks_searchImportMovUsage;
     hooks.addPostEndHook = hooks_addPostEndHook;
     hooks.createHookObj = hooks_createHookObj;
     hooks.initHook = hooks_initHook;
@@ -402,6 +411,7 @@ function registerHooks()
     hooks.initTableEndHook = hooks_initTableEndHook;
     hooks.initImportCallHooks = hooks_initImportCallHooks;
     hooks.initImportJmpHooks = hooks_initImportJmpHooks;
+    hooks.initImportMovHooks = hooks_initImportMovHooks;
     hooks.applyFinal = hooks_applyFinal;
     hooks.applyAllFinal = hooks_applyAllFinal;
     hooks.removePatchHooks = hooks_removePatchHooks;

@@ -36,3 +36,24 @@ function hooks_searchImportJmpUsage(importInfo)
 {
     return hooks_searchImportUsage_code("FF 25", importInfo);
 }
+
+function hooks_searchImportMovUsage(importInfo)
+{
+    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
+    var importOffsetHex = importOffset.packToHex(4);
+    var arr = [];
+
+    var offsets = pe.findCodes("8B 3D" + importOffsetHex);  // mov edi, dword ptr [importOffset]
+    for (var i = 0; i < offsets.length; i ++)
+    {
+        arr.push([offsets[i], importOffset]);
+    }
+
+    var offsets = pe.findCodes("8B 35" + importOffsetHex);  // mov esi, dword ptr [importOffset]
+    for (var i = 0; i < offsets.length; i ++)
+    {
+        arr.push([offsets[i], importOffset]);
+    }
+
+    return arr;
+}
