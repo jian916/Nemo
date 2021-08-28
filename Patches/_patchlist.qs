@@ -698,4 +698,6 @@ registerPatch(398, "HideDebugger", "Hide debugger", "Hacks", 0, "4144", "Hide pr
 
 registerPatch(399, "SetPriorityClassHigh", "Set high priority class for active client", "Perf", 0, "4144", "Set high priority class for active client window", false);
 
+registerPatch(400, "SetPriorityClassNormal", "Set normal priority class for inactive client", "Perf", 0, "4144", "Set normal priority class for inactive client window", false);
+
 GlobalPostInit();
