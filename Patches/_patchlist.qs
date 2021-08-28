@@ -696,4 +696,6 @@ registerPatch(397, "SetFontName", "Change all fonts face", "Font", 0, "4144", "C
 
 registerPatch(398, "HideDebugger", "Hide debugger", "Hacks", 0, "4144", "Hide presence of debugger (IsDebuggerPresent)", false);
 
+registerPatch(399, "SetPriorityClassHigh", "Set high priority class for active client", "Perf", 0, "4144", "Set high priority class for active client window", false);
+
 GlobalPostInit();
