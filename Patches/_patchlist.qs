@@ -704,4 +704,6 @@ registerPatch(401, "ChangeSleep0", "Add input delay", "Perf", 0, "4144", "Add in
 
 registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0, "4144", "Change Sleep delay in game loop", false);
 
+registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Fix", 0, "4144", "Ignore most errors (hide all message boxes)", false);
+
 GlobalPostInit();
