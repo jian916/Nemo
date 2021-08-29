@@ -104,7 +104,7 @@ function exe_insertAsmTextObj(commands, vars, freeSpace, dryRun)
         else
         {
             pe.directReplace(free, obj.code);
-            storage.zero = storage.zero + size + 4;
+            storage.zero = storage.zero + size;
         }
     }
     obj.free = free;
@@ -146,7 +146,7 @@ function exe_insertDWord(value, dryRun)
         else
         {
             pe.directReplace(free, obj.code);
-            storage.zero = storage.zero + size + 4;
+            storage.zero = storage.zero + size;
         }
     }
     return free;
