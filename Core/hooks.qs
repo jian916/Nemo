@@ -313,7 +313,7 @@ function hooks_applyFinal(obj, dryRun)
                 var freeVa = pe.rawToVa(obj.allEntries[0].free);
                 var importOffset = exe.insertDWord(freeVa);
                 obj.importOffsetPatchedVa = pe.rawToVa(importOffset);
-                exe.replaceDWord(obj.patchAddr, obj.importOffsetPatchedVa);
+                pe.directReplaceDWord(obj.patchAddr, obj.importOffsetPatchedVa);
                 break;
             default:
                 fatalError("Unknown jmp type: " + obj.firstJmpType);
@@ -340,6 +340,13 @@ function hooks_applyFinal(obj, dryRun)
 function hooks_applyAllFinal()
 {
     storage.zero = exe.findZeros(0x1000);
+/*
+    // alternative mapping
+    storage.zero = pe.sectionRaw(DIFF)[1] - 1024;
+    if (storage.zero === -1)
+        throw "No free space found";
+*/
+
     for (var patchAddr in storage.hooks)
     {
         hooks_applyFinal(storage.hooks[patchAddr]);
