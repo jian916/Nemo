@@ -17,13 +17,9 @@
 
 function IgnoreMostErrors()
 {
-    var hooksList = hooks.initImportCallHooks("MessageBoxA", "user32.dll");
+    var hooksList = hooks.initImportHooks("MessageBoxA", "user32.dll");
     if (hooksList.length === 0)
-        throw "MessageBoxA call usages not found";
-    hooksList.addFilePre();
-    hooksList.validate();
-
-    var hooksList = hooks.initImportMovHooks("MessageBoxA", "user32.dll");
+        throw "MessageBoxA usages not found";
     hooksList.addFilePre();
     hooksList.validate();
     return true;
