@@ -204,8 +204,9 @@ function hooks_matchImportUsage_code(code, offset, importOffset)
 {
     var found = pe.match(code, offset);  // call dword ptr [offset]
     var addrOffset = 2;
+
     if (found !== true)
-        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+        return false;
 
     var obj = hooks.createHookObj();
     obj.patchAddr = offset + addrOffset;
@@ -218,34 +219,31 @@ function hooks_matchImportUsage_code(code, offset, importOffset)
 
 function hooks_matchImportCallUsage(offset, importOffset)
 {
-    return hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)
+    var obj = hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)
+    if (obj === false)
+        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+    return obj;
 }
 
 function hooks_matchImportJmpUsage(offset, importOffset)
 {
-    return hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)
+    var obj = hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)
+    if (obj === false)
+        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+    return obj;
 }
 
 function hooks_matchImportMovUsage(offset, importOffset)
 {
     var hexImportOffset = importOffset.packToHex(4);
-    var found = pe.match("8B 3D" + hexImportOffset, offset);  // mov edi, dword ptr [offset]
-    var addrOffset = 2;
 
-    if (found === false)
-    {
-        found = pe.match("8B 35" + hexImportOffset, offset);  // mov esi, dword ptr [offset]
-        addrOffset = 2;
-    }
+    var obj = hooks_matchImportUsage_code("8B 3D" + hexImportOffset, offset, importOffset)  // mov edi, dword ptr [offset]
+    if (obj !== false)
+        return obj;
 
-    if (found === false)
-        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+    obj = hooks_matchImportUsage_code("8B 35" + hexImportOffset, offset, importOffset)  // mov esi, dword ptr [offset]
+    if (obj !== false)
+        return obj;
 
-    var obj = hooks.createHookObj();
-    obj.patchAddr = offset + addrOffset;
-    obj.retCode = "FF 25" + importOffset.packToHex(4);
-    obj.endHook = true;
-    obj.importOffset = importOffset;
-    obj.firstJmpType = hooks.jmpTypes.IMPORT;
-    return obj;
+    throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
 }

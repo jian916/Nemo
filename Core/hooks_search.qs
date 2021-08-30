@@ -15,26 +15,30 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function hooks_searchImportUsage_code(code, importInfo)
+function hooks_searchImportUsage_add(arr, offsets, importOffset)
 {
-    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
-    var offsets = pe.findCodes(code + importOffset.packToHex(4));  // call dword ptr [importOffset]
-    var arr = [];
     for (var i = 0; i < offsets.length; i ++)
     {
         arr.push([offsets[i], importOffset]);
     }
-    return arr;
 }
 
 function hooks_searchImportCallUsage(importInfo)
 {
-    return hooks_searchImportUsage_code("FF 15", importInfo);
+    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
+    var arr = [];
+    var offsets = pe.findCodes("FF 15" + importOffset.packToHex(4));  // call dword ptr [importOffset]
+    hooks_searchImportUsage_add(arr, offsets, importOffset);
+    return arr;
 }
 
 function hooks_searchImportJmpUsage(importInfo)
 {
-    return hooks_searchImportUsage_code("FF 25", importInfo);
+    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
+    var arr = [];
+    var offsets = pe.findCodes("FF 25" + importOffset.packToHex(4));  // jmp dword ptr [importOffset]
+    hooks_searchImportUsage_add(arr, offsets, importOffset);
+    return arr;
 }
 
 function hooks_searchImportMovUsage(importInfo)
@@ -44,16 +48,10 @@ function hooks_searchImportMovUsage(importInfo)
     var arr = [];
 
     var offsets = pe.findCodes("8B 3D" + importOffsetHex);  // mov edi, dword ptr [importOffset]
-    for (var i = 0; i < offsets.length; i ++)
-    {
-        arr.push([offsets[i], importOffset]);
-    }
+    hooks_searchImportUsage_add(arr, offsets, importOffset);
 
     var offsets = pe.findCodes("8B 35" + importOffsetHex);  // mov esi, dword ptr [importOffset]
-    for (var i = 0; i < offsets.length; i ++)
-    {
-        arr.push([offsets[i], importOffset]);
-    }
+    hooks_searchImportUsage_add(arr, offsets, importOffset);
 
     return arr;
 }
