@@ -27,17 +27,9 @@ function ChangeSleepN(n, weight)
         "newValue": newValue
     }
 
-    var hooksList = hooks.initImportCallHooks("Sleep", "kernel32.dll");
+    var hooksList = hooks.initImportHooks("Sleep", "kernel32.dll");
     if (hooksList.length === 0)
         throw "Sleep call usages not found";
-    hooksList.addFilePre("ChangeSleep", vars, weight);
-    hooksList.validate();
-
-    var hooksList = hooks.initImportJmpHooks("Sleep", "kernel32.dll");
-    hooksList.addFilePre("ChangeSleep", vars, weight);
-    hooksList.validate();
-
-    var hooksList = hooks.initImportMovHooks("Sleep", "kernel32.dll");
     hooksList.addFilePre("ChangeSleep", vars, weight);
     hooksList.validate();
 
