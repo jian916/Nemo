@@ -45,3 +45,10 @@ function hooks_initImportMovHooks(funcName, dllName, ordinal)
         hooks.matchImportMovUsage,
         hooks.searchImportMovUsage);
 }
+
+function hooks_initImportHooks(funcName, dllName, ordinal)
+{
+    return hooks_initHooks([funcName, dllName, ordinal],
+        hooks.matchImportUsage,
+        hooks.searchImportUsage);
+}

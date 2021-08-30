@@ -443,9 +443,11 @@ function registerHooks()
 
     hooks.matchFunctionStart = hooks_matchFunctionStart;
     hooks.matchFunctionEnd = hooks_matchFunctionEnd;
+    hooks.matchImportUsage = hooks_matchImportUsage;
     hooks.matchImportCallUsage = hooks_matchImportCallUsage;
     hooks.matchImportJmpUsage = hooks_matchImportJmpUsage;
     hooks.matchImportMovUsage = hooks_matchImportMovUsage;
+    hooks.searchImportUsage = hooks_searchImportUsage;
     hooks.searchImportCallUsage = hooks_searchImportCallUsage;
     hooks.searchImportJmpUsage = hooks_searchImportJmpUsage;
     hooks.searchImportMovUsage = hooks_searchImportMovUsage;
@@ -456,6 +458,7 @@ function registerHooks()
     hooks.initHookInternal = hooks_initHookInternal;
     hooks.initEndHook = hooks_initEndHook;
     hooks.initTableEndHook = hooks_initTableEndHook;
+    hooks.initImportHooks = hooks_initImportHooks;
     hooks.initImportCallHooks = hooks_initImportCallHooks;
     hooks.initImportJmpHooks = hooks_initImportJmpHooks;
     hooks.initImportMovHooks = hooks_initImportMovHooks;

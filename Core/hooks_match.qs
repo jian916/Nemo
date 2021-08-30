@@ -219,7 +219,7 @@ function hooks_matchImportUsage_code(code, offset, importOffset)
 
 function hooks_matchImportCallUsage(offset, importOffset)
 {
-    var obj = hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)
+    var obj = hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)  // call dword ptr [offset]
     if (obj === false)
         throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
     return obj;
@@ -227,7 +227,7 @@ function hooks_matchImportCallUsage(offset, importOffset)
 
 function hooks_matchImportJmpUsage(offset, importOffset)
 {
-    var obj = hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)
+    var obj = hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)  // jmp dword ptr [offset]
     if (obj === false)
         throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
     return obj;
@@ -236,6 +236,29 @@ function hooks_matchImportJmpUsage(offset, importOffset)
 function hooks_matchImportMovUsage(offset, importOffset)
 {
     var hexImportOffset = importOffset.packToHex(4);
+
+    var obj = hooks_matchImportUsage_code("8B 3D" + hexImportOffset, offset, importOffset)  // mov edi, dword ptr [offset]
+    if (obj !== false)
+        return obj;
+
+    obj = hooks_matchImportUsage_code("8B 35" + hexImportOffset, offset, importOffset)  // mov esi, dword ptr [offset]
+    if (obj !== false)
+        return obj;
+
+    throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+}
+
+function hooks_matchImportUsage(offset, importOffset)
+{
+    var hexImportOffset = importOffset.packToHex(4);
+
+    var obj = hooks_matchImportUsage_code("FF 15" + hexImportOffset, offset, importOffset)  // call dword ptr [offset]
+    if (obj !== false)
+        return obj;
+
+    var obj = hooks_matchImportUsage_code("FF 25" + hexImportOffset, offset, importOffset)  // jmp dword ptr [offset]
+    if (obj !== false)
+        return obj;
 
     var obj = hooks_matchImportUsage_code("8B 3D" + hexImportOffset, offset, importOffset)  // mov edi, dword ptr [offset]
     if (obj !== false)
