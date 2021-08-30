@@ -60,9 +60,12 @@ function hooks_initHook(offset, matchFunc, searchAddrFunc)
     return hooks_initHookInternal(offset, matchFunc, storageKey, data);
 }
 
-function hooks_initHooks(offset, matchFunc, searchAddrFunc)
+function hooks_initHooks(offset, matchFunc, searchAddrFunc, addMulti)
 {
     consoleLog("hooks.initHooks start");
+    if (typeof(addMulti) === "undefined")
+        addMulti = false;
+
     var objs = [];
     if (typeof(searchAddrFunc) !== "undefined")
     {
@@ -72,6 +75,12 @@ function hooks_initHooks(offset, matchFunc, searchAddrFunc)
             var storageKey = arr[i][0];
             var data = arr[i][1];
             objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
+            objs[i].addMulti = addMulti;
+            if (i > 0 && addMulti === false)
+            {
+                objs[i].isDuplicate = true;
+                objs[i].copyFrom = objs[0];
+            }
         }
     }
     else
@@ -79,42 +88,68 @@ function hooks_initHooks(offset, matchFunc, searchAddrFunc)
         var storageKey = offset;
         var data = offset;
         objs.push(hooks_initHookInternal(offset, matchFunc, storageKey, data));
+        objs[0].addMulti = addMulti;
+    }
+    objs.addMulti = addMulti;
+
+    function updateDuplicate(obj)
+    {
+    }
+
+    function addHooks(objs, funcEntries, text, vars, weight)
+    {
+        if (objs.addMulti === false)
+        {
+            objs.forEach(function(obj)
+            {
+                if (obj.endHook !== true)
+                    fatalError("Cant use non addMulti functions on non end hook");
+                if (obj.isDuplicate === false)
+                    obj.addEntry(text, vars, funcEntries(obj), weight);
+            });
+        }
+        else
+        {
+            objs.forEach(function(obj)
+            {
+                obj.addEntry(text, vars, funcEntries(obj), weight);
+            });
+        }
+    }
+
+    function getPre(obj)
+    {
+        return obj.preEntries;
+    }
+    function getPost(obj)
+    {
+        return obj.postEntries;
     }
 
     objs.addPre = function(text, vars, weight)
     {
-        this.forEach(function(obj)
-        {
-            obj.addEntry(text, vars, obj.preEntries, weight);
-        })
+        addHooks(objs, getPre, text, vars, weight);
     }
     objs.addPost = function(text, vars, weight)
     {
-        this.forEach(function(obj)
-        {
-            obj.addEntry(text, vars, obj.postEntries, weight);
-        })
+        addHooks(objs, getPost, text, vars, weight);
     }
     objs.addFilePre = function(fileName, vars, weight)
     {
         var text = asm.load(fileName);
-        this.forEach(function(obj)
-        {
-            obj.addEntry(text, vars, obj.preEntries, weight);
-        })
+        addHooks(objs, getPre, text, vars, weight);
     }
     objs.addFilePost = function(fileName, vars, weight)
     {
+        addHooks(objs, getPost, text, vars, weight);
         var text = asm.load(fileName);
-        this.forEach(function(obj)
-        {
-            obj.addEntry(text, vars, obj.postEntries, weight);
-        })
     }
     objs.validate = function()
     {
         this.forEach(function(obj)
         {
+            if (obj.isDuplicate === false)
+                updateDuplicate(obj);
             hooks_applyFinal(obj, true);
         })
     }
@@ -255,8 +290,13 @@ function hooks_applyFinal(obj, dryRun)
     if (typeof(dryRun) === "undefined")
         dryRun = false;
 
-    var szPre = obj.preEntries.length;
-    var szPost = obj.postEntries.length;
+    if (obj.isDuplicate === false)
+        var srcObj = obj;
+    else
+        var srcObj = obj.copyFrom;
+
+    var szPre = srcObj.preEntries.length;
+    var szPost = srcObj.postEntries.length;
     if (obj.alwaysHook !== true && szPre + szPost === 0)
         return;
 
@@ -279,46 +319,76 @@ function hooks_applyFinal(obj, dryRun)
 
     obj.allEntries = [];
 
-    consoleLog("hooks.applyFinal add pre entries");
-    convertArray(obj.preEntries);
-
-    consoleLog("hooks.applyFinal add stolen entry");
-    if (obj.stolenEntry != "")
-        obj.allEntries.push(entryToAsm(obj.stolenEntry));
-
-    consoleLog("hooks.applyFinal add post entries");
-    convertArray(obj.postEntries);
-
-    consoleLog("hooks.applyFinal add final entry");
-    if (obj.finalEntry !== false)
+    if (obj.isDuplicate === false)
     {
-        var entry = entryToAsm(obj.finalEntry);
-        entry.isFinal = obj.finalEntry.isFinal;
-        obj.allEntries.push(entry);
+        consoleLog("hooks.applyFinal add pre entries");
+        convertArray(obj.preEntries);
+
+        consoleLog("hooks.applyFinal add stolen entry");
+        if (obj.stolenEntry != "")
+            obj.allEntries.push(entryToAsm(obj.stolenEntry));
+
+        consoleLog("hooks.applyFinal add post entries");
+        convertArray(obj.postEntries);
+
+        consoleLog("hooks.applyFinal add final entry");
+        if (obj.finalEntry !== false)
+        {
+            var entry = entryToAsm(obj.finalEntry);
+            entry.isFinal = obj.finalEntry.isFinal;
+            obj.allEntries.push(entry);
+        }
     }
 
-    var sz = obj.allEntries.length;
+    var sz = srcObj.allEntries.length;
     if (sz == 0)
         fatalError("No entried in hook object");
 
     consoleLog("hooks.applyFinal initial jmp");
+
     if (dryRun !== true)
     {
-        switch (obj.firstJmpType)
+        if (obj.isDuplicate === false)
         {
-            case hooks.jmpTypes.JMP:
-                exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
-                break;
-            case hooks.jmpTypes.IMPORT:
-                var freeVa = pe.rawToVa(obj.allEntries[0].free);
-                var importOffset = exe.insertDWord(freeVa);
-                obj.importOffsetPatchedVa = pe.rawToVa(importOffset);
-                pe.directReplaceDWord(obj.patchAddr, obj.importOffsetPatchedVa);
-                break;
-            default:
-                fatalError("Unknown jmp type: " + obj.firstJmpType);
-        };
+            switch (obj.firstJmpType)
+            {
+                case hooks.jmpTypes.JMP:
+                    exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+                    break;
+                case hooks.jmpTypes.IMPORT:
+                    var freeVa = pe.rawToVa(obj.allEntries[0].free);
+                    var importOffset = exe.insertDWord(freeVa);
+                    obj.importOffsetPatchedVa = pe.rawToVa(importOffset);
+                    pe.directReplaceDWord(obj.patchAddr, obj.importOffsetPatchedVa);
+                    break;
+                default:
+                    fatalError("Unknown jmp type: " + obj.firstJmpType);
+            };
+        }
+        else
+        {
+            switch (obj.firstJmpType)
+            {
+                case hooks.jmpTypes.JMP:
+                    exe.setJmpRaw(obj.patchAddr, srcObj.allEntries[0].free);
+                    break;
+                case hooks.jmpTypes.IMPORT:
+                    if (typeof(srcObj.importOffsetPatchedVa) === "undefined")
+                    {
+                        var freeVa = pe.rawToVa(srcObj.allEntries[0].free);
+                        var importOffset = exe.insertDWord(freeVa);
+                        srcObj.importOffsetPatchedVa = pe.rawToVa(importOffset);
+                    }
+                    pe.directReplaceDWord(obj.patchAddr, srcObj.importOffsetPatchedVa);
+                    break;
+                default:
+                    fatalError("Unknown jmp type: " + obj.firstJmpType);
+            };
+        }
     }
+
+    if (obj.isDuplicate)
+        return;
 
     consoleLog("hooks.applyFinal loop jumps");
     for (var i = 0; i < sz - 1; i ++)
@@ -390,6 +460,7 @@ function hooks_createHookObj()
     obj.retCode = "";
     // obj.endHook = true;
     obj.firstJmpType = hooks.jmpTypes.JMP;
+    obj.isDuplicate = false;
     return obj;
 }
 
