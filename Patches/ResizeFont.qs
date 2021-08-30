@@ -31,13 +31,9 @@ function CreateFontAHook_imp(name, text, def, min, max)
         "value": value
     }
 
-    var hooksList = hooks.initImportCallHooks("CreateFontA", "GDI32.dll");
+    var hooksList = hooks.initImportHooks("CreateFontA", "GDI32.dll");
     if (hooksList.length === 0)
         throw "CreateFontA call usages not found";
-    hooksList.addFilePre("", vars);
-    hooksList.validate();
-
-    hooksList = hooks.initImportJmpHooks("CreateFontA", "GDI32.dll");
     hooksList.addFilePre("", vars);
     hooksList.validate();
 
