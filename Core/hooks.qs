@@ -250,37 +250,6 @@ function hooks_initHookInternal(offset, matchFunc, storageKey, data)
     return obj;
 }
 
-function hooks_initEndHook(patchAddr)
-{
-    return hooks_initHook(patchAddr, hooks_matchFunctionEnd);
-}
-
-function hooks_initTableEndHook(varId)
-{
-    return hooks_initHook(varId, hooks_matchFunctionEnd, table.varToHook);
-}
-
-function hooks_initImportCallHooks(funcName, dllName, ordinal)
-{
-    return hooks_initHooks([funcName, dllName, ordinal],
-        hooks.matchImportCallUsage,
-        hooks.searchImportCallUsage);
-}
-
-function hooks_initImportJmpHooks(funcName, dllName, ordinal)
-{
-    return hooks_initHooks([funcName, dllName, ordinal],
-        hooks.matchImportJmpUsage,
-        hooks.searchImportJmpUsage);
-}
-
-function hooks_initImportMovHooks(funcName, dllName, ordinal)
-{
-    return hooks_initHooks([funcName, dllName, ordinal],
-        hooks.matchImportMovUsage,
-        hooks.searchImportMovUsage);
-}
-
 function hooks_applyFinal(obj, dryRun)
 {
     consoleLog("hooks.applyFinal start");
