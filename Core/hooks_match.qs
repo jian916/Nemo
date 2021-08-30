@@ -200,17 +200,24 @@ function hooks_matchFunctionEnd(storageKey, offset)
     return obj;
 }
 
-function hooks_matchImportUsage_code(code, offset, importOffset)
+function hooks_matchImportUsage_code(codes, offset, importOffset)
 {
-    var found = pe.match(code, offset);  // call dword ptr [offset]
-    var addrOffset = 2;
+    var hexImportOffset = importOffset.packToHex(4);
+
+    for (var i = 0; i < codes.length; i ++)
+    {
+        var found = pe.match(codes[i] + hexImportOffset, offset);  // XXX dword ptr [offset]
+        var addrOffset = 2;
+        if (found === true)
+            break;
+    }
 
     if (found !== true)
-        return false;
+        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
 
     var obj = hooks.createHookObj();
     obj.patchAddr = offset + addrOffset;
-    obj.retCode = "FF 25" + importOffset.packToHex(4);
+    obj.retCode = "FF 25" + hexImportOffset;
     obj.endHook = true;
     obj.importOffset = importOffset;
     obj.firstJmpType = hooks.jmpTypes.IMPORT;
@@ -219,54 +226,44 @@ function hooks_matchImportUsage_code(code, offset, importOffset)
 
 function hooks_matchImportCallUsage(offset, importOffset)
 {
-    var obj = hooks_matchImportUsage_code("FF 15" + importOffset.packToHex(4), offset, importOffset)  // call dword ptr [offset]
-    if (obj === false)
-        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
-    return obj;
+    return hooks_matchImportUsage_code(
+        [
+            "FF 15",  // call dword ptr [offset]
+        ],
+        offset, importOffset
+    );
 }
 
 function hooks_matchImportJmpUsage(offset, importOffset)
 {
-    var obj = hooks_matchImportUsage_code("FF 25" + importOffset.packToHex(4), offset, importOffset)  // jmp dword ptr [offset]
-    if (obj === false)
-        throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
-    return obj;
+    return hooks_matchImportUsage_code(
+        [
+            "FF 25"  // jmp dword ptr [offset]
+        ],
+        offset, importOffset
+    );
 }
 
 function hooks_matchImportMovUsage(offset, importOffset)
 {
-    var hexImportOffset = importOffset.packToHex(4);
-
-    var obj = hooks_matchImportUsage_code("8B 3D" + hexImportOffset, offset, importOffset)  // mov edi, dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    obj = hooks_matchImportUsage_code("8B 35" + hexImportOffset, offset, importOffset)  // mov esi, dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+    return hooks_matchImportUsage_code(
+        [
+            "8B 3D",  // mov edi, dword ptr [offset]
+            "8B 35"   // mov esi, dword ptr [offset]
+        ],
+        offset, importOffset
+    );
 }
 
 function hooks_matchImportUsage(offset, importOffset)
 {
-    var hexImportOffset = importOffset.packToHex(4);
-
-    var obj = hooks_matchImportUsage_code("FF 15" + hexImportOffset, offset, importOffset)  // call dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    var obj = hooks_matchImportUsage_code("FF 25" + hexImportOffset, offset, importOffset)  // jmp dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    var obj = hooks_matchImportUsage_code("8B 3D" + hexImportOffset, offset, importOffset)  // mov edi, dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    obj = hooks_matchImportUsage_code("8B 35" + hexImportOffset, offset, importOffset)  // mov esi, dword ptr [offset]
-    if (obj !== false)
-        return obj;
-
-    throw "Import usage with address 0x" + importOffset.toString(16) + " not found.";
+    return hooks_matchImportUsage_code(
+        [
+            "FF 15",  // call dword ptr [offset]
+            "FF 25",  // jmp dword ptr [offset]
+            "8B 3D",  // mov edi, dword ptr [offset]
+            "8B 35"   // mov esi, dword ptr [offset]
+        ],
+        offset, importOffset
+    );
 }

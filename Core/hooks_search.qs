@@ -15,53 +15,62 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function hooks_searchCodes_add(arr, code, importOffset)
+function hooks_searchCodes_add(codes, importInfo)
 {
-    var offsets = pe.findCodes(code);
-    for (var i = 0; i < offsets.length; i ++)
+    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
+    var importOffsetHex = importOffset.packToHex(4);
+    var arr = [];
+    for (var c = 0; c < codes.length; c ++)
     {
-        arr.push([offsets[i], importOffset]);
+        var offsets = pe.findCodes(codes[c] + importOffsetHex);  // XXX dword ptr [importOffset]
+        for (var i = 0; i < offsets.length; i ++)
+        {
+            arr.push([offsets[i], importOffset]);
+        }
     }
+    return arr;
 }
 
 function hooks_searchImportCallUsage(importInfo)
 {
-    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
-    var arr = [];
-    hooks_searchCodes_add(arr, "FF 15" + importOffset.packToHex(4), importOffset);  // call dword ptr [importOffset]
-    return arr;
+    return hooks_searchCodes_add(
+        [
+            "FF 15"  // call dword ptr [importOffset]
+        ],
+        importInfo
+    );
 }
 
 function hooks_searchImportJmpUsage(importInfo)
 {
-    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
-    var arr = [];
-    hooks_searchCodes_add(arr, "FF 25" + importOffset.packToHex(4), importOffset);  // jmp dword ptr [importOffset]
-    return arr;
+    return hooks_searchCodes_add(
+        [
+            "FF 25"  // jmp dword ptr [importOffset]
+        ],
+        importInfo
+    );
 }
 
 function hooks_searchImportMovUsage(importInfo)
 {
-    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
-    var importOffsetHex = importOffset.packToHex(4);
-    var arr = [];
-
-    hooks_searchCodes_add(arr, "8B 3D" + importOffsetHex, importOffset);  // mov edi, dword ptr [importOffset]
-    hooks_searchCodes_add(arr, "8B 35" + importOffsetHex, importOffset);  // mov esi, dword ptr [importOffset]
-
-    return arr;
+    return hooks_searchCodes_add(
+        [
+            "8B 3D",  // mov edi, dword ptr [importOffset]
+            "8B 35"   // mov esi, dword ptr [importOffset]
+        ],
+        importInfo
+    );
 }
 
 function hooks_searchImportUsage(importInfo)
 {
-    var importOffset = imports.ptrValidated(importInfo[0], importInfo[1], importInfo[2]);
-    var importOffsetHex = importOffset.packToHex(4);
-    var arr = [];
-
-    hooks_searchCodes_add(arr, "FF 15" + importOffsetHex, importOffset);  // call dword ptr [importOffset]
-    hooks_searchCodes_add(arr, "FF 25" + importOffsetHex, importOffset);  // jmp dword ptr [importOffset]
-    hooks_searchCodes_add(arr, "8B 3D" + importOffsetHex, importOffset);  // mov edi, dword ptr [importOffset]
-    hooks_searchCodes_add(arr, "8B 35" + importOffsetHex, importOffset);  // mov esi, dword ptr [importOffset]
-
-    return arr;
+    return hooks_searchCodes_add(
+        [
+            "FF 15",  // call dword ptr [importOffset]
+            "FF 25",  // jmp dword ptr [importOffset]
+            "8B 3D",  // mov edi, dword ptr [importOffset]
+            "8B 35"   // mov esi, dword ptr [importOffset]
+        ],
+        importInfo
+    );
 }
