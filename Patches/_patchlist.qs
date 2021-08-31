@@ -718,4 +718,6 @@ registerPatch(408, "LimitMaxResolutionHeight", "Limit maximum height in all reso
 
 registerPatch(409, "AddCloseButton", "Add close button to game window", "Window", 0, "4144", "Add close button and menu to game window", false);
 
+registerPatch(410, "UseSmallTitleBar", "Use small titlebar in game window", "Window", 0, "4144", "Use small title bar in game window", false);
+
 GlobalPostInit();

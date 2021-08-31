@@ -14,9 +14,18 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-%setvar SM_CXSCREEN = 0
-%setvar SM_CYSCREEN = 1
-%setvar WS_POPUP = 0x80000000
-%setvar WS_VISIBLE = 0x10000000
-%setvar WS_SYSMENU = 0x00080000
-%setvar WS_EX_TOOLWINDOW = 0x00000080
+%include CreateWindowExA_params
+%include win32_constants
+
+cmp dword ptr [tmpVar], 0
+jnz skip
+
+inc dword ptr [tmpVar]
+or dword ptr [esp + dwExStyle], WS_EX_TOOLWINDOW
+
+jmp skip
+
+tmpVar:
+long 0
+
+skip:
