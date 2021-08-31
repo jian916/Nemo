@@ -716,4 +716,6 @@ registerPatch(407, "LimitMaxResolutionWidth", "Limit maximum width in all resolu
 
 registerPatch(408, "LimitMaxResolutionHeight", "Limit maximum height in all resolutions", "Resolution", 0, "4144", "Limit maximum height in all screen resolutions", false);
 
+registerPatch(409, "AddCloseButton", "Add close button to game window", "Window", 0, "4144", "Add close button and menu to game window", false);
+
 GlobalPostInit();
