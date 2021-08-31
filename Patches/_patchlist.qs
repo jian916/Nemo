@@ -214,9 +214,9 @@ registerPatch( 69, "ExtendNpcBox", "Extend Npc Dialog Box", "UI", 0, "Ai4rei/AN"
 
 registerPatch( 70, "CustomExpBarLimits", "Use Custom Exp Bar Limits", "UI", 0, "Neo", "Allows client to use user specified limits for Exp Bars", false);
 
-registerPatch( 71, "IgnoreResourceErrors", "Ignore Resource Errors", "Fix", 0, "Shinryo", "Prevents the client from displaying a variety of Error messages (but not all of them) including missing files. This does not guarantee the client will work in-spite of missing files", false);
+registerPatch( 71, "IgnoreResourceErrors", "Ignore Resource Errors", "Error", 0, "Shinryo", "Prevents the client from displaying a variety of Error messages (but not all of them) including missing files. This does not guarantee the client will work in-spite of missing files", false);
 
-registerPatch( 72, "IgnoreMissingPaletteError", "Ignore Missing Palette Error", "Fix", 0, "Shinryo", "Prevents the client from displaying error messages about missing palettes. It does not guarantee client will not crash if files are missing", false);
+registerPatch( 72, "IgnoreMissingPaletteError", "Ignore Missing Palette Error", "Error", 0, "Shinryo", "Prevents the client from displaying error messages about missing palettes. It does not guarantee client will not crash if files are missing", false);
 
 registerPatch( 73, "RemoveHourlyAnnounce", "Remove Hourly Announce", "UI", 0, "Ai4rei/AN", "Remove hourly game grade and hourly play time minder announcements", true);
 
@@ -378,7 +378,7 @@ registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 1
 
 registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret, 4144", "Hide SNS (Twitter) button", false);
 
-registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Fix", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
+registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Error", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
 
 registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "Custom", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
 
@@ -544,7 +544,7 @@ registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Colo
 
 registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 12, "Functor, X-EcutiOnner", "Remove equipment swap button on the equipment window", false);
 
-registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
+registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Error", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
 
 registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 0, "jchcc", "Use correct charset for Official Custom Fonts on all LangType", false);
 
@@ -588,7 +588,7 @@ registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency 
 
 registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, "4144", "Validate is loaded client detected as correct client. If this patch failed, other patches can be wrong.", true);
 
-registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
+registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Error", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
 
 registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "X-EcutiOnner", "Disable all .mp3 audio files in BGM folder for playing background music", false);
 
@@ -704,7 +704,7 @@ registerPatch(401, "ChangeSleep0", "Add input delay", "Perf", 0, "4144", "Add in
 
 registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0, "4144", "Change Sleep delay in game loop", false);
 
-registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Fix", 0, "4144", "Ignore most errors (hide all message boxes)", false);
+registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Error", 0, "4144", "Ignore most errors (hide all message boxes)", false);
 
 registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "Resolution", 0, "4144", "Use borderless mode in full screen", false);
 
@@ -719,5 +719,7 @@ registerPatch(408, "LimitMaxResolutionHeight", "Limit maximum height in all reso
 registerPatch(409, "AddCloseButton", "Add close button to game window", "Window", 0, "4144", "Add close button and menu to game window", false);
 
 registerPatch(410, "UseSmallTitleBar", "Use small titlebar in game window", "Window", 0, "4144", "Use small title bar in game window", false);
+
+registerPatch(411, "ShowErrorsIcon", "Show icon with error messages", "Error", 0, "4144", "Show icon with error message boxes", false);
 
 GlobalPostInit();
