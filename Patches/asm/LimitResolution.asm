@@ -16,29 +16,21 @@
 
 %include CreateWindowExA_params
 %include win32_constants
-%import GetSystemMetrics, user32.dll
 
 cmp dword ptr [tmpVar], 0
 jnz skip
 
 inc dword ptr [tmpVar]
 
-push SM_CXSCREEN
-call dword ptr [GetSystemMetrics]
-cmp dword ptr [esp + width], eax
-jl skip
-mov dword ptr [tmpVar], eax
-push SM_CYSCREEN
-call dword ptr [GetSystemMetrics]
-cmp dword ptr [esp + height], eax
-jl skip
+mov eax, dword ptr [esp + dwStyle]
+and eax, WS_POPUP
+cmp eax, 0
+jne skip
 
-mov dword ptr [esp + height], eax
-mov dword ptr [esp + dwStyle], WS_POPUP + WS_VISIBLE
-mov dword ptr [esp + x], 0
-mov dword ptr [esp + y], 0
-mov eax, dword ptr [tmpVar]
-mov dword ptr [esp + width], eax
+cmp dword ptr [esp + {offset}], value
+{compare} skip
+
+mov dword ptr [esp + {offset}], value
 
 jmp skip
 

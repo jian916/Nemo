@@ -408,7 +408,7 @@ registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height
 
 registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "Custom", 0, "4144", "Hide wrong field with random values in cash shop", false);
 
-registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
+registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Resolution", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
 
 registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
 
@@ -706,6 +706,14 @@ registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0,
 
 registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Fix", 0, "4144", "Ignore most errors (hide all message boxes)", false);
 
-registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "UI", 0, "4144", "Use borderless mode in full screen", false);
+registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "Resolution", 0, "4144", "Use borderless mode in full screen", false);
+
+registerPatch(405, "LimitMinResolutionWidth", "Limit minimal width in all resolutions", "Resolution", 0, "4144", "Limit minimal width in all screen resolutions", false);
+
+registerPatch(406, "LimitMinResolutionHeight", "Limit minimal height in all resolutions", "Resolution", 0, "4144", "Limit minimal height in all screen resolutions", false);
+
+registerPatch(407, "LimitMaxResolutionWidth", "Limit maximum width in all resolutions", "Resolution", 0, "4144", "Limit maximum width in all screen resolutions", false);
+
+registerPatch(408, "LimitMaxResolutionHeight", "Limit maximum height in all resolutions", "Resolution", 0, "4144", "Limit maximum height in all screen resolutions", false);
 
 GlobalPostInit();
