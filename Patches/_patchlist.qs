@@ -722,4 +722,6 @@ registerPatch(410, "UseSmallTitleBar", "Use small titlebar in game window", "Win
 
 registerPatch(411, "ShowErrorsIcon", "Show icon with error messages", "Error", 0, "4144", "Show icon with error message boxes", false);
 
+registerPatch(412, "ReplaceErrorMessageToSound", "Plays sound instead of error message", "Error", 0, "4144", "Plays sound instead of error message", false);
+
 GlobalPostInit();

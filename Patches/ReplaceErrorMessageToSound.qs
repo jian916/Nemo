@@ -15,12 +15,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-function IgnoreMostErrors()
+function ReplaceErrorMessageToSound()
 {
+    var value = exe.getUserInput("$ReplaceErrorMessageToSound", XTYPE_DWORD,
+        _("Number Input"),
+        _("Enter sound type"),
+        0, 0, 4);
+
+    var vars = {
+        "value": value * 16,
+    };
+
     var hooksList = hooks.initImportHooks("MessageBoxA", "user32.dll");
     if (hooksList.length === 0)
         throw "MessageBoxA usages not found";
-    hooksList.addFilePre("", {}, 3000);
+    hooksList.addFilePre("", vars, 4000);
     hooksList.validate();
     return true;
 }
