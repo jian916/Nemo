@@ -706,4 +706,6 @@ registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0,
 
 registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Fix", 0, "4144", "Ignore most errors (hide all message boxes)", false);
 
+registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "UI", 0, "4144", "Use borderless mode in full screen", false);
+
 GlobalPostInit();
