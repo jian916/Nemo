@@ -200,6 +200,16 @@ No rollback is possible. If patch disabled or cleared, changed data still presen
 
 This function can be usefull for apply changes outside of patches.
 
+### pe.directReplaceDWord
+
+``pe.directReplaceDWord(rawAddr, value)``
+
+Allow replace dword in exe at given raw address.
+
+No rollback is possible. If patch disabled or cleared, changed data still present.
+
+This function can be usefull for apply changes outside of patches.
+
 ### pe.fetchQWord
 
 ``pe.fetchQWord(rawAddr)``
