@@ -1,3 +1,55 @@
+# 2021-09-02 Different updates
+
+## Patches
+
+- Fix import errors in 2021 clients.
+- Add patch [Change all fonts logical size to fixed value](http://nemo.herc.ws/patches/ResizeFontL/#success-clients). (by @4144).
+- Add patch [Limit all fonts logical minimal size](http://nemo.herc.ws/patches/ResizeFontSizeMinL/#success-clients). (by @4144).
+- Add patch [Limit all fonts logical maximum size](http://nemo.herc.ws/patches/ResizeFontSizeMaxL/#success-clients). (by @4144).
+- Add patch [Adjust all fonts logical size](http://nemo.herc.ws/patches/ResizeFontSizeAdjL/#success-clients). (by @4144).
+- Add patch [Set all fonts weight to fixed value](http://nemo.herc.ws/patches/SetFontWeight/#success-clients). (by @4144).
+- Add patch [Change all bold fonts weight to fixed value](http://nemo.herc.ws/patches/SetBoldFontWeight/#success-clients). (by @4144).
+- Add patch [Change all normal fonts weight to fixed value](http://nemo.herc.ws/patches/SetNormalFontWeight/#success-clients). (by @4144).
+- Add patch [Adjust all fonts weight to fixed value](http://nemo.herc.ws/patches/SetFontWeightAdjust/#success-clients). (by @4144).
+- Add patch [Change all fonts charset](http://nemo.herc.ws/patches/SetFontCharset/#success-clients). (by @4144).
+- Add patch [Change all fonts face](http://nemo.herc.ws/patches/SetFontName/#success-clients). (by @4144).
+- Add patch [Hide debugger](http://nemo.herc.ws/patches/HideDebugger/#success-clients). (by @4144).
+- Add patch [Set high priority class for active client](http://nemo.herc.ws/patches/SetPriorityClassHigh/#success-clients). (by @4144).
+- Add patch [Set normal priority class for inactive client](http://nemo.herc.ws/patches/SetPriorityClassNormal/#success-clients). (by @4144).
+- Add patch [Add input delay](http://nemo.herc.ws/patches/ChangeSleep0/#success-clients). (by @4144).
+- Add patch [Change Sleep delay in game loop](http://nemo.herc.ws/patches/ChangeSleep1/#success-clients). (by @4144).
+- Add patch [Ignore most errors](http://nemo.herc.ws/patches/IgnoreMostErrors/#success-clients). (by @4144).
+- Add patch [Use borderless mode in full screen](http://nemo.herc.ws/patches/UseBorderlessFullScreen/#success-clients). (by @4144).
+- Add patch [Limit minimal width in all resolutions](http://nemo.herc.ws/patches/LimitMinResolutionWidth/#success-clients). (by @4144).
+- Add patch [Limit minimal height in all resolutions](http://nemo.herc.ws/patches/LimitMinResolutionHeight/#success-clients). (by @4144).
+- Add patch [Limit maximum width in all resolutions](http://nemo.herc.ws/patches/LimitMaxResolutionWidth/#success-clients). (by @4144).
+- Add patch [Limit maximum height in all resolutions](http://nemo.herc.ws/patches/LimitMaxResolutionHeight/#success-clients). (by @4144).
+- Add patch [Add close button to game window](http://nemo.herc.ws/patches/AddCloseButton/#success-clients). (by @4144).
+- Add patch [Use small titlebar in game window](http://nemo.herc.ws/patches/UseSmallTitleBar/#success-clients). (by @4144).
+- Add patch [Show icon with error messages](http://nemo.herc.ws/patches/ShowErrorsIcon/#success-clients). (by @4144).
+- Add patch [Plays sound instead of error message](http://nemo.herc.ws/patches/ReplaceErrorMessageToSound/#success-clients). (by @4144).
+
+## For devs
+
+- Add functions for fetch/set simple values: exe.fetchValueSimple, exe.SetValueSimple.
+- Add macro assembler command for read table var without validation: %tablevar0.
+- Add macro assembler command for resolve existing import: %import.
+- Add alternative start for macro assembler commands as "#%".
+- Add fetch functions: pe.fetchUQWord, pe.fetchUDWord, pe.fetchUWord, pe.fetchUByte, pe.fetchString.
+- Add functions for convert rva to va and rva to raw: pe.rvaToVa, pe.rvaToRaw.
+- Add functions for access pe header: pe.getPeHeader, pe.getOptHeader, pe.getSubSection, pe.getImageBase, pe.getImportTable.
+- Add function for insert dword: exe.insertDWord.
+- Add function for search/match many patch addresses: hooks.initHooks.
+- Add function for direct replace dword: pe.directReplaceDWord.
+- Add support for search/match imports in multi hooks.
+- Add object **imports** for access imports and function in it.
+
+
+## Other
+
+- Update tables.
+
+
 # 2021-08-12 Different updates
 
 ## Patches
