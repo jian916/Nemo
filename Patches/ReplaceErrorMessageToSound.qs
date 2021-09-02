@@ -19,7 +19,7 @@ function ReplaceErrorMessageToSound()
 {
     var value = exe.getUserInput("$ReplaceErrorMessageToSound", XTYPE_DWORD,
         _("Number Input"),
-        _("Enter sound type"),
+        _("Enter error messages sound type"),
         0, 0, 4);
 
     var vars = {

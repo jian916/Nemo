@@ -19,7 +19,7 @@ function ShowErrorsIcon()
 {
     var value = exe.getUserInput("$ShowErrorsIcon", XTYPE_DWORD,
         _("Number Input"),
-        _("Select icon type"),
+        _("Select error messages icon type"),
         0, 0, 4);
 
     var vars = {
