@@ -12,6 +12,7 @@ Remove patch data assigned to given raw address.
 
 
 ## patch.replacePatchDataDWord
+
 ``patch.replacePatchDataDWord(addrRaw, value)``
 
 Replace dword in already patched data in current patch.
@@ -42,16 +43,19 @@ Return last value from patched data blocks.
 If address was not patched, return false.
 
 ## patch.getName
+
 ``patch.getName()``
 
 Return current patch function name.
 
 ## patch.getDescription
+
 ``patch.getDescription()``
 
 Return current patch text name.
 
 ## patch.getState
+
 ``patch.getState()``
 
 Return current patch state constant.

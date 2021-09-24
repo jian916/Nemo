@@ -10,7 +10,7 @@ It can be used for find import functions by name.
 
 ``imports.load``
 
-Initial load import functions information. Callee automatically.
+Initial load import functions information. Called automatically.
 
 ### imports.loadDescriptor
 
@@ -50,8 +50,10 @@ Add given import function into different dictionaries for future searches.
 
 ### imports.importByName
 
-``imports.importByName(funcName)``
-``imports.importByName(funcName, dllName)``
+```
+imports.importByName(funcName)
+imports.importByName(funcName, dllName)
+```
 
 Search information about given import function name.
 
@@ -73,9 +75,11 @@ If function found return dictionary with fields:
 
 ### imports.ptr
 
-``imports.ptr(funcName)``
-``imports.ptr(funcName, dllName)``
-``imports.ptr(funcName, dllName, ordinal)``
+```
+imports.ptr(funcName)
+imports.ptr(funcName, dllName)
+imports.ptr(funcName, dllName, ordinal)
+```
 
 Search function pointer address for given import function name.
 
@@ -91,9 +95,11 @@ If function found, return virtual address of function pointer.
 
 ### imports.ptrValidated
 
-``imports.ptrValidated(funcName)``
-``imports.ptrValidated(funcName, dllName)``
-``imports.ptrValidated(funcName, dllName, ordinal)``
+```
+imports.ptrValidated(funcName)
+imports.ptrValidated(funcName, dllName)
+imports.ptrValidated(funcName, dllName, ordinal)
+```
 
 Search function pointer address for given import function name.
 
@@ -109,9 +115,11 @@ If function found, return virtual address of function pointer.
 
 ### imports.ptrHexValidated
 
-``imports.ptrHexValidated(funcName)``
-``imports.ptrHexValidated(funcName, dllName)``
-``imports.ptrHexValidated(funcName, dllName, ordinal)``
+```
+imports.ptrHexValidated(funcName)
+imports.ptrHexValidated(funcName, dllName)
+imports.ptrHexValidated(funcName, dllName, ordinal)
+```
 
 Search function pointer address for given import function name.
 

@@ -144,12 +144,14 @@ Allow put string into assembler. After string add null terminate char.
 
 ### %import
 
-``%import FUNC``
-``%import FUNC, DLL``
-``%import FUNC, DLL, ORDINAL``
-``%import VAR=FUNC``
-``%import VAR=FUNC, DLL``
-``%import VAR=FUNC, DLL, ORDINAL``
+```
+%import FUNC
+%import FUNC, DLL
+%import FUNC, DLL, ORDINAL
+%import VAR=FUNC
+%import VAR=FUNC, DLL
+%import VAR=FUNC, DLL, ORDINAL
+```
 
 Assign to variable address of import function
 

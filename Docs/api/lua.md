@@ -8,9 +8,11 @@ It can be used for load custom lua code.
 
 ### lua.injectLuaFiles
 
-``lua.injectLuaFiles(origFile, nameList)``
-``lua.injectLuaFiles(origFile, nameList, free)``
-``lua.injectLuaFiles(origFile, nameList, free, loadBefore)``
+```
+lua.injectLuaFiles(origFile, nameList)
+lua.injectLuaFiles(origFile, nameList, free)
+lua.injectLuaFiles(origFile, nameList, free, loadBefore)
+```
 
 Allow load lua files before or after origFile file name.
 
@@ -27,8 +29,10 @@ In other case returns true.
 
 ### lua.loadBefore
 
-``lua.loadBefore(existingName, newNamesList)``
-``lua.loadBefore(existingName, newNamesList, free)``
+```
+lua.loadBefore(existingName, newNamesList)
+lua.loadBefore(existingName, newNamesList, free)
+```
 
 Allow load lua files before existingName file name.
 
@@ -44,8 +48,10 @@ In other case returns true.
 
 ### lua.loadAfter
 
-``lua.loadAfter(existingName, newNamesList)``
-``lua.loadAfter(existingName, newNamesList, free)``
+```
+lua.loadAfter(existingName, newNamesList)
+lua.loadAfter(existingName, newNamesList, free)
+```
 
 Allow load lua files after existingName file name.
 
@@ -61,8 +67,10 @@ In other case returns true.
 
 ### lua.replace
 
-``lua.replace(existingName, newNamesList)``
-``lua.replace(existingName, newNamesList, free)``
+```
+lua.replace(existingName, newNamesList)
+lua.replace(existingName, newNamesList, free)
+```
 
 Allow replace loading existingName to files from newNamesList.
 
@@ -78,8 +86,10 @@ In other case returns true.
 
 ### lua.load
 
-``lua.load(existingName, beforeNamesList, afterNamesList, loadDefault)``
-``lua.load(existingName, beforeNamesList, afterNamesList, loadDefault, free)``
+```
+lua.load(existingName, beforeNamesList, afterNamesList, loadDefault)
+lua.load(existingName, beforeNamesList, afterNamesList, loadDefault, free)
+```
 
 Allow load lua files before and after existingName file name.
 

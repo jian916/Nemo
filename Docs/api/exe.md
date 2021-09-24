@@ -100,9 +100,11 @@ Remove patched data for given patch.
 
 ### exe.setJmpVa
 
-``exe.setJmpVa(patchAddr, jmpAddrVa)``
-``exe.setJmpVa(patchAddr, jmpAddrVa, cmd)``
-``exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)``
+```
+exe.setJmpVa(patchAddr, jmpAddrVa)
+exe.setJmpVa(patchAddr, jmpAddrVa, cmd)
+exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
+```
 
 Store jmp command with address at given patchAddr.
 
@@ -115,9 +117,11 @@ Store jmp command with address at given patchAddr.
 
 ### exe.setJmpRaw
 
-``exe.setJmpRaw(patchAddr, jmpAddrRaw)``
-``exe.setJmpRaw(patchAddr, jmpAddrRaw, cmd)``
-``exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)``
+```
+exe.setJmpRaw(patchAddr, jmpAddrRaw)
+exe.setJmpRaw(patchAddr, jmpAddrRaw, cmd)
+exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
+```
 
 Store jmp command with address at given **patchAddr**.
 
