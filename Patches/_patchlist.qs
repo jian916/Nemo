@@ -724,4 +724,6 @@ registerPatch(411, "ShowErrorsIcon", "Show icon with error messages", "Error", 0
 
 registerPatch(412, "ReplaceErrorMessageToSound", "Plays sound instead of error message", "Error", 0, "4144", "Plays sound instead of error message", false);
 
+registerPatch(413, "ChangeCaptchaImageDecompressionSize", "Change captcha decompression size", "Data", 0, "Asheraf", "Changes the default zlib decompression size for captcha images.", false);
+
 GlobalPostInit();
