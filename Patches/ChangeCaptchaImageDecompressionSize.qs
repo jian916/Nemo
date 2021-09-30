@@ -23,30 +23,39 @@
 function ChangeCaptchaImageDecompressionSize()
 {
     var code =
-        "68 B0 9A 00 00 " +       // push 39600
-        "C7 45 ?? B0 9A 00 00 " + // mov [ebp+Size], 39600
-        "E8 ?? ?? ?? ?? ";        // call operator new
+        "68 ?? ?? ?? ?? " +           // 0 push offset new2_flag
+        "68 B0 9A 00 00 " +           // 5 push 9AB0h
+        "C7 45 ?? B0 9A 00 00 " +     // 10 mov [ebp+size], 9AB0h
+        "E8 ";                        // 17 call new2
 
-    var sizeOffset1 = [1, 4];
-    var sizeOffset2 = [8, 4];
+    var new2FlagOffset = [1, 4];
+    var sizeOffset1 = [6, 4];
+    var sizeOffset2 = [13, 4];
+    var new2Offset = 18;
 
     consoleLog("Find the image decompression allocations.");
     var offsets = pe.findCodes(code);
     if (offsets.length === 0)
         return "Failed in Step 1 - CaptchaDecompressSize not found";
 
-    var capthaNewsize = exe.getUserInput("$capthaNewsize", XTYPE_DWORD, _("decompession size (default: 39600)"), _("Enter new decompession size"), "59454", 1, 100000);
+    var capthaNewsize = exe.getUserInput("$capthaNewsize", XTYPE_DWORD,
+        _("max decompession size (default: 39600)"),
+        _("Enter new captcha max decompession size"),
+        59454, 1, 100000);
     if (capthaNewsize === 39600)
         return "New size value is same as old value";
 
     consoleLog("Replace the values");
     for (var i = 0; i < offsets.length; i++)
     {
-        exe.setValue(offsets[i], sizeOffset1, capthaNewsize);
-        logVaVar("CAPTCHA_IMAGE_DECOMPRESS_SIZE", offsets[i], sizeOffset1);
+        var offset = offsets[i];
+        exe.setValue(offset, sizeOffset1, capthaNewsize);
+        exe.setValue(offset, sizeOffset2, capthaNewsize);
 
-        exe.setValue(offsets[i], sizeOffset2, capthaNewsize);
-        logVaVar("CAPTCHA_IMAGE_DECOMPRESS_SIZE", offsets[i], sizeOffset2);
+        logVaVar("new2_flag", offset, new2FlagOffset);
+        logVal("max captch image decompression size", offset, sizeOffset1);
+        logVal("max captch image decompression size", offset, sizeOffset2);
+        logRawFunc("new2", offset, new2Offset);
     }
 
     return true;
