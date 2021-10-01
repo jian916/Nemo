@@ -706,7 +706,7 @@ registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0,
 
 registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Error", 0, "4144", "Ignore most errors (hide all message boxes)", false);
 
-registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "Resolution", 0, "4144", "Use borderless mode in full screen", false);
+registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "Resolution", 0, "4144", "Use borderless mode in full screen", true);
 
 registerPatch(405, "LimitMinResolutionWidth", "Limit minimal width in all resolutions", "Resolution", 0, "4144", "Limit minimal width in all screen resolutions", false);
 
