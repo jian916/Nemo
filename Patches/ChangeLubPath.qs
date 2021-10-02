@@ -153,9 +153,7 @@ function ChangeLubPathGetIIName(type)
         }
         case 6:
         {
-            iiName = "System/CheckAttendance.lub";
-            if (pe.stringVa(iiName) !== -1) return iiName;
-            return "";
+            return findStrings("System/CheckAttendance.lub");
         }
         case 7:
         {
