@@ -129,6 +129,28 @@ Find string in whole binary and if found return virtual address packed into 4 by
 
 If string not found, throw exception.
 
+### pe.stringAnyVa
+
+```
+pe.stringAnyVa(pattern)
+pe.stringAnyVa(pattern, ...)
+```
+
+Find first string from provided patterns in whole binary and if found return virtual address of string.
+
+If all strings not found, return -1.
+
+### pe.stringAnyRaw
+
+```
+pe.stringAnyRaw(pattern)
+pe.stringAnyRaw(pattern, ...)
+```
+
+Find first string from provided patterns in whole binary and if found return raw address of string.
+
+If all strings not found, return -1.
+
 ### pe.rawToVa
 
 ``pe.rawToVa(rawAddr)``
