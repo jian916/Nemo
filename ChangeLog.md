@@ -1,3 +1,24 @@
+# 2021-10-02 Different updates
+
+## Patches
+
+- Add patch [Fix captcha decompression buffer size](http://nemo.herc.ws/patches/ChangeCaptchaImageDecompressionSize/#success-clients). (by @Asheraf).
+- Fix patch [Change Tipbox*.lub path](http://nemo.herc.ws/patches/ChangeTipboxPath/#success-clients) for new clients. (fix by @4144).
+- Fix patch [Change MonsterSizeEffect*.lub path](http://nemo.herc.ws/patches/ChangeMonsterSizeEffectPath/#success-clients) for new clients. (fix by @4144).
+- Fix patch [Change Towninfo*.lub path](http://nemo.herc.ws/patches/ChangeTowninfoPath/#success-clients) for new clients. (fix by @4144).
+- Fix patch [Change CheckAttendance*.lub path](http://nemo.herc.ws/patches/ChangeCheckAttendancePath/#success-clients) for new clients. (fix by @4144).
+
+## For devs
+
+- Add functions pe.stringAnyVa, pe.stringAnyRaw for search one of any strings.
+- License for all asm files changed from GPL-3 to CC-NC-ND.
+
+## Other
+
+- Fix some typos in docs.
+- Update tables.
+
+
 # 2021-09-02 Different updates
 
 ## Patches
