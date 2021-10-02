@@ -129,9 +129,7 @@ function ChangeLubPathGetIIName(type)
         }
         case 3:
         {
-            iiName = "System/Towninfo.lub";
-            if (pe.stringVa(iiName) !== -1) return iiName;
-            return "";
+            return findStrings("System/Towninfo.lub");
         }
         case 4:
         {
