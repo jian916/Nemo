@@ -115,16 +115,17 @@ function ChangeLubPathGetIIName(type)
         {
             if (IsSakray())
             {
-                iiName = "System/monster_size_effect_sak_new.lub";
-                if (pe.stringVa(iiName) !== -1) return iiName;
-                iiName = "System/monster_size_effect_sak.lub";
-                if (pe.stringVa(iiName) !== -1) return iiName;
+                return findStrings(
+                    "System/monster_size_effect_sak_new.lub",
+                    "System/monster_size_effect_sak.lub",
+                    "System/monster_size_effect_new.lub",
+                    "System/monster_size_effect.lub"
+                );
             }
-            iiName = "System/monster_size_effect_new.lub";
-            if (pe.stringVa(iiName) !== -1) return iiName;
-            iiName = "System/monster_size_effect.lub";
-            if (pe.stringVa(iiName) !== -1) return iiName;
-            return "";
+            return findStrings(
+                "System/monster_size_effect_new.lub",
+                "System/monster_size_effect.lub"
+            )
         }
         case 3:
         {
