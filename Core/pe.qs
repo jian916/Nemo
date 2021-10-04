@@ -131,7 +131,6 @@ function pe_stringAnyVa(strings)
     var args = Array.prototype.slice.call(arguments);
     for (var i = 0; i < args.length; i ++)
     {
-        consoleLog("arg " + i + " = " + args[i]);
         var res = pe_stringRaw(args[i]);
         if (res !== -1)
             return pe.rawToVa(res);
@@ -144,7 +143,6 @@ function pe_stringAnyRaw(strings)
     var args = Array.prototype.slice.call(arguments);
     for (var i = 0; i < args.length; i ++)
     {
-        consoleLog("arg " + i + " = " + args[i]);
         var res = pe_stringRaw(args[i]);
         if (res !== -1)
             return res;
