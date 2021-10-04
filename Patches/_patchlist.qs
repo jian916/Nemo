@@ -726,4 +726,6 @@ registerPatch(412, "ReplaceErrorMessageToSound", "Plays sound instead of error m
 
 registerPatch(413, "ChangeCaptchaImageDecompressionSize", "Fix captcha decompression buffer size", "Data", 0, "Asheraf", "Changes the default zlib decompression size for captcha images.", false);
 
+registerPatch(414, "FixNewCharCreationPos", "Fix default position of new char create window", "Fix", 0, "4144", "Fix default position of new char create window", false);
+
 GlobalPostInit();
