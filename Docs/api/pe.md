@@ -20,7 +20,9 @@ Return first raw address with given bytes or -1 if nothing found.
 
 Example:
 
+```
 pe.findCode("3B ?? 00 00");
+```
 
 ### pe.findCodes
 
@@ -38,7 +40,31 @@ Return array with found raw addresses.
 
 Example:
 
+```
 pe.findCodes("3B ?? 00 00");
+```
+
+### pe.findAnyCode
+
+```
+pe.findAnyCode(codeArray)
+```
+
+Search first hex bytes pattern in main executable section from given array of patterns.
+
+Return object with first raw address with given bytes or -1 if nothing found.
+
+For more info see usage of ``pe.findAnyCode`` in patches.
+
+Example:
+
+```
+code = [
+    ["3B ?? 00 00", {"offset1": [1, 1]}],
+    ["3B ?? 00 01", {"offset1": [1, 1]}]
+]
+pe.findAnyCode(code);
+```
 
 ### pe.find
 
@@ -60,7 +86,9 @@ Return first raw address with given bytes or -1 if nothing found.
 
 Example:
 
+```
 pe.find("3B ?? 00 00");
+```
 
 ### pe.findAll
 
@@ -82,7 +110,9 @@ Return array with found raw addresses.
 
 Example:
 
+```
 pe.findAll("3B ?? 00 00");
+```
 
 ### pe.match
 
