@@ -728,4 +728,6 @@ registerPatch(413, "ChangeCaptchaImageDecompressionSize", "Fix captcha decompres
 
 registerPatch(414, "FixNewCharCreationPos", "Fix default position of new char create window", "Fix", 0, "4144", "Fix default position of new char create window", false);
 
+registerPatch(415, "RemoveNewCharCreationBluredBackground", "Remove blured background from new char creation window", "Fix", 0, "4144", "Remove blured background from new char creation window", false);
+
 GlobalPostInit();
