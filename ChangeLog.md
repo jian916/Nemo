@@ -1,3 +1,11 @@
+# 2021-10-04 Patches updates
+
+## Patches
+
+- Add patch [Fix default position of new char create window](http://nemo.herc.ws/patches/FixNewCharCreationPos/#success-clients). (by @4144).
+- Add patch [Remove blured background from new char creation window](http://nemo.herc.ws/patches/RemoveNewCharCreationBluredBackground/#success-clients). (by @4144).
+
+
 # 2021-10-02 Different updates
 
 ## Patches
