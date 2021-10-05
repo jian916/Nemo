@@ -34,4 +34,5 @@ function Global_clear()
     registerHooks();
     registerImports();
     registerPe();
+    registerMacroAsm();
 }
