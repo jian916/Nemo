@@ -1,3 +1,14 @@
+# 2021-11-04 Patches updates
+
+## Patches
+
+- Fix patch [Change Walk To Delay](http://nemo.herc.ws/patches/SetWalkToDelay/#success-clients). (fix by @4144).
+
+## Other
+
+- Update tables.
+
+
 # 2021-10-04 Patches updates
 
 ## Patches
