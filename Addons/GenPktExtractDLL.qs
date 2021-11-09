@@ -10,38 +10,38 @@ function GenPktExtractDLL()
 
   //Step 1a - Find the GetPacketSize function call
   var code =
-      " E8 AB AB AB AB" //CALL CRagConnection::GetPacketSize
+      " E8 ?? ?? ?? ??" //CALL CRagConnection::GetPacketSize
     + " 50"             //PUSH EAX
-    + " E8 AB AB AB AB" //CALL CRagConnection::instanceR
+    + " E8 ?? ?? ?? ??" //CALL CRagConnection::instanceR
     + " 8B C8"          //MOV ECX, EAX
-    + " E8 AB AB AB AB" //CALL CRagConnection::SendPacket
+    + " E8 ?? ?? ?? ??" //CALL CRagConnection::SendPacket
     + " 6A 01"          //PUSH 1
     + " E8"             //CALL CConnection::SetBlock
     ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     throw "SendPacket not found";
 
   //Step 1b - Look for packet key pushes before it. if not present look for the combo function that both encrypts and retrieves the packet keys
   code =
-      " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[addr1]
-    + " 68 AB AB AB AB"    //PUSH key3
-    + " 68 AB AB AB AB"    //PUSH key2
-    + " 68 AB AB AB AB"    //PUSH key1
+      " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[addr1]
+    + " 68 ?? ?? ?? ??"    //PUSH key3
+    + " 68 ?? ?? ?? ??"    //PUSH key2
+    + " 68 ?? ?? ?? ??"    //PUSH key1
     + " E8"                //CALL encryptor
     ;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x100, offset);
+  var offset2 = pe.find(code, offset - 0x100, offset);
   var KeyFetcher = 0;
 
   if (offset2 === -1)
   {
     code =
-        " 8B 0D AB AB AB 00" //MOV ecx, DS:[ADDR1] dont care what
+        " 8B 0D ?? ?? ?? 00" //MOV ecx, DS:[ADDR1] dont care what
       + " 6A 01"             //PUSH 1
       + " E8"                //CALL combofunction - encryptor and key fetcher combined.
       ;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x100, offset);
+    offset2 = pe.find(code, offset - 0x100, offset);
     KeyFetcher = -1;
   }
 
@@ -56,12 +56,12 @@ function GenPktExtractDLL()
 
   //Step 1d - Look for g_PacketLenMap reference and the pktLen function call following it
   code =
-      " B9 AB AB AB AB" //MOV ECX, g_PacketLenMap
-    + " E8 AB AB AB AB" //CALL addr; gets the address pointing to the packet followed by len
-    + " 8B AB 04"       //MOV reg32_A, [EAX+4]
+      " B9 ?? ?? ?? ??" //MOV ECX, g_PacketLenMap
+    + " E8 ?? ?? ?? ??" //CALL addr; gets the address pointing to the packet followed by len
+    + " 8B ?? 04"       //MOV reg32_A, [EAX+4]
     ;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x60);
+  offset = pe.find(code, offset, offset + 0x60);
   if (offset === -1)
     throw "g_PacketLenMap not found";
 
@@ -73,13 +73,13 @@ function GenPktExtractDLL()
 
   //Step 2b - Look for the pattern that checks the length with -1
   code =
-      " 8B AB AB" //MOV reg32_A, DWORD DS:[reg32_B+lenOff]; lenOff = pktOff+4
-    + " 83 AB FF" //CMP reg32_A, -1
-    + " 75 AB"    //JNE addr
+      " 8B ?? ??" //MOV reg32_A, DWORD DS:[reg32_B+lenOff]; lenOff = pktOff+4
+    + " 83 ?? FF" //CMP reg32_A, -1
+    + " 75 ??"    //JNE addr
     + " 8B"       //MOV reg32_A, DWORD DS:[reg32_B+lenOff+4]
     ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x60);
+  offset2 = pe.find(code, offset, offset + 0x60);
   if (offset2 === -1)
     throw "PktOff not found";
 
@@ -89,14 +89,14 @@ function GenPktExtractDLL()
   //Step 3a - Find the InitPacketMap function using g_PacketLenMap extracted
   code =
       gPacketLenMap
-    + " E8 AB AB AB AB" //CALL CRagConnection::InitPacketMap
-    + " 68 AB AB AB 00" //PUSH addr1
-    + " E8 AB AB AB AB" //CALL addr2
+    + " E8 ?? ?? ?? ??" //CALL CRagConnection::InitPacketMap
+    + " 68 ?? ?? ?? 00" //PUSH addr1
+    + " E8 ?? ?? ?? ??" //CALL addr2
     + " 59"             //POP ECX
     + " C3"             //RETN
     ;
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
     throw "InitPacketMap not found";
 
@@ -109,10 +109,10 @@ function GenPktExtractDLL()
   //Step 3d - Look for InitPacketLenWithClient call
   code =
       " 8B CE"          //MOV ECX, ESI
-    + " E8 AB AB AB AB" //CALL InitPacketLenWithClient
+    + " E8 ?? ?? ?? ??" //CALL InitPacketLenWithClient
     + " C7"             //MOV DWORD PTR SS:[LOCAL.x], -1
     ;
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset+0x140);
+  offset = pe.find(code, offset, offset + 0x140);
   if (offset === -1)
     throw "InitPacketLenWithClient not found";
 
@@ -124,7 +124,7 @@ function GenPktExtractDLL()
   var funcs = [];
   while (1)
   {
-    offset = exe.find(" E8 AB AB FF FF", PTYPE_HEX, true, "\xAB", offset+1);//CALL std::map
+    offset = pe.find("E8 ?? ?? FF FF", offset + 1);  // CALL std::map
     if (offset === -1) break;
     var func = offset + exe.fetchDWord(offset+1) + 5;
     if (funcs.indexOf(func) !== -1) break;
@@ -140,12 +140,12 @@ function GenPktExtractDLL()
   //Step 4c - Look for all calls to std::_tree (should be either 1 or 2 calls)
   //          The called Locations serve as our Hook Addresses
   code =
-      " E8 AB AB FF FF" //CALL std::_tree
-    + " 8B AB"          //MOV reg32_A, [EAX]
+      " E8 ?? ?? FF FF" //CALL std::_tree
+    + " 8B ??"          //MOV reg32_A, [EAX]
     + " 8B"             //MOV EAX, DWORD PTR SS:[ARG.1]
     ;
 
-  var HookAddrs = exe.findAll(code, PTYPE_HEX, true, "\xAB", offset, offset+0x100);
+  var HookAddrs = pe.findAll(code, offset, offset + 0x100);
   if (HookAddrs.length < 1 || HookAddrs.length > 2)
     throw "std::_tree call count is different";
 

@@ -32,7 +32,7 @@ function DumpImportTable()
 
     consoleLog("Step 2d - Write the Descriptor Info to file");
     dllName = exe.Rva2Raw(dllName + exe.getImageBase());
-    var offset2 = exe.find("00", PTYPE_HEX, false, "\xAB", dllName);
+    var offset2 = pe.find("00", dllName);
 
     fp.writeline( "Lookup Table = 0x" + ilt.toBE()
                 + ", TimeStamp = " + ts
@@ -66,7 +66,7 @@ function DumpImportTable()
             consoleLog("found wrong address");
             break;
         }
-        var offset4 = exe.find("00", PTYPE_HEX, false, "\xAB", offset3+2);
+        var offset4 = pe.find("00", offset3 + 2);
         fp.writeline( "  Thunk Address (RVA) = 0x" + exe.Raw2Rva(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()
                     + ", Function Hint = 0x" + exe.fetchHex(offset3, 2).replace(/ /g, "")

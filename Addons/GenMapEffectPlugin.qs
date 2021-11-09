@@ -11,12 +11,12 @@ function GenMapEffectPlugin()
         throw "Error: Base File - rdll2.asi is missing from Input folder";
 
     consoleLog("Find offset of xmas_fild01.rsw");
-    var offset = exe.findString("xmas_fild01.rsw", RVA);
+    var offset = pe.stringVa("xmas_fild01.rsw");
     if (offset === -1)
         throw "Error: xmas_fild01 missing";
 
     consoleLog("Find the CGameMode_Initialize_EntryPtr using the offset");
-    offset = exe.findCode(offset.packToHex(4) + " 8A", PTYPE_HEX, false);
+    offset = pe.findCode(offset.packToHex(4) + " 8A");
     if (offset === -1)
         throw "Error: xmas_fild01 reference missing";
 
@@ -25,22 +25,22 @@ function GenMapEffectPlugin()
 
     consoleLog("Look for g_Weather assignment before EntryPtr");
     var code =
-        " B9 AB AB AB 00" //MOV ECX, g_Weather
+        " B9 ?? ?? ?? 00" //MOV ECX, g_Weather
       + " E8"             //CALL CWeather::ScriptProcess
       ;
     var gWeatherOffset = [1, 4];
     var scriptProcessOffset = 6;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
+    offset = pe.find(code, CI_Entry - 0x10, CI_Entry);
     if (offset === -1)
     {
         var code =
-            " B9 AB AB AB 01" //MOV ECX, g_Weather
+            " B9 ?? ?? ?? 01" //MOV ECX, g_Weather
           + " E8"             //CALL CWeather::ScriptProcess
           ;
         gWeatherOffset = [1, 4];
         scriptProcessOffset = 6;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry-0x10, CI_Entry);
+        offset = pe.find(code, CI_Entry - 0x10, CI_Entry);
     }
     if (offset === -1)
         throw "Error: g_Weather assignment missing";
@@ -59,7 +59,7 @@ function GenMapEffectPlugin()
       ;
     var launchPokJukOffset = 8;
 
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", CI_Entry+1);
+    offset = pe.find(code, CI_Entry + 1);
     if (offset === -1)
         throw "Error: CI_Return missing";
     logRawFunc("CWeather::LaunchPokJuk", offset, launchPokJukOffset);
@@ -71,17 +71,17 @@ function GenMapEffectPlugin()
     var CW_LPokJuk = (exe.Raw2Rva(CI_Return) + exe.fetchDWord(CI_Return-4)).packToHex(4);
 
     consoleLog("Find offset of yuno.rsw");
-    var offset2 = exe.findString("yuno.rsw", RVA);
+    var offset2 = pe.stringVa("yuno.rsw");
     if (offset2 === -1)
         throw "Error: yuno.rsw missing";
 
     consoleLog("Find its reference between CI_Entry & CI_Return");
-    offset = exe.find(offset2.packToHex(4) + " 8A", PTYPE_HEX, false, "\xAB", CI_Entry+1, CI_Return);
+    offset = pe.find(offset2.packToHex(4) + " 8A", CI_Entry + 1, CI_Return);
     if (offset === -1)
         throw "Error: yuno.rsw reference missing";
 
     consoleLog("Find the JZ below it which leads to calling LaunchCloud");
-    offset = exe.find(" 0F 84 AB AB 00 00", PTYPE_HEX, true, "\xAB", offset+5);
+    offset = pe.find("0F 84 ?? ?? 00 00", offset + 5);
     if (offset === -1)
         throw "Error: LaunchCloud JZ missing";
 
@@ -107,7 +107,7 @@ function GenMapEffectPlugin()
       ;
     var launchCloudOffset = 6;
 
-    offset = exe.find(code, PTYPE_HEX, false, "\xAB", offset);
+    offset = pe.find(code, offset);
     if (offset === -1)
         throw "Error: LaunchCloud call missing";
 
@@ -119,10 +119,10 @@ function GenMapEffectPlugin()
     var CW_LCloud = (exe.Raw2Rva(offset+4) + exe.fetchDWord(offset)).packToHex(4);
 
     consoleLog("Find the 2nd reference to yuno.rsw - which will be at CGameMode_OnInit_EntryPtr");
-    offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "\xAB", 0, CI_Entry-1);
+    offset = pe.find("B8 " + offset2.packToHex(4), 0, CI_Entry - 1);
 
     if (offset === -1)
-        offset = exe.find(" B8" + offset2.packToHex(4), PTYPE_HEX, false, "\xAB", CI_Return+1);
+        offset = pe.find("B8 " + offset2.packToHex(4), CI_Return + 1);
 
     if (offset === -1)
         throw "Error: 2nd yuno.rsw reference missing";
@@ -131,7 +131,7 @@ function GenMapEffectPlugin()
     var CO_Entry = offset;
 
     consoleLog("Find the closest JZ after CO_Entry. It jumps to a g_renderer assignment");
-    offset = exe.find(" 0F 84 AB AB 00 00", PTYPE_HEX, true, "\xAB", CO_Entry+1);
+    offset = pe.find("0F 84 ?? ?? 00 00 ", CO_Entry + 1);
     if (offset === -1)
         throw "Error: JZ after CO_Entry missing";
 
@@ -153,11 +153,11 @@ function GenMapEffectPlugin()
     consoleLog("Find pattern after offset that JMPs to CGameMode_OnInit_RetPtr");
     code =
         gRenderer                               //MOV reg32_A, DWORD PTR DS:[g_renderer]
-      + " C7 AB" + gR_clrColor + " 33 00 33 FF" //MOV DWORD PTR DS:[reg32_A+const], FF330033
+      + " C7 ??" + gR_clrColor + " 33 00 33 FF" //MOV DWORD PTR DS:[reg32_A+const], FF330033
       + " EB"                                   //JMP SHORT addr -> jumps to RetPtr
       ;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset+11);
+    offset = pe.find(code, offset + 11);
     if (offset === -1)
         throw "Error: CO_Return missing";
 
@@ -170,9 +170,9 @@ function GenMapEffectPlugin()
     {  //not MOV EAX, [addr] or MOV reg32_A, [addr]
         code =
             gRenderer               //MOV reg32_A, g_renderer
-          + " C7 AB" + gR_clrColor  //MOV DWORD PTR DS:[reg32_A+const], colorvalue
+          + " C7 ??" + gR_clrColor  //MOV DWORD PTR DS:[reg32_A+const], colorvalue
           ;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset+1, offset+0x100);
+        offset = pe.find(code, offset + 1, offset + 0x100);
         if (offset === -1)
             throw "Error: CO_Return missing 2";
 
@@ -183,7 +183,7 @@ function GenMapEffectPlugin()
     var CO_Return = offset;
 
     consoleLog("Find CWeather::LaunchNight function. It always has the same code");
-    offset = exe.findCode(" C6 01 01 C3", PTYPE_HEX, false); //MOV BYTE PTR DS:[ECX],1 and RETN
+    offset = pe.findCode("C6 01 01 C3");  // MOV BYTE PTR DS:[ECX],1 and RETN
     if (offset === -1)
         throw "Error: LaunchNight missing";
 
@@ -195,14 +195,14 @@ function GenMapEffectPlugin()
     consoleLog("Find CWeather::LaunchSnow function call. should be after xmas.rsw is PUSHed");
     code =
         " 74 07"          //JZ SHORT addr1 -> Skip LaunchSnow and call StopSnow instead
-      + " E8 AB AB AB AB" //CALL CWeather::LaunchSnow
+      + " E8 ?? ?? ?? ??" //CALL CWeather::LaunchSnow
       + " EB 05"          //JMP SHORT addr2 -> Skip StopSnow call
       + " E8"             //CALL CWeather::StopSnow
       ;
     var launchSnowOffset = 3;
     var stopShowOffset = 10;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", CI_Entry);
+    offset = pe.find(code, CI_Entry);
     if (offset === -1)
         throw "Error: LaunchSnow call missing";
 
@@ -213,7 +213,7 @@ function GenMapEffectPlugin()
     var CW_LSnow = (exe.Raw2Rva(offset+7) + exe.fetchDWord(offset+3)).packToHex(4);
 
     consoleLog("Find the PUSH 14D (followed by MOV) inside CWeather::LaunchMaple");
-    offset = exe.findCode(" 68 4D 01 00 00 89", PTYPE_HEX, false);
+    offset = pe.findCode("68 4D 01 00 00 89");
     if (offset === -1)
         throw "Error: LaunchMaple missing";
 
@@ -223,10 +223,10 @@ function GenMapEffectPlugin()
       + " 56"       //PUSH ESI
       + " 8B F1"    //MOV ESI, ECX
       ;
-    offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "\xAB", offset-0x70, offset);
+    offset2 = pe.find("55 8B EC" + code, offset - 0x70, offset);
 
     if (offset2 === -1)
-        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset-0x60, offset);
+        offset2 = pe.find(code, offset - 0x60, offset);
 
     if (offset2 === -1)
         throw "Error: LaunchMaple start missing";
@@ -237,15 +237,15 @@ function GenMapEffectPlugin()
     var CW_LMaple = exe.Raw2Rva(offset2).packToHex(4);
 
     consoleLog("Find the PUSH A3 (followed by MOV) inside CWeather::LaunchSakura");
-    offset = exe.findCode(" 68 A3 00 00 00 89", PTYPE_HEX, false);
+    offset = pe.findCode("68 A3 00 00 00 89");
     if (offset === -1)
         throw "Error: LaunchSakura missing";
 
     consoleLog("Find the start of the function");
-    offset2 = exe.find(" 55 8B EC" + code, PTYPE_HEX, false, "\xAB", offset-0x70, offset);
+    offset2 = pe.find("55 8B EC" + code, offset - 0x70, offset);
 
     if (offset2 === -1)
-        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset-0x60, offset);
+        offset2 = pe.find(code, offset - 0x60, offset);
 
     if (offset2 === -1)
         throw "Error: LaunchSakura start missing";

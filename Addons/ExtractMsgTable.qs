@@ -79,7 +79,7 @@ function ExtractMsgTable()
             }
             else
             {
-                var end_offset = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
+                var end_offset = pe.find("00 ", start_offset);
 
                 msgStr = exe.fetch(start_offset, end_offset - start_offset);
             }
