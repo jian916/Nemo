@@ -1,3 +1,10 @@
+# 2021-11-10 Different updates
+
+- Update tables.
+- Replace some legacy functions in addons.
+- Update plugin.dll.
+
+
 # 2021-11-04 Tables update
 
 - Update tables.
