@@ -27,3 +27,19 @@
 ### BinFile.writeHex
 
 ``BinFile.writeHex(offset, data)``
+
+### BinFile.writeAll
+
+``BinFile.writeHex(str)``
+
+### BinFile.append
+
+``BinFile.append(str)``
+
+### BinFile.appendHex
+
+``BinFile.appendHex(str)``
+
+### BinFile.appendLine
+
+``BinFile.appendLine(str)``

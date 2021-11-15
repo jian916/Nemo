@@ -51,6 +51,7 @@ function GlobalInit()
     registerHooks();
     registerLua();
     registerTextFile();
+    registerBinFile();
 }
 
 function GlobalPostInit()
