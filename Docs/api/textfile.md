@@ -31,3 +31,7 @@
 ### TextFile.write
 
 ``TextFile.write(text)``
+
+### TextFile.setEncoding
+
+``TextFile.setEncoding(encoding)``

@@ -50,6 +50,7 @@ function GlobalInit()
     registerImports();
     registerHooks();
     registerLua();
+    registerTextFile();
 }
 
 function GlobalPostInit()
