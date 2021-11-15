@@ -39,27 +39,26 @@ function ExtractMsgTable()
     var index = 0;
     var engMap = {};
 
+    var fp = new BinFile();
     fp.open(APP_PATH + "/Input/msgStringEng.txt", "r");
+    var data = fp.readHex(0, 0).toAscii();
+    fp.close();
 
-    while (!fp.eof())
+    data = data.replace(/\r/g, "").replaceAll("\n", "");
+
+    var parts = data.split('#');
+    for (var i = 1; i <= parts.length; i++)
     {
-        var parts = fp.readline().split('#');
+        msgStr += parts[i - 1];
+        msgStr = msgStr.replace("#", "_");
 
-        for (var i = 1; i <= parts.length; i++)
+        if (i < parts.length)
         {
-            msgStr += parts[i - 1];
-            msgStr = msgStr.replace("#", "_");
-
-            if (i < parts.length)
-            {
-                engMap[refList[index]] = msgStr;
-                msgStr = "";
-                index++;
-            }
+            engMap[refList[index]] = msgStr;
+            msgStr = "";
+            index++;
         }
     }
-
-    fp.close();
 
     consoleLog("Step 3 - Loop through the table inside the client (Each Entry)");
     var done = false;
@@ -79,22 +78,21 @@ function ExtractMsgTable()
             }
             else
             {
-                var end_offset = pe.find("00 ", start_offset);
-
+                var end_offset = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
                 msgStr = exe.fetch(start_offset, end_offset - start_offset);
             }
 
             consoleLog("Step 3b - Map the Korean string to English");
             if (engMap[msgStr])
             {
-                fp.writeline(engMap[msgStr] + '#');
+                fp.appendLine(engMap[msgStr] + '#');
             }
             else
             {
                 msgStr = msgStr.replace(/\r/g, "\\r");
                 msgStr = msgStr.replace(/\n/g, "\\n");
                 msgStr = msgStr.replace("#", "_");
-                fp.writeline(msgStr + "#");
+                fp.appendLine(msgStr + "#");
             }
 
             offset += 8;
