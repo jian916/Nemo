@@ -3,7 +3,7 @@
 //#          to translated using the reference tables.                 #
 //######################################################################
 
-function ExtractMsgTable()
+function ExtractMsgTableTranslate()
 {
     consoleLog("Step 1a - Search string 'msgStringTable.txt'");
 

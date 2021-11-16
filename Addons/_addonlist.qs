@@ -15,7 +15,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-registerAddon("ExtractMsgTable", "Extract msgstringtable", "Extracts embedded msgstringtable from the loaded client");
+registerAddon("ExtractMsgTableTranslate", "Extract and translate msgstringtable", "Extracts embedded msgstringtable from the loaded client and translate it");
 
 registerAddon("ExtractTxtNames", "Extract txt file names", "Extracts embedded txt file names in the loaded client");
 
