@@ -1,3 +1,20 @@
+# 2021-11-18 Different updates
+
+- Fix patch [Enable Official Custom Fonts](http://nemo.herc.ws/patches/EnableOfficialCustomFonts/#success-clients). (fix by @4144).
+- Fix codepage issues in addon [Extract and translate msgstringtable](http://nemo.herc.ws/addons/ExtractMsgTableTranslate/#success-clients). (fix by @4144).
+- Add addon [Extract msgstringtable](http://nemo.herc.ws/addons/ExtractMsgTable/#success-clients). (by @4144).
+
+## For devs
+
+- Add function TextFile.setEncoding
+- Add functions BinFile.writeAll, BinFile.append, BinFile.appendHex, BinFile.appendLine.
+
+## Other
+
+- Update tables.
+- Fix loading nemo from non english paths.
+
+
 # 2021-11-10 Different updates
 
 - Update tables.
