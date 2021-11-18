@@ -114,9 +114,9 @@ function DCToLoginWindow()
   //******* Next we will work on DC during Gameplay *******//
 
   //Step 4a - Check if there is a short Jump after the MsgString ID PUSH . If its there go to the address
-  if (exe.fetchUByte(offsets[0]) === 0xEB)
+  if (pe.fetchUByte(offsets[0]) === 0xEB)
   {
-    offset = offsets[0] + 2 + exe.fetchByte(offsets[0] + 1);
+    offset = offsets[0] + 2 + pe.fetchByte(offsets[0] + 1);
   }
   else
   {
@@ -126,7 +126,7 @@ function DCToLoginWindow()
       return "Failed in Part 4 - JMP to Mode call missing";
 
     //Step 4c - Goto the JMP address
-    offset += 5 + exe.fetchDWord(offset + 1);
+    offset += 5 + pe.fetchDWord(offset + 1);
   }
 
   //Step 4d - Look for the ErrorMsg (Error Message Window displayer function) CALL after the offset
