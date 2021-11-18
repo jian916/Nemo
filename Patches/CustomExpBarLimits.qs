@@ -54,8 +54,8 @@ function CustomExpBarLimits()
     return "Failed in Step 1 - Comparison setup missing";
 
   //Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable
-  var gSession = exe.fetchDWord(offset + 1);
-  var jobIdFunc = pe.rawToVa(offset + 10) + exe.fetchDWord(offset + 6);
+  var gSession = pe.fetchDWord(offset + 1);
+  var jobIdFunc = pe.rawToVa(offset + 10) + pe.fetchDWord(offset + 6);
   var baseBegin = offset;
 
   offset += code.hexlength() + suffix.hexlength();
@@ -63,7 +63,7 @@ function CustomExpBarLimits()
   //Step 1d - Extract the base level comparison (for VC9+ clients we need to find the comparison after offset)
   if (type === 1)
   {
-    var gLevel = exe.fetchDWord(offset - 9);
+    var gLevel = pe.fetchDWord(offset - 9);
   }
   else
   {
@@ -75,7 +75,7 @@ function CustomExpBarLimits()
     if (offset2 === -1)
       return "Failed in Step 1 - First comparison missing";
 
-    var gLevel = exe.fetchDWord(offset2 + 2);
+    var gLevel = pe.fetchDWord(offset2 + 2);
   }
 
   //Step 2a - Find the ESI+const movement to ECX between baseBegin and first reference offset
@@ -84,20 +84,20 @@ function CustomExpBarLimits()
     return "Failed in Step 2 - First ESI Offset missing";
 
   //Step 2b - Extract the gNoBase and calculate other two
-  var gNoBase = exe.fetchDWord(offset + 2);
+  var gNoBase = pe.fetchDWord(offset + 2);
   var gNoJob = gNoBase + 4;
   var gBarOn = gNoBase + 8;
 
   //Step 2c - Extract ESI offset and baseEnd
-  if (exe.fetchUByte(refOffsets[1] + 8) >= 0xD0)
+  if (pe.fetchUByte(refOffsets[1] + 8) >= 0xD0)
   {
-    var funcOff = exe.fetchByte(refOffsets[1] - 1);
-    var baseEnd = (refOffsets[1] + 11) + exe.fetchByte(refOffsets[1] + 10);
+    var funcOff = pe.fetchByte(refOffsets[1] - 1);
+    var baseEnd = (refOffsets[1] + 11) + pe.fetchByte(refOffsets[1] + 10);
   }
   else
 {
-    var funcOff = exe.fetchByte(refOffsets[1] + 9);
-    var baseEnd = (refOffsets[1] + 12) + exe.fetchByte(refOffsets[1] + 11);
+    var funcOff = pe.fetchByte(refOffsets[1] + 9);
+    var baseEnd = (refOffsets[1] + 12) + pe.fetchByte(refOffsets[1] + 11);
   }
 
   //Step 2d - jobBegin is same as baseEnd
@@ -116,12 +116,12 @@ function CustomExpBarLimits()
   //Step 3b - Find jobEnd (JMP after the last PUSH will lead to jobEnd)
   offset = refOffsets2[refOffsets2.length - 1] + code.hexlength();
 
-  if (exe.fetchUByte(offset) === 0xEB)
+  if (pe.fetchUByte(offset) === 0xEB)
   {
-    offset = (offset + 2) + exe.fetchByte(offset + 1);
+    offset = (offset + 2) + pe.fetchByte(offset + 1);
   }
 
-  if (exe.fetchUByte(offset + 1) >= 0xD0)
+  if (pe.fetchUByte(offset + 1) >= 0xD0)
   {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
     var jobEnd = offset + 2;
   }
@@ -138,7 +138,7 @@ function CustomExpBarLimits()
     return "Failed in Step 3 - g_jobLevel reference missing";
 
   //Step 3d - Extract g_jobLevel
-  var gJobLevel = exe.fetchDWord(offset + 2);
+  var gJobLevel = pe.fetchDWord(offset + 2);
 
   //Step 4a - Get the input file
   var fp = new TextFile();
