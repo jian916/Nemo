@@ -7,7 +7,7 @@ function ExtractTxtNames()
 
   //Step 1 - Find all strings ending in .txt
   var offset = exe.getROffset(DATA);
-    var offsets = exe.findAll(" 2E 74 78 74 00", PTYPE_HEX, false, "\xAB", offset, offset + exe.getRSize(DATA));
+    var offsets = pe.findAll(" 2E 74 78 74 00", offset, offset + exe.getRSize(DATA));
     if (offsets.length === 0)
         throw "Error: No .txt files found";
 
@@ -24,7 +24,7 @@ function ExtractTxtNames()
         var end = offset + 3;
         do {
             offset--;
-            var code = exe.fetchByte(offset);
+            var code = pe.fetchByte(offset);
         } while (code !== 0 && code !== 0x40);//loop till NULL or @ is reached.
 
     //Step 2c - Extract the string and write to file

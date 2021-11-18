@@ -68,7 +68,7 @@ function GenMapEffectPlugin()
     var CI_Return = offset + code.hexlength() + 4;
 
     consoleLog("Save CWeather::LaunchPokJuk address (not RAW)");
-    var CW_LPokJuk = (exe.Raw2Rva(CI_Return) + exe.fetchDWord(CI_Return-4)).packToHex(4);
+    var CW_LPokJuk = (exe.Raw2Rva(CI_Return) + pe.fetchDWord(CI_Return-4)).packToHex(4);
 
     consoleLog("Find offset of yuno.rsw");
     var offset2 = pe.stringVa("yuno.rsw");
@@ -85,10 +85,10 @@ function GenMapEffectPlugin()
     if (offset === -1)
         throw "Error: LaunchCloud JZ missing";
 
-    offset += exe.fetchDWord(offset+2) + 6;
+    offset += pe.fetchDWord(offset+2) + 6;
 
     consoleLog("Go Inside and extract g_useEffect");
-    var opcode = exe.fetchByte(offset) & 0xFF;//and mask to fix up Sign issues
+    var opcode = pe.fetchByte(offset) & 0xFF;//and mask to fix up Sign issues
     if (opcode === 0xA1)
     {
         var gUseEffect = exe.fetchHex(offset+1, 4);
@@ -116,7 +116,7 @@ function GenMapEffectPlugin()
     offset += code.hexlength();
 
     consoleLog("Save CWeather::LaunchCloud address (not RAW)");
-    var CW_LCloud = (exe.Raw2Rva(offset+4) + exe.fetchDWord(offset)).packToHex(4);
+    var CW_LCloud = (exe.Raw2Rva(offset+4) + pe.fetchDWord(offset)).packToHex(4);
 
     consoleLog("Find the 2nd reference to yuno.rsw - which will be at CGameMode_OnInit_EntryPtr");
     offset = pe.find("B8 " + offset2.packToHex(4), 0, CI_Entry - 1);
@@ -135,9 +135,9 @@ function GenMapEffectPlugin()
     if (offset === -1)
         throw "Error: JZ after CO_Entry missing";
 
-    offset += exe.fetchDWord(offset+2) + 6 + 1;//1 to skip the first opcode byte
+    offset += pe.fetchDWord(offset+2) + 6 + 1;//1 to skip the first opcode byte
 
-    opcode = exe.fetchByte(offset-1) & 0xFF;//and mask to fix up Sign issues
+    opcode = pe.fetchByte(offset-1) & 0xFF;//and mask to fix up Sign issues
     if (opcode !== 0xA1)
         offset++;//extra 1 to skip the second opcode byte
 
@@ -162,11 +162,11 @@ function GenMapEffectPlugin()
         throw "Error: CO_Return missing";
 
     offset += code.hexlength();
-    offset += exe.fetchByte(offset) + 1;
+    offset += pe.fetchByte(offset) + 1;
 
     consoleLog("Check if its really after the last map - new clients have more");
-    opcode = exe.fetchByte(offset) & 0xFF;
-    if (opcode != 0xA1 && (opcode !== 0x8B || (exe.fetchByte(offset+1) & 0xC7) !== 5))
+    opcode = pe.fetchByte(offset) & 0xFF;
+    if (opcode != 0xA1 && (opcode !== 0x8B || (pe.fetchByte(offset+1) & 0xC7) !== 5))
     {  //not MOV EAX, [addr] or MOV reg32_A, [addr]
         code =
             gRenderer               //MOV reg32_A, g_renderer
@@ -210,7 +210,7 @@ function GenMapEffectPlugin()
     logRawFunc("CWeather::StopSnow", offset, stopShowOffset);
 
     consoleLog("Save CWeather::LaunchSnow address (not RAW)");
-    var CW_LSnow = (exe.Raw2Rva(offset+7) + exe.fetchDWord(offset+3)).packToHex(4);
+    var CW_LSnow = (exe.Raw2Rva(offset+7) + pe.fetchDWord(offset+3)).packToHex(4);
 
     consoleLog("Find the PUSH 14D (followed by MOV) inside CWeather::LaunchMaple");
     offset = pe.findCode("68 4D 01 00 00 89");

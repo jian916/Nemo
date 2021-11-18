@@ -18,17 +18,17 @@ function ExtractMsgTable()
 
     while (!done)
     {
-        if (exe.fetchDWord(offset) === id)
+        if (pe.fetchDWord(offset) === id)
         {
             consoleLog("Step 3a - Get the string for id: " + id);
-            var start_offset = exe.Rva2Raw(exe.fetchDWord(offset + 4));
+            var start_offset = pe.vaToRaw(pe.fetchDWord(offset + 4));
             if (start_offset === -1)
             {
                 msgStr = "empty";
             }
             else
             {
-                var end_offset = exe.find("00 ", PTYPE_HEX, false, "\xAB", start_offset);
+                var end_offset = pe.find("00 ", start_offset);
                 msgStr = exe.fetch(start_offset, end_offset - start_offset);
             }
 

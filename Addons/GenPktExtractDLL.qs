@@ -48,11 +48,11 @@ function GenPktExtractDLL()
   if (offset2 !== -1 && KeyFetcher === -1)
   {
     offset2 += code.hexlength();
-    KeyFetcher = exe.Raw2Rva(offset2+4) + exe.fetchDWord(offset2);
+    KeyFetcher = exe.Raw2Rva(offset2+4) + pe.fetchDWord(offset2);
   }
 
   //Step 1c - Go Inside the function
-  offset += exe.fetchDWord(offset+1) + 5;
+  offset += pe.fetchDWord(offset+1) + 5;
 
   //Step 1d - Look for g_PacketLenMap reference and the pktLen function call following it
   code =
@@ -69,7 +69,7 @@ function GenPktExtractDLL()
   var gPacketLenMap = exe.fetchHex(offset, 5);
 
   //Step 2a - Go inside the pktLen function following the assignment
-  offset += exe.fetchDWord(offset+6) + 10;
+  offset += pe.fetchDWord(offset+6) + 10;
 
   //Step 2b - Look for the pattern that checks the length with -1
   code =
@@ -84,7 +84,7 @@ function GenPktExtractDLL()
     throw "PktOff not found";
 
   //Step 2c - Extract the displacement - 4 which will be PktOff
-  var PktOff = exe.fetchByte(offset2+2)-4;
+  var PktOff = pe.fetchByte(offset2+2)-4;
 
   //Step 3a - Find the InitPacketMap function using g_PacketLenMap extracted
   code =
@@ -104,7 +104,7 @@ function GenPktExtractDLL()
   var ExitAddr = exe.Raw2Rva(offset+15);
 
   //Step 3c - Go Inside InitPacketMap
-  offset += exe.fetchDWord(offset+6) + 10;
+  offset += pe.fetchDWord(offset+6) + 10;
 
   //Step 3d - Look for InitPacketLenWithClient call
   code =
@@ -117,7 +117,7 @@ function GenPktExtractDLL()
     throw "InitPacketLenWithClient not found";
 
   //Step 3e - Go Inside InitPacketLenWithClient
-  offset += exe.fetchDWord(offset+3) + 7;
+  offset += pe.fetchDWord(offset+3) + 7;
 
   //Step 4a - Now comes the tricky part. We need to get all the functions called till a repeat is found.
   //          Last unrepeated call is the std::map function we need
@@ -126,7 +126,7 @@ function GenPktExtractDLL()
   {
     offset = pe.find("E8 ?? ?? FF FF", offset + 1);  // CALL std::map
     if (offset === -1) break;
-    var func = offset + exe.fetchDWord(offset+1) + 5;
+    var func = offset + pe.fetchDWord(offset+1) + 5;
     if (funcs.indexOf(func) !== -1) break;
     funcs.push(func);
   }
