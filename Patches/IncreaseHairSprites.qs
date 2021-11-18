@@ -71,7 +71,7 @@ function IncreaseHairSprites()
     if (offset === -1)
         return "Failed in step 2 - hair limit missing";
 
-    var currentLimit = exe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
+    var currentLimit = pe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
     exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 3 - search doram jobs hair limit");
@@ -106,7 +106,7 @@ function IncreaseHairSprites()
     if (offset === -1)
         return "Failed in step 3 - doram hair limit missing";
 
-    var currentLimit = exe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
+    var currentLimit = pe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
     exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
 
     consoleLog("step 4 - search string \"2\" \"3\" \"4\"");
@@ -164,7 +164,7 @@ function IncreaseHairSprites()
         return "Failed in step 5 - found wrong number of hair tables: " + offsets.length;
 
     var tableCodeOffset = offsets[0];
-    var vectorCallAddr = exe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
+    var vectorCallAddr = pe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
     var varCode = exe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
     patchOffset = tableCodeOffset + patchOffset;
 
@@ -233,7 +233,7 @@ function IncreaseHairSprites()
         return "Failed in step 7 - jump location not found";
 
     var tableCodeOffset2 = offset;
-    var vectorCallAddr2 = exe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
+    var vectorCallAddr2 = pe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
     patchOffset2 = tableCodeOffset2 + patchOffset2;
 
     if (vectorCallAddr !== vectorCallAddr2)
@@ -330,12 +330,12 @@ function IncreaseHairSprites()
     if (offsets.length !== 1)
         return "Failed in step 8 - found wrong number of doram hair tables: " + offsets.length;
 
-    var str1Addr = exe.Rva2Raw(exe.fetchDWord(offsets[0] + str1Offset));
-    if (exe.fetchUByte(str1Addr) != 0x31 || exe.fetchUByte(str1Addr + 1) != 0)
+    var str1Addr = exe.Rva2Raw(pe.fetchDWord(offsets[0] + str1Offset));
+    if (pe.fetchUByte(str1Addr) != 0x31 || pe.fetchUByte(str1Addr + 1) != 0)
         return "Failed in step 8 - wrong constant 1 found";
 
     var tableCodeOffset = offsets[0];
-    var vectorCallAddr = exe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
+    var vectorCallAddr = pe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
     // no varCode
     var varCode = "";
     patchOffset = tableCodeOffset + patchOffset;
@@ -432,7 +432,7 @@ function IncreaseHairSprites()
         return "Failed in step 9 - jump location not found";
 
     var tableCodeOffset2 = offset;
-    var vectorCallAddr2 = exe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
+    var vectorCallAddr2 = pe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
     patchOffset2 = tableCodeOffset2 + patchOffset2;
     var varCode = exe.fetchHex(tableCodeOffset2 + fetchOffset, fetchSize);
 
