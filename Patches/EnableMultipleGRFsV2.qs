@@ -7,7 +7,7 @@ function EnableMultipleGRFsV2()
 { //The initial steps are same as EnableMultipleGRFs. Maybe we can make it shared?
 
     //Step 1a - Find data.grf location
-    var grf = exe.findString("data.grf", RVA).packToHex(4);
+    var grf = pe.stringHex4("data.grf");
 
     //Step 1b - Find its reference
     var code =
@@ -75,7 +75,7 @@ function EnableMultipleGRFsV2()
         return "Failed in Step 2";
 
     //Step 2c - Extract AddPak function address
-    var AddPak = exe.Raw2Rva(fnoffset + addpackOffset + 4) + exe.fetchDWord(fnoffset + addpackOffset);
+    var AddPak = pe.rawToVa(fnoffset + addpackOffset + 4) + pe.fetchDWord(fnoffset + addpackOffset);
 
     //Step 3a - Get the INI file from user to read
     var f = new TextFile();
@@ -126,7 +126,7 @@ function EnableMultipleGRFsV2()
     if (free === -1)
         return "Failed in Step 4 - Not enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 4d - Starting offsets to replace GenVarHex with
     var o2 = freeRva + grfs.length * template.hexlength() + 2;
@@ -145,13 +145,13 @@ function EnableMultipleGRFsV2()
 
     //Step 4f - Create a call to the free space that was found before.
     exe.replace(offset + pushOffset, "B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + addpackOffset, freeRva - exe.Raw2Rva(fnoffset + addpackOffset + 4));
+    exe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
 
     //Step 5 - Insert everything.
     exe.insert(free, size, code, PTYPE_HEX);
 
     //Step 6 - Find offset of rdata.grf (if present zero it out)
-    offset = exe.findString("rdata.grf", RAW);
+    offset = pe.stringRaw("rdata.grf");
     if (offset !== -1)
         exe.replace(offset, "00", PTYPE_HEX);
 
