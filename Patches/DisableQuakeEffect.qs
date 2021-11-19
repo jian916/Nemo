@@ -6,13 +6,13 @@
 function DisableQuakeEffect()
 {
     //Step 1a - Find offset of .BMP
-    var bmpOffset = exe.findString(".BMP", RVA);
+    var bmpOffset = pe.stringVa(".BMP");
     if (bmpOffset === -1)
     {
         // .BMP\x00
         bmpOffset = pe.find("2E 42 4D 50 00");
         if (bmpOffset !== -1)
-            bmpOffset = exe.Raw2Rva(bmpOffset);
+            bmpOffset = pe.rawToVa(bmpOffset);
     }
     if (bmpOffset === -1)
         return "Failed in Step 1 - BMP not found";
@@ -55,7 +55,7 @@ function DisableQuakeEffect()
         return "Failed in Step 2 - SetQuakeInfo call missing";
 
     //Step 2b - Extract the Raw Address of SetQuakeInfo
-    offset2 += exe.fetchDWord(offset2 + 1) + 5;
+    offset2 += pe.fetchDWord(offset2 + 1) + 5;
 
     //Step 2c - Replace the start with RETN 0C
     exe.replace(offset2, " C2 0C 00", PTYPE_HEX);
@@ -80,7 +80,7 @@ function DisableQuakeEffect()
         return "Failed in Step 3 - SetQuake call missing";
 
     //Step 3b - Extract the Raw Address of SetQuake
-    offset2 += exe.fetchDWord(offset2 + 3) + 7;
+    offset2 += pe.fetchDWord(offset2 + 3) + 7;
 
     if (offset2Old == offset2)
     {
