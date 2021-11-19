@@ -41,7 +41,7 @@ function LoadItemInfoPerServer()
   var allocInject = offset2 + 5;
 
   //Step 2a - Find address of ItemInfo Error string
-  offset = exe.findString("ItemInfo file Init", RVA);
+  offset = pe.stringVa("ItemInfo file Init");
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo String missing";
 
@@ -75,11 +75,11 @@ function LoadItemInfoPerServer()
 
   //Step 2f - Extract iteminfoLoader function address
   offset += code.hexlength();
-  offset += exe.fetchDWord(offset - 4);
-  var iiLoaderFunc = exe.Raw2Rva(offset);
+  offset += pe.fetchDWord(offset - 4);
+  var iiLoaderFunc = pe.rawToVa(offset);
 
   //Step 3a - Find offset of "main"
-  offset2 = exe.findString("main", RVA);
+  offset2 = pe.stringVa("main");
   if (offset2 === -1)
     return "Failed in Step 3 - main string missing";
 
@@ -126,7 +126,7 @@ function LoadItemInfoPerServer()
 
   //Step 4b - Extract the PUSH statement and Copier Function address
   var iiPush = exe.fetchHex(offset, 5);
-  var iiCopierFunc = exe.Raw2Rva(offset + 10) + exe.fetchDWord(offset + 6);
+  var iiCopierFunc = pe.rawToVa(offset + 10) + pe.fetchDWord(offset + 6);
 
   //Step 5a - Find the 's' input Push Function call inside the LuaFn Caller
   code =
@@ -154,7 +154,7 @@ function LoadItemInfoPerServer()
   offset += code.hexlength() - 3;
 
   //Step 5b - Extract the Function address
-  var stringPushFunc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+  var stringPushFunc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
 
   //Step 6a - Prep code to Push String after "main" push
   code =
@@ -172,18 +172,18 @@ function LoadItemInfoPerServer()
   if (free === -1)
     return "Failed in Step 6 - Not enough space available";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
   var serverAddr = freeRva + code.hexlength() - 4;
 
   //Step 6c - Fill in the blanks
-  offset = exe.Raw2Rva(mainInject + 5) + exe.fetchDWord(mainInject + 1) - (freeRva + 5);
+  offset = pe.rawToVa(mainInject + 5) + pe.fetchDWord(mainInject + 1) - (freeRva + 5);
   code = ReplaceVarHex(code, 1, offset);
   code = ReplaceVarHex(code, 2, serverAddr);
   code = ReplaceVarHex(code, 3, stringPushFunc - (serverAddr - 5));
-  code = ReplaceVarHex(code, 4, exe.Raw2Rva(mainInject + 5) - serverAddr);
+  code = ReplaceVarHex(code, 4, pe.rawToVa(mainInject + 5) - serverAddr);
 
   //Step 6d - Change the LuaFnNamePusher call to a JMP to our code
-  offset = freeRva - exe.Raw2Rva(mainInject + 5);
+  offset = freeRva - pe.rawToVa(mainInject + 5);
   exe.replace(mainInject, "E9" + offset.packToHex(4), PTYPE_HEX);
 
   //Step 6e - Inject to allocated space
@@ -212,13 +212,13 @@ function LoadItemInfoPerServer()
   if (free === -1)
     return "Failed in Step 7 - Not enough space available";
 
-  freeRva = exe.Raw2Rva(free);
+  freeRva = pe.rawToVa(free);
 
   //Step 7c - Fill in the blanks
   if (directCall)
-    offset = exe.Raw2Rva(allocInject + 5) + exe.fetchDWord(allocInject + 1) - (freeRva + 5);
+    offset = pe.rawToVa(allocInject + 5) + pe.fetchDWord(allocInject + 1) - (freeRva + 5);
   else
-    offset = exe.fetchDWord(allocInject + 2);
+    offset = pe.fetchDWord(allocInject + 2);
 
   code = ReplaceVarHex(code, 1, offset);
   code = ReplaceVarHex(code, 2, serverAddr);
@@ -230,11 +230,11 @@ function LoadItemInfoPerServer()
   offset = iiCopierFunc - (freeRva + code.hexlength() - 5);
   code = ReplaceVarHex(code, 5, offset);
 
-  offset = exe.Raw2Rva(allocInject + 5) - (freeRva + code.hexlength());
+  offset = pe.rawToVa(allocInject + 5) - (freeRva + code.hexlength());
   code = ReplaceVarHex(code, 6, offset);
 
   //Step 7d - Change the function call to a JMP to our custom code
-  offset = freeRva - exe.Raw2Rva(allocInject + 5);
+  offset = freeRva - pe.rawToVa(allocInject + 5);
   exe.replace(allocInject, "E9" + offset.packToHex(4), PTYPE_HEX);
 
   if (!directCall)
@@ -251,5 +251,5 @@ function LoadItemInfoPerServer()
 //=================================//
 function LoadItemInfoPerServer_()
 {
-  return (exe.findString("System/iteminfo.lub", RAW) !== -1);
+  return (pe.stringRaw("System/iteminfo.lub") !== -1);
 }
