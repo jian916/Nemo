@@ -14,21 +14,21 @@ delete LuaFnCaller;
 function _GetLuaAddrs()
 {
   //Step 1a - d>s
-  var offset = exe.findString("d>s", RVA);
+  var offset = pe.stringVa("d>s");
   if (offset === -1)
     return "LUA: d>s not found";
 
   D2S = offset.packToHex(4);
 
   //Step 1b - d>d
-  offset = exe.findString("d>d", RVA);
+  offset = pe.stringVa("d>d");
   if (offset === -1)
     return "LUA: d>d not found";
 
   D2D = offset.packToHex(4);
 
   //Step 2a - Find offset of ReqJobName
-  offset = exe.findString("ReqJobName", RVA);
+  offset = pe.stringVa("ReqJobName");
   if (offset === -1)
     return "LUA: ReqJobName not found";
 
@@ -46,10 +46,10 @@ function _GetLuaAddrs()
   if (offset2 === -1)
     return "LUA: ESP allocation missing";
 
-  EspAlloc = exe.fetchByte(offset2 + 2);
+  EspAlloc = pe.fetchByte(offset2 + 2);
 
   //Step 2d - Extract String Allocator Function Address based on which opcode follows the PUSH
-  switch (exe.fetchUByte(offset + 5))
+  switch (pe.fetchUByte(offset + 5))
   {
     case 0xFF: {//CALL DWORD PTR DS:[func] -> VC9 Clients
       offset += 11;
@@ -59,13 +59,13 @@ function _GetLuaAddrs()
     }
     case 0xE8: {//CALL func -> Older Clients
       offset += 10;
-      StrAlloc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+      StrAlloc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
       AllocType = 1;//1 means there is an argument PUSH which is a pointer.
       break;
     }
     case 0xC6: {//MOV BYTE PTR DS:[ECX], 0 -> VC10+ Clients
       offset += 13;
-      StrAlloc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+      StrAlloc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
       AllocType = 2;//2 means there needs to be an assignment of 0F and 0 to ECX+14 and ESP+10
       break;
     }
@@ -102,7 +102,7 @@ function _GetLuaAddrs()
   if (offset === -1)
     return "LUA: Lua Function caller missing";
 
-  LuaFnCaller = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
+  LuaFnCaller = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
 
   return true;
 }
@@ -184,10 +184,10 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 
   //Step 2d - Change the Indirect StrAlloc CALL to direct ( Non VC9 Clients )
   if (AllocType !== 0)
-    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - exe.Raw2Rva(addr + code.hexlength() - 12)).packToHex(4));  // CALL StrAlloc
+    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - pe.rawToVa(addr + code.hexlength() - 12)).packToHex(4));  // CALL StrAlloc
 
   //Step 2e - Fill the Lua Function Caller
-  code = ReplaceVarHex(code, 1, LuaFnCaller - exe.Raw2Rva(addr + code.hexlength()));
+  code = ReplaceVarHex(code, 1, LuaFnCaller - pe.rawToVa(addr + code.hexlength()));
 
   //Step 2f - Now add the Stack restore and Function output retrieval
   code +=
@@ -210,7 +210,7 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 function InjectLuaFiles(origFile, nameList, free, loadBefore)
 {
     consoleLog("Find original file name string");
-    var origOffset = exe.findString(origFile, RVA);
+    var origOffset = pe.stringVa(origFile);
     if (origOffset === -1)
         return "LUAFL: Filename missing";
 
