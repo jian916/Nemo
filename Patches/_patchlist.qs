@@ -304,8 +304,6 @@ registerPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experi
 
 //registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "UI", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 
-//FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
-
 //======================================//
 // Special Patches by Neo and Curiosity //
 //======================================//
@@ -729,5 +727,7 @@ registerPatch(413, "ChangeCaptchaImageDecompressionSize", "Fix captcha decompres
 registerPatch(414, "FixNewCharCreationPos", "Fix default position of new char create window", "Fix", 0, "4144", "Fix default position of new char create window", false);
 
 registerPatch(415, "RemoveNewCharCreationBluredBackground", "Remove blured background from new char creation window", "Fix", 0, "4144", "Remove blured background from new char creation window", false);
+
+registerPatch(416, "FixTetraVortex", 'Fix Tetra Vortex', 'UI', 0, "sanosan33, Neo", 'Fixes the black screen animation issue of tetra vortex', false);
 
 GlobalPostInit();
