@@ -37,7 +37,7 @@ function IgnoreResourceErrors()
 
     if (offset === -1)
     {
-        offset = exe.findString("Failed to load Winsock library!", RVA);
+        offset = pe.stringVa("Failed to load Winsock library!");
 
         if (offset === -1)
             return "Failed in Step 1 - String not found";
@@ -52,7 +52,7 @@ function IgnoreResourceErrors()
         if (offset === -1)
             return "Failed in Step 1 - Pattern not found";
 
-        offset = offset + 10 + exe.fetchDWord(offset + 6);
+        offset = offset + 10 + pe.fetchDWord(offset + 6);
 
         consoleLog("Search for MsgBox call location");
         code =
