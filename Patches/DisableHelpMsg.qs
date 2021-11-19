@@ -100,5 +100,5 @@ function DisableHelpMsg()
 //=======================================================//
 function DisableHelpMsg_()
 {
-    return (exe.findString("/tip", RAW) !== -1);
+    return (pe.stringRaw("/tip") !== -1);
 }
