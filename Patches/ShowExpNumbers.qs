@@ -8,7 +8,7 @@ function ShowExpNumbers()
 { //To Do - Make color and coords configurable
 
   //Step 1a - Find the address of the Alt String
-  var offset = exe.findString("Alt+V, Ctrl+V", RVA, false);
+  var offset = pe.halfStringVa("Alt+V, Ctrl+V");
   if (offset === -1)
     return "Failed in Step 1 - String missing";
 
@@ -169,7 +169,7 @@ function ShowExpNumbers()
   if (printFunc === -1)
     return "Failed in Step 4 - No print functions found";
 
-  template = ReplaceVarHex(template, 4, exe.findString("%d / %d", RVA, false));
+  template = ReplaceVarHex(template, 4, pe.halfStringVa("%d / %d"));
   template = ReplaceVarHex(template, 5, printFunc);
   template = template.replace(" XC", " 56");//Common X Coordinate
   template = template.replace(" JJ", (template.hexlength() - 15).packToHex(1));
