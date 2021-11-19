@@ -8,13 +8,13 @@ function Enable64kHairstyle()
     //Step 1a - Find address of Format String
     var code = "\xC0\xCE\xB0\xA3\xC1\xB7\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "인간족\머리통\%s\%s_%s.%s"
     var doramOn = false;
-    var offset = exe.findString(code, RAW);
+    var offset = pe.stringRaw(code);
 
     if (offset === -1)
     {  //Doram Client
         code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s"
         doramOn = true;
-        offset = exe.findString(code, RAW);
+        offset = pe.stringRaw(code);
     }
 
     if (offset === -1)
@@ -24,7 +24,7 @@ function Enable64kHairstyle()
     exe.replace(offset + code.length - 7, "75", PTYPE_HEX);
 
     //Step 1c - Find the string reference
-    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
+    offset = pe.findCode("68" + pe.rawToVa(offset).packToHex(4));
     if (offset === -1)
         return "Failed in Step 1 - String reference missing";
 
@@ -35,14 +35,14 @@ function Enable64kHairstyle()
     else
         offset = offset - 3;
 
-    if (exe.fetchUByte(offset) !== 0x8D) // x > 0x7F => accomodating for the extra 3 bytes of x
+    if (pe.fetchUByte(offset) !== 0x8D) // x > 0x7F => accomodating for the extra 3 bytes of x
         offset = offset - 3;
 
-    if (exe.fetchUByte(offset) !== 0x8D)
+    if (pe.fetchUByte(offset) !== 0x8D)
         return "Failed in Step 2 - Unknown instruction before reference";
 
     //Step 2b - Extract the register code used in the second last PUSH reg32 before the LEA instruction (0x8D)
-    var regNum = exe.fetchUByte(offset - 2) - 0x50;
+    var regNum = pe.fetchUByte(offset - 2) - 0x50;
     if (regNum < 0 || regNum > 7)
         return "Failed in Step 2 - Missing Reg PUSH";
 
@@ -145,10 +145,10 @@ function Enable64kHairstyle()
     {
         arg5Dist += 7*4;//Account for PUSH -1, PUSH addr and 5 reg32 PUSHes
 
-        if (exe.fetchUByte(offset - 2) === 0x81) // Add the const from SUB ESP, const
-            arg5Dist += exe.fetchDWord(offset);
+        if (pe.fetchUByte(offset - 2) === 0x81) // Add the const from SUB ESP, const
+            arg5Dist += pe.fetchDWord(offset);
         else
-            arg5Dist += exe.fetchByte(offset);
+            arg5Dist += pe.fetchByte(offset);
 
         //Step 3c - Account for an extra PUSH instruction (security related) in VC9 clients
         code =
@@ -224,7 +224,7 @@ function Enable64kHairstyle()
     for (var i = 0; i < offsets.length; i++)
     {
         offset2 = offsets[i] + code.hexlength();
-        exe.replaceWord(offset2 - 1, 0x9010 + (exe.fetchByte(offset2) & 0x7));
+        exe.replaceWord(offset2 - 1, 0x9010 + (pe.fetchByte(offset2) & 0x7));
     }
 
     //Step 5a - Find the Hairstyle limiting comparison within the function
@@ -261,7 +261,7 @@ function Enable64kHairstyle()
     exe.replace(offset2 - 3, "EB", PTYPE_HEX);
 
     //Step 5c - Change 0D to 02 in MOV instruction
-    code = exe.fetchUByte(offset2);
+    code = pe.fetchUByte(offset2);
     if (code === 0x04 || code > 0x07)
         exe.replace(offset2 + 2, "02");
     else
@@ -288,7 +288,7 @@ function Enable64kHairstyle()
         exe.replace(offset - 3, "EB", PTYPE_HEX);
 
         //Step 6c - Change 0D to 02 in MOV instruction
-        code = exe.fetchUByte(offset);
+        code = pe.fetchUByte(offset);
         if (code === 0x04 || code > 0x07)
             exe.replace(offset + 2, "02");
         else
@@ -304,7 +304,7 @@ function Enable64kHairstyle()
 function Enable64kHairstyle_()
 {
     var code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s";
-    var offset = exe.findString(code, RAW);
+    var offset = pe.stringRaw(code);
     // non for doram clients
     return (exe.getClientDate() > 20111102 && offset === -1);
 }
