@@ -49,11 +49,11 @@ function IncreaseZoomOut(newvalue)
     //Step 2 - Modify with the value supplied - Current value is 400.0
     exe.replace(offset + 4, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
 
-    if (exe.findString("/zoom", RAW) !== -1)
+    if (pe.stringRaw("/zoom") !== -1)
     {   // found zoom command. need do additional patching
         //Step 3 - Patch /zoom enabled/disabled command
         // get zoom2 addr bytes
-        var zoom2 = exe.Raw2Rva(offset + 4).packToHex(4);
+        var zoom2 = pe.rawToVa(offset + 4).packToHex(4);
 
         // search and patch also enabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
         var code1 = " C7 05 " + zoom2 + " 00 00 F0 43"; // mov zoom2, 480.0
@@ -111,11 +111,11 @@ function IncreaseZoomOut(newvalue)
             return "Failed in Step 4";
 
         // patch enabled /zoom configuration limit
-        var enebledAddr = exe.Rva2Raw(exe.fetchDWord(offset + enabledOffset));
+        var enebledAddr = pe.vaToRaw(pe.fetchDWord(offset + enabledOffset));
         exe.replace(enebledAddr, newvalue, PTYPE_HEX);
 
         // patch disabled /zoom configuration limit
-        var disabledAddr = exe.Rva2Raw(exe.fetchDWord(offset + disabledOffset));
+        var disabledAddr = pe.vaToRaw(pe.fetchDWord(offset + disabledOffset));
         exe.replace(disabledAddr, newvalue, PTYPE_HEX);
     }
 
