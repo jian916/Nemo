@@ -8,7 +8,7 @@ function EnableCustomHomunculus()
 { //Work In Progress
 
   //Step 1a - Find offset of LIF
-  var offset = exe.findString("LIF", RVA);
+  var offset = pe.stringVa("LIF");
   if (offset === -1)
     return "Failed in Step 1 - LIF not found";
 
@@ -27,14 +27,14 @@ function EnableCustomHomunculus()
   //Step 2a - Extract reference Register, reference Offset and current Register from the instruction before hookLoc
   //          MOV curReg, DWORD PTR DS:[refReg + refOff]
 
-  if (exe.fetchByte(hookLoc - 2) === 0)
+  if (pe.fetchByte(hookLoc - 2) === 0)
   { //refOff != 0
-    var modrm = exe.fetchByte(hookLoc - 5);
-    var refOff = exe.fetchDWord(hookLoc - 4);
+    var modrm = pe.fetchByte(hookLoc - 5);
+    var refOff = pe.fetchDWord(hookLoc - 4);
   }
   else
   { //refOff = 0
-    var modrm = exe.fetchByte(hookLoc - 1);
+    var modrm = pe.fetchByte(hookLoc - 1);
     var refOff = 0;
   }
   var refReg = modrm & 0x7;
@@ -46,7 +46,7 @@ function EnableCustomHomunculus()
 
   //Step 2c - Find offset of ReqJobName
   //Get the current lua caller code for Job Name i.e. ReqJobName calls
-  offset = exe.findString("ReqJobName", RVA);
+  offset = pe.stringVa("ReqJobName");
   if (offset === -1)
     return "Failed in Step 2 - ReqJobName not found";
 
@@ -129,12 +129,12 @@ function CheckHomunEoT(opcode, modrm, offset)
 {
   //SUB reg32_A, reg32_B
   //SAR reg32_A, 2
-  if (opcode === 0x2B && exe.fetchUByte(offset + 2) === 0xC1 && exe.fetchUByte(offset + 4) === 0x02 )
+  if (opcode === 0x2B && pe.fetchUByte(offset + 2) === 0xC1 && pe.fetchUByte(offset + 4) === 0x02 )
     return true;
 
   //TEST reg32_A, reg32_A
   //JZ SHORT addr
-  if (opcode === 0x85 && exe.fetchUByte(offset + 2) === 0x74)
+  if (opcode === 0x85 && pe.fetchUByte(offset + 2) === 0x74)
     return true;
 
   return false;
