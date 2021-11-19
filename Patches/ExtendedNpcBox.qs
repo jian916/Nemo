@@ -7,7 +7,7 @@ function ExtendNpcBox()
 {
 
   //Step 1a - Find offset of '|%02x'
-  var offset = exe.findString("|%02x", RVA);
+  var offset = pe.stringVa("|%02x");
   if (offset === -1)
     return "Failed in Step 1 - Format string missing";
 
@@ -28,7 +28,7 @@ function ExtendNpcBox()
     return "Failed in Step 1 - Function not found";
 
   //Step 1d - Extract the x in SUB ESP,x
-  var stackSub = exe.fetchDWord(offset + 2);
+  var stackSub = pe.fetchDWord(offset + 2);
 
   //Step 1e - Find the End of the Function.
   var fpEnb = HasFramePointer();
