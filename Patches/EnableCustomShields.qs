@@ -12,7 +12,7 @@ function EnableCustomShields()
   //===========================================================//
 
   //Step 1a - Find address of _가드 (Guard's suffix)
-  var offset = exe.findString("_\xB0\xA1\xB5\xE5", RVA);
+  var offset = pe.stringVa("_\xB0\xA1\xB5\xE5");
   if (offset === -1)
     return "Failed in Step 1 - Guard not found";
 
@@ -46,7 +46,7 @@ function EnableCustomShields()
   }
 
   //Step 1d - Find the address of _버클러 (Buckler's suffix)
-  offset = exe.findString("_\xB9\xF6\xC5\xAC\xB7\xAF", RVA);
+  offset = pe.stringVa("_\xB9\xF6\xC5\xAC\xB7\xAF");
   if (offset === -1)
     return "Failed in Step 1 - Buckler not found";
 
@@ -77,7 +77,7 @@ function EnableCustomShields()
   + " BB" + MaxShield.packToHex(4) //MOV EBX, finalValue
   ;
 
-  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>s", " 57");
+  var result = GenLuaCaller(free + code.hexlength(), funcName, pe.rawToVa(free), "d>s", " 57");
   if (result.indexOf("LUA:") !== -1)
       return result;
 
@@ -102,14 +102,14 @@ function EnableCustomShields()
   + " E9"             //JMP retReq
   ;
 
-  code += (exe.Raw2Rva(retReq) - exe.Raw2Rva(free + code.hexlength() + 4)).packToHex(4);
+  code += (pe.rawToVa(retReq) - pe.rawToVa(free + code.hexlength() + 4)).packToHex(4);
 
   //Step 2c - Insert the code
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 2c - Create regPush & JMP at hookReq to the code
   code = regPush + " E9";
-  code += (exe.Raw2Rva(free + funcName.length) - exe.Raw2Rva(hookReq + code.hexlength() + 4)).packToHex(4);
+  code += (pe.rawToVa(free + funcName.length) - pe.rawToVa(hookReq + code.hexlength() + 4)).packToHex(4);
 
   exe.replace(hookReq, code, PTYPE_HEX);
 
@@ -167,7 +167,7 @@ function EnableCustomShields()
 
   //Step 3d - Extract RAW address of GetShieldType function
   offset = offsets[0] + code.hexlength();
-  var hookMap = offset + 4 + exe.fetchDWord(offset);
+  var hookMap = offset + 4 + pe.fetchDWord(offset);
 
   //Step 4a - Allocate space for code considering max size
   funcName = "GetShieldID\x00";
@@ -182,7 +182,7 @@ function EnableCustomShields()
   + " 8B 54 24 08"    //MOV EDX, DWORD PTR SS:[ESP+8]
   ;
 
-  var result = GenLuaCaller(free + code.hexlength(), funcName, exe.Raw2Rva(free), "d>d", " 52");
+  var result = GenLuaCaller(free + code.hexlength(), funcName, pe.rawToVa(free), "d>d", " 52");
   if (result.indexOf("LUA:") !== -1)
       return result;
 
@@ -197,7 +197,7 @@ function EnableCustomShields()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 4d - Create a JMP at hookMap to the code
-  exe.replace(hookMap, "E9" + (exe.Raw2Rva(free + funcName.length) - exe.Raw2Rva(hookMap + 5)).packToHex(4), PTYPE_HEX);
+  exe.replace(hookMap, "E9" + (pe.rawToVa(free + funcName.length) - pe.rawToVa(hookMap + 5)).packToHex(4), PTYPE_HEX);
 
   //Step 5a - Find PUSH 5 before hookReq and replace with MaxShield if its there
   code =
