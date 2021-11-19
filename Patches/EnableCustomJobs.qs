@@ -15,15 +15,15 @@ function EnableCustomJobs()
     //===============================//
 
     //Step 1a - Get address of reference strings . (Pattern for Archer seems to be stable across clients hence we will use it)
-    var refPath = exe.findString("\xB1\xC3\xBC\xF6", RVA); // 궁수 for Archer. Same value is used for palette as well as imf
+    var refPath = pe.stringVa("\xB1\xC3\xBC\xF6"); // 궁수 for Archer. Same value is used for palette as well as imf
     if (refPath === -1)
         return "Failed in Step 1 - Path prefix missing";
 
-    var refHand = exe.findString("\xB1\xC3\xBC\xF6\\\xB1\xC3\xBC\xF6", RVA); // 궁수\궁수 for Archer
+    var refHand = pe.stringVa("\xB1\xC3\xBC\xF6\\\xB1\xC3\xBC\xF6"); // 궁수\궁수 for Archer
     if (refHand === -1)
         return "Failed in Step 1 - Hand prefix missing";
 
-    var refName = exe.findString("Acolyte", RVA);//We use Acolyte here because Archer has a MOV ECX, OFFSET statement before it in Older clients
+    var refName = pe.stringVa("Acolyte");//We use Acolyte here because Archer has a MOV ECX, OFFSET statement before it in Older clients
     if (refName === -1)
         return "Failed in Step 1 - Name prefix missing";
 
@@ -40,7 +40,7 @@ function EnableCustomJobs()
             return "Failed in Step 1 - Palette reference is missing";
 
         //Step 1d - Extract the function address (RAW)
-        assigner = (offset + 11) + exe.fetchDWord(offset + 7);
+        assigner = (offset + 11) + pe.fetchDWord(offset + 7);
 
         //Step 1e - Hook Location will be 4 bytes before at PUSH 4
         hooks[2] = offset - 4;
@@ -84,19 +84,19 @@ function EnableCustomJobs()
         //          MOV curReg, DWORD PTR DS:[refReg + refOff]
         //          curReg can also be extracted from code at hook location
 
-        if (exe.fetchByte(hooks[i] - 2) === 0)
+        if (pe.fetchByte(hooks[i] - 2) === 0)
         {  //refOff != 0
-            var modrm  = exe.fetchByte(hooks[i] - 5);
-            var refOff = exe.fetchDWord(hooks[i] - 4);
+            var modrm  = pe.fetchByte(hooks[i] - 5);
+            var refOff = pe.fetchDWord(hooks[i] - 4);
         }
-        else if (exe.fetchByte(hooks[i]) === 0x6A)
+        else if (pe.fetchByte(hooks[i]) === 0x6A)
         { //Older client
             var modrm  = 0x6;//so that refReg will be ESI and curReg will be EAX
             var refOff = 0;
         }
         else
         { //refOff = 0
-            var modrm  = exe.fetchByte(hooks[i] - 1);
+            var modrm  = pe.fetchByte(hooks[i] - 1);
             var refOff = 0;
         }
         var refReg = modrm & 0x7;
@@ -153,7 +153,7 @@ function EnableCustomJobs()
     //================================================================//
 
     //Step 5a - Find address of 'TaeKwon Girl'
-    offset = exe.findString("TaeKwon Girl", RVA);
+    offset = pe.stringVa("TaeKwon Girl");
     if (offset === -1)
         return "Failed in Step 5 - 'TaeKwon Girl' missing";
 
@@ -229,7 +229,7 @@ function EnableCustomJobs()
         return "Failed in Step 5 - 'TaeKwon Girl' reference missing";
 
     //Step 5c - Extract the g_jobName address
-    gJobName = exe.fetchDWord(offset2 + gJobName);
+    gJobName = pe.fetchDWord(offset2 + gJobName);
 
     //Step 5d - Look for the LangType comparison before offset2 (in fact the JNZ should jump to a call after which we do the above TEST)
     //          Steps 5d and 5e are also done in TranslateClient but we will keep it anyways as a failsafe
@@ -297,11 +297,11 @@ function EnableCustomJobs()
         return "Failed in Step 5 - 2nd LangType comparison missing";
 
     //Step 5g - Extract any Register Pushes before the Comparison - This is needed since they are restored at the end of the function
-    var push1 = exe.fetchUByte(offset2 - 1);
+    var push1 = pe.fetchUByte(offset2 - 1);
     if (push1 < 0x50 || push1 > 0x57)
         push1 = 0x90;
 
-    var push2 = exe.fetchUByte(offset2 - 2);
+    var push2 = pe.fetchUByte(offset2 - 2);
     if (push2 < 0x50 || push2 > 0x57)
         push2 = 0x90;
 
@@ -309,9 +309,9 @@ function EnableCustomJobs()
         push1 = 0x56;
 
     offset2 += code.hexlength();
-    offset2 += 4 + exe.fetchDWord(offset2);
+    offset2 += 4 + pe.fetchDWord(offset2);
 
-    if (exe.Raw2Rva(offset2) == -1)
+    if (pe.rawToVa(offset2) == -1)
         return "Failed in Step 5g - wrong offset.";
 
     //Step 5h - Change the CMP to NOP and JNE to JMP as shown below at The JNE address
@@ -440,7 +440,7 @@ function EnableCustomJobs()
         offset += csize;
         //Step 8b - Get the PUSH register in case it is not EAX
         if (offset2 === "")
-            offset2 = (0x50 + (exe.fetchByte(offset + 1) & 0x7)).packToHex(1);
+            offset2 = (0x50 + (pe.fetchByte(offset + 1) & 0x7)).packToHex(1);
 
         //Step 8c - Build the replacement code using IsDwarf Lua function
         var result = GenLuaCaller(offset + 1, "IsDwarf", Funcs[13], "d>d", offset2);
@@ -477,16 +477,16 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
 
     //SUB reg32_A, reg32_B
     //SAR reg32_A, 2
-    if (opcode === 0x2B && exe.fetchUByte(offset + 2) === 0xC1 && exe.fetchUByte(offset + 4) === 0x02 )
+    if (opcode === 0x2B && pe.fetchUByte(offset + 2) === 0xC1 && pe.fetchUByte(offset + 4) === 0x02 )
         return true;
 
     //PUSH 524C
-    if (opcode === 0x68 && exe.fetchDWord(offset + 1) === 0x524C)
+    if (opcode === 0x68 && pe.fetchDWord(offset + 1) === 0x524C)
         return true;
 
     //PUSH EAX
     //PUSH 2 or PUSH 5
-    if (opcode === 0x50 && modrm === 0x6A && (exe.fetchByte(offset + 2) === 0x02 || exe.fetchByte(offset + 2) === 0x05))
+    if (opcode === 0x50 && modrm === 0x6A && (pe.fetchByte(offset + 2) === 0x02 || pe.fetchByte(offset + 2) === 0x05))
         return true;
 
 
@@ -503,7 +503,7 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
         return true;
 
     //OR reg32_A, FFFFFFFF
-    if (opcode === 0x83 && (modrm & 0xF8) === 0xC8 && exe.fetchUByte(offset + 2) === 0xFF)
+    if (opcode === 0x83 && (modrm & 0xF8) === 0xC8 && pe.fetchUByte(offset + 2) === 0xFF)
         return true;
 
     //MOV EDI, EDI
@@ -511,7 +511,7 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
         return true;
 
     //MOV EDI, 2D - deprecated since MOV EDI, EDI doesn't leave out any stray assignments
-    //if (opcode === 0xBF && exe.fetchDWord(offset + 1) === 0x2D)
+    //if (opcode === 0xBF && pe.fetchDWord(offset + 1) === 0x2D)
     //  return true;
 
     return false;
@@ -525,7 +525,7 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
 function OverwriteString(srcString, tgtString)
 {
     //Step 1 - Find address
-    var offset = exe.findString(srcString, RAW);
+    var offset = pe.stringRaw(srcString);
 
     if (offset === -1)
     {
@@ -535,7 +535,7 @@ function OverwriteString(srcString, tgtString)
     exe.replace(offset, tgtString, PTYPE_STRING);
 
     //Step 2b - Return the RVA of offset
-    return exe.Raw2Rva(offset);
+    return pe.rawToVa(offset);
 }
 
 //########################################################################
