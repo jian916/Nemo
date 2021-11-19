@@ -7,7 +7,7 @@ function EnableProxySupport()
 {
 
   //Step 1a - Find the String's address.
-  var offset = exe.findString("Failed to setup select mode", RVA);
+  var offset = pe.stringVa("Failed to setup select mode");
   if (offset === -1)
     return "Failed in Step 1 - setup string not found";
 
@@ -52,9 +52,9 @@ function EnableProxySupport()
   }
 
   //Step 2c - Get the address pointing to ws2_32.connect
-  var connAddr = exe.fetchDWord(offset2 + 1);
+  var connAddr = pe.fetchDWord(offset2 + 1);
   if (!bIndirectCALL)
-    connAddr += exe.Raw2Rva(offset2 + 5);
+    connAddr += pe.rawToVa(offset2 + 5);
 
   //Step 3a - Create the IP Saving code (g_saveIP will be filled later. for now we use filler)
   code =
@@ -92,7 +92,7 @@ function EnableProxySupport()
   if (offset === -1)
     return "Failed in Step 3 - Not enough free space";
 
-  var offsetRva = exe.Raw2Rva(offset);
+  var offsetRva = pe.rawToVa(offset);
 
   //Step 3c - Set g_saveIP
   code = ReplaceVarHex(code, [1, 2], [offsetRva, offsetRva]);
@@ -102,7 +102,7 @@ function EnableProxySupport()
     code = ReplaceVarHex(code, 3, connAddr - (offsetRva + csize)); //Get Offset relative to JMP
 
   //Step 4a - Redirect connect call to our code.
-  exe.replaceDWord(offset2 + 1, offsetRva + 4 - exe.Raw2Rva(offset2 + 5));
+  exe.replaceDWord(offset2 + 1, offsetRva + 4 - pe.rawToVa(offset2 + 5));
 
   //Step 4b - Add our code to the client
   exe.insert(offset, 4 + csize, " 00 00 00 00" + code, PTYPE_HEX); //4 NULLs for g_saveIP filler
