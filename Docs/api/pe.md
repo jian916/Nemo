@@ -139,6 +139,16 @@ Find string in whole binary and if found return virtual address of string.
 
 If string not found, return -1.
 
+### pe.halfStringVa
+
+```
+pe.halfStringVa(pattern)
+```
+
+Find string ending with given pattern in whole binary and if found return virtual address of string ending.
+
+If string not found, return -1.
+
 ### pe.stringRaw
 
 ```
@@ -146,6 +156,16 @@ pe.stringRaw(pattern)
 ```
 
 Find string in whole binary and if found return raw address of string.
+
+If string not found, return -1.
+
+### pe.halfStringRaw
+
+```
+pe.halfStringRaw(pattern)
+```
+
+Find string ending with given pattern in whole binary and if found return raw address of string ending.
 
 If string not found, return -1.
 

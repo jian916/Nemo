@@ -149,11 +149,38 @@ function pe_stringRaw(str)
     return res + 1;
 }
 
+function pe_halfStringRaw(str)
+{
+    checkArgs("pe.halfStringRaw", arguments, [["String"]]);
+
+    var code = (str + "\x00").toHex();
+    var startRaw = pe.dataBaseRaw();
+    var endRaw = 0x7fffffff;
+    var res = pe.findMaskInternal(code, startRaw, endRaw);
+    if (res === -1)
+    {
+        return -1;
+    }
+    return res;
+}
+
 function pe_stringVa(str)
 {
     checkArgs("pe.stringVa", arguments, [["String"]]);
 
     var res = pe_stringRaw(str);
+    if (res === -1)
+    {
+        return -1;
+    }
+    return pe.rawToVa(res);
+}
+
+function pe_halfStringVa(str)
+{
+    checkArgs("pe.halfStringVa", arguments, [["String"]]);
+
+    var res = pe_halfStringRaw(str);
     if (res === -1)
     {
         return -1;
@@ -332,6 +359,8 @@ function registerPe()
     pe.match = pe_match;
     pe.stringVa = pe_stringVa;
     pe.stringRaw = pe_stringRaw;
+    pe.halfStringVa = pe_halfStringVa;
+    pe.halfStringRaw = pe_halfStringRaw;
     pe.stringHex4 = pe_stringHex4;
     pe.stringAnyVa = pe_stringAnyVa;
     pe.stringAnyRaw = pe_stringAnyRaw;
