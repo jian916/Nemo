@@ -7,7 +7,7 @@ function EnableCustom3DBones()
 {
 
   //Step 1a - Find location of the sprintf control string for 3d mob bones
-  var offset = exe.findString("model\\3dmob_bone\\%d_%s.gr2", RVA);
+  var offset = pe.stringVa("model\\3dmob_bone\\%d_%s.gr2");
   if (offset === -1)
     return "Failed in Step 1 - String not found";
 
@@ -54,7 +54,7 @@ function EnableCustom3DBones()
   exe.replace(offset2, " 90 90 EB", PTYPE_HEX);
 
   //Step 3b - Modify the JA/JGE instruction at offset to just skip the Jump.
-  switch(exe.fetchUByte(offset))
+  switch(pe.fetchUByte(offset))
   {
     case 0x77:
     case 0x7D: {// Short JA/JGE
@@ -71,7 +71,7 @@ function EnableCustom3DBones()
   }
 
   //Step 4a - Find the annoying warning - 'too many vertex granny model!'
-  offset = exe.findString("too many vertex granny model!", RVA);
+  offset = pe.stringVa("too many vertex granny model!");
 
   //Step 4b - Find its reference + the function call after
   if (offset !== -1)
