@@ -19,7 +19,7 @@ function HideRoulette()
   offset += code.hexlength() + 4;
 
   //Step 2a - Check if the Succeding operation is Roulette UIWindow creation or not
-  if (exe.fetchDWord(offset+1) !== 0x11D)
+  if (pe.fetchDWord(offset+1) !== 0x11D)
     return "Patch Cancelled - Roulette is already hidden";
 
   //Step 2b - If yes JMP over it
@@ -32,5 +32,5 @@ function HideRoulette()
 //======================================================//
 function HideRoulette_()
 {
-  return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\roullette\\RoulletteIcon.bmp", RAW) !== -1);
+  return (pe.stringRaw("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\roullette\\RoulletteIcon.bmp") !== -1);
 }
