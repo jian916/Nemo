@@ -6,7 +6,7 @@
 function EnableEffectForAllMaps()
 {
   //Step 1a - Find the address of Lua file prefix string
-  var offset = exe.findString("Lua Files\\EffectTool\\", RVA);
+  var offset = pe.stringVa("Lua Files\\EffectTool\\");
   if (offset === -1)
     return "Failed in Step 1 - String missing";
 
