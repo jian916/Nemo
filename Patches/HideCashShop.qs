@@ -25,5 +25,5 @@ function HideCashShop()
 //======================================================//
 function HideCashShop_()
 {
-  return (exe.findString("NC_CashShop", RAW) !== -1);
+  return (pe.stringRaw("NC_CashShop") !== -1);
 }
