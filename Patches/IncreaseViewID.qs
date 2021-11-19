@@ -7,7 +7,7 @@ function IncreaseViewID()
 {
 
   //Step 1a - Find "ReqAccName" offset
-  var offset = exe.findString("ReqAccName", RVA);
+  var offset = pe.stringVa("ReqAccName");
   if (offset === -1)
     return "Failed in Step 1 - Can't find ReqAccName";
 
@@ -52,5 +52,5 @@ function IncreaseViewID()
 //=============================//
 function IncreaseViewID_()
 {
-  return(exe.findString("ReqAccName", RAW) !== -1);
+  return(pe.stringRaw("ReqAccName") !== -1);
 }
