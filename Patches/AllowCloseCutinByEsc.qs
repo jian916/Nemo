@@ -44,10 +44,10 @@ function AllowCloseCutinByEsc()
 
     logVaVar("g_modeMgr", offset, gModeMgrOffset);
     logRawFunc("CModeMgr_GetGameMode", offset, getGameModeOffset);
-    var gModeMgrHex = exe.fetchDWord(offset + gModeMgrOffset).packToHex(4);
-    var getGameModeHex = exe.Raw2Rva(exe.fetchDWord(offset + getGameModeOffset) + offset + getGameModeOffset + 4).packToHex(4);
-    var emptyStrHex = exe.fetchDWord(offset + EmptyStrOffset).packToHex(4);
-    var vptrHex = exe.fetchUByte(offset + vptrOffset).packToHex(1);
+    var gModeMgrHex = pe.fetchDWord(offset + gModeMgrOffset).packToHex(4);
+    var getGameModeHex = pe.rawToVa(pe.fetchDWord(offset + getGameModeOffset) + offset + getGameModeOffset + 4).packToHex(4);
+    var emptyStrHex = pe.fetchDWord(offset + EmptyStrOffset).packToHex(4);
+    var vptrHex = pe.fetchUByte(offset + vptrOffset).packToHex(1);
 
     // step 2
     // search in UIWindowMgr_sub_71C040 (called from UIWindowMgr_ProcessPushButton)
@@ -75,12 +75,12 @@ function AllowCloseCutinByEsc()
     logRawFunc("UIWindowMgr_DeleteWindow", offset, deleteFuncOffset);
 
     checkFuncOffset = offset + checkFuncOffset;
-    var deleteFuncAddr = exe.fetchDWord(offset + deleteFuncOffset) + offset + deleteFuncOffset + 4;
-    var checkFuncAddr = exe.fetchDWord(checkFuncOffset) + checkFuncOffset + 4;
+    var deleteFuncAddr = pe.fetchDWord(offset + deleteFuncOffset) + offset + deleteFuncOffset + 4;
+    var checkFuncAddr = pe.fetchDWord(checkFuncOffset) + checkFuncOffset + 4;
 
-    var deleteHex = exe.Raw2Rva(deleteFuncAddr).packToHex(4);
-    var checkHex = exe.Raw2Rva(checkFuncAddr).packToHex(4);
-    var retHex = exe.Raw2Rva(checkFuncOffset + 4).packToHex(4);
+    var deleteHex = pe.rawToVa(deleteFuncAddr).packToHex(4);
+    var checkHex = pe.rawToVa(checkFuncAddr).packToHex(4);
+    var retHex = pe.rawToVa(checkFuncOffset + 4).packToHex(4);
     var widHex = (78).packToHex(4);
 
     // step 3
@@ -118,10 +118,10 @@ function AllowCloseCutinByEsc()
 
     var codeLen = newCode.hexlength();
     var free = exe.findZeros(codeLen);
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     exe.insert(free, codeLen, newCode, PTYPE_HEX);
 
-    exe.replace(checkFuncOffset - 1, "E9" + (freeRva - exe.Raw2Rva(checkFuncOffset) - 4).packToHex(4), PTYPE_HEX); // replace call to check function into own function
+    exe.replace(checkFuncOffset - 1, "E9" + (freeRva - pe.rawToVa(checkFuncOffset) - 4).packToHex(4), PTYPE_HEX); // replace call to check function into own function
     return true;
 }
