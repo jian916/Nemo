@@ -26,7 +26,7 @@
 function RemoveItemsEquipPreview()
 {
     consoleLog("Step 1 - Search string 'IsEffectHatItem'");
-    var offset = exe.findString("IsEffectHatItem", RVA);
+    var offset = pe.stringVa("IsEffectHatItem");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -86,5 +86,5 @@ function RemoveItemsEquipPreview()
 //=======================================================//
 function RemoveItemsEquipPreview_()
 {
-    return (exe.findString("IsEffectHatItem", RAW) !== -1);
+    return (pe.stringRaw("IsEffectHatItem") !== -1);
 }
