@@ -43,7 +43,7 @@ function RestoreLoginWindow()
   //==============================================//
 
   //Step 2a - Find offset of NUMACCOUNT
-  var offset = exe.findString("NUMACCOUNT", RVA);
+  var offset = pe.stringVa("NUMACCOUNT");
   if (offset === -1)
     return "Failed in Step 2 - NUMACCOUNT not found";
 
@@ -61,7 +61,7 @@ function RestoreLoginWindow()
     return "Failed in Step 2 - MakeWindow not found";
 
   //Step 2c - Extract the Function address relative to target location
-  var windowMgr = ((o2 + 10 + exe.fetchDWord(o2 + 6)) - (codeOffset + 24 + 2 + 5 + 5)).packToHex(4)
+  var windowMgr = ((o2 + 10 + pe.fetchDWord(o2 + 6)) - (codeOffset + 24 + 2 + 5 + 5)).packToHex(4)
 
   //Step 3a - Prepare the code to overwrite with - originally present in old clients
   code =
@@ -121,7 +121,7 @@ function RestoreLoginWindow()
 
   offset += code.hexlength();
 
-  if (exe.fetchUByte(offset) === 0x83 && exe.fetchByte(offset + 2) === 0x0C)//create a JMP to location after the JZs
+  if (pe.fetchUByte(offset) === 0x83 && pe.fetchByte(offset + 2) === 0x0C)//create a JMP to location after the JZs
     var repl = "EB 18";
   else
     var repl = "EB 0F";
@@ -253,7 +253,7 @@ function RestoreLoginWindow()
   {
 
     //Step 6a - Find offset of "ID"
-    offset = exe.findString("ID", RVA);
+    offset = pe.stringVa("ID");
     if (offset === -1)
       return "Failed in Step 6 - ID not found";
 
@@ -274,7 +274,7 @@ function RestoreLoginWindow()
       return "Failed in Step 6 - Function not found";
 
     //Step 6d - Extract the called address
-    var call = exe.fetchDWord(offset + 2) + offset + 6;
+    var call = pe.fetchDWord(offset + 2) + offset + 6;
 
     //Step 6e - Sly devils have made a jump here so search for that.
     offset = pe.find("E9", call);
@@ -282,7 +282,7 @@ function RestoreLoginWindow()
       return "Failed in Step 6 - Jump Not found";
 
     //Step 6f - Now get the jump offset
-    call = offset + 5 + exe.fetchDWord(offset+1);//rva conversions are not needed since we are referring to same code section.
+    call = offset + 5 + pe.fetchDWord(offset+1);//rva conversions are not needed since we are referring to same code section.
 
     //Step 6g - Search for pattern to get func call <- need to remove that call
     //  PUSH 13
