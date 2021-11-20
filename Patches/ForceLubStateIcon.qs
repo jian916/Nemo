@@ -18,7 +18,7 @@
 function ForceLubStateIcon()
 {
     consoleLog("step 1");
-    var offset = exe.findString("GetEFSTImgFileName", RVA, true);
+    var offset = pe.stringVa("GetEFSTImgFileName");
     if (offset === -1)
         return "Failed in Step 1 - Reference String Missing";
 
