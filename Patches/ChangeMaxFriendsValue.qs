@@ -63,7 +63,7 @@ function ChangeMaxFriendsValue()
         return "Failed in Step 1 - Pattern not found";
 
     consoleLog("Step 2 - Search string '%s(%d/%d)' for friends list");
-    var offzet = exe.findString("%s(%d/%d)", RVA);
+    var offzet = pe.stringVa("%s(%d/%d)");
 
     if (offzet === -1)
         return "Failed in Step 2 - String not found";
@@ -200,5 +200,5 @@ function ChangeMaxFriendsValue()
 //=======================================================//
 function ChangeMaxFriendsValue_()
 {
-    return (exe.findString("%s(%d/%d)", RAW) !== -1);
+    return (pe.stringRaw("%s(%d/%d)") !== -1);
 }
