@@ -7,7 +7,7 @@
 function ShowRegisterButton()
 {
   //Step 1a - Find the alternate URL string
-  var offset = exe.findString("http://ro.hangame.com/login/loginstep.asp?prevURL=/NHNCommon/NHN/Memberjoin.asp", RVA);
+  var offset = pe.stringVa("http://ro.hangame.com/login/loginstep.asp?prevURL=/NHNCommon/NHN/Memberjoin.asp");
   if (offset === -1)
     return "Failed in Step 1 - String missing";
 
@@ -66,12 +66,12 @@ function ShowRegisterButton()
   if (type == 1)
   {
     exe.replace(offset2 - 2, "EB", PTYPE_HEX);
-    offset2 += exe.fetchByte(offset2 - 1);
+    offset2 += pe.fetchByte(offset2 - 1);
   }
   else
   {
     exe.replace(offset2 - 6, "90 E9", PTYPE_HEX);
-    offset2 += exe.fetchDWord(offset2 - 4);
+    offset2 += pe.fetchDWord(offset2 - 4);
   }
 
   //Step 3a - Add 10 to Skip over MOV ECX, OFFSET g_modeMgr and CALL CModeMgr::Quit
@@ -93,10 +93,10 @@ function ShowRegisterButton()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 3e - Change the CModeMgr::Quit CALL with a CALL to our function
-  exe.replaceDWord(offset2 - 4, exe.Raw2Rva(free) - exe.Raw2Rva(offset2));
+  exe.replaceDWord(offset2 - 4, pe.rawToVa(free) - pe.rawToVa(offset2));
 
   //Step 4a - Find the prefix string for the button (pressed state)
-  offset = exe.findString("btn_request_b", RVA);
+  offset = pe.stringVa("btn_request_b");
   if (offset === -1)
     return "Failed in Step 4 - Button prefix missing";
 
