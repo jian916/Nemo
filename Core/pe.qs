@@ -344,6 +344,32 @@ function pe_rvaToRaw(offsetRva)
     return pe.vaToRaw(offsetRva + pe.getImageBase());
 }
 
+function pe_fetchValue(offset, offset2)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    if (size == 1)
+    {
+        return pe.fetchByte(addr);
+    }
+    else if (size == 2)
+    {
+        return pe.fetchWord(addr);
+    }
+    else if (size == 4)
+    {
+        return pe.fetchDWord(addr);
+    }
+    else if (size == 8)
+    {
+        return pe.fetchQWord(addr);
+    }
+    else
+    {
+        fatalError("Unknown size in pe.fetchValue: " + size);
+    }
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -377,4 +403,5 @@ function registerPe()
     pe.getImportTable = pe_getImportTable;
     pe.rvaToVa = pe_rvaToVa;
     pe.rvaToRaw = pe_rvaToRaw;
+    pe.fetchValue = pe_fetchValue;
 }

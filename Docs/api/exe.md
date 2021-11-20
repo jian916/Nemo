@@ -304,18 +304,8 @@ In other case return false.
 
 ### exe.fetchValue
 
-``exe.fetchValue(offset, offset2)``
+Please use pe.fetchValue
 
-Allow fetch value from binary with raw address offset plus offset2.
-
-In offset2 also exists size of fetched value in bytes.
-
-| Argument | Description |
-| -------- | ----------- |
-| offset   | Raw address (int) |
-| offset2  | additional offset and size (two ints) |
-
-On success return fetched bytes.
 
 ### exe.fetchValueSimple
 
