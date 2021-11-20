@@ -82,7 +82,7 @@ function AdventurerAgencyButton()
 function ButtonNew(buttonId, value)
 {
     consoleLog("Step 1 - Find address of reference string");
-    var offset = exe.findString("adventurerAgency", RAW);
+    var offset = pe.stringRaw("adventurerAgency");
     if (offset === -1)
         throw "Failed in Step 1 - String not found";
 
@@ -128,55 +128,55 @@ function ButtonNew(buttonId, value)
 
 function NavigationButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function BankButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function ReplayButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function MailButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function AchievementButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function TipButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function ShopButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function SNSButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function AttendanceButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function BookingButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
 
 function AdventurerAgencyButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
 }
