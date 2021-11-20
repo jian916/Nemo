@@ -76,23 +76,23 @@ function ChangeMinimalResolutionLimit()
     if (offset === -1)
         return "Failed in step 1 - resolution limit not found";
 
-    if (widthOffset1 !== -1 && exe.fetchDWord(offset + widthOffset1) !== widthLimit)
+    if (widthOffset1 !== -1 && pe.fetchDWord(offset + widthOffset1) !== widthLimit)
     {
         return "Failed in step 1 - wrong width limit found";
     }
-    if (exe.fetchDWord(offset + widthOffset2) !== widthLimit)
+    if (pe.fetchDWord(offset + widthOffset2) !== widthLimit)
     {
         return "Failed in step 1 - wrong width limit found";
     }
-    if (exe.fetchDWord(offset + heightOffset1) !== heightLimit1 || exe.fetchDWord(offset + heightOffset2) !== heightLimit2)
+    if (pe.fetchDWord(offset + heightOffset1) !== heightLimit1 || pe.fetchDWord(offset + heightOffset2) !== heightLimit2)
     {
         return "Failed in step 1 - wrong height limit found";
     }
-    if (screenWidth2Offset !== -1 && exe.fetchDWord(offset + screenWidth1Offset) !== exe.fetchDWord(offset + screenWidth2Offset))
+    if (screenWidth2Offset !== -1 && pe.fetchDWord(offset + screenWidth1Offset) !== pe.fetchDWord(offset + screenWidth2Offset))
     {
         return "Failed in step 1 - wrong width found";
     }
-    if (exe.fetchDWord(offset + screenHeight1Offset) !== exe.fetchDWord(offset + screenHeight2Offset))
+    if (pe.fetchDWord(offset + screenHeight1Offset) !== pe.fetchDWord(offset + screenHeight2Offset))
     {
         return "Failed in step 1 - wrong height found";
     }
@@ -166,7 +166,7 @@ function ChangeMinimalResolutionLimit()
     var codeIns = exe.fetchHex(offset, retAdd);
 
     var vars = {
-        "retAddr": exe.Raw2Rva(offset + retAdd),
+        "retAddr": pe.rawToVa(offset + retAdd),
         "codeIns": codeIns
     };
 
@@ -178,5 +178,5 @@ function ChangeMinimalResolutionLimit()
 
 function ChangeMinimalResolutionLimit_()
 {
-    return (exe.findString("WIDTH", RAW) !== -1);
+    return (pe.stringRaw("WIDTH") !== -1);
 }
