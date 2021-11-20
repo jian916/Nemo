@@ -18,7 +18,7 @@
 
 function ChangeAdventureAgencyLevelRange()
 {
-    var offset = exe.findString("%d", RVA);
+    var offset = pe.stringVa("%d");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -103,5 +103,5 @@ function ChangeAdventureAgencyLevelRange()
 //============================//
 function ChangeAdventureAgencyLevelRange_()
 {
-    return (exe.findString("btn_job_def_on", RAW) !== -1);
+    return (pe.stringRaw("btn_job_def_on") !== -1);
 }
