@@ -7,7 +7,7 @@ function SkipLicenseScreen()
 {
 
   //Step 1a - Find offset of "btn_disagree"
-  var offset = exe.findString("btn_disagree", RVA);
+  var offset = pe.stringVa("btn_disagree");
   if (offset === -1)
     return "Failed in Step 1 - Unable to find btn_disagree";
 
@@ -22,7 +22,7 @@ function SkipLicenseScreen()
     return "Failed in Step 2 - Unable to find the switch";
 
   //Step 2b - Extract the refaddr
-  var refaddr = exe.Rva2Raw(exe.fetchDWord(offset + 3));//We need the raw address
+  var refaddr = pe.vaToRaw(pe.fetchDWord(offset + 3));//We need the raw address
 
   //Step 2c - Extract the 3rd Entry in the jumptable => Case 2. Case 0 and Case 1 are related to License Screen
   var third = exe.fetchHex(refaddr + 8, 4);
