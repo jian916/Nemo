@@ -17,11 +17,11 @@
 
 function eraseString(offset, val)
 {
-    var data = exe.fetchUByte(offset);
+    var data = pe.fetchUByte(offset);
     while (data != 0)
     {
         exe.replaceByte(offset, val);
         offset++;
-        data = exe.fetchUByte(offset);
+        data = pe.fetchUByte(offset);
     }
 }
