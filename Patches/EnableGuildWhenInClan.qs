@@ -49,5 +49,5 @@ function EnableGuildWhenInClan()
 // Disable for unsupported clients
 function EnableGuildWhenInClan_()
 {
-    return exe.findString("/clanchat", RAW) !== -1;
+    return pe.stringRaw("/clanchat") !== -1;
 }
