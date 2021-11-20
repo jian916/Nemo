@@ -71,14 +71,14 @@ function IncreaseAtkDisplay()
     return "Failed in Step 2 - Digit Counter missing";
 
   //Step 2b.1 - Extract the stack offset from the instruction if it is a stack assignment
-  if (exe.fetchUByte(offset) === 0xC7)
+  if (pe.fetchUByte(offset) === 0xC7)
   {
-    var offByte = exe.fetchByte(offset + code.hexlength() - 5);
+    var offByte = pe.fetchByte(offset + code.hexlength() - 5);
   }
   else
   {
     //Step 2b.2 - If its a register assignment extract the register and see if it assigns to stack later
-    var offByte = exe.fetchUByte(offset + 2) - 0xB8;
+    var offByte = pe.fetchUByte(offset + 2) - 0xB8;
 
     code = (offByte << 3) | 0x44;//modrm for MOV
     if (fpEnb)
@@ -91,7 +91,7 @@ function IncreaseAtkDisplay()
     if (offset2 === -1)
       offByte = " 89" + (0xF0 | offByte).packToHex(1);//MOV reg32_B, ESI ; because ESI will be holding the digit count finally
     else
-      offByte = exe.fetchByte(offset2 + code.hexlength() - 2);
+      offByte = pe.fetchByte(offset2 + code.hexlength() - 2);
   }
 
   //Step 2c - Find Location where the digit extraction starts
@@ -116,7 +116,7 @@ function IncreaseAtkDisplay()
   offset2 += code.hexlength();
 
   //Step 2e - Extract the stack offset for the first digit (all the succeeding ones will be in increasing order from this one).
-  var offByte2 = exe.fetchByte(offset2 - 1);
+  var offByte2 = pe.fetchByte(offset2 - 1);
 
   //Step 2f - Find the g_modeMgr assignment
   offset = pe.find(getEcxModeMgrHex(), offset2);//MOV ECX, g_modeMgr
@@ -147,7 +147,7 @@ function IncreaseAtkDisplay()
 
   //Step 3b - Prep code to replace at refOffset - new digit splitter and counter combined
   code =
-    " 89" + (0xC1 + ((exe.fetchByte(refOffset + 1) & 0x7) << 3)).packToHex(1) //MOV ECX, reg32_A
+    " 89" + (0xC1 + ((pe.fetchByte(refOffset + 1) & 0x7) << 3)).packToHex(1) //MOV ECX, reg32_A
   + " BE" + offByte2.packToHex(4) //MOV ESI, offByte2
   + " B8 67 66 66 66"    //MOV EAX,66666667
   + " F7 E9"             //IMUL ECX
@@ -208,8 +208,8 @@ function IncreaseAtkDisplay()
   while (offset2 < offset3)
   {
     //Step 4b - Get current opcode and modrm
-    var opcode = exe.fetchUByte(offset2);
-    var modrm = exe.fetchUByte(offset2 + 1);
+    var opcode = pe.fetchUByte(offset2);
+    var modrm = pe.fetchUByte(offset2 + 1);
 
     //Step 4c - Get the instruction details
     var details = GetOpDetails(opcode, modrm, offset2);//contains length of instruction, distance to next offset, optional destination operand, optional source operand. Usually index 0 and 1 are same
@@ -229,16 +229,16 @@ function IncreaseAtkDisplay()
 
         if (fpEnb && details.mode === 1)
         {
-          if (details.rm === 5 && exe.fetchByte(offset2 + 2) <= (offByte2 + soff) )
+          if (details.rm === 5 && pe.fetchByte(offset2 + 2) <= (offByte2 + soff) )
           {
             offsetStack(offset2 + 2);
           }
-          else if (details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 5 &&  exe.fetchByte(offset2 + 3) <= (offByte2 + soff))
+          else if (details.rm === 4 && (pe.fetchByte(offset2 + 2) & 0x7) === 5 &&  pe.fetchByte(offset2 + 3) <= (offByte2 + soff))
           {
             offsetStack(offset2 + 3);
           }
         }
-        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 4 && exe.fetchByte(offset2 + 3) >= (offByte2 + soff) )
+        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (pe.fetchByte(offset2 + 2) & 0x7) === 4 && pe.fetchByte(offset2 + 3) >= (offByte2 + soff) )
         {
           offsetStack(offset2 + 3, 1);
         }
@@ -316,6 +316,6 @@ function IncreaseAtkDisplay()
 function offsetStack(loc, sign)
 {
   if (typeof(sign) === "undefined") sign = -1;
-  var obyte = exe.fetchByte(loc) + sign * 16;
+  var obyte = pe.fetchByte(loc) + sign * 16;
   exe.replace(loc, obyte.packToHex(1), PTYPE_HEX);
 }
