@@ -23,7 +23,7 @@ function IgnoreAccountArgument()
 {
 
     // Step 1a - Find /account:
-    var offset = exe.findString("/account:", RVA);
+    var offset = pe.stringVa("/account:");
     if (offset === -1)
         return "Failed in Step 1 - /account: not found.";
 
