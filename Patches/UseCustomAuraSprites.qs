@@ -7,14 +7,14 @@ function UseCustomAuraSprites()
 {
 
   //Step 1a - Find address of ring_blue.tga
-  var offset = exe.findString("effect\\ring_blue.tga", RVA, false);//false for not prefixing zero.
+  var offset = pe.halfStringVa("effect\\ring_blue.tga");  // false for not prefixing zero.
   if (offset === -1)
     return "Failed in Step 1 - ring_blue.tga not found";
 
   var rblue = " 68" + offset.packToHex(4);//PUSH OFFSET addr; ASCII "effect\ring_blue.tga"
 
   //Step 1b - Find address of pikapika2.bmp
-  offset = exe.findString("effect\\pikapika2.bmp", RVA, false);//false for not prefixing zero.
+  offset = pe.halfStringVa("effect\\pikapika2.bmp");  // false for not prefixing zero.
   if (offset === -1)
     return "Failed in Step 1 - pikapika2.bmp not found";
 
@@ -31,8 +31,8 @@ function UseCustomAuraSprites()
   //Step 1d - Insert the strings into the allocated area
   exe.insert(free, code.length, code.toHex(), PTYPE_HEX);
 
-  var afloat = exe.Raw2Rva(free).packToHex(4);
-  var aring = exe.Raw2Rva(free + strings[0].length + 1).packToHex(4);
+  var afloat = pe.rawToVa(free).packToHex(4);
+  var aring = pe.rawToVa(free + strings[0].length + 1).packToHex(4);
 
   //Step 2a - Find the reference of both where they are used to display the aura
   var code1 =
@@ -81,10 +81,10 @@ function UseCustomAuraSprites()
   //          (addr1 should pikapika2 reference & addr2 should contain ring_blue reference)
   for (var i = 0; i < offsets.length; i++)
   {
-    offset = offsets[i] + 8 +  exe.fetchDWord(offsets[i] + 4);
+    offset = offsets[i] + 8 +  pe.fetchDWord(offsets[i] + 4);
     offsetP = pe.find(ppika2, offset, offset + 0x100);
 
-    offset = offsets[i] + 16 + exe.fetchDWord(offsets[i] + 12);
+    offset = offsets[i] + 16 + pe.fetchDWord(offsets[i] + 12);
     offsetR = pe.find(rblue, offset, offset + 0x120);
 
     if (offsetP !== -1 && offsetR !== -1) break;
