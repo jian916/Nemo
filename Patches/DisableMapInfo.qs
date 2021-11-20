@@ -32,7 +32,7 @@ function DisableMapInfo()
     else
         iiName = "system\\mapInfo_true.lub";
 
-    var offset = exe.findString(iiName, RAW);
+    var offset = pe.stringRaw(iiName);
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -59,7 +59,7 @@ function DisableMapInfo()
     if (offset === -1)
         return "Failed in Step 3 - Pattern not found";
 
-    if (exe.fetchUByte(offset + l1Offset) !== exe.fetchUByte(offset + l2Offset))
+    if (pe.fetchUByte(offset + l1Offset) !== pe.fetchUByte(offset + l2Offset))
     {
         return "Faile in Step 3 - found wrong lua offsets";
     }
@@ -84,5 +84,5 @@ function DisableMapInfo_()
     else
         iiName = "system\\mapInfo_true.lub";
 
-    return (exe.findString(iiName, RAW) !== -1);
+    return (pe.stringRaw(iiName) !== -1);
 }
