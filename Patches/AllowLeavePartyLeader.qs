@@ -45,7 +45,7 @@ function AllowLeavelPartyLeader()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    if (exe.fetchUByte(offset + jzOffset) !== 0x74)
+    if (pe.fetchUByte(offset + jzOffset) !== 0x74)
         return "Failed in step 1 - wrong jz offset";
 
     logRawFunc("FRIEND_INFO_destructor", offset, friendInfoDestructorOffset);
