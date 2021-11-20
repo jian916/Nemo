@@ -22,7 +22,7 @@
 function SkipHiddenMenuButtons()
 {
     consoleLog("search string status_doram");
-    var strHex = exe.findString("status_doram", RVA).packToHex(4);
+    var strHex = pe.stringHex4("status_doram");
 
     consoleLog("search start for do/while block in adding buttons");
     var code =
@@ -142,7 +142,7 @@ function SkipHiddenMenuButtons()
     logFieldAbs("CSession::m_job", offset, jobIdOffset);
     logRawFunc("CSession_isDoramJob", offset, isDoramJobOffset);
 
-    var nonA9JmpAddr = pe.rawToVa(exe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1);
+    var nonA9JmpAddr = pe.rawToVa(pe.fetchByte(offset + nonA9Offset) + offset + nonA9Offset + 1);
     var a9JmpAddr = pe.rawToVa(offset + a9Offset);
     var patchAddr = offset + stoleOffset;
 
@@ -253,11 +253,11 @@ function SkipHiddenMenuButtons()
 
     if (noSwitch)
     {
-        var jmpAdd1 = exe.fetchDWord(offset + jmpOffset1);
+        var jmpAdd1 = pe.fetchDWord(offset + jmpOffset1);
         var continueAddr = pe.rawToVa(offset + jmpOffset1 + 4) + jmpAdd1;
         if (jmpOffset2 !== 0)
         {
-            var jmpAdd2 = exe.fetchDWord(offset + jmpOffset2);
+            var jmpAdd2 = pe.fetchDWord(offset + jmpOffset2);
             var continueAddr2 = pe.rawToVa(offset + jmpOffset2 + 4) + jmpAdd2;
             if (continueAddr !== continueAddr2)
                 return "Failed in Step 3.1 - Found wrong continueAddr";
@@ -266,10 +266,10 @@ function SkipHiddenMenuButtons()
     else
     {
         // get switch jmp address for value 0
-        var addr1 = pe.vaToRaw(exe.fetchDWord(offset + switch1Offset));
-        var addr2 = pe.vaToRaw(exe.fetchDWord(offset + switch2Offset));
-        var offset1 = exe.fetchUByte(addr1);
-        var continueAddr = exe.fetchDWord(addr2 + 4 * offset1);
+        var addr1 = pe.vaToRaw(pe.fetchDWord(offset + switch1Offset));
+        var addr2 = pe.vaToRaw(pe.fetchDWord(offset + switch2Offset));
+        var offset1 = pe.fetchUByte(addr1);
+        var continueAddr = pe.fetchDWord(addr2 + 4 * offset1);
     }
 
     consoleLog("patch code");
@@ -291,5 +291,5 @@ function SkipHiddenMenuButtons()
 
 function SkipHiddenMenuButtons_()
 {
-    return (exe.findString("status_doram", RAW) !== -1);
+    return (pe.stringRaw("status_doram") !== -1);
 }
