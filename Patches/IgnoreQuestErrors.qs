@@ -26,7 +26,7 @@
 function IgnoreQuestErrors()
 {
     consoleLog("Step 1 - Search string 'Not found Quest Info = %lu'");
-    var offset = exe.findString("Not found Quest Info = %lu", RVA);
+    var offset = pe.stringVa("Not found Quest Info = %lu");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
