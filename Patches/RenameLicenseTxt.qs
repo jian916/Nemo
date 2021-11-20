@@ -7,7 +7,7 @@ function RenameLicenseTxt()
 {
 
   //Step 1a - Find address of licence.txt string
-  var offset = exe.findString("..\\licence.txt", RVA);
+  var offset = pe.stringVa("..\\licence.txt");
   if (offset === -1)
     return "Failed in Step 1 - File string missing";
 
@@ -35,7 +35,7 @@ function RenameLicenseTxt()
   exe.replaceDWord(offset + 6, exe.Raw2Rva(free));
 
   //Step 3a - Find the Error string address
-  offset = exe.findString("No EULA text file. (licence.txt)", RVA);
+  offset = pe.stringVa("No EULA text file. (licence.txt)");
   if (offset === -1)
     return "Failed in Step 3 - Error string missing";
 
@@ -52,7 +52,7 @@ function RenameLicenseTxt()
 
   //Step 3e - Update all the Error string references
   var prefixes = [" 6A 20 68", " BE", " BF"];
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   for (var i = 0; i < prefixes.length; i++)
   {
