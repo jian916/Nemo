@@ -6,7 +6,7 @@ function RemoveGravityLogo()
 {
 
   //Step 1a - Find the image
-  var offset = exe.findString("\\T_R%d.tga", RAW, false);
+  var offset = pe.halfStringRaw("\\T_R%d.tga");
   if (offset === -1)
     return "Failed in Step 1";
 
