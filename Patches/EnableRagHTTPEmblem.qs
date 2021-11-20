@@ -49,5 +49,5 @@ function EnableRagHTTPEmblem()
 //Hide patch for unsupported clients
 function EnableRagHTTPEmblem_()
 {
-  return ((exe.findString(".?AVCEmblemDataDownloadAsyncWork@@", RVA, false) | exe.findString("CDClient.dll", RVA, false)) !== -1);
+  return ((pe.halfStringVa(".?AVCEmblemDataDownloadAsyncWork@@") | pe.halfStringVa("CDClient.dll")) !== -1);
 }
