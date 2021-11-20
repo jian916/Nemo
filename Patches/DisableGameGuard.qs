@@ -47,7 +47,7 @@ function DisableGameGuard()
 
   for (var i = 0; i < offsets.length; i++)
   {
-    var offset2 = exe.fetchDWord(offsets[i] + 1) + pe.rawToVa(offsets[i] + 5);
+    var offset2 = pe.fetchDWord(offsets[i] + 1) + pe.rawToVa(offsets[i] + 5);
     if (offset2 === offset)
     {
       exe.replace(offsets[i], code, PTYPE_HEX);
