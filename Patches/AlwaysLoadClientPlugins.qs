@@ -21,7 +21,7 @@
 function AlwaysLoadClientPlugins()
 {
     // Step 1a - Find SOUNDMODE
-    var offset = exe.findString("SOUNDMODE", RVA);
+    var offset = pe.stringVa("SOUNDMODE");
     if (offset === -1)
         return "Failed in Step 1 - SOUNDMODE not found";
 
