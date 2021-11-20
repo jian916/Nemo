@@ -7,7 +7,7 @@ function ShowLicenseScreen()
 {
 
   //Step 1a - Find guildflag90_1 string address
-  var offset = exe.findString("model\\3dmob\\guildflag90_1.gr2", RVA);
+  var offset = pe.stringVa("model\\3dmob\\guildflag90_1.gr2");
   if (offset === -1)
     return "Failed in Step 1 - Guild String missing";
 
