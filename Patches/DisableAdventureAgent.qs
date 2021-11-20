@@ -27,7 +27,7 @@ function DisableAdventureAgent()
 {
     consoleLog("Step 1 - Search string '유저인터페이스\\basic_interface\\mesbtn_partymaster_01.bmp' for adventure agent button");
     var btn_name = "\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\mesbtn_partymaster_01.bmp";
-    var offses = exe.findString(btn_name, RVA);
+    var offses = pe.stringVa(btn_name);
 
     if (offses === -1)
         return "Failed in Step 1 - String not found";
@@ -96,5 +96,5 @@ function DisableAdventureAgent_()
 {
     var btn_name = "\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\mesbtn_partymaster_01.bmp";
 
-    return (exe.findString(btn_name, RAW) !== -1);
+    return (pe.stringRaw(btn_name) !== -1);
 }
