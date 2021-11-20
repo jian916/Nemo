@@ -6,7 +6,7 @@
 function SkipServiceSelect()
 {
     // Step 1 - Find address of "passwordencrypt" (g_hideAccountList is assigned just above it)
-    var offset = exe.findString("passwordencrypt", RVA);
+    var offset = pe.stringVa("passwordencrypt");
 
     if (offset === -1)
         return "Failed in Step 1 - Reference not found";
