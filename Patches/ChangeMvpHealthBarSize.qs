@@ -42,7 +42,7 @@ function ChangeMvpHealthBarSize()
     if (offset1 === -1)
         return "Failed in Step 1";
 
-    var offset2 = exe.findString("??????", RVA, true);
+    var offset2 = pe.stringVa("??????");
     if (offset === -1)
         return "Failed in Step 2a";
 
@@ -75,7 +75,7 @@ function ChangeMvpHealthBarSize()
       + " 8B C8"
       + " EB 06"
       +  oriCode
-      + " 68" + exe.Raw2Rva(retAdd).packToHex(4)
+      + " 68" + pe.rawToVa(retAdd).packToHex(4)
       + " C3"
       ;
 
@@ -84,8 +84,8 @@ function ChangeMvpHealthBarSize()
     if (free === -1)
         return "Failed in Step 3";
 
-    var freeRva = exe.Raw2Rva(free);
-    var offset = freeRva - exe.Raw2Rva(offset1 + 5);
+    var freeRva = pe.rawToVa(free);
+    var offset = freeRva - pe.rawToVa(offset1 + 5);
 
     code = " E9" + offset.packToHex(4) + " 90";
 
