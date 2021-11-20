@@ -34,7 +34,7 @@ function ShowReplayButton()
     if (offset === -1)
         return "Failed in Step 2.6 - Mode comparison missing";
 
-    var jumpfunc = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
+    var jumpfunc = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
     var varCode = exe.fetchHex(result, 14);
     var retAddr = offset + 5;
 
@@ -43,7 +43,7 @@ function ShowReplayButton()
       + " 83 78 04 06"                             //CMP DWORD PTR [EAX+4], 6
       + " 75 0E"                                   //JNE 0E
       + varCode
-      + " 68" + exe.Raw2Rva(retAddr).packToHex(4)  //PUSH retAdd
+      + " 68" + pe.rawToVa(retAddr).packToHex(4)  //PUSH retAdd
       + " C3"                                      //RET
       ;
 
@@ -52,9 +52,9 @@ function ShowReplayButton()
     if (free === -1)
         return "Failed in Step 2.7 - No enough free space";
 
-    ins = ReplaceVarHex(ins, 3, jumpfunc - exe.Raw2Rva(free + 5));
+    ins = ReplaceVarHex(ins, 3, jumpfunc - pe.rawToVa(free + 5));
 
-    code = " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4);
+    code = " E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4);
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
     exe.replace(offset, code, PTYPE_HEX);
@@ -121,7 +121,7 @@ function ShowReplayButton()
 
   //Step 3c - Get the Function address before the setter & the assigner
   // get address of CRagConnection::instanceR
-  var func = exe.Raw2Rva(offset2) + exe.fetchDWord(offset2 - 4);
+  var func = pe.rawToVa(offset2) + pe.fetchDWord(offset2 - 4);
   // get command related to CRagConnection::replayFlag ?
   var assigner = exe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
 
@@ -140,17 +140,17 @@ function ShowReplayButton()
   if (free === -1)
     return "Failed in Step 4 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 4c - Fill in the blanks
   code = ReplaceVarHex(code, 1, func - (freeRva + 6));
-  code = ReplaceVarHex(code, 2, exe.Raw2Rva(offset) - (freeRva + code.hexlength()));
+  code = ReplaceVarHex(code, 2, pe.rawToVa(offset) - (freeRva + code.hexlength()));
 
   //Step 4d - Insert in allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 4e - Create a JMP to our code from ShowMsg
-  exe.replace(offset - 5, "E9" + (freeRva - exe.Raw2Rva(offset)).packToHex(4), PTYPE_HEX);
+  exe.replace(offset - 5, "E9" + (freeRva - pe.rawToVa(offset)).packToHex(4), PTYPE_HEX);
 
   return true;
 }
@@ -163,7 +163,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 {
 
   //Step .0 - Find the Button Image address
-  var offset = exe.findString(btnImg, RVA, false);
+  var offset = pe.halfStringVa(btnImg);
   if (offset === -1)
     return "0 - Button String missing";
 
@@ -232,7 +232,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   {
     case 1:
     {
-      offset2 = exe.fetchByte(jmpAddr + 3);
+      offset2 = pe.fetchByte(jmpAddr + 3);
       code =
         " C7 44 24" + offset2.packToHex(1) + " 04 00 00 00" //MOV DWORD PTR DS:[ESP + x], 4
       + " 89 44 24" + (offset2 + 4).packToHex(1)            //MOV DWORD PTR DS:[ESP + y], EAX
@@ -242,7 +242,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     }
     case 2:
     {
-      offset2 = exe.fetchByte(jmpAddr + 2);
+      offset2 = pe.fetchByte(jmpAddr + 2);
       code =
         " 50"                                            //PUSH EAX ; needed since we lost the y-coord we need to retrieve it from the OK button
       + " 8B 45" + (offset2 - 20).packToHex(1)           //MOV EAX, DWORD PTR DS:[EBP - yOk]
@@ -293,13 +293,13 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
       return "5 - Not enough free space";
 
     //Step .5b - Fill in the blanks
-    code = ReplaceVarHex(code, 1, exe.Raw2Rva(retAddr) - exe.Raw2Rva(free + size));
+    code = ReplaceVarHex(code, 1, pe.rawToVa(retAddr) - pe.rawToVa(free + size));
 
     //Step .5c - Insert the code
     exe.insert(free, size, code, PTYPE_HEX);
 
     //Step .5d - Create a JMP to our code at jmpAddr
-    exe.replace(jmpAddr, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(jmpAddr + 5)).packToHex(4), PTYPE_HEX);
+    exe.replace(jmpAddr, "E9" + (pe.rawToVa(free) - pe.rawToVa(jmpAddr + 5)).packToHex(4), PTYPE_HEX);
   }
 
   return jmpAddr;//We return the address since we need it for the Mode comparison
@@ -310,5 +310,5 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 //=====================================================================//
 function ShowReplayButton_()
 {
-  return (exe.findString("replay_interface\\btn_replay_b", RAW, false) !== -1);
+  return (pe.halfStringRaw("replay_interface\\btn_replay_b") !== -1);
 }
