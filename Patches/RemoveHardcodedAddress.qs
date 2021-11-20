@@ -22,13 +22,13 @@
 function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
 {
     consoleLog("step 1b - replace call to nop");
-    var overrideAddr = offset + overrideAddressOffset + 4 + exe.fetchDWord(offset + overrideAddressOffset);  // rva to va
+    var overrideAddr = offset + overrideAddressOffset + 4 + pe.fetchDWord(offset + overrideAddressOffset);  // rva to va
 
     consoleLog("step 2a - find string 127.0.0.1");
     var offset = pe.find("31 32 37 2E 30 2E 30 2E 31 00");
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
-    offset = exe.Raw2Rva(offset);
+    offset = pe.rawToVa(offset);
 
     consoleLog("step 2b - find otp_addr");
     var code = " " +
@@ -37,7 +37,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     var otpAddr = pe.find(code);
     if (otpAddr === -1)
         return "Failed in step 2b (old)";
-    otpAddr = exe.Raw2Rva(otpAddr);
+    otpAddr = pe.rawToVa(otpAddr);
     var otpPort = otpAddr + 4
     var clientinfo_addr = otpPort + 4
     var clientinfo_port = clientinfo_addr + 4
@@ -93,7 +93,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var offset = pe.find("31 32 37 2E 30 2E 30 2E 31 00");
     if (offset === -1)
         return "Failed in search 127.0.0.1 (old)";
-    offset = exe.Raw2Rva(offset);
+    offset = pe.rawToVa(offset);
 
     consoleLog("step 2b - find loop addr");
     var code = " " +
@@ -102,7 +102,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     var otpAddr = pe.find(code);
     if (otpAddr === -1)
         return "Failed in step 2b (new)";
-    otpAddr = exe.Raw2Rva(otpAddr);
+    otpAddr = pe.rawToVa(otpAddr);
     var otpPort = otpAddr + 4
     var clientinfo_addr = otpPort + 4
     var clientinfo_port = clientinfo_addr + 4
@@ -162,13 +162,13 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, clientinfo_port)
 {
     consoleLog("search kro-agency.ragnarok.co.kr");
-    var offset = exe.findString("kro-agency.ragnarok.co.kr", RVA);
+    var offset = pe.stringVa("kro-agency.ragnarok.co.kr");
     if (offset === -1)
         return "kro-agency.ragnarok.co.kr not found";
     var hostHex = offset.packToHex(4);
 
     consoleLog("search %s:%d");
-    offset = exe.findString("%s:%d", RVA);
+    offset = pe.stringVa("%s:%d");
     if (offset === -1)
         return "string '%s:%d' not found";
     var sdHex = offset.packToHex(4);
@@ -192,8 +192,8 @@ function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, cli
 
     logVaVar("g_auth_host_port", offset, authHostOffset);
 
-    var authHostVa = exe.fetchDWord(offset + authHostOffset);
-    var snprintfVa = offset + snprintfOffset + 4 + exe.fetchDWord(offset + snprintfOffset);
+    var authHostVa = pe.fetchDWord(offset + authHostOffset);
+    var snprintfVa = offset + snprintfOffset + 4 + pe.fetchDWord(offset + snprintfOffset);
 
     consoleLog("create format string %s:%s");
 
@@ -201,7 +201,7 @@ function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, cli
     if (free === -1)
         return "Not enough free space";
     exe.insert(free, 6, "%s:%s", PTYPE_STRING);
-    var formatVaHex = exe.Raw2Rva(free).packToHex(4);
+    var formatVaHex = pe.rawToVa(free).packToHex(4);
 
     consoleLog("create code for build new connection string");
 
@@ -250,7 +250,7 @@ function RemoveHardcodedAddress()
     var offset = pe.find("36 39 30 30 00");
     if (offset === -1)
         return "Failed in search '6900' (new)";
-    var portStrHex = exe.Raw2Rva(offset).packToHex(4);
+    var portStrHex = pe.rawToVa(offset).packToHex(4);
 
     consoleLog("search override address");
 
@@ -271,7 +271,7 @@ function RemoveHardcodedAddress()
 
     logVaVar("g_cmd_have_account", offset, cmdHaveAccountOffset);
 
-    var retAddr = offset + retAddrOffset + 4 + exe.fetchDWord(offset + retAddrOffset);  // rva to va
+    var retAddr = offset + retAddrOffset + 4 + pe.fetchDWord(offset + retAddrOffset);  // rva to va
 
     return RemoveHardcodedAddressNew(offset + overrideAddressOffset, retAddr);
 }
