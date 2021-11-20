@@ -20,7 +20,7 @@ function DisableKROSiteLaunch()
 
     for (var i = 0; i < urls.length; i ++)
     {
-        var offset = exe.findString(urls[i], RAW);
+        var offset = pe.stringRaw(urls[i]);
         if (offset !== -1)
         {
             exe.replace(offset, "00", PTYPE_HEX);
