@@ -6,7 +6,7 @@
 function ReadDataFolderFirst()
 {
     //Step 1a - Find address of "loading" (g_readFolderFirst is assigned just above it)
-    var offset = exe.findString("loading", RVA);
+    var offset = pe.stringVa("loading");
     if (offset === -1)
         return "Failed in Step 1 - loading not found";
 
@@ -64,7 +64,7 @@ function ReadDataFolderFirst()
     //===================================================================//
 
     //Step 2a - Extract g_readFolderFirst
-    var gReadFolderFirst = exe.fetchDWord(offset2 + gloc);
+    var gReadFolderFirst = pe.fetchDWord(offset2 + gloc);
 
     //Step 2b - Look for Comparison Pattern 1 - VC9+ Clients
     var offsets = pe.findCodes(" 80 3D" + gReadFolderFirst.packToHex(4) + " 00"); //CMP DWORD PTR DS:[g_readFolderFirst], 0
