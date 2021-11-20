@@ -26,7 +26,7 @@
 function IgnoreSignBoardReading()
 {
     consoleLog("Step 1 - Search string 'Lua Files\\SignBoardList_F'");
-    var offset = exe.findString("Lua Files\\SignBoardList_F", RVA);
+    var offset = pe.stringVa("Lua Files\\SignBoardList_F");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -34,7 +34,7 @@ function IgnoreSignBoardReading()
     var strHex = offset.packToHex(4);
 
     consoleLog("Step 2 - Search string 'Lua Files\\SignBoardList'");
-    offset = exe.findString("Lua Files\\SignBoardList", RVA);
+    offset = pe.stringVa("Lua Files\\SignBoardList");
 
     if (offset === -1)
         return "Failed in Step 2 - String not found";
@@ -88,5 +88,5 @@ function IgnoreSignBoardReading()
 //=======================================================//
 function IgnoreSignBoardReading_()
 {
-    return (exe.findString("Lua Files\\SignBoardList_F", RVA) !== -1);
+    return (pe.stringVa("Lua Files\\SignBoardList_F") !== -1);
 }
