@@ -24,12 +24,12 @@ function LoadCustomClientInfo()
 {
     //Step 1a - Check if the client is Sakray (clientinfo file name is "sclientinfo.xml" for some Sakray clients)
     var ciName = "sclientinfo.xml";
-    var offset = exe.findString(ciName, RVA);
+    var offset = pe.stringVa(ciName);
 
     if (offset === -1)
     { // if sclientinfo.xml does not exist then it is a main server exe
         ciName = "clientinfo.xml";
-        offset = exe.findString(ciName, RVA);
+        offset = pe.stringVa(ciName);
     }
     if (offset === -1)
         return "Failed in Step 1a - (s)clientinfo file name not found";
@@ -84,20 +84,20 @@ function LoadCustomClientInfo()
     exe.insert(free, myfile.length, "$newclientinfo", PTYPE_STRING);
     if (xmmPTR)
     {
-        exe.replace(offset1+3, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+        exe.replace(offset1+3, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
     }
     else
     {
-        exe.replace(offset1+4, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+        exe.replace(offset1+4, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
         if (ciName == "sclientinfo.xml")
         {
-            exe.replace(offset2+4, exe.Raw2Rva(free+8).packToHex(4), PTYPE_HEX);
+            exe.replace(offset2+4, pe.rawToVa(free+8).packToHex(4), PTYPE_HEX);
         }
         else
         {
-            exe.replace(offset2+1, exe.Raw2Rva(free+8).packToHex(4), PTYPE_HEX);
-            exe.replace(offset3+2, exe.Raw2Rva(free+0xC).packToHex(4), PTYPE_HEX);
-            exe.replace(offset4+1, exe.Raw2Rva(free+0xE).packToHex(4), PTYPE_HEX);
+            exe.replace(offset2+1, pe.rawToVa(free+8).packToHex(4), PTYPE_HEX);
+            exe.replace(offset3+2, pe.rawToVa(free+0xC).packToHex(4), PTYPE_HEX);
+            exe.replace(offset4+1, pe.rawToVa(free+0xE).packToHex(4), PTYPE_HEX);
         }
     }
     return true;
@@ -108,5 +108,5 @@ function LoadCustomClientInfo()
 //=================================//
 function LoadCustomClientInfo_()
 {
-    return (exe.findString("sclientinfo.xml", RAW) !== -1 || exe.findString("clientinfo.xml", RAW) !== -1);
+    return (pe.stringRaw("sclientinfo.xml") !== -1 || pe.stringRaw("clientinfo.xml") !== -1);
 }
