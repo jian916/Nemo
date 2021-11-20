@@ -26,7 +26,7 @@
 function DisableCameraLock()
 {
     consoleLog("Step 1 - Search string 'ViewPointTable.txt'");
-    var offset = exe.findString("ViewPointTable.txt", RAW);
+    var offset = pe.stringRaw("ViewPointTable.txt");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -42,5 +42,5 @@ function DisableCameraLock()
 //=======================================================//
 function DisableCameraLock_()
 {
-    return (exe.findString("ViewPointTable.txt", RAW) !== -1);
+    return (pe.stringRaw("ViewPointTable.txt") !== -1);
 }
