@@ -93,7 +93,7 @@ function DisableCDGuard()
         exe.replace(offset + cmpOffset, "00 ", PTYPE_HEX);
     }
 
-    var CCheatDefenderMgr = (exe.fetchDWord(offsets[0] + cheatDefenderMgrOffsets[0])).packToHex(4)
+    var CCheatDefenderMgr = (pe.fetchDWord(offsets[0] + cheatDefenderMgrOffsets[0])).packToHex(4)
 
     consoleLog("Step 2a - Search separate 'g_CCheatDefenderMgr->enc_enabled = 1'");
     var code =
@@ -118,5 +118,5 @@ function DisableCDGuard()
 //=======================================================//
 function DisableCDGuard_()
 {
-    return (exe.findString("CDClient.dll", RAW) !== -1);
+    return (pe.stringRaw("CDClient.dll") !== -1);
 }
