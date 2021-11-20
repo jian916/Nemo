@@ -26,7 +26,7 @@
 function IgnoreEntryQueueErrors()
 {
     consoleLog("Step 1 - Search string 'Data\\Table\\EntryQueue.bex'");
-    var offset = exe.findString("Data\\Table\\EntryQueue.bex", RVA);
+    var offset = pe.stringVa("Data\\Table\\EntryQueue.bex");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -93,5 +93,5 @@ function IgnoreEntryQueueErrors()
 //=======================================================//
 function IgnoreEntryQueueErrors_()
 {
-    return (exe.findString("Load Failed", RAW) !== -1);
+    return (pe.stringRaw("Load Failed") !== -1);
 }
