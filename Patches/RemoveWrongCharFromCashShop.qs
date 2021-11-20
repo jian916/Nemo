@@ -21,7 +21,7 @@
 
 function RemoveWrongCharFromCashShop()
 {
-    var offset = exe.findString("%d C", RVA);
+    var offset = pe.stringVa("%d C");
     if (offset === -1)
         return "Failed in Step 1 - format string not found";
     var strHex = offset.packToHex(4)
@@ -57,5 +57,5 @@ function RemoveWrongCharFromCashShop()
 
 function RemoveWrongCharFromCashShop_()
 {
-    return (exe.findString(".?AVUICashShopWnd@@", RAW) !== -1);
+    return (pe.stringRaw(".?AVUICashShopWnd@@") !== -1);
 }
