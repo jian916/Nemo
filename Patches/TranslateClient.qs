@@ -17,7 +17,7 @@ function TranslateClient()
     var fStr0 = "";
     var rStr = "";
 
-    // Step 2 - Loop through the text file, get the respective strings & do findString + replace
+    // Step 2 - Loop through the text file, get the respective strings & do find string + replace
     var found = false;
     while (!f.eof())
     {
@@ -40,7 +40,7 @@ function TranslateClient()
         }
         else if (str.charAt(0) === "R")
         {   // R: = Replace string. At this point we have both location and string to replace with
-            offset = exe.findString(fStr, RAW);
+            offset = pe.stringRaw(fStr);
             if (offset === -1)
             {
                 failmsgs.push(msg);  // No Match = Collect Failure message
