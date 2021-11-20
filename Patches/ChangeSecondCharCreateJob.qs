@@ -130,12 +130,12 @@ function ChangeSecondCharCreateJob()
     consoleLog("Search for hair images limit");
 
     // 유저인터페이스\make_character_ver2\img_hairStyle_doramGirl%02d.bmp
-    offset = exe.findString(
+    offset = pe.stringVa(
         "\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\x5C\x6D" +
         "\x61\x6B\x65\x5F\x63\x68\x61\x72\x61\x63\x74\x65\x72\x5F\x76\x65" +
         "\x72\x32\x5C\x69\x6D\x67\x5F\x68\x61\x69\x72\x53\x74\x79\x6C\x65" +
         "\x5F\x64\x6F\x72\x61\x6D\x47\x69\x72\x6C\x25\x30\x32\x64\x2E\x62" +
-        "\x6D\x70", RVA);
+        "\x6D\x70");
     if (offset === -1)
         return "doram girl string not found";
     var girlHex = offset.packToHex(4)
