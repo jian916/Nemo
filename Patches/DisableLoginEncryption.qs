@@ -19,12 +19,12 @@ function DisableLoginEncryption()
     return "Failed in Step 1 - Encryptor call missing";
 
   //Step 2a - Extract the register PUSHed - Arg.1 which contains the Original Password
-  var regPush = exe.fetchByte(offset - 1) - 0x50;
+  var regPush = pe.fetchByte(offset - 1) - 0x50;
 
   //Step 2b - Change the LEA to LEA reg32_B, [reg32_A]
   offset += code.hexlength();
   code =
-    ((exe.fetchUByte(offset) & 0x38) | regPush).packToHex(1) //LEA reg32_B, [reg32_A]
+    ((pe.fetchUByte(offset) & 0x38) | regPush).packToHex(1) //LEA reg32_B, [reg32_A]
   + " 90 90 90 90" //NOPs
   ;
 
