@@ -21,11 +21,11 @@
 function ChangeMerchantStoreUrl()
 {
   //Step 1 - Find url strings
-    var url1 = exe.findString("http://112.175.128.140:3000/MerchantStore/save", RVA, false);
+    var url1 = pe.halfStringVa("http://112.175.128.140:3000/MerchantStore/save");
     if (url1 === -1)
         return "Failed in Step 1a - String missing";
 
-    var url2 = exe.findString("http://112.175.128.140:3000/MerchantStore/load", RVA, false);
+    var url2 = pe.halfStringVa("http://112.175.128.140:3000/MerchantStore/load");
     if (url2 === -1)
         return "Failed in Step 1b - String missing";
 
@@ -78,7 +78,7 @@ function ChangeMerchantStoreUrl()
     if (free === -1)
         return "Failed in Step 3 - Not enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 4 - Insert and replace everything
     exe.insert(free, size, ins, PTYPE_HEX);
@@ -107,5 +107,5 @@ function ChangeMerchantStoreUrl()
 //Hide patch for unsupported clients
 function ChangeMerchantStoreUrl_()
 {
-    return (exe.findString(":3000/MerchantStore/load", RAW, false) !== -1);
+    return (pe.halfStringRaw(":3000/MerchantStore/load") !== -1);
 }
