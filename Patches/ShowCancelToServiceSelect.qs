@@ -6,7 +6,7 @@
 function ShowCancelToServiceSelect()
 {
   //Step 1a - Find address of "btn_intro_b"
-  var offset = exe.findString("btn_intro_b", RVA);
+  var offset = pe.stringVa("btn_intro_b");
   if (offset === -1)
     return "Failed in Step 1 - btn_intro_b missing";
 
