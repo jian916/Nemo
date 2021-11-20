@@ -60,10 +60,10 @@ function IncreaseScreenshotQuality()
   else
     var offset2 = offset + 3;
 
-  if ((exe.fetchUByte(offset + 1) & 0x80) !== 0)//Whether the stack offset is 4 byte or 1 byte
-    offset2 = exe.fetchDWord(offset2) + 60;
+  if ((pe.fetchUByte(offset + 1) & 0x80) !== 0)//Whether the stack offset is 4 byte or 1 byte
+    offset2 = pe.fetchDWord(offset2) + 60;
   else
-    offset2 = exe.fetchByte(offset2) + 60;
+    offset2 = pe.fetchByte(offset2) + 60;
 
   //Step 2c - Prep code to change DIBChannels member assignment to jquality member assignment.
   //          By default DIBChannels is 3 and DIBColor is 2 already, so overwriting their assignments doesnt matter
