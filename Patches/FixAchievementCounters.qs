@@ -22,7 +22,7 @@
 function FixAchievementCounters()
 {
     // step 1
-    var countersStr = exe.findString("%d/%d", RVA);
+    var countersStr = pe.stringVa("%d/%d");
 
     if (countersStr === -1)
         return "Failed in Step 1 - '%d/%d' string missing";
@@ -107,9 +107,9 @@ function FixAchievementCounters()
         if (offset === -1)
             return "Failed in step 4: pattern not found, offset " + i;
         msgOffsets[i] = offset;
-        msgIds[i] = exe.fetchDWord(msgOffsets[i] + msgOffset);
-        type1Offsets[i] = exe.fetchUByte(offsets[i] + type1Offset);
-        type2Offsets[i] = exe.fetchUByte(offsets[i] + type2Offset);
+        msgIds[i] = pe.fetchDWord(msgOffsets[i] + msgOffset);
+        type1Offsets[i] = pe.fetchUByte(offsets[i] + type1Offset);
+        type2Offsets[i] = pe.fetchUByte(offsets[i] + type2Offset);
     }
 
     // step 5
