@@ -25,9 +25,9 @@ function MoveShieldToTopPatch(floatAddr, offset, offset2, patchAddrOffset, conti
     var oowUpOffset = 0x14;
     var stolenCodeSize = 7;
     var patchAddr = offset + patchAddrOffset;
-    var continueAddr = exe.Raw2Rva(offset) + continueOffset;
+    var continueAddr = pe.rawToVa(offset) + continueOffset;
     var stolenCode = exe.fetchHex(offset + patchAddrOffset, stolenCodeSize);
-    var cntHex = exe.fetchDWord(offset2 + cntOffset).packToHex(4);
+    var cntHex = pe.fetchDWord(offset2 + cntOffset).packToHex(4);
 
     // step 4 - insert code for adjust oow/oowup
     var code =
@@ -67,7 +67,7 @@ function MoveShieldToTop()
 //        floatToHex(0.0005);
         floatToHex(0.001);
     exe.insert(floatAddr, 4, code, PTYPE_HEX);
-    floatAddr = exe.Raw2Rva(floatAddr);
+    floatAddr = pe.rawToVa(floatAddr);
 
     // step 2 - search block for patching in CPc_RenderBodyLayer
     var code =
@@ -174,16 +174,16 @@ function MoveShieldToTop()
 
     var offset = offsets[0]
 
-    var spr1 = exe.fetchDWord(offset + sprOffset1);
-    var spr2 = exe.fetchDWord(offset + sprOffset2);
+    var spr1 = pe.fetchDWord(offset + sprOffset1);
+    var spr2 = pe.fetchDWord(offset + sprOffset2);
     if (spr1 != spr2)
         return "Failed in Step 2 - found different spr offsets";
-    var a1 = exe.fetchUByte(offset + aOffset1);
-    var a2 = exe.fetchUByte(offset + aOffset2);
+    var a1 = pe.fetchUByte(offset + aOffset1);
+    var a2 = pe.fetchUByte(offset + aOffset2);
     if (a1 != a2)
         return "Failed in Step 2 - found different a offsets";
-    var b1 = exe.fetchUByte(offset + bOffset1);
-    var b2 = exe.fetchUByte(offset + bOffset2);
+    var b1 = pe.fetchUByte(offset + bOffset1);
+    var b2 = pe.fetchUByte(offset + bOffset2);
     if (b1 != b2)
         return "Failed in Step 2 - found different b offsets";
 
