@@ -65,7 +65,7 @@ function DisableMultipleWindows()
 
     consoleLog("Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,");
     consoleLog("Replace the statement with MOV EAX, 00FFFFFF");
-    if (exe.fetchUByte(offset + code.hexlength()) === 0xA1)
+    if (pe.fetchUByte(offset + code.hexlength()) === 0xA1)
     {
         exe.replace(offset + code.hexlength(), " B8 FF FF FF 00");
         return true;
@@ -79,7 +79,7 @@ function DisableMultipleWindows()
     consoleLog("Step 2a - Extract the ResetTimer function address (called before CoInitialize)");
     if (stolenCodeOffset === 0)
     {
-        var resetTimer = exe.fetchDWord(offset-4+5) + exe.Raw2Rva(offset+5);
+        var resetTimer = pe.fetchDWord(offset-4+5) + pe.rawToVa(offset+5);
         code = " E8" + GenVarHex(0)          //CALL ResetTimer
     }
     else
@@ -131,15 +131,15 @@ function DisableMultipleWindows()
         return "Failed in Step 2 - Not enough free space";
 
     consoleLog("Step 2d - Replace the resetTimer call with our code");
-    exe.replace(offset, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4), PTYPE_HEX);
+    exe.replace(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4), PTYPE_HEX);
 
     consoleLog("Step 2e - Fill in the blanks");
-    code = ReplaceVarHex(code, 0, resetTimer - exe.Raw2Rva(free + 5));
-    code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset + continueOffset));
+    code = ReplaceVarHex(code, 0, resetTimer - pe.rawToVa(free + 5));
+    code = ReplaceVarHex(code, 8, pe.rawToVa(offset + continueOffset));
 
     code = ReplaceVarHex(code, 4, imports.ptrValidated("WaitForSingleObject", "KERNEL32.dll"));
 
-    offset = exe.Raw2Rva(free + csize - 9);
+    offset = pe.rawToVa(free + csize - 9);
     code = ReplaceVarHex(code, 1, offset);
     code = ReplaceVarHex(code, 5, offset);
 
