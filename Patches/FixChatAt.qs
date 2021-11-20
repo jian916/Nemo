@@ -42,7 +42,7 @@ function FixChatAt()
       return "Failed in Step 2 - Function call missing";
 
     //Step 2b - Extract the called address (RVA).
-    var func = pe.rawToVa(offset + 7) + exe.fetchDWord(offset + 3);
+    var func = pe.rawToVa(offset + 7) + pe.fetchDWord(offset + 3);
 
     //Step 3a - Construct our function.
     code =
