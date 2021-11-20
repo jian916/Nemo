@@ -26,7 +26,7 @@
 function IgnoreTownInfoReading()
 {
     consoleLog("Step 1a - Search string 'TownInfo file Init'");
-    var offset = exe.findString("TownInfo file Init", RVA);
+    var offset = pe.stringVa("TownInfo file Init");
 
     if (offset === -1)
         return "Failed in Step 1a - String not found";
@@ -139,5 +139,5 @@ function IgnoreTownInfoReading()
 //=======================================================//
 function IgnoreTownInfoReading_()
 {
-    return (exe.findString("System/Towninfo.lub", RVA) !== -1);
+    return (pe.stringVa("System/Towninfo.lub") !== -1);
 }
