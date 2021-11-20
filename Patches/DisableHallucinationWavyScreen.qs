@@ -24,7 +24,7 @@ function DisableHallucinationWavyScreen()
   for (var i = 0; i < offsets.length; i++)
   {
     offset = pe.find(code, offsets[i] - 8, offsets[i]);
-    if (offset !== -1 && (exe.fetchUByte(offset + 1) & 0xC7) === 0x5) break;
+    if (offset !== -1 && (pe.fetchUByte(offset + 1) & 0xC7) === 0x5) break;
     offset = -1;
   }
 
