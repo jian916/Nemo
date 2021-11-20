@@ -21,15 +21,15 @@
 function HideBuildInfo()
 {
     consoleLog("search strings");
-    var buildStr = exe.findString("build : %s - %s", RVA);
+    var buildStr = pe.stringVa("build : %s - %s");
     if (buildStr === -1)
         return "Failed in search 'build : %s - %s'";
 
-    var verStr = exe.findString("ver : %d.%d.%d", RVA);
+    var verStr = pe.stringVa("ver : %d.%d.%d");
     if (verStr === -1)
         return "Failed in search 'ver : %d.%d.%d'";
 
-    var snStr = exe.findString("s/n : %s", RVA);
+    var snStr = pe.stringVa("s/n : %s");
     if (snStr === -1)
         return "Failed in search 's/n : %s'";
 
@@ -45,8 +45,8 @@ function HideBuildInfo()
     if (offset === -1)
         return "Failed in search build string usage";
 
-    var timeAddr = exe.Rva2Raw(exe.fetchDWord(offset + timeOffset));
-    var dateAddr = exe.Rva2Raw(exe.fetchDWord(offset + dateOffset));
+    var timeAddr = pe.vaToRaw(pe.fetchDWord(offset + timeOffset));
+    var dateAddr = pe.vaToRaw(pe.fetchDWord(offset + dateOffset));
     consoleLog("Erase timeAddr");
     eraseString(timeAddr, 0);
     consoleLog("Erase dateAddr");
@@ -80,7 +80,7 @@ function HideBuildInfo()
     var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in search sn string usage";
-    var snAddr = exe.Rva2Raw(exe.fetchDWord(offset + snOffset));
+    var snAddr = pe.vaToRaw(pe.fetchDWord(offset + snOffset));
     consoleLog("Erase snAddr");
     eraseString(snAddr, 0);
 
@@ -112,7 +112,7 @@ function HideBuildInfo()
         }
     }
 
-    var peHeader = exe.fetchDWord(0x3c);
+    var peHeader = pe.fetchDWord(0x3c);
     var optHeader = peHeader + 4 + 0x14;
     consoleLog("erase PE time stamp");
     exe.replaceDWord(peHeader + 8, 0);
