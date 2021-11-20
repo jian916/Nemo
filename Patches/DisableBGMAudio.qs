@@ -26,7 +26,7 @@
 function DisableBGMAudio()
 {
     consoleLog("Step 1 - Search string 'mp3NameTable.txt'");
-    var offset = exe.findString("mp3NameTable.txt", RAW);
+    var offset = pe.stringRaw("mp3NameTable.txt");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -35,7 +35,7 @@ function DisableBGMAudio()
     exe.replace(offset, "00 ", PTYPE_HEX);
 
     consoleLog("Step 3 - Search string 'bgm\\01.mp3'");
-    var offset = exe.findString("bgm\\01.mp3", RAW);
+    var offset = pe.stringRaw("bgm\\01.mp3");
 
     if (offset === -1)
         return "Failed in Step 3 - String not found";
@@ -51,5 +51,5 @@ function DisableBGMAudio()
 //=======================================================//
 function DisableBGMAudio_()
 {
-    return (exe.findString("mp3NameTable.txt", RAW) !== -1);
+    return (pe.stringRaw("mp3NameTable.txt") !== -1);
 }
