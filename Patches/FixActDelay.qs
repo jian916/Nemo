@@ -42,9 +42,9 @@ function FixActDelay()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var index1 = exe.fetchUByte(offset + actIndexOffset1);
-    var index2 = exe.fetchUByte(offset + actIndexOffset2);
-    var index3 = exe.fetchUByte(offset + actIndexOffset3);
+    var index1 = pe.fetchUByte(offset + actIndexOffset1);
+    var index2 = pe.fetchUByte(offset + actIndexOffset2);
+    var index3 = pe.fetchUByte(offset + actIndexOffset3);
 
     if (index1 != index2 || index2 != index3)
     {
