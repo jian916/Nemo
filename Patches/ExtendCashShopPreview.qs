@@ -71,7 +71,7 @@ function ExtendCashShopPreview()
         return "Error: second pattern not found";
     }
 
-    var blockSize = exe.fetchValue(offset2, blockSizeOffset);
+    var blockSize = pe.fetchValue(offset2, blockSizeOffset);
 
     if (flag == 0)
     {
@@ -85,7 +85,7 @@ function ExtendCashShopPreview()
         {
             return "Error: third pattern not found";
         }
-        var next = exe.fetchValue(offset3, nextOffset);
+        var next = pe.fetchValue(offset3, nextOffset);
     }
     else
     {
@@ -102,7 +102,7 @@ function ExtendCashShopPreview()
         var name = "0";
     var vars = {
         "continueItemAddr": pe.rawToVa(offset1 + stolenCodeSize),
-        "itemInfo": exe.fetchValue(offset1, itemInfoOffset),
+        "itemInfo": pe.fetchValue(offset1, itemInfoOffset),
         "next": next,
         "block_size": blockSize,
         "register": register,
@@ -130,5 +130,5 @@ function ExtendCashShopPreview_cancel()
 
 function ExtendCashShopPreview_()
 {
-    return (exe.findString(".?AVUIPreviewEquipWnd@@", RAW) !== -1);
+    return (pe.stringRaw(".?AVUIPreviewEquipWnd@@") !== -1);
 }
