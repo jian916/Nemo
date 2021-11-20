@@ -112,7 +112,7 @@ function GetServerType()
   logVaVar("g_serverType", offset, 2);
 
   //Step 2b - Extract and return
-  return exe.fetchDWord(offset + 2);
+  return pe.fetchDWord(offset + 2);
 
 }
 
@@ -147,7 +147,7 @@ function GetWinMgrInfo(skipError)
 
     return {
         "gWinMgr": exe.fetchHex(offset, 5),
-        "makeWin": exe.fetchDWord(offset + 6) + exe.Raw2Rva(offset) + 10
+        "makeWin": pe.fetchDWord(offset + 6) + pe.rawToVa(offset) + 10
     };
 }
 
@@ -159,7 +159,7 @@ function GetWinMgrInfo(skipError)
 function HasFramePointer()
 {
     //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
-    return (exe.fetch(exe.getROffset(CODE), 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
+    return (exe.fetch(pe.sectionRaw(CODE)[0], 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
 }
 
 //#################################################################################################
@@ -261,8 +261,8 @@ function FetchPacketKeyInfo()
     retVal.refMov = exe.fetchHex(offset2, 6);
 
     offset2 += code.hexlength();
-    retVal.funcAddr = exe.Raw2Rva(offset2 + 4) + exe.fetchDWord(offset2);
-    retVal.keys = [exe.fetchDWord(offset2 - 5), exe.fetchDWord(offset2 - 10), exe.fetchDWord(offset2 - 15)];
+    retVal.funcAddr = pe.rawToVa(offset2 + 4) + pe.fetchDWord(offset2);
+    retVal.keys = [pe.fetchDWord(offset2 - 5), pe.fetchDWord(offset2 - 10), pe.fetchDWord(offset2 - 15)];
 
     //Step 2c - Return the hash array
     return retVal;
@@ -293,9 +293,9 @@ function FetchPacketKeyInfo()
   retVal.refMov = exe.fetchHex(offset2, 6);
 
   offset2 += code.hexlength();
-  offset = offset2 + 4 + exe.fetchDWord(offset2);
+  offset = offset2 + 4 + pe.fetchDWord(offset2);
 
-  retVal.funcAddr = exe.Raw2Rva(offset);
+  retVal.funcAddr = pe.rawToVa(offset);
 
   //Step 3c - Go Inside and look for Base Key assignment (No Shared Key format)
   var prefix =
@@ -317,9 +317,9 @@ function FetchPacketKeyInfo()
     retVal.type = 1;
     offset2 += prefix.hexlength();
 
-    retVal.keys[exe.fetchByte(offset2 + 2)/4]  = exe.fetchDWord(offset2 + 3);
-    retVal.keys[exe.fetchByte(offset2 + 9)/4]  = exe.fetchDWord(offset2 + 10);
-    retVal.keys[exe.fetchByte(offset2 + 16)/4] = exe.fetchDWord(offset2 + 17);
+    retVal.keys[pe.fetchByte(offset2 + 2)/4]  = pe.fetchDWord(offset2 + 3);
+    retVal.keys[pe.fetchByte(offset2 + 9)/4]  = pe.fetchDWord(offset2 + 10);
+    retVal.keys[pe.fetchByte(offset2 + 16)/4] = pe.fetchDWord(offset2 + 17);
     retVal.keys.shift();//Shift all elements left
 
     retVal.ovrAddr = offset2;//Offset where the assignment occurs
@@ -345,9 +345,9 @@ function FetchPacketKeyInfo()
     retVal.type = 1;
     offset2 += prefix.hexlength();
 
-    retVal.keys[exe.fetchByte(offset2 + 7)/4]   = exe.fetchDWord(offset2 + 1);
-    retVal.keys[exe.fetchByte(offset2 + 10)/4]  = exe.fetchDWord(offset2 + 1);
-    retVal.keys[exe.fetchByte(offset2 + 13)/4]  = exe.fetchDWord(offset2 + 14);
+    retVal.keys[pe.fetchByte(offset2 + 7)/4]   = pe.fetchDWord(offset2 + 1);
+    retVal.keys[pe.fetchByte(offset2 + 10)/4]  = pe.fetchDWord(offset2 + 1);
+    retVal.keys[pe.fetchByte(offset2 + 13)/4]  = pe.fetchDWord(offset2 + 14);
     retVal.keys.shift();//Shift all elements left
 
     retVal.ovrAddr = offset2;//Offset where the assignment occurs
@@ -382,7 +382,7 @@ function FetchPacketKeyInfo()
     //Step 5c - Assign the values to hash array
     retVal.type = 2;
     retVal.keys = [parseInt(keys[0], 16), parseInt(keys[1], 16), parseInt(keys[2], 16)];
-    retVal.ovrAddr = exe.Rva2Raw(retVal.funcAddr);
+    retVal.ovrAddr = pe.vaToRaw(retVal.funcAddr);
 
     if (HasFramePointer())//Account for PUSH EBP and MOV EBP, ESP
       retVal.ovrAddr += 3;
@@ -436,8 +436,8 @@ function ResourceDir(rsrcAddr, addrOffset, id)
 
   for (var i = 0; i < this.numEntries; i++)
   {
-    id = exe.fetchDWord(this.addr + 16 + i*8);
-    addrOffset = exe.fetchDWord(this.addr + 16 + i*8 + 4);
+    id = pe.fetchDWord(this.addr + 16 + i*8);
+    addrOffset = pe.fetchDWord(this.addr + 16 + i*8 + 4);
 
     if (addrOffset < 0)
       this.entries.push( new ResourceDir(rsrcAddr, addrOffset & 0x7FFFFFFF, id));
@@ -455,8 +455,8 @@ function ResourceFile(rsrcAddr, addrOffset, id)
 {
   this.id = id;
   this.addr = rsrcAddr + addrOffset;
-  this.dataAddr = exe.Rva2Raw(exe.fetchDWord(this.addr) + exe.getImageBase());
-  this.dataSize = exe.fetchDWord(this.addr + 4);
+  this.dataAddr = pe.vaToRaw(pe.fetchDWord(this.addr) + exe.getImageBase());
+  this.dataSize = pe.fetchDWord(this.addr + 4);
 }
 
 //####################################################################################
@@ -493,8 +493,8 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
         throw "FetchTillEnd: Negative offset found";
 
     //Step 1a - Get Opcode and possible Mod R/M byte
-    var opcode = exe.fetchUByte(offset);
-    var modrm  = exe.fetchUByte(offset + 1);
+    var opcode = pe.fetchUByte(offset);
+    var modrm  = pe.fetchUByte(offset + 1);
 
     //Step 1b - Get the instruction details
     var details = GetOpDetails(opcode, modrm, offset);//contains length of instruction, distance to next offset, optional destination operand, optional source operand. Usually index 0 and 1 are same
@@ -607,10 +607,10 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
         //CALL assigner
         var offset2 = details.nextOff + 7;
 
-        if (exe.fetchUByte(details.nextOff + 2) === 0xC7)
+        if (pe.fetchUByte(details.nextOff + 2) === 0xC7)
           offset2 += 6;
 
-        skip = (exe.fetchUByte(offset2 - 5) === 0xE8 && exe.fetchDWord(offset2 - 4) === (assigner - offset2));
+        skip = (pe.fetchUByte(offset2 - 5) === 0xE8 && pe.fetchDWord(offset2 - 4) === (assigner - offset2));
         if (skip)
         {
           details.nextOff = offset2;
@@ -636,7 +636,7 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
     if (!skip)
       extract += exe.fetchHex(offset, details.codesize);
 
-    //codes += exe.Raw2Rva(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
+    //codes += pe.rawToVa(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
 
     //Step 1f - Update offset
 
@@ -672,7 +672,7 @@ function GetOpDetails(opcode, modrm, offset)
   if (opcode === 0x0F)
   {
     opcode2 = modrm;
-    modrm = exe.fetchUByte(offset + 2);
+    modrm = pe.fetchUByte(offset + 2);
   }
 
   //Step 1c - If none matched in OpcodeSizeMap, then modrm is valid and we need to parse it
@@ -699,14 +699,14 @@ function GetOpDetails(opcode, modrm, offset)
     //Step 2d - Check for Immediate 1 byte => Mode = 1
     if (details.mode === 0x1)
     {
-      details.tgtImm = exe.fetchByte(offset + details.codesize);
+      details.tgtImm = pe.fetchByte(offset + details.codesize);
       details.codesize++;
     }
 
     //Step 2e - Check for Immediate 4 byte => Mode = 0 and R/M = 5 or Mode = 2
     if (details.mode === 0x2 || (details.mode === 0x0 && (details.rm === 0x5 || details.rm === 0x4)))
     {
-      details.tgtImm = exe.fetchDWord(offset + details.codesize);
+      details.tgtImm = pe.fetchDWord(offset + details.codesize);
       details.codesize += 4;
     }
 
@@ -740,7 +740,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x7D:
     case 0x7E:
     case 0x7F: {//All SHORT jumps
-      details.tgtImm   = exe.fetchByte(offset + 1);
+      details.tgtImm   = pe.fetchByte(offset + 1);
       //details.nextOff += details.tgtImm;
       //details.codesize++;
       break;
@@ -748,7 +748,7 @@ function GetOpDetails(opcode, modrm, offset)
 
     case 0xE8:
     case 0xE9: {//Long Jump
-      details.tgtImm    = exe.fetchDWord(offset + 1);
+      details.tgtImm    = pe.fetchDWord(offset + 1);
       //details.nextOff  += details.tgtImm;
       //details.codesize += 4;
       break;
@@ -757,7 +757,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x0F: {//Two Byte Opcode
       if (opcode2 >= 0x80 && opcode2 <= 0x8F)
       {
-        details.tgtImm   = exe.fetchDWord(offset + 2);
+        details.tgtImm   = pe.fetchDWord(offset + 2);
         //details.nextOff  = 6 + details.tgtImm;
         details.codesize = 6;
       }
@@ -767,7 +767,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x69:
     case 0x81:
     case 0xC7: {//Imm32 Source
-      details.srcImm   = exe.fetchDWord(offset + details.codesize);
+      details.srcImm   = pe.fetchDWord(offset + details.codesize);
       details.codesize += 4;
       break;
     }
@@ -779,7 +779,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x80:
     case 0x82:
     case 0x83: {//Imm8 Source
-      details.srcImm   = exe.fetchByte(offset + details.codesize);
+      details.srcImm   = pe.fetchByte(offset + details.codesize);
       details.codesize++;
       break;
     }
