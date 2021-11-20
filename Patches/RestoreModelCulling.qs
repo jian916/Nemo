@@ -44,7 +44,7 @@ function RestoreModelCulling()
     {
         for (var i = 0; i < offsets.length; i++)
         {
-            if (exe.fetchUByte(offsets[i] + 7) != 0x75)  //Check JNZ follow by m_isHideCheck
+            if (pe.fetchUByte(offsets[i] + 7) != 0x75)  //Check JNZ follow by m_isHideCheck
                 return "Failed in Step 1a - No JNZ found.";
             exe.replace(offsets[i] + 7, " 90 90", PTYPE_HEX);
         }
