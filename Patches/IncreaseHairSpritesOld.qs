@@ -27,13 +27,13 @@ function IncreaseHairSpritesOld()
 
     // step 1a search for spr/act string
     var code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s"
-    var offset = exe.findString(code, RAW);
+    var offset = pe.stringRaw(code);
 
     if (offset === -1)
         return "Failed in step 1 - string not found";
 
     // step 1b - search string reference
-    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
+    offset = pe.findCode("68" + pe.rawToVa(offset).packToHex(4));
     if (offset === -1)
         return "Failed in step 1 - string reference missing";
 
@@ -53,7 +53,7 @@ function IncreaseHairSpritesOld()
     if (offset === -1)
         return "Failed in step 2 - hair limit missing";
 
-    var currentLimit = exe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
+    var currentLimit = pe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
     exe.replace(offset + assignOffset, "90 90 90 90 90 90", PTYPE_HEX);  // removing hair style limit assign
 
     // step 3 - search string "2" "3" "4"
@@ -68,7 +68,7 @@ function IncreaseHairSpritesOld()
     if (offset === -1)
         return "Failed in step 3 - string '2' missing";
 
-    var str2Offset = exe.Raw2Rva(offset);
+    var str2Offset = pe.rawToVa(offset);
     currentLimit = currentLimit.packToHex(1);
 
     // step 4 - search male hair table allocations in CSession::InitPcNameTable
@@ -92,7 +92,7 @@ function IncreaseHairSpritesOld()
         return "Failed in step 4 - found wrong number of hair tables: " + offsets.length;
 
     var tableCodeOffset = offsets[0];
-    var vectorCallAddr = exe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
+    var vectorCallAddr = pe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
     var varCode = exe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
     patchOffset = tableCodeOffset + patchOffset;
 
@@ -109,7 +109,7 @@ function IncreaseHairSpritesOld()
         return "Failed in step 5 - wrong allocated buffer";
 
     exe.insert(free, bufSize, data, PTYPE_HEX);
-    var tableStrings = exe.Raw2Rva(free);  // index = id * bytesPerString
+    var tableStrings = pe.rawToVa(free);  // index = id * bytesPerString
 
     // step 6 - search female hair table and location for jump
     code =
@@ -129,13 +129,13 @@ function IncreaseHairSpritesOld()
         return "Failed in step 6 - jump location not found";
 
     var tableCodeOffset2 = offset;
-    var vectorCallAddr2 = exe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
+    var vectorCallAddr2 = pe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
     patchOffset2 = tableCodeOffset2 + patchOffset2;
 
     if (vectorCallAddr !== vectorCallAddr2)
         return "Failed in step 6 - vector call functions different";
 
-    var jmpAddr = exe.Raw2Rva(offset);
+    var jmpAddr = pe.rawToVa(offset);
     var vectorCallOffset = vectorCallAddr - (patchOffset + 1 + 5 + varCode.hexlength() + 5);  // calc offset to call vector function (offsets from next code block)
 
     // normal job male hair style table loader patch
@@ -163,7 +163,7 @@ function IncreaseHairSpritesOld()
         "5E " +                              // pop esi
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
@@ -183,7 +183,7 @@ function IncreaseHairSpritesOld()
     if (offset === -1)
         return "Failed in step 7 - jump location not found";
 
-    jmpAddr = exe.Raw2Rva(offset);
+    jmpAddr = pe.rawToVa(offset);
     var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     // normal job female hair style table loader patch
@@ -211,7 +211,7 @@ function IncreaseHairSpritesOld()
         "5E " +                              // pop esi
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset2) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset2) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
