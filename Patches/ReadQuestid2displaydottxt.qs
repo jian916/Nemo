@@ -7,7 +7,7 @@ function ReadQuestid2displaydottxt()
 {
 
     //Step 1a - Find address of questID2display.txt
-    var offset = exe.findString("questID2display.txt", RVA);
+    var offset = pe.stringVa("questID2display.txt");
     if (offset === -1)
         return "Failed in Step 1 - questID2display not found";
 
@@ -28,7 +28,7 @@ function ReadQuestid2displaydottxt()
         return "Failed in Step 1";
 
     //Step 2 - Replace JNE before PUSH 0 with NOP (for long JNE, byte at offset - 1 will be 0)
-    if (exe.fetchByte(offset - 1) === 0)
+    if (pe.fetchByte(offset - 1) === 0)
         exe.replace(offset - 6, " 90 90 90 90 90 90", PTYPE_HEX);
     else
         exe.replace(offset - 2, " 90 90", PTYPE_HEX);
@@ -38,5 +38,5 @@ function ReadQuestid2displaydottxt()
 
 function ReadQuestid2displaydottxt_()
 {
-    return !IsZero() && (exe.findString("questID2display.txt", RAW) !== -1);
+    return !IsZero() && (pe.stringRaw("questID2display.txt") !== -1);
 }
