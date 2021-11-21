@@ -77,17 +77,17 @@ function UseCustomIcon(nomod)
     return "Failed in Step 2 - Unable to find icongrp";
 
   offset = entry.addr + 0x10;
-  var id = exe.fetchDWord(offset);
+  var id = pe.fetchDWord(offset);
 
   //Step 2b - Adjust 114 subdir to use 119 data - thus same icon will be used for both
   if (id === 119)
   {
-    var newvalue = exe.fetchDWord(offset + 0x4);
+    var newvalue = pe.fetchDWord(offset + 0x4);
     exe.replaceDWord(offset + 0x8 + 0x4, newvalue);
   }
   else
   {
-    var newvalue = exe.fetchDWord(offset + 0x8 + 0x4);
+    var newvalue = pe.fetchDWord(offset + 0x8 + 0x4);
     exe.replaceDWord(offset + 0x4, newvalue);
   }
 
@@ -132,20 +132,20 @@ function UseCustomIcon(nomod)
   var icondirentry = icondir.idEntries[i];
 
   //Step 6 - Find a valid RT_ICON - colorcount = 0, bpp = 8, and ofcourse the id will belong to valid resource
-  var idCount = exe.fetchWord(icogrpOff + 4);
+  var idCount = pe.fetchWord(icogrpOff + 4);
   var pos = icogrpOff + 6;
 
   for (var i = 0; i < idCount; i++)
   {
     var memicondirentry = new Object();
-    memicondirentry.bWidth       = exe.fetchByte(pos);
-    memicondirentry.bHeight      = exe.fetchByte(pos+1);
-    memicondirentry.bColorCount  = exe.fetchByte(pos+2);
-    memicondirentry.bReserved    = exe.fetchByte(pos+3);
-    memicondirentry.wPlanes      = exe.fetchWord(pos+4);
-    memicondirentry.wBitCount    = exe.fetchWord(pos+6);
-    memicondirentry.dwBytesInRes = exe.fetchDWord(pos+8);
-    memicondirentry.nID          = exe.fetchWord(pos+12);
+    memicondirentry.bWidth       = pe.fetchByte(pos);
+    memicondirentry.bHeight      = pe.fetchByte(pos+1);
+    memicondirentry.bColorCount  = pe.fetchByte(pos+2);
+    memicondirentry.bReserved    = pe.fetchByte(pos+3);
+    memicondirentry.wPlanes      = pe.fetchWord(pos+4);
+    memicondirentry.wBitCount    = pe.fetchWord(pos+6);
+    memicondirentry.dwBytesInRes = pe.fetchDWord(pos+8);
+    memicondirentry.nID          = pe.fetchWord(pos+12);
 
     if (memicondirentry.bColorCount == 0 && memicondirentry.wBitCount == 8 && memicondirentry.bWidth == 32 && memicondirentry.bWidth == 32)
     { //8bpp 32x32 image
