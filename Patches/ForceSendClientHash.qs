@@ -28,7 +28,7 @@ function ForceSendClientHash()
   exe.replace(offset - 1, " EB", PTYPE_HEX);
 
   //Step 1c - Update offset to the JE-ed location.
-  offset += 1 + exe.fetchByte(offset);
+  offset += 1 + pe.fetchByte(offset);
 
   //Step 2a - Find the 2nd comparison
   code =
@@ -47,7 +47,7 @@ function ForceSendClientHash()
   exe.replace(offset - 2, "EB", PTYPE_HEX);
 
   //Step 2c - Update offset to JNE-ed location
-  offset += exe.fetchByte(offset - 1);
+  offset += pe.fetchByte(offset - 1);
 
   //Step 3a - Find the last comparison
   code =
