@@ -32,7 +32,7 @@ function RenameLicenseTxt()
   exe.insert(free, txtFile.length, txtFile, PTYPE_STRING);
 
   //Step 2d - Update the reference to point to new name
-  exe.replaceDWord(offset + 6, exe.Raw2Rva(free));
+  exe.replaceDWord(offset + 6, pe.rawToVa(free));
 
   //Step 3a - Find the Error string address
   offset = pe.stringVa("No EULA text file. (licence.txt)");
