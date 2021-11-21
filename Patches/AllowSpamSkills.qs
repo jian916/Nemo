@@ -35,12 +35,12 @@ function AllowSpamSkills()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var key1 = exe.fetchDWord(offset + key1Offset1);
-    if (key1 !== exe.fetchDWord(offset + key1Offset2))
+    var key1 = pe.fetchDWord(offset + key1Offset1);
+    if (key1 !== pe.fetchDWord(offset + key1Offset2))
     {
         return "Failed in step 1 - found different virtual key offsets";
     }
-    var key2 = exe.fetchDWord(offset + key2Offset);
+    var key2 = pe.fetchDWord(offset + key2Offset);
     if (key1 + 4 !== key2)
     {
         return "Failed in step 1 - found wrong virtual key offset";
