@@ -228,7 +228,7 @@ function registerLua()
 
         var retLoader = hookLoader + postOffset;
 
-        var callValue = exe.fetchRelativeValue(hookLoader, callOffset);
+        var callValue = pe.fetchRelativeValue(hookLoader, callOffset);
         if (callValue !== CLua_Load)
             throw "LUAFL: found wrong call function: " + origFile;
 
