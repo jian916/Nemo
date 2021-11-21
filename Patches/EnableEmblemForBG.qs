@@ -59,9 +59,9 @@ function EnableEmblemForBG_Small(offset)
     consoleLog("Add own check code");
 
     var vars = {
-        "continueAddr": exe.fetchRelativeValue(offset, [continueOffset, 1]),
-        "drawAddr": exe.Raw2Rva(offset + drawOffset),
-        "CSession_IsSiegeMode": exe.fetchRelativeValue(offset, [IsSiegeModeOffset, 4]),
+        "continueAddr": pe.fetchRelativeValue(offset, [continueOffset, 1]),
+        "drawAddr": pe.rawToVa(offset + drawOffset),
+        "CSession_IsSiegeMode": pe.fetchRelativeValue(offset, [IsSiegeModeOffset, 4]),
     };
     var data = exe.insertAsmFile("", vars);
 
