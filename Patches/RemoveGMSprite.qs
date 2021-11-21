@@ -35,8 +35,8 @@ function RemoveGMSprite()
 
   //Step 1b - Extract the Function addresses (RAW)
   var funcs = [];
-  funcs[0] = offset + exe.fetchDWord(offset - 4);//CPc::SetActNameList RAW address
-  funcs[1] = offset + len + exe.fetchDWord(offset + len - 4);//CPc::SetSprNameList RAW address
+  funcs[0] = offset + pe.fetchDWord(offset - 4);//CPc::SetActNameList RAW address
+  funcs[1] = offset + len + pe.fetchDWord(offset + len - 4);//CPc::SetSprNameList RAW address
 
   //Step 2a - Prep code to look for IsNameYellow function call
   code =
