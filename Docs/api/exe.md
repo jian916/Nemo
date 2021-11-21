@@ -306,20 +306,9 @@ In other case return false.
 
 Please use pe.fetchValue
 
-
 ### exe.fetchValueSimple
 
-``exe.fetchValueSimple(offset)``
-
-Allow fetch value from binary with raw address and size.
-
-In offset2 also exists size of fetched value in bytes.
-
-| Argument | Description |
-| -------- | ----------- |
-| offset   | Raw address and size (two ints) |
-
-On success return fetched bytes.
+Please use pe.fetchValueSimple
 
 ### exe.fetchRelativeValue
 

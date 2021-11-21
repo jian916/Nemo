@@ -177,33 +177,12 @@ function exe_match(code, useMask, addrRaw)
 
 function exe_fetchValue(offset, offset2)
 {
-    var size = offset2[1];
-    var addr = offset + offset2[0];
-    if (size == 1)
-    {
-        return exe.fetchByte(addr);
-    }
-    else if (size == 2)
-    {
-        return exe.fetchWord(addr);
-    }
-    else if (size == 4)
-    {
-        return exe.fetchDWord(addr);
-    }
-    else if (size == 8)
-    {
-        return exe.fetchQWord(addr);
-    }
-    else
-    {
-        fatalError("Unknown size in exe.fetchValue: " + size);
-    }
+    reportLegacy("Please replace exe.fetchValue to exe.fetchValue");
 }
 
 function exe_fetchValueSimple(offset)
 {
-    return exe_fetchValue(0, offset);
+    reportLegacy("Please replace exe.fetchValueSimple to exe.fetchValueSimple");
 }
 
 function exe_setValue(offset, offset2, value)

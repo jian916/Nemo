@@ -370,6 +370,11 @@ function pe_fetchValue(offset, offset2)
     }
 }
 
+function pe_fetchValueSimple(offset)
+{
+    return pe_fetchValue(0, offset);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -404,4 +409,5 @@ function registerPe()
     pe.rvaToVa = pe_rvaToVa;
     pe.rvaToRaw = pe_rvaToRaw;
     pe.fetchValue = pe_fetchValue;
+    pe.fetchValueSimple = pe_fetchValueSimple;
 }
