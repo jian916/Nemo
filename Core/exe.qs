@@ -177,12 +177,12 @@ function exe_match(code, useMask, addrRaw)
 
 function exe_fetchValue(offset, offset2)
 {
-    reportLegacy("Please replace exe.fetchValue to exe.fetchValue");
+    reportLegacy("Please replace exe.fetchValue to pe.fetchValue");
 }
 
 function exe_fetchValueSimple(offset)
 {
-    reportLegacy("Please replace exe.fetchValueSimple to exe.fetchValueSimple");
+    reportLegacy("Please replace exe.fetchValueSimple to pe.fetchValueSimple");
 }
 
 function exe_setValue(offset, offset2, value)
@@ -218,9 +218,7 @@ function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
 
 function exe_fetchRelativeValue(offset, offset2)
 {
-    var value = exe_fetchValue(offset, offset2);
-    var addr = exe.Raw2Rva(offset + offset2[0]) + offset2[1] + value;
-    return addr;
+    reportLegacy("Please replace exe.fetchRelativeValue to pe.fetchRelativeValue");
 }
 
 function exe_fetchHexBytes(offset, offset2)
