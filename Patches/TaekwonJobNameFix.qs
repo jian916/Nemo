@@ -17,7 +17,7 @@ function TaekwonJobNameFix()
         for (var i = 0; i < offsets.length; i ++)
         {
             var offset = offsets[i];
-            var value = exe.fetchValue(offset, [index, 4]);
+            var value = pe.fetchValue(offset, [index, 4]);
             if (value == fIndex)
                 found.push([offset, offset + refOffset]);
             else
@@ -58,7 +58,7 @@ function TaekwonJobNameFix()
         for (var i = 0; i < offsets.length; i ++)
         {
             var offset = offsets[i];
-            var value = exe.fetchValue(offset, [index, 4]);
+            var value = pe.fetchValue(offset, [index, 4]);
             if (value == fIndex)
             {
                 foundRef[0].push([
