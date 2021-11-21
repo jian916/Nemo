@@ -29,7 +29,7 @@ function UseCustomDLL()
   {
 
     //Step 1e - Get the DLL Name for the import entry
-    var offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
+    var offset2 = pe.vaToRaw(pe.fetchDWord(offset + 12) + pe.getImageBase());
     var offset3 = pe.find("00", offset2);
     var curDLL = exe.fetch(offset2, offset3 - offset2);
 
@@ -117,7 +117,7 @@ function UseCustomDLL()
     return "Failed in Step 3 - Not enough free space";
 
   //Step 3c - Construct the new Import table
-  var baseAddr = exe.Raw2Rva(free) - exe.getImageBase();
+  var baseAddr = pe.rawToVa(free) - pe.getImageBase();
   var prefix = " 00".repeat(12);
   var dirEntryData = "";
   var dirTableData = "";
