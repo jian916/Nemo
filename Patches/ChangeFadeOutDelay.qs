@@ -64,12 +64,12 @@ function ChangeFadeOutDelay()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var dwFadeStart = exe.fetchDWord(offset + dwFadeStartOffset1);
-    if (dwFadeStart !== exe.fetchDWord(offset + dwFadeStartOffset2))
+    var dwFadeStart = pe.fetchDWord(offset + dwFadeStartOffset1);
+    if (dwFadeStart !== pe.fetchDWord(offset + dwFadeStartOffset2))
     {
         return "Failed in step 1 - found different dwFadeStart";
     }
-    var fadeOutDelay = exe.fetchDWord(offset + fadeOutDelayOffset1);
+    var fadeOutDelay = pe.fetchDWord(offset + fadeOutDelayOffset1);
     if (fadeOutDelay !== 0xff)
     {
         return "Failed in step 1 - found wrong fade out delay: " + fadeOutDelay;
