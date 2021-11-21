@@ -39,12 +39,12 @@ function OpeningToServiceSelect()
     if (offset === -1)
         return "Failed in Step 2 - Switch Table Missing";
 
-    var switchTable = exe.fetchDWord(offset + 3);
+    var switchTable = pe.fetchDWord(offset + 3);
 
     //Step 2 - Change Opening button to Service Select
     var opOffset = switchTable + 100;
 
-    exe.replace(exe.Rva2Raw(opOffset), "00", PTYPE_HEX);
+    exe.replace(pe.vaToRaw(opOffset), "00", PTYPE_HEX);
 
     return true;
 }
