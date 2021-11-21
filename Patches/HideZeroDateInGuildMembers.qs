@@ -90,11 +90,11 @@ function HideZeroDateInGuildMembers()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var msgStr1 = exe.Raw2Rva(exe.fetchDWord(offset + msgStrOffset1) + offset + msgStrOffset1 + 4);
-    var msgStr2 = exe.Raw2Rva(exe.fetchDWord(offset + msgStrOffset2) + offset + msgStrOffset2 + 4);
-    var localTime = exe.fetchDWord(offset + localTimeOffset).packToHex(4);
-    var timeStr1 = exe.fetchDWord(offset + timeStrOffset1);
-    var timeStr2 = exe.fetchDWord(offset + timeStrOffset2);
+    var msgStr1 = pe.rawToVa(pe.fetchDWord(offset + msgStrOffset1) + offset + msgStrOffset1 + 4);
+    var msgStr2 = pe.rawToVa(pe.fetchDWord(offset + msgStrOffset2) + offset + msgStrOffset2 + 4);
+    var localTime = pe.fetchDWord(offset + localTimeOffset).packToHex(4);
+    var timeStr1 = pe.fetchDWord(offset + timeStrOffset1);
+    var timeStr2 = pe.fetchDWord(offset + timeStrOffset2);
     if (msgStr1 !== msgStr2)
     {
         return "Failed in step 1 - found different MsgStr";
@@ -107,8 +107,8 @@ function HideZeroDateInGuildMembers()
     // step 2
 
     var timeStr = timeStr1.packToHex(4);
-    var jmp1Addr = exe.Raw2Rva(offset + jmp1Offset).packToHex(4);
-    var jmp2Addr = exe.Raw2Rva(offset + jmp2Offset).packToHex(4);
+    var jmp1Addr = pe.rawToVa(offset + jmp1Offset).packToHex(4);
+    var jmp2Addr = pe.rawToVa(offset + jmp2Offset).packToHex(4);
 
     var newCode =
         "83 38 00 " +          // cmp [eax], 0
@@ -124,7 +124,7 @@ function HideZeroDateInGuildMembers()
 
     var codeLen = newCode.hexlength();
     var free = exe.findZeros(codeLen);
-    var freeRva = exe.Raw2Rva(free).packToHex(4);
+    var freeRva = pe.rawToVa(free).packToHex(4);
     exe.insert(free, codeLen, newCode, PTYPE_HEX);
 
     // step 3
