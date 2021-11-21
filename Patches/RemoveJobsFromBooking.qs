@@ -50,7 +50,7 @@ function RemoveJobsFromBooking()
   offset += code.hexlength();
 
   //Step 1b - Extract the MsgStr address
-  var MsgStr = exe.Raw2Rva(offset + 4) + exe.fetchDWord(offset);
+  var MsgStr = pe.rawToVa(offset + 4) + pe.fetchDWord(offset);
 
   //Step 1c - Get Pattern for finding end of the loop (We need to RETN to location before Loop counter increment which is what jmpOff is for)
   switch (type)
@@ -120,7 +120,7 @@ function RemoveJobsFromBooking()
     return "Failed in Step 1b - Loop End missing";
 
   //Step 1e - Get RVA of location to RETN to.
-  retAddr = exe.Raw2Rva(retAddr + jmpOff);
+  retAddr = pe.rawToVa(retAddr + jmpOff);
 
   //Step 2a - Get the Skip List file from User
   var fp = new TextFile();
@@ -179,7 +179,7 @@ function RemoveJobsFromBooking()
   if (free === -1)
     return "Failed in Step 3 - Not enough free space"
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 3c - Fill in the blanks
   code = ReplaceVarHex(code, 1, freeRva);
@@ -190,7 +190,7 @@ function RemoveJobsFromBooking()
   exe.insert(free, size, idSet.join("") + code, PTYPE_HEX);
 
   //Step 4b - Change the MsgStr CALL with a CALL to our function.
-  exe.replaceDWord(offset, (freeRva + idSet.length * 2) - exe.Raw2Rva(offset + 4));
+  exe.replaceDWord(offset, (freeRva + idSet.length * 2) - pe.rawToVa(offset + 4));
 
   return true;
 }
