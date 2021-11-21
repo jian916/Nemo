@@ -95,7 +95,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
     if (isPlayerFn)
     {
         consoleLog("Step 3.1 - Prep Lua Function caller");
-        var result = GenLuaCaller(fnBegin + 4, funcName, exe.Raw2Rva(fnBegin + 0x80), "d>d", " 50");
+        var result = GenLuaCaller(fnBegin + 4, funcName, pe.rawToVa(fnBegin + 0x80), "d>d", " 50");
         if (result.indexOf("LUA:") !== -1)
           return result;
         code =
@@ -118,7 +118,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
             return "Failed in Step 4 - Not enough free space";
 
         consoleLog("Step 4.2 - Prep function which calls the Lua function");
-          var result = GenLuaCaller(free, funcName, exe.Raw2Rva(fnBegin + 0x10), "d>d", " 52");
+          var result = GenLuaCaller(free, funcName, pe.rawToVa(fnBegin + 0x10), "d>d", " 52");
           if (result.indexOf("LUA:") !== -1)
               return result;
         code =
@@ -138,7 +138,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         +   " 5A"                //POP EDX
         +   " C2 04 00"          //RETN 4
         ;
-        code = ReplaceVarHex(code, 1, exe.Raw2Rva(free + funcName.length) - exe.Raw2Rva(fnBegin + 10));
+        code = ReplaceVarHex(code, 1, pe.rawToVa(free + funcName.length) - pe.rawToVa(fnBegin + 10));
 
         consoleLog("Step 4.5 - Overwrite original function");
         exe.replace(fnBegin, code, PTYPE_HEX);
