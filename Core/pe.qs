@@ -375,6 +375,13 @@ function pe_fetchValueSimple(offset)
     return pe_fetchValue(0, offset);
 }
 
+function pe_fetchRelativeValue(offset, offset2)
+{
+    var value = pe_fetchValue(offset, offset2);
+    var addr = pe.rawToVa(offset + offset2[0]) + offset2[1] + value;
+    return addr;
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -410,4 +417,5 @@ function registerPe()
     pe.rvaToRaw = pe_rvaToRaw;
     pe.fetchValue = pe_fetchValue;
     pe.fetchValueSimple = pe_fetchValueSimple;
+    pe.fetchRelativeValue = pe_fetchRelativeValue;
 }

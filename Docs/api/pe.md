@@ -365,6 +365,21 @@ In offset2 also exists size of fetched value in bytes.
 
 On success return fetched bytes.
 
+### pe.fetchRelativeValue
+
+``pe.fetchRelativeValue(offset, offset2)``
+
+Allow fetch relative address value from binary with raw address offset plus offset2.
+
+In offset2 also exists size of fetched value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+
+On success return fetched relative address converted to absolute virtual address.
+
 
 ### pe.getImportTable
 
