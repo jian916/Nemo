@@ -87,7 +87,7 @@ function ButtonNew(buttonId, value)
         throw "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Find the string reference");
-    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
+    offset = pe.findCode("68" + pe.rawToVa(offset).packToHex(4));
     if (offset === -1)
         throw "Failed in Step 2 - String reference missing";
 
@@ -101,12 +101,12 @@ function ButtonNew(buttonId, value)
     if (offset === -1)
         throw "Failed in Step 3 - Button display table not found";
 
-    var switchTbl = exe.Rva2Raw(exe.fetchDWord(offset + switchTblOffset));
+    var switchTbl = pe.vaToRaw(pe.fetchDWord(offset + switchTblOffset));
 
     consoleLog("Step 4 - Set bool value for button");
     var valueOffset = switchTbl + buttonId - 0x169;
 
-    var oldValue = exe.fetchByte(valueOffset);
+    var oldValue = pe.fetchByte(valueOffset);
     if (valueOffset < switchTbl)
     {
         throw "Failed in Step 4 - button switch pointer before switch table start";
