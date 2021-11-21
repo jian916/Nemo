@@ -52,7 +52,7 @@ function FixCameraAngles(newvalue)
       return "Failed in Step 1 - Function Call Missing";
 
     //Step 1c - Extract the Function Address (RAW)
-    offset += exe.fetchDWord(offset + 3) + 7;
+    offset += pe.fetchDWord(offset + 3) + 7;
 
     //Step 2a - Find the angle value assignment in the function (should be within 0x800 bytes)
     code =
@@ -84,7 +84,7 @@ function FixCameraAngles(newvalue)
     exe.insert(free, 4, newvalue, PTYPE_HEX);
 
     //Step 3b - Replace angleAddr reference with the allocated address
-    exe.replace(offset2, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+    exe.replace(offset2, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
   }
   else
   { //Older clients
@@ -110,7 +110,7 @@ function FixCameraAngles(newvalue)
     + " 00 00 82 C2" //DD FLOAT -65.00000
     ;
 
-    offset = pe.find(code, exe.getROffset(CODE) + exe.getRSize(CODE));//Check only after Code section
+    offset = pe.find(code, pe.sectionRaw(CODE)[1]);  // Check only after Code section
     if (offset === -1)
       return "Failed in Step 5";
 
