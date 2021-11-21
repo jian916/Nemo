@@ -38,11 +38,11 @@ function DisableWindows()
   logVaVar("UIWindowMgr_MakeWindow switch1", offset, switch1Offset);
   logVaVar("UIWindowMgr_MakeWindow switch2", offset, switch2Offset);
 
-  var ITSS = exe.fetchDWord(offset + 3);
+  var ITSS = pe.fetchDWord(offset + 3);
 
   //Find the default case offset, should be same in ID 54 & 67
-  var dfCase = exe.fetchHex(exe.Rva2Raw(ITSS + 54), 1);
-  if (dfCase !== exe.fetchHex(exe.Rva2Raw(ITSS + 67), 1))
+  var dfCase = exe.fetchHex(pe.vaToRaw(ITSS + 54), 1);
+  if (dfCase !== exe.fetchHex(pe.vaToRaw(ITSS + 67), 1))
     return "Failed in Step 2";
 
   //Get disable windows id list from input file
@@ -73,7 +73,7 @@ function DisableWindows()
   //Make specified windows jump to default case
   for (var i = 0; i < WndID.length; i++)
   {
-    exe.replace(exe.Rva2Raw(ITSS + WndID[i]), dfCase, PTYPE_HEX);
+    exe.replace(pe.vaToRaw(ITSS + WndID[i]), dfCase, PTYPE_HEX);
   }
 
   return true;
