@@ -33,7 +33,7 @@ function IncreaseMapQuality()
     return "Failed in Step 1 - CreateTexture call missing";
 
   //Step 1b - Find the pf argument push before it.
-  if (exe.fetchByte(offset - 1) === 0x01)
+  if (pe.fetchByte(offset - 1) === 0x01)
   { //PUSH 1 is right before PUSH E*X
     offset--;
   }
