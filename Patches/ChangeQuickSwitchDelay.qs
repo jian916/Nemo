@@ -23,7 +23,7 @@ function ChangeQuickSwitchDelay()
   if (size === 0)
     return "Failed in Step 1 - Find Quickswitch Tick";
 
-  var g_qsTick = exe.fetchDWord(offsets[0]+13);
+  var g_qsTick = pe.fetchDWord(offsets[0]+13);
 
   var new_tick = exe.getUserInput("$my_new_tick", XTYPE_BYTE, _("Number - (0-255)"), _("Enter the new Quickswitch delay"), tick, 0, 255);
   if (tick == new_tick)
