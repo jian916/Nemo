@@ -43,7 +43,7 @@ function RestoreSongsEffect()
     logVaVar("CSkill_OnProcess switch2", offset, switch2Offset);
 
     //Step 1b - Get the address of indirect switch table
-    var iswTable = exe.fetchDWord(offset + switch1Offset);
+    var iswTable = pe.fetchDWord(offset + switch1Offset);
 
     //Step 2 - Find & borrow the code of LandProtector
     code =
