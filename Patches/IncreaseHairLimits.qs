@@ -353,7 +353,7 @@ function _IHL_JumpNCall(begin, end, func)
     exe.replace(begin, code, PTYPE_HEX);
 
     //Step 2 - Next CALL the Comparison function
-    code = " E8" + (exe.Raw2Rva(func) - exe.Raw2Rva(end)).packToHex(4);
+    code = " E8" + (pe.rawToVa(func) - pe.rawToVa(end)).packToHex(4);
     exe.replace(end - 5, code, PTYPE_HEX);
 }
 
@@ -373,7 +373,7 @@ function _IHL_UpdateScrollBar(oldLimit, newLimit)
 
     //Step 1b - Extract the create function address
     var csize = code.hexlength();
-    var func = exe.Raw2Rva(offsets[0] + csize + 4) + exe.fetchDWord(offsets[0] + csize);
+    var func = pe.rawToVa(offsets[0] + csize + 4) + pe.fetchDWord(offsets[0] + csize);
 
     //Step 2a - Prep code to call the function with updated limit as arguments
     if (newLimit > 0x7E)
@@ -398,7 +398,7 @@ function _IHL_UpdateScrollBar(oldLimit, newLimit)
     if (free === -1)
         return -2;
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 2c - Fill in the blanks
     code = ReplaceVarHex(code, 1, func - (freeRva + code.hexlength() - 1));
@@ -410,7 +410,7 @@ function _IHL_UpdateScrollBar(oldLimit, newLimit)
     for (var i = 0; i < offsets.length; i++)
     {
         exe.replace(offsets[i], " 90".repeat(csize - 1), PTYPE_HEX);
-        exe.replaceDWord(offsets[i] + csize, freeRva - exe.Raw2Rva(offsets[i] + csize + 4));
+        exe.replaceDWord(offsets[i] + csize, freeRva - pe.rawToVa(offsets[i] + csize + 4));
     }
 
   return 0;
