@@ -162,7 +162,7 @@ function DisableHShield()
         return "Failed in Step 5a - String not found";
 
     consoleLog("Step 5b - Construct the Image Descriptor Pattern (Relative Virtual Address prefixed by 8 zeros)");
-    aOffset = "00 ".repeat(8) + (pe.rawToVa(aOffset) - exe.getImageBase()).packToHex(4);
+    aOffset = "00 ".repeat(8) + (pe.rawToVa(aOffset) - pe.getImageBase()).packToHex(4);
 
     consoleLog("Step 5c - Check for Use Custom DLL patch needed since it modifies the import table location");
     var hasCustomDLL = (getActivePatches().indexOf(211) !== -1);
@@ -211,7 +211,7 @@ function DisableHShield()
         for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
         {
             consoleLog("Step 5e - Get the DLL Name for the import entry");
-            offset2 = pe.vaToRaw(exe.fetchDWord(offset + 12) + exe.getImageBase());
+            offset2 = pe.vaToRaw(pe.fetchDWord(offset + 12) + pe.getImageBase());
             var offset3 = pe.find("00 ", offset2);
             var curDLL = exe.fetch(offset2, offset3 - offset2);
 
