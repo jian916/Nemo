@@ -119,7 +119,7 @@ function RestoreAutoFollow()
         return "Pattern not found";
     }
 
-    var CGameMode_ProcessInput = exe.fetchRelativeValue(offset, inputOffset);
+    var CGameMode_ProcessInput = pe.fetchRelativeValue(offset, inputOffset);
 
     consoleLog("add new code");
 
