@@ -25,7 +25,7 @@ function EnableFlagEmotes()
     return "Failed in Step 1 - switch not found";
 
   //Step 1b - Extract the refAddr
-  var refAddr = exe.Rva2Raw(exe.fetchDWord(offset + code.hexlength()));
+  var refAddr = pe.vaToRaw(pe.fetchDWord(offset + code.hexlength()));
 
   //Step 2a - Get Input file containing the list of Flag Emotes per key
   var f = new TextFile();
@@ -73,7 +73,7 @@ function EnableFlagEmotes()
   for (var i = 1; i < 10; i++)
   {
     //Step 3b - Get the starting address of the case
-    var offset = exe.Rva2Raw(exe.fetchDWord(refAddr + (i - 1)*4));
+    var offset = pe.vaToRaw(pe.fetchDWord(refAddr + (i - 1)*4));
 
     //Step 3c - Find the first code. Ideally it would be at offset itself unless something changed
     offset = pe.find(code, offset);
@@ -83,15 +83,15 @@ function EnableFlagEmotes()
     offset += code.hexlength();
 
     //Step 3d - Change the JZ to JMP & Get the JMPed address
-    if (exe.fetchByte(offset) === 0x0F)
+    if (pe.fetchByte(offset) === 0x0F)
     {//Long
       exe.replace(offset, " 90 E9", PTYPE_HEX);
-      offset += exe.fetchDWord(offset + 2) + 6;
+      offset += pe.fetchDWord(offset + 2) + 6;
     }
     else
     { //Short
       exe.replace(offset, " EB", PTYPE_HEX);
-      offset += exe.fetchByte(offset + 1) + 2;
+      offset += pe.fetchByte(offset + 1) + 2;
     }
 
     if (consts[i])
