@@ -86,7 +86,7 @@ function FixCharsetForFonts()
     + " 0F B6 87" + GenVarHex(1)                //MOVZX EAX,BYTE PTR [EDI + newCharSetTable]
     + " EB 07"                                  //JMP short
     + " 8B 04 95" + cTable                      //MOV EAX,[EDX*4+cTable]
-    + " 68" + exe.Raw2Rva(retAdd).packToHex(4)  //PUSH retAdd
+    + " 68" + pe.rawToVa(retAdd).packToHex(4)  //PUSH retAdd
     + " C3"                                     //RET
     ;
 
@@ -98,11 +98,11 @@ function FixCharsetForFonts()
     if (free === -1)
         return "Failed in Step 3 - No enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     ins = ReplaceVarHex(ins, 1, freeRva);
 
-    var jump = exe.Raw2Rva(free + 21) - exe.Raw2Rva(offset + 5);
+    var jump = pe.rawToVa(free + 21) - pe.rawToVa(offset + 5);
 
     code = " E9" + jump.packToHex(4) + " 90 90";
 
