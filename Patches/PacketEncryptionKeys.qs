@@ -147,13 +147,13 @@ function PacketEncryptionKeys(varname, index)
     if (free === -1)
       return "Failed in Step 4 - Not Enough Free Space";
 
-    PEncInsert = exe.Raw2Rva(free);
+    PEncInsert = pe.rawToVa(free);
 
     //Step 4c - Insert it
     exe.insert(free, csize, code, PTYPE_HEX);
 
     //Step 4d - Hijack info.ovrAddr to jmp to PEncInsert
-    code = " E9" + (PEncInsert - exe.Raw2Rva(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
+    code = " E9" + (PEncInsert - pe.rawToVa(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
     exe.replace(info.ovrAddr, code, PTYPE_HEX);
 
     //Step 4e - Set PEncActive to index indicating this one has the changes
@@ -242,10 +242,10 @@ function _PacketEncryptionKeys(index)
   var csize = code.hexlength();
 
   //Srep 2d - Insert the code
-  exe.insert(exe.Rva2Raw(PEncInsert), csize, code, PTYPE_HEX);
+  exe.insert(pe.vaToRaw(PEncInsert), csize, code, PTYPE_HEX);
 
   //Step 2e - Hijack info.ovrAddr to jmp to PEncInsert
-  code = " E9" + (PEncInsert - exe.Raw2Rva(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
+  code = " E9" + (PEncInsert - pe.rawToVa(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
   exe.replace(info.ovrAddr, code, PTYPE_HEX);
   return true;
 }
