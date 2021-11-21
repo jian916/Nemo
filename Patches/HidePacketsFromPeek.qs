@@ -42,7 +42,7 @@ function HidePacketsFromPeek()
 
     for (var f = 0; f < offsets.length; f++)
     {
-        var instanceAddr = exe.fetchDWord(offsets[f] + callOffset + 1) + 2;
+        var instanceAddr = pe.fetchDWord(offsets[f] + callOffset + 1) + 2;
         var code = "E8 " + instanceAddr.packToHex(4) + "6A 01 ";
 
         exe.replace(offsets[f] + pushOffset, code, PTYPE_HEX);
