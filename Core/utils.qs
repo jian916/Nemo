@@ -431,7 +431,7 @@ function ResourceDir(rsrcAddr, addrOffset, id)
 
   this.id = id;
   this.addr = rsrcAddr + addrOffset;
-  this.numEntries = exe.fetchWord(this.addr + 12) + exe.fetchWord(this.addr + 14)
+  this.numEntries = pe.fetchWord(this.addr + 12) + pe.fetchWord(this.addr + 14)
   this.entries = [];
 
   for (var i = 0; i < this.numEntries; i++)
@@ -455,7 +455,7 @@ function ResourceFile(rsrcAddr, addrOffset, id)
 {
   this.id = id;
   this.addr = rsrcAddr + addrOffset;
-  this.dataAddr = pe.vaToRaw(pe.fetchDWord(this.addr) + exe.getImageBase());
+  this.dataAddr = pe.vaToRaw(pe.fetchDWord(this.addr) + pe.getImageBase());
   this.dataSize = pe.fetchDWord(this.addr + 4);
 }
 
