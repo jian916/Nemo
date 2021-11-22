@@ -48,7 +48,7 @@ function GenPktExtractDLL()
   if (offset2 !== -1 && KeyFetcher === -1)
   {
     offset2 += code.hexlength();
-    KeyFetcher = exe.Raw2Rva(offset2+4) + pe.fetchDWord(offset2);
+    KeyFetcher = pe.rawToVa(offset2+4) + pe.fetchDWord(offset2);
   }
 
   //Step 1c - Go Inside the function
@@ -101,7 +101,7 @@ function GenPktExtractDLL()
     throw "InitPacketMap not found";
 
   //Step 3b - Save the address after the call which will serve as the ExitAddr
-  var ExitAddr = exe.Raw2Rva(offset+15);
+  var ExitAddr = pe.rawToVa(offset+15);
 
   //Step 3c - Go Inside InitPacketMap
   offset += pe.fetchDWord(offset+6) + 10;
@@ -165,13 +165,13 @@ function GenPktExtractDLL()
   code =
       PktOff.packToHex(4)
     + ExitAddr.packToHex(4)
-    + exe.Raw2Rva(HookAddrs[0]).packToHex(4)
+    + pe.rawToVa(HookAddrs[0]).packToHex(4)
     ;
 
   if (HookAddrs.length === 1)
     code += " 00 00 00 00";
   else
-    code += exe.Raw2Rva(HookAddrs[1]).packToHex(4);
+    code += pe.rawToVa(HookAddrs[1]).packToHex(4);
 
   code += KeyFetcher.packToHex(4);
 
