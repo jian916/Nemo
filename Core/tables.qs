@@ -76,7 +76,7 @@ function table_getRaw(varId)
     var ret = table.get(varId);
     if (ret === 0)
         return 0;
-    return exe.Rva2Raw(ret);
+    return pe.vaToRaw(ret);
 }
 
 function table_getRawValidated(varId)
