@@ -67,7 +67,7 @@ function ChangeMaxItemCount(value)
       for (var i = 0; i < offsets.length; i++)
         {
             var offset2 = offsets[i] + code.hexlength();
-            exe.replace(offset2 - 4, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+            exe.replace(offset2 - 4, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
         }
 
 
