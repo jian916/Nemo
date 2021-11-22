@@ -42,7 +42,7 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
 
 function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
 {
-    exe_setJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd, codeLen);
+    exe_setJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd, codeLen);
 }
 
 function exe_setNops(patchAddr, nopsCount)
@@ -213,7 +213,7 @@ function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
 
 function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
 {
-    exe_setShortJmpVa(patchAddr, exe.Raw2Rva(jmpAddrRaw), cmd);
+    exe_setShortJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd);
 }
 
 function exe_fetchRelativeValue(offset, offset2)

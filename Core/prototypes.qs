@@ -124,7 +124,7 @@ Array.prototype.toRvaBE = function()
     var result = [];
     for (var i = 0; i < this.length; i++)
     {
-        result.push(exe.Raw2Rva(this[i]).toBE());
+        result.push(pe.rawToVa(this[i]).toBE());
     }
     return result;
 }
