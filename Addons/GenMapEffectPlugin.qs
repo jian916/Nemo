@@ -68,7 +68,7 @@ function GenMapEffectPlugin()
     var CI_Return = offset + code.hexlength() + 4;
 
     consoleLog("Save CWeather::LaunchPokJuk address (not RAW)");
-    var CW_LPokJuk = (exe.Raw2Rva(CI_Return) + pe.fetchDWord(CI_Return-4)).packToHex(4);
+    var CW_LPokJuk = (pe.rawToVa(CI_Return) + pe.fetchDWord(CI_Return-4)).packToHex(4);
 
     consoleLog("Find offset of yuno.rsw");
     var offset2 = pe.stringVa("yuno.rsw");
@@ -116,7 +116,7 @@ function GenMapEffectPlugin()
     offset += code.hexlength();
 
     consoleLog("Save CWeather::LaunchCloud address (not RAW)");
-    var CW_LCloud = (exe.Raw2Rva(offset+4) + pe.fetchDWord(offset)).packToHex(4);
+    var CW_LCloud = (pe.rawToVa(offset+4) + pe.fetchDWord(offset)).packToHex(4);
 
     consoleLog("Find the 2nd reference to yuno.rsw - which will be at CGameMode_OnInit_EntryPtr");
     offset = pe.find("B8 " + offset2.packToHex(4), 0, CI_Entry - 1);
@@ -188,7 +188,7 @@ function GenMapEffectPlugin()
         throw "Error: LaunchNight missing";
 
     consoleLog("Save CWeather::LaunchNight address (not RAW)");
-    var CW_LNight = exe.Raw2Rva(offset).packToHex(4);
+    var CW_LNight = pe.rawToVa(offset).packToHex(4);
 
     logRawFuncDirect("CWeather::LaunchNight", offset);
 
@@ -210,7 +210,7 @@ function GenMapEffectPlugin()
     logRawFunc("CWeather::StopSnow", offset, stopShowOffset);
 
     consoleLog("Save CWeather::LaunchSnow address (not RAW)");
-    var CW_LSnow = (exe.Raw2Rva(offset+7) + pe.fetchDWord(offset+3)).packToHex(4);
+    var CW_LSnow = (pe.rawToVa(offset+7) + pe.fetchDWord(offset+3)).packToHex(4);
 
     consoleLog("Find the PUSH 14D (followed by MOV) inside CWeather::LaunchMaple");
     offset = pe.findCode("68 4D 01 00 00 89");
@@ -234,7 +234,7 @@ function GenMapEffectPlugin()
     logRawFuncDirect("CWeather::LaunchMaple", offset2);
 
     consoleLog("Save CWeather::LaunchMaple address (not RAW)");
-    var CW_LMaple = exe.Raw2Rva(offset2).packToHex(4);
+    var CW_LMaple = pe.rawToVa(offset2).packToHex(4);
 
     consoleLog("Find the PUSH A3 (followed by MOV) inside CWeather::LaunchSakura");
     offset = pe.findCode("68 A3 00 00 00 89");
@@ -253,7 +253,7 @@ function GenMapEffectPlugin()
     logRawFuncDirect("CWeather::LaunchSakura", offset2);
 
     consoleLog("Save CWeather::LaunchSakura address (not RAW)");
-    var CW_LSakura = exe.Raw2Rva(offset2).packToHex(4);
+    var CW_LSakura = pe.rawToVa(offset2).packToHex(4);
 
     consoleLog("Read the input dll file");
     var dll = fp.readHex(0,0x2000);
@@ -274,10 +274,10 @@ function GenMapEffectPlugin()
     ;
     dll = dll.replace(/ C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4 C4/i, code);
 
-    dll = dll.replace(/ C5 C5 C5 C5/i, exe.Raw2Rva(CI_Entry).packToHex(4));
-    dll = dll.replace(/ C6 C6 C6 C6/i, exe.Raw2Rva(CO_Entry).packToHex(4));
-    dll = dll.replace(/ C7 C7 C7 C7/i, exe.Raw2Rva(CI_Return).packToHex(4));
-    dll = dll.replace(/ C8 C8 C8 C8/i, exe.Raw2Rva(CO_Return).packToHex(4));
+    dll = dll.replace(/ C5 C5 C5 C5/i, pe.rawToVa(CI_Entry).packToHex(4));
+    dll = dll.replace(/ C6 C6 C6 C6/i, pe.rawToVa(CO_Entry).packToHex(4));
+    dll = dll.replace(/ C7 C7 C7 C7/i, pe.rawToVa(CI_Return).packToHex(4));
+    dll = dll.replace(/ C8 C8 C8 C8/i, pe.rawToVa(CO_Return).packToHex(4));
 
     dll = dll.replace(/ 6C 5D C3/i, gR_clrColor + " 5D C3");
 
@@ -304,10 +304,10 @@ function GenMapEffectPlugin()
     fp2.writeline("\t0x" + CW_LNight.toBE() + ", // CEFFECT_NIGHT -> void CWeather::LaunchNight(CWeather this<ecx>)");
     fp2.writeline("};\n");
 
-    fp2.writeline("#define CGameMode_Initialize_EntryPtr (void*)0x" + exe.Raw2Rva(CI_Entry ).toBE(4) + ";");
-    fp2.writeline("#define CGameMode_OnInit_EntryPtr (void*)0x"     + exe.Raw2Rva(CO_Entry ).toBE(4) + ";");
-    fp2.writeline("void* CGameMode_Initialize_RetPtr = (void*)0x"   + exe.Raw2Rva(CI_Return).toBE(4) + ";");
-    fp2.writeline("void* CGameMode_OnInit_RetPtr = (void*)0x"       + exe.Raw2Rva(CO_Return).toBE(4) + ";");
+    fp2.writeline("#define CGameMode_Initialize_EntryPtr (void*)0x" + pe.rawToVa(CI_Entry ).toBE(4) + ";");
+    fp2.writeline("#define CGameMode_OnInit_EntryPtr (void*)0x"     + pe.rawToVa(CO_Entry ).toBE(4) + ";");
+    fp2.writeline("void* CGameMode_Initialize_RetPtr = (void*)0x"   + pe.rawToVa(CI_Return).toBE(4) + ";");
+    fp2.writeline("void* CGameMode_OnInit_RetPtr = (void*)0x"       + pe.rawToVa(CO_Return).toBE(4) + ";");
 
     fp2.writeline("\r\n#define GR_CLEAR " + (parseInt(gR_clrColor, 16)/4) + ";");
     fp2.close();
