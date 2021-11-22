@@ -31,18 +31,18 @@ function DumpImportTable()
     if (dllName <= 0) break;
 
     consoleLog("Step 2d - Write the Descriptor Info to file");
-    dllName = pe.vaToRaw(dllName + exe.getImageBase());
+    dllName = pe.vaToRaw(dllName + pe.getImageBase());
     var offset2 = pe.find("00", dllName);
 
     fp.writeline( "Lookup Table = 0x" + ilt.toBE()
                 + ", TimeStamp = " + ts
                 + ", Forwarder = " + fchain
                 + ", Name = " + exe.fetch(dllName, offset2 - dllName)
-                + ", Import Address Table = 0x" + (iatRva+exe.getImageBase()).toBE()
+                + ", Import Address Table = 0x" + (iatRva + pe.getImageBase()).toBE()
                 );
 
     consoleLog("Step 2e - Get the Raw offset of First Thunk");
-    offset2 = pe.vaToRaw(iatRva+exe.getImageBase());
+    offset2 = pe.vaToRaw(iatRva + pe.getImageBase());
 
     for ( ;true; offset2 += 4)
     {
@@ -60,14 +60,14 @@ function DumpImportTable()
       {
         consoleLog("First Bit (Sign) shows whether this functions is imported by Name (0) or Ordinal (1)");
         funcData = funcData & 0x7FFFFFFF;//Address pointing to IMAGE_IMPORT_BY_NAME struct (First 2 bytes is Hint, remaining is the Function Name)
-        var offset3 = pe.vaToRaw(funcData + exe.getImageBase());
+        var offset3 = pe.vaToRaw(funcData + pe.getImageBase());
         if (offset3 === -1)
         {
             consoleLog("found wrong address");
             break;
         }
         var offset4 = pe.find("00", offset3 + 2);
-        fp.writeline( "  Thunk Address (RVA) = 0x" + exe.Raw2Rva(offset2).toBE()
+        fp.writeline( "  Thunk Address (RVA) = 0x" + pe.rawToVa(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()
                     + ", Function Hint = 0x" + exe.fetchHex(offset3, 2).replace(/ /g, "")
                     + ", Function Name = " + exe.fetch(offset3+2, offset4 - (offset3+2))
@@ -76,7 +76,7 @@ function DumpImportTable()
       else
       {
         funcData = funcData & 0xFFFF;
-        fp.writeline( "  Thunk Address (RVA) = 0x" + exe.Raw2Rva(offset2).toBE()
+        fp.writeline( "  Thunk Address (RVA) = 0x" + pe.rawToVa(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()
                     + ", Function Ordinal = " + funcData
                     );
