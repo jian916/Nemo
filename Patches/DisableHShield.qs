@@ -188,7 +188,7 @@ function DisableHShield()
             consoleLog("Step 5e - If the removal was not already done then Empty the Custom DLL patch and make the changes here instead");
             exe.emptyPatch(211);
 
-            var PEoffset = exe.getPEOffset();
+            var PEoffset = pe.getPeHeader();
 
             exe.insert(Import_Info.offset, (Import_Info.valuePre + newTblData).hexlength(), Import_Info.valuePre + newTblData, PTYPE_HEX);
             exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x08, Import_Info.tblAddr);
