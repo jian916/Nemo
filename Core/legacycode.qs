@@ -84,7 +84,7 @@ function GetFunction(funcName, dllName, ordinal)
 
 function GetDataDirectory(index)
 {
-  var offset = exe.getPEOffset() + 0x18 + 0x60;//Skipping header bytes unnecessary here.
+  var offset = pe.getPeHeader() + 0x18 + 0x60;//Skipping header bytes unnecessary here.
   if (offset === 0x67) //i.e. PE Offset === -1 which is unlikely but still
     return -2;
 
