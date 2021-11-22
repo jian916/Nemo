@@ -730,4 +730,6 @@ registerPatch(415, "RemoveNewCharCreationBluredBackground", "Remove blured backg
 
 registerPatch(416, "FixTetraVortex", 'Fix Tetra Vortex', 'UI', 0, "sanosan33, Neo", 'Fixes the black screen animation issue of tetra vortex', false);
 
+registerPatch(417, "DisablePasswordEncryption", 'Disable password encryption for lang types 4, 7', 'Login', 0, "Jchcc, 4144", 'Disable password encryption for lang types 4, 7', false);
+
 GlobalPostInit();
