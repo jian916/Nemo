@@ -732,4 +732,6 @@ registerPatch(416, "FixTetraVortex", 'Fix Tetra Vortex', 'UI', 0, "sanosan33, Ne
 
 registerPatch(417, "DisablePasswordEncryption", 'Disable password encryption for lang types 4, 7', 'Login', 0, "Jchcc, 4144", 'Disable password encryption for lang types 4, 7', false);
 
+registerPatch(418, "HideReputationButton", "Hide reputation button", "UI", 12, "4144", "Hide reputation button", false);
+
 GlobalPostInit();

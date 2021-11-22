@@ -145,6 +145,11 @@ function HideAdventurerAgencyButton()
     return HideButton2("adventurerAgency");
 }
 
+function HideReputationButton()
+{
+    return HideButton2("repute");
+}
+
 //##########################################################
 //# Purpose: Find the first match amongst the src prefixes #
 //#          and replace it with corresponding tgt prefix  #
@@ -152,15 +157,14 @@ function HideAdventurerAgencyButton()
 
 function HideButtonOld(src, tgt)
 {
-
-    //Step 1a - Ensure both are lists/arrays
+    consoleLog("Step 1a - Ensure both are lists/arrays");
     if (typeof(src) === "string")
         src = [src];
 
     if (typeof(tgt) === "string")
         tgt = [tgt];
 
-    //Step 1b - Loop through and find first match
+    consoleLog("Step 1b - Loop through and find first match");
     var offset = -1;
     for (var i = 0; i < src.length; i++)
     {
@@ -172,7 +176,7 @@ function HideButtonOld(src, tgt)
     if (offset === -1)
         return "Failed in Step 1";
 
-    //Step 2 - Replace with corresponding value in tgt
+    consoleLog("Step 2 - Replace with corresponding value in tgt");
     exe.replace(offset, tgt[i], PTYPE_STRING);
 
     return true;
@@ -192,17 +196,17 @@ function HideButton2(prefix)
 //#######################################################################
 function HideButtonNew(reference, prefix)
 {
-    //Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
+    consoleLog("Step 1a - Find the address of the reference prefix \"info\" (needed since some prefixes are matching multiple areas)");
     var refAddr = pe.stringVa(reference);
     if (refAddr === -1)
         return "Failed in Step 1 - info missing";
 
-    //Step 1b - Find the address of the string
+    consoleLog("Step 1b - Find the address of the string");
     var strAddr = pe.stringVa(prefix);
     if (strAddr === -1)
         return "Failed in Step 1 - Prefix missing";
 
-    //Step 2a - Find assignment of "info" inside UIBasicWnd::OnCreate
+    consoleLog("Step 2a - Find assignment of \"info\" inside UIBasicWnd::OnCreate");
     var suffix = " C7";
     var offset = pe.findCode(refAddr.packToHex(4) + suffix);
 
@@ -215,12 +219,12 @@ function HideButtonNew(reference, prefix)
     if (offset === -1)
         return "Failed in Step 2 - info assignment missing";
 
-    //Step 2b - Find the assignment of prefix after "info" assignment
-    offset = pe.find(strAddr.packToHex(4) + suffix, offset + 5, offset + 0x550);
+    consoleLog("Step 2b - Find the assignment of prefix after \"info\" assignment");
+    offset = pe.find(strAddr.packToHex(4) + suffix, offset + 5, offset + 0x570);
     if (offset === -1)
         return "Failed in Step 2 - Prefix assignment missing";
 
-    //Step 2c - Update the address to point to NULL
+    consoleLog("Step 2c - Update the address to point to NULL");
     exe.replaceDWord(offset, strAddr + prefix.length);
 
     return true;
@@ -311,4 +315,9 @@ function HideAttendanceButton_()
 function HideAdventurerAgencyButton_()
 {
     return (pe.stringVa("adventurerAgency") !== -1);
+}
+
+function HideReputationButton_()
+{
+    return (pe.stringVa("repute") !== -1);
 }
