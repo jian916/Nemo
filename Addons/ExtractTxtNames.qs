@@ -6,8 +6,8 @@ function ExtractTxtNames()
 {
 
   //Step 1 - Find all strings ending in .txt
-  var offset = exe.getROffset(DATA);
-    var offsets = pe.findAll(" 2E 74 78 74 00", offset, offset + exe.getRSize(DATA));
+  var offset = pe.sectionRaw(DATA)[0];
+    var offsets = pe.findAll(" 2E 74 78 74 00", offset, pe.sectionRaw(DATA)[1]);
     if (offsets.length === 0)
         throw "Error: No .txt files found";
 
