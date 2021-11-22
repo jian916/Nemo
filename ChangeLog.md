@@ -1,4 +1,24 @@
+# 2021-11-22 Different updates
+
+## Patches
+
+- Re add old patch [Fix Tetra Vortex](http://nemo.herc.ws/patches/FixTetraVortex/#success-clients). (by sanosan33, Neo).
+- Add patch [Disable password encryption for lang types 4, 7](http://nemo.herc.ws/patches/DisablePasswordEncryption/#success-clients). (by @jchcc, @4144).
+
+## For devs
+
+- Add functions for search strings not from start: pe.halfStringVa, pe.halfStringRaw.
+- Add functions for fetch values: pe.fetchValue, pe.fetchValueSimple, pe.fetchRelativeValue.
+
+## Other
+
+- Add missing tables.
+- Replace many legacy functions usage to actual functions.
+
+
 # 2021-11-18 Different updates
+
+## Patches
 
 - Fix patch [Enable Official Custom Fonts](http://nemo.herc.ws/patches/EnableOfficialCustomFonts/#success-clients). (fix by @4144).
 - Fix codepage issues in addon [Extract and translate msgstringtable](http://nemo.herc.ws/addons/ExtractMsgTableTranslate/#success-clients). (fix by @4144).
