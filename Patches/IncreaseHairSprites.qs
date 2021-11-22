@@ -33,7 +33,7 @@ function IncreaseHairSprites()
         return "Failed in step 1 - string not found";
 
     consoleLog("step 1b - search string reference");
-    offset = pe.findCode("68" + exe.Raw2Rva(offset).packToHex(4));
+    offset = pe.findCode("68" + pe.rawToVa(offset).packToHex(4));
     if (offset === -1)
         return "Failed in step 1 - string reference missing";
 
@@ -121,7 +121,7 @@ function IncreaseHairSprites()
     if (offset === -1)
         return "Failed in step 4 - string '2' missing";
 
-    var str2Offset = exe.Raw2Rva(offset);
+    var str2Offset = pe.rawToVa(offset);
     currentLimit = currentLimit.packToHex(1);
 
     consoleLog("step 5 - search male hair table allocations in CSession::InitPcNameTable");
@@ -181,7 +181,7 @@ function IncreaseHairSprites()
         return "Failed in step 6 - wrong allocated buffer";
 
     exe.insert(free, bufSize, data, PTYPE_HEX);
-    var tableStrings = exe.Raw2Rva(free);  // index = id * bytesPerString
+    var tableStrings = pe.rawToVa(free);  // index = id * bytesPerString
 
     consoleLog("step 7 - search female hair table and location for jump");
     var esi1 = "";
@@ -239,7 +239,7 @@ function IncreaseHairSprites()
     if (vectorCallAddr !== vectorCallAddr2)
         return "Failed in step 7 - vector call functions different";
 
-    var jmpAddr = exe.Raw2Rva(offset);
+    var jmpAddr = pe.rawToVa(offset);
     var vectorCallOffset = vectorCallAddr - (patchOffset + newclient + 1 + 5 + varCode.hexlength() + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("normal job male hair style table loader patch");
@@ -269,7 +269,7 @@ function IncreaseHairSprites()
         "5E " +                              // pop esi
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
@@ -330,7 +330,7 @@ function IncreaseHairSprites()
     if (offsets.length !== 1)
         return "Failed in step 8 - found wrong number of doram hair tables: " + offsets.length;
 
-    var str1Addr = exe.Rva2Raw(pe.fetchDWord(offsets[0] + str1Offset));
+    var str1Addr = pe.vaToRaw(pe.fetchDWord(offsets[0] + str1Offset));
     if (pe.fetchUByte(str1Addr) != 0x31 || pe.fetchUByte(str1Addr + 1) != 0)
         return "Failed in step 8 - wrong constant 1 found";
 
@@ -341,7 +341,7 @@ function IncreaseHairSprites()
     patchOffset = tableCodeOffset + patchOffset;
 
     offset = offsets[0];
-    jmpAddr = exe.Raw2Rva(offset);
+    jmpAddr = pe.rawToVa(offset);
     var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + newclient + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("normal job female hair style table loader patch");
@@ -370,7 +370,7 @@ function IncreaseHairSprites()
         "5E " +                              // pop esi
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset2) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset2) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
@@ -439,7 +439,7 @@ function IncreaseHairSprites()
     if (vectorCallAddr !== vectorCallAddr2)
         return "Failed in step 9 - vector call functions different";
 
-    var jmpAddr = exe.Raw2Rva(offset);
+    var jmpAddr = pe.rawToVa(offset);
     var vectorCallOffset = vectorCallAddr - (patchOffset + newclient + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
 
@@ -470,7 +470,7 @@ function IncreaseHairSprites()
         "5E " +                              // pop esi
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
@@ -504,7 +504,7 @@ function IncreaseHairSprites()
     if (offset === -1)
         return "Failed in step 10 - jump location not found";
 
-    jmpAddr = exe.Raw2Rva(offset + jumpOffset);
+    jmpAddr = pe.rawToVa(offset + jumpOffset);
     var vectorCallOffset2 = vectorCallAddr2 - (patchOffset2 + newclient + 1 + 5 + 2 + 5);  // calc offset to call vector function (offsets from next code block)
 
     consoleLog("doram job female hair style table loader patch");
@@ -535,7 +535,7 @@ function IncreaseHairSprites()
                                              // mov [ebp+var_10], offset "_병아리모자"
         "E9 ";                               // jmp jmpAddr
 
-    jmpAddr = jmpAddr - (exe.Raw2Rva(patchOffset2) + code.hexlength() + 4);
+    jmpAddr = jmpAddr - (pe.rawToVa(patchOffset2) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
     exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
