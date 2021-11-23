@@ -371,3 +371,9 @@ QTableView::item:selected {
 
 #menuBar[cssStyle="default"] {
 }
+
+QTableView QToolTip {
+    background-color: rgb(48, 48, 48);
+    border: 1px solid rgb(127, 106, 0);
+    color: rgb(193, 193, 0);
+}
