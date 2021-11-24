@@ -254,8 +254,13 @@ QTabWidget::pane {
 
 /* new props */
 
+QTableView::item {
+    border: 3px solid white;
+}
+
 QTableView::item:selected {
     color: rgb(10, 10, 120);
+    border: 3px solid rgb(220, 220, 255);
     background-color: rgb(220, 220, 255);
 }
 

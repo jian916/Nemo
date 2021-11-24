@@ -245,14 +245,20 @@ QCheckBox::indicator::checked {
     image: url(Themes/EXcite Dark/icons/checked.png);
 }
 
+QTableView::item {
+    border: 3px solid rgb(48, 48, 48);
+}
+
 QTableView::item:hover {
     color: rgb(0, 0, 0);
     background-color: rgb(255, 106, 0);
+    border: 3px solid rgb(255, 106, 0);
 }
 
 QTableView::item:selected {
     color: rgb(48, 48, 48);
     background-color: rgb(146, 204, 0);
+    border: 3px solid rgb(146, 204, 0);
 }
 
 #bold {
