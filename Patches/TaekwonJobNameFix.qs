@@ -85,9 +85,13 @@ function TaekwonJobNameFix()
         consoleLog(text + ": 0x" + pe.rawToVa(val).toString(16));
     }
 
+    var namesStr = [
+        "TaeKwon Girl",
+        "TaeKwon Boy"
+    ];
     var enStr = [
-        pe.stringHex4("TaeKwon Girl"),
-        pe.stringHex4("TaeKwon Boy")
+        pe.stringHex4(namesStr[0]),
+        pe.stringHex4(namesStr[1])
     ];
     var krStr = [
         pe.stringHex4("\xC5\xC2\xB1\xC7\xBC\xD2\xB3\xE0"),
@@ -95,8 +99,8 @@ function TaekwonJobNameFix()
     ];
 
     var allKrRef = [
-        searchUsage(krStr[0]),
-        searchUsage(krStr[1])
+        searchUsage(krStr[0], namesStr[0]),
+        searchUsage(krStr[1], namesStr[1])
     ];
 
     var foundRef = [[], []];
