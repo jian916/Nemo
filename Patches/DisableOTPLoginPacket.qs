@@ -1,47 +1,30 @@
+//
+// Copyright (C) 2020 CH.C (jchcc)
+// Copyright (C) 2020-2021  Andrei Karas (4144)
+//
+// Hercules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
 function DisableOTPLoginPacket()
 {
-  //Step 1 - Find the code inside UILoginWnd::SendMsg
-  var code =
-    " 8B 0D ?? ?? ?? ??" //0 mov ecx,[g_modeMgr]
-  + " 6A 00"             //6 push 0
-  + " 6A 00"             //8 push 0
-  + " 6A 00"             //10 push 0
-  + " 8B 01"             //12 mov eax,[ecx]
-  + " 6A 26"             //14 push 26h
-  + " 68 35 27 00 00"    //16 push 2735h
-  + " FF 50 18"          //21 call dword ptr [eax+18h]
-  ;
-  var push1 = 15;
-  var push2 = 17;
-  var CMode_SendMsgOffset = [23, 1]
+    exe.replace(table.getRawValidated(table.OTPLoginPatchId1), 0x2710.packToHex(4), PTYPE_HEX);  // replace LMM_ constant
+    exe.replace(table.getRawValidated(table.OTPLoginPatchId2), " 00", PTYPE_HEX);
 
-  var offset = pe.findCode(code);
-  if (offset === -1)
-    return "Failed in Step 1";
-
-  logField("CMode_vtable::SendMsg", offset, CMode_SendMsgOffset)
-
-  //Step 2 - Change parameter, make client send original login packet first
-  exe.replace(offset + push1, " 00", PTYPE_HEX); //replace 26h with 0h
-  exe.replace(offset + push2, " 10", PTYPE_HEX); //replace 2735h with 2710
-
-  return true;
+    return true;
 }
 
-//================================================//
-// Disable Patch for Unsupported/Unneeded clients //
-//================================================//
 function DisableOTPLoginPacket_()
 {
-  var code =
-    " 8B 0D ?? ?? ?? ??" //0 mov ecx,[g_modeMgr]
-  + " 6A 00"             //6 push 0
-  + " 6A 00"             //8 push 0
-  + " 6A 00"             //10 push 0
-  + " 8B 01"             //12 mov eax,[ecx]
-  + " 6A 26"             //14 push 26h
-  + " 68 35 27 00 00"    //16 push 2735h
-  + " FF 50 18"          //21 call dword ptr [eax+18h]
-  ;
-  return (pe.findCode(code) !== -1);
+    return (pe.stringRaw(".?AVUILoginOTPWnd@@") !== -1);
 }

@@ -281,5 +281,5 @@ function RemoveHardcodedAddress()
 //====================================================================//
 function RemoveHardcodedAddress_()
 {
-  return ((exe.getClientDate() > 20171019 && IsZero()) || exe.getClientDate() >= 20181113);
+    return (pe.stringRaw(".?AVUILoginOTPWnd@@") !== -1);
 }

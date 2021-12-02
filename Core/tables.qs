@@ -66,6 +66,8 @@ function registerTables()
     table.UITransBalloonText_m_backFillColor = 56;
     table.m_oldFollowTime = 57;
     table.m_oldDisappearTime = 58;
+    table.OTPLoginPatchId1 = 64;
+    table.OTPLoginPatchId2 = 65;
 
     registerTableFunctions();
 }
