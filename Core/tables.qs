@@ -68,6 +68,8 @@ function registerTables()
     table.m_oldDisappearTime = 58;
     table.OTPLoginPatchId1 = 64;
     table.OTPLoginPatchId2 = 65;
+    table.g_accountAddr = 66;
+    table.g_accountPort = 67;
 
     registerTableFunctions();
 }

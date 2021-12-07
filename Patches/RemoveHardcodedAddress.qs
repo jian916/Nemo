@@ -39,8 +39,8 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
         return "Failed in step 2b (old)";
     otpAddr = pe.rawToVa(otpAddr);
     var otpPort = otpAddr + 4
-    var clientinfo_addr = otpPort + 4
-    var clientinfo_port = clientinfo_addr + 4
+    var clientinfo_addr = table.getValidated(table.g_accountAddr);
+    var clientinfo_port = table.getValidated(table.g_accountPort);
 
     consoleLog("step 3a - find otp_addr usage");
     var code =
@@ -60,24 +60,12 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
-    consoleLog("step 4a - find call to atoi");
-    var code =
-        " 75 F4" +                                 // 0  jnz addr1
-        " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
-        " FF 15 ?? ?? ?? 00" +                     // 8  call ds:atoi
-        " FF 35 ?? ?? ?? 00"                       // 14 push clientinfo_domain
-    var atoiOffset = 10;
-    var offset = pe.findCode(code);
-    if (offset === -1)
-        return "Failed in step 4a (old)";
-
-    logVaFunc("atoi", offset, atoiOffset);
-    var callAtoi = exe.fetchHex(offset + atoiOffset - 2, 6);
+    var atoi = imports.ptrHexValidated("atoi");
 
     consoleLog("step 4b - change function override_address_port");
     var newCode =
         "FF 35 " + clientinfo_port.packToHex(4) +  // push clientinfo_port
-        callAtoi +                                 // call ds:atoi
+        "FF 15 " + atoi +                          // call ds:atoi
         "A3" + otpPort.packToHex(4) +              // mov otp_port, eax
         "83 C4 04" +                               // add esp, 4
         "C3"                                       // retn
@@ -104,8 +92,8 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
         return "Failed in step 2b (new)";
     otpAddr = pe.rawToVa(otpAddr);
     var otpPort = otpAddr + 4
-    var clientinfo_addr = otpPort + 4
-    var clientinfo_port = clientinfo_addr + 4
+    var clientinfo_addr = table.getValidated(table.g_accountAddr);
+    var clientinfo_port = table.getValidated(table.g_accountPort);
 
     if (exe.getClientDate() >= 20200630)
         return RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, clientinfo_port)
@@ -128,19 +116,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
     exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
 
-    consoleLog("step 4a - find call to atoi");
-    var code =
-        " 75 F3" +                                 // 0  jnz addr1
-        " FF 35" + clientinfo_port.packToHex(4) +  // 2  push clientinfo_port
-        " FF 15 ?? ?? ?? 00" +                     // 8  call ds:atoi
-        " FF 35 ?? ?? ?? 00"                       // 14 push clientinfo_domain
-    var atoiOffset = 10;
-    var offset = pe.findCode(code);
-    if (offset === -1)
-        return "Failed in step 4a (new)";
-
-    logVaFunc("atoi", offset, atoiOffset);
-    var callAtoi = exe.fetchHex(offset + atoiOffset - 2, 6);
+    var atoi = imports.ptrHexValidated("atoi");
 
     consoleLog("step 4b - change function override_address_port");
     var jmpOffset = 21;
@@ -148,7 +124,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
 
     var newCode =
         "FF 35 " + clientinfo_port.packToHex(4) +  // 0 push clientinfo_port
-        callAtoi +                                 // 6 call ds:atoi
+        "FF 15 " + atoi +                          // 6 call ds:atoi
         " A3" + otpPort.packToHex(4) +             // 12 mov otp_port, eax
         " 83 C4 04" +                              // 17 add esp, 4
         " E9" + continueAddr.packToHex(4)          // 20 jmp continue
