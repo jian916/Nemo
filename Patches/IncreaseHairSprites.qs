@@ -165,7 +165,7 @@ function IncreaseHairSprites()
 
     var tableCodeOffset = offsets[0];
     var vectorCallAddr = pe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
-    var varCode = exe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
+    var varCode = pe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
     patchOffset = tableCodeOffset + patchOffset;
 
     consoleLog("step 6 - allocate strings with hair id");
@@ -434,7 +434,7 @@ function IncreaseHairSprites()
     var tableCodeOffset2 = offset;
     var vectorCallAddr2 = pe.fetchDWord(tableCodeOffset2 + callOffset2) + tableCodeOffset2 + callOffset2 + 4;
     patchOffset2 = tableCodeOffset2 + patchOffset2;
-    var varCode = exe.fetchHex(tableCodeOffset2 + fetchOffset, fetchSize);
+    var varCode = pe.fetchHex(tableCodeOffset2 + fetchOffset, fetchSize);
 
     if (vectorCallAddr !== vectorCallAddr2)
         return "Failed in step 9 - vector call functions different";
