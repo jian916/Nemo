@@ -65,7 +65,7 @@ function KoreaServiceTypeXMLFix()
     if (offset < 0)
         return "Failed in step 2c - found wrong offset for iteration no." + i;
     //Step 2d - Replace refAddr + 4 with the contents from refAddr, so that all valid langtypes will use same case as 0 i.e. Korea
-    code = exe.fetchHex(offset, 4);
+    code = pe.fetchHex(offset, 4);
     exe.replace(offset + 4, code, PTYPE_HEX);
   }
 
