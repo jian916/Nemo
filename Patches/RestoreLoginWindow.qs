@@ -166,7 +166,7 @@ function RestoreLoginWindow()
 
   //Step 5c - Extract the reference and construct the code for getting g_modeMgr to ECX + C & mode setter to EDX (same as shown initially)
   var infix =
-    exe.fetchHex(offset + code.hexlength() - 2, 6) //MOV ECX, DWORD PTR DS:[Reference]
+    pe.fetchHex(offset + code.hexlength() - 2, 6) //MOV ECX, DWORD PTR DS:[Reference]
   + " 8B 01"      //MOV EAX, DWORD PTR DS:[ECX]
   + " 8B 50 18"   //MOV EDX, DWORD PTR DS:[EAX+18]
   ;
