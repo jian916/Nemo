@@ -62,7 +62,7 @@ function DCToLoginWindow()
   offset += refOffset;
 
   //Step 2d - Extract the ECX assignment which we will need twice later on.
-  var movEcx = exe.fetchHex(offset, 6);
+  var movEcx = pe.fetchHex(offset, 6);
 
   //Step 2e - Find the Mode Changer CALL after <offset>
   code =
