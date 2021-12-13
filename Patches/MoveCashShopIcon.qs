@@ -56,7 +56,7 @@ function MoveCashShopIcon()
 
     if (stolenCodeOffset)
     {
-        var stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
+        var stolenCode = pe.fetchHexBytes(offset, stolenCodeOffset);
     }
     else
     {
