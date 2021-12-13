@@ -80,7 +80,7 @@ function GetLangType()
 
   logVaVar("g_serviceType", offset, 2);
   //Step 2b - Extract and return
-  var lang = exe.fetchHex(offset + 2, 4);
+  var lang = pe.fetchHex(offset + 2, 4);
   if (lang !== table.getHex4(table.g_serviceType))
     return ["found wrong g_serviceType"];
   return lang;
@@ -146,7 +146,7 @@ function GetWinMgrInfo(skipError)
     logRawFunc("UIWindowMgr_MakeWindow", offset, 6);
 
     return {
-        "gWinMgr": exe.fetchHex(offset, 5),
+        "gWinMgr": pe.fetchHex(offset, 5),
         "makeWin": pe.fetchDWord(offset + 6) + pe.rawToVa(offset) + 10
     };
 }
@@ -159,7 +159,7 @@ function GetWinMgrInfo(skipError)
 function HasFramePointer()
 {
     //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
-    return (exe.fetch(pe.sectionRaw(CODE)[0], 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
+    return (pe.fetch(pe.sectionRaw(CODE)[0], 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
 }
 
 //#################################################################################################
@@ -258,7 +258,7 @@ function FetchPacketKeyInfo()
   {
     //Step 2b - In case it succeeded Get the ECX assignment, RVA of the Obfuscate function & the packetKeys.
     retVal.type = 0;
-    retVal.refMov = exe.fetchHex(offset2, 6);
+    retVal.refMov = pe.fetchHex(offset2, 6);
 
     offset2 += code.hexlength();
     retVal.funcAddr = pe.rawToVa(offset2 + 4) + pe.fetchDWord(offset2);
@@ -290,7 +290,7 @@ function FetchPacketKeyInfo()
     return "PKI: Failed to find Encryption call";
 
   //Step 3b - Get the ECX assignment & Function RVA
-  retVal.refMov = exe.fetchHex(offset2, 6);
+  retVal.refMov = pe.fetchHex(offset2, 6);
 
   offset2 += code.hexlength();
   offset = offset2 + 4 + pe.fetchDWord(offset2);
@@ -550,7 +550,7 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
       case 0xBD:
       case 0xBE:
       case 0xBF: {//MOV reg32, OFFSET addr; No need to skip but do save for comparison later
-        regAssigns[opcode - 0xB8] = exe.fetchHex(offset, details.codesize);
+        regAssigns[opcode - 0xB8] = pe.fetchHex(offset, details.codesize);
         break;
       }
 
@@ -634,9 +634,9 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
 
     //Step 1e - Extract the code if skip is not enabled
     if (!skip)
-      extract += exe.fetchHex(offset, details.codesize);
+      extract += pe.fetchHex(offset, details.codesize);
 
-    //codes += pe.rawToVa(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
+    //codes += pe.rawToVa(offset).toBE() + " :" + pe.fetchHex(offset, details.codesize) + "\n";//debug
 
     //Step 1f - Update offset
 
