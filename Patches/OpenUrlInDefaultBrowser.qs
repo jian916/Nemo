@@ -53,7 +53,7 @@ function UseDefaultBrowser()
         return "Failed in Step 1c - Unknown instruction after reference.";
 
     //Step 1d - Save original instruction for later use
-    var store1 = exe.fetchHex(coffset, 7);
+    var store1 = pe.fetchHex(coffset, 7);
 
     //Step 2a - Get SHELL32.ShellExecuteA address
     var seoffset = imports.ptrHexValidated("ShellExecuteA", "SHELL32.dll");
