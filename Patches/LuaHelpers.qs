@@ -53,7 +53,7 @@ function _GetLuaAddrs()
   {
     case 0xFF: {//CALL DWORD PTR DS:[func] -> VC9 Clients
       offset += 11;
-      StrAlloc = exe.fetchHex(offset - 4, 4);
+      StrAlloc = pe.fetchHex(offset - 4, 4);
       AllocType = 0;//0 means function is an MSVC import
       break;
     }
@@ -95,7 +95,7 @@ function _GetLuaAddrs()
 
   offset2 += code.hexlength();
 
-  LuaState = exe.fetchHex(offset2 - 4, 4);
+  LuaState = pe.fetchHex(offset2 - 4, 4);
 
   //Step 2f - Find the Lua Function caller after offset2
   offset = pe.find(" E8 ?? ?? ?? FF", offset2, offset2 + 0x10);
@@ -366,7 +366,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
         throw "LUAFL: found wrong call function";
 
     consoleLog("Read stolen code");
-    var allStolenCode = exe.fetchHex(hookLoader, strPushOffset);
+    var allStolenCode = pe.fetchHex(hookLoader, strPushOffset);
     var movStolenCode = pe.fetchHexBytes(hookLoader, moveOffset)
     if (pushFlagsOffset !== 0)
     {
