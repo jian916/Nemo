@@ -60,7 +60,7 @@ function FixCharsetForFonts()
     logVaVar("g_fontCharSet", offset, gfontCharSetOfsset);
 
     // fetch address of g_fontCharSet
-    var cTable = exe.fetchHex(offset + gfontCharSetOfsset, 4);
+    var cTable = pe.fetchHex(offset + gfontCharSetOfsset, 4);
 
     // Find the patch point, should be MOV EAX,[EDX*4+g_fontCharSet]
     offset = pe.findCode(" 8B 04 95" + cTable);
