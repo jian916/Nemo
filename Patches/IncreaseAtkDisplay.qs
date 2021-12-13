@@ -124,7 +124,7 @@ function IncreaseAtkDisplay()
     return "Failed in Step 2 - g_modeMgr assignment missing";
 
   //Step 2g - Extract the assignment
-  var movECX = exe.fetchHex(offset, 5);
+  var movECX = pe.fetchHex(offset, 5);
 
   //Step 2h - Now find the CModeMgr::GetGameMode call after it - this is where we need to Jump to after digit count and extraction
   offset = pe.find(" E8 ?? ?? ?? FF", offset + 5);//CALL CModeMgr::GetGameMode
