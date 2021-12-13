@@ -37,7 +37,7 @@ function DumpImportTable()
     fp.writeline( "Lookup Table = 0x" + ilt.toBE()
                 + ", TimeStamp = " + ts
                 + ", Forwarder = " + fchain
-                + ", Name = " + exe.fetch(dllName, offset2 - dllName)
+                + ", Name = " + pe.fetch(dllName, offset2 - dllName)
                 + ", Import Address Table = 0x" + (iatRva + pe.getImageBase()).toBE()
                 );
 
@@ -69,8 +69,8 @@ function DumpImportTable()
         var offset4 = pe.find("00", offset3 + 2);
         fp.writeline( "  Thunk Address (RVA) = 0x" + pe.rawToVa(offset2).toBE()
                     + ", Thunk Address(RAW) = 0x" + offset2.toBE()
-                    + ", Function Hint = 0x" + exe.fetchHex(offset3, 2).replace(/ /g, "")
-                    + ", Function Name = " + exe.fetch(offset3+2, offset4 - (offset3+2))
+                    + ", Function Hint = 0x" + pe.fetchHex(offset3, 2).replace(/ /g, "")
+                    + ", Function Name = " + pe.fetch(offset3+2, offset4 - (offset3+2))
                     );
       }
       else
