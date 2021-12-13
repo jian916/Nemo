@@ -208,12 +208,12 @@ function DisableHShield()
 
         code = " ";  // Will contain the import table
 
-        for (offset = dir.offset; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+        for (offset = dir.offset; (curValue = pe.fetchHex(offset, 20)) !== finalValue; offset += 20)
         {
             consoleLog("Step 5e - Get the DLL Name for the import entry");
             offset2 = pe.vaToRaw(pe.fetchDWord(offset + 12) + pe.getImageBase());
             var offset3 = pe.find("00 ", offset2);
-            var curDLL = exe.fetch(offset2, offset3 - offset2);
+            var curDLL = pe.fetch(offset2, offset3 - offset2);
 
             consoleLog("Step 5f - Make sure its not a duplicate or aossdk.dll");
             if (lastDLL === curDLL || curDLL === "aossdk.dll")
