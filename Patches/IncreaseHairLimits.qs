@@ -97,7 +97,7 @@ function IncreaseHairLimits()
         return "Failed in Step 1 - HairColor comparison missing";
 
     //Step 1c - Extract the EBX/EBP offset refering to Hair color index, Hair color limit and save the comparison location
-    var hCPtr = exe.fetchHex(offset + 2, 4);
+    var hCPtr = pe.fetchHex(offset + 2, 4);
     var hCBegin = offset + cmpLoc;
     var hCEnd = offset + code.hexlength();
 
@@ -232,7 +232,7 @@ function IncreaseHairLimits()
         return "Failed in Step 2 - HairStyle comparison missing";
 
     //Step 2c - Extract the EBX/EBP offset refering to Hair style index, Hair style limit addon and save the comparison location
-    var hSPtr = exe.fetchHex(offset + 2, 4);
+    var hSPtr = pe.fetchHex(offset + 2, 4);
     var hSBegin = offset + cmpLoc;
     var hSEnd = offset + code2.hexlength();
 
