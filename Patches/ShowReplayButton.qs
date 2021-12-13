@@ -35,7 +35,7 @@ function ShowReplayButton()
         return "Failed in Step 2.6 - Mode comparison missing";
 
     var jumpfunc = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
-    var varCode = exe.fetchHex(result, 14);
+    var varCode = pe.fetchHex(result, 14);
     var retAddr = offset + 5;
 
     var ins =
@@ -123,7 +123,7 @@ function ShowReplayButton()
   // get address of CRagConnection::instanceR
   var func = pe.rawToVa(offset2) + pe.fetchDWord(offset2 - 4);
   // get command related to CRagConnection::replayFlag ?
-  var assigner = exe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
+  var assigner = pe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
 
   //Step 4a - Prep code to disable the Replay Mode and send 2722 instead of 2729
   code =
@@ -257,7 +257,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     {
       code =
         " 04 00 00 00"                          //MOV DWORD PTR DS:[EBP - x], 4
-      + " 89 45" + exe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
+      + " 89 45" + pe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
       + " 90 90 90 90"                          //NOP x4
       ;
       break;
@@ -267,10 +267,10 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     offset = pe.find(" 8D 45 ??", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
     if (offset === -1)
         return "4";
-    var varCode = exe.fetchHex(offset, 3);
+    var varCode = pe.fetchHex(offset, 3);
       code =
         " 04 00 00 00"                          //MOV DWORD PTR DS:[EBP - x], 4
-      + " 89 45" + exe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
+      + " 89 45" + pe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
       + varCode                                 //LEA EAX, [EBP+a]
       + " 90"                                   //NOP
       ;
