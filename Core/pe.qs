@@ -382,6 +382,13 @@ function pe_fetchRelativeValue(offset, offset2)
     return addr;
 }
 
+function pe_fetchHexBytes(offset, offset2)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    return pe.fetchHex(addr, size);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -418,4 +425,5 @@ function registerPe()
     pe.fetchValue = pe_fetchValue;
     pe.fetchValueSimple = pe_fetchValueSimple;
     pe.fetchRelativeValue = pe_fetchRelativeValue;
+    pe.fetchHexBytes = pe_fetchHexBytes;
 }
