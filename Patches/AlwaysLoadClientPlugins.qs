@@ -48,7 +48,7 @@ function AlwaysLoadClientPlugins()
     if (offset === -1)
         return "Failed in Step 2 - Argument pushes for call to RegQueryValueEx not found";
 
-    var soundMode = exe.fetchHex(offset + 1, 4);
+    var soundMode = pe.fetchHex(offset + 1, 4);
 
     // Step 3a - Find soundMode comparison
     code =
