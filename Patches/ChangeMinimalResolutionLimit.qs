@@ -123,8 +123,8 @@ function ChangeMinimalResolutionLimit()
 
 
     //Fix potential crash when access the Advanced Settings
-    var screenWidthAdd = exe.fetchHex(offset + screenWidth1Offset, 4);
-    var screenHeightAdd = exe.fetchHex(offset + screenHeight1Offset, 4);
+    var screenWidthAdd = pe.fetchHex(offset + screenWidth1Offset, 4);
+    var screenHeightAdd = pe.fetchHex(offset + screenHeight1Offset, 4);
 
     code =
         "3B 3D " + screenWidthAdd +    //cmp edi, screenWidth
@@ -163,7 +163,7 @@ function ChangeMinimalResolutionLimit()
     logVaVar("MODECNT", offset, modeCntOffset);
     logField("UIGraphicSettingWnd::MODECNT", offset, uiModeCntOffset);
 
-    var codeIns = exe.fetchHex(offset, retAdd);
+    var codeIns = pe.fetchHex(offset, retAdd);
 
     var vars = {
         "retAddr": pe.rawToVa(offset + retAdd),
