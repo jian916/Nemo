@@ -223,9 +223,7 @@ function exe_fetchRelativeValue(offset, offset2)
 
 function exe_fetchHexBytes(offset, offset2)
 {
-    var size = offset2[1];
-    var addr = offset + offset2[0];
-    return exe.fetchHex(addr, size);
+    reportLegacy("Please replace exe.fetchHexBytes to pe.fetchHexBytes");
 }
 
 function registerExe()
