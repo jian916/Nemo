@@ -62,7 +62,7 @@ function LoadItemInfoPerServer()
     return "Failed in Step 2 - ItemInfo Loader missing";
 
   //Step 2d - Extract the MOV ECX statement
-  var refMov = exe.fetchHex(offset + 5, 6);
+  var refMov = pe.fetchHex(offset + 5, 6);
 
   //Step 2e - Change the MOV statement to JMP for skipping the loader
   var code2 =
@@ -125,7 +125,7 @@ function LoadItemInfoPerServer()
   offset += refMov.hexlength();
 
   //Step 4b - Extract the PUSH statement and Copier Function address
-  var iiPush = exe.fetchHex(offset, 5);
+  var iiPush = pe.fetchHex(offset, 5);
   var iiCopierFunc = pe.rawToVa(offset + 10) + pe.fetchDWord(offset + 6);
 
   //Step 5a - Find the 's' input Push Function call inside the LuaFn Caller
