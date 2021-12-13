@@ -60,8 +60,8 @@ function ChangeMvpHealthBarSize()
     if (offset2 === -1)
         return "Failed in Step 2c";
 
-    var isBoss = exe.fetchHex(offset2 + 2, 4);
-    var oriCode = exe.fetchHex(offset1, 6);
+    var isBoss = pe.fetchHex(offset2 + 2, 4);
+    var oriCode = pe.fetchHex(offset1, 6);
     var retAdd = offset1 + 6;
 
     var width = exe.getUserInput("$mvpHpWidth", XTYPE_BYTE, _("Hp bar width (default 60)"), _("Enter new hp bar width in pixels"), "60", 1, 127);
