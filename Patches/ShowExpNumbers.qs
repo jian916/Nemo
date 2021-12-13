@@ -104,7 +104,7 @@ function ShowExpNumbers()
 
   if (pe.fetchUByte(offset) !== 0xE8)
   { //MOV ECX, reg32 comes in between
-    rcode = exe.fetchHex(offset + 1, 1);
+    rcode = pe.fetchHex(offset + 1, 1);
     offset += 2;
   }
 
