@@ -26,7 +26,7 @@ function MoveShieldToTopPatch(floatAddr, offset, offset2, patchAddrOffset, conti
     var stolenCodeSize = 7;
     var patchAddr = offset + patchAddrOffset;
     var continueAddr = pe.rawToVa(offset) + continueOffset;
-    var stolenCode = exe.fetchHex(offset + patchAddrOffset, stolenCodeSize);
+    var stolenCode = pe.fetchHex(offset + patchAddrOffset, stolenCodeSize);
     var cntHex = pe.fetchDWord(offset2 + cntOffset).packToHex(4);
 
     // step 4 - insert code for adjust oow/oowup
