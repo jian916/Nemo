@@ -84,7 +84,7 @@ function DisableMultipleWindows()
     }
     else
     {
-        code = exe.fetchHexBytes(offset, stolenCodeOffset);
+        code = pe.fetchHexBytes(offset, stolenCodeOffset);
     }
 
     consoleLog("Step 2b - Prepare code for mutex windows");
