@@ -34,7 +34,7 @@ function GetFunction(funcName, dllName, ordinal)
     {
       nameOff = pe.vaToRaw(nameOff + imgBase);
       var nameEnd = pe.find("00", nameOff);
-      if (dllName !== exe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
+      if (dllName !== pe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
     }
 
     //Step 1e - Get Raw Offset of FIrst Thunk
@@ -58,7 +58,7 @@ function GetFunction(funcName, dllName, ordinal)
         nameEnd = pe.find("00", nameOff);
 
         //Step 2e - Check if the Function name matches. If it does, save the address in IAT and break
-        if (funcName === exe.fetch(nameOff, nameEnd - nameOff))
+        if (funcName === pe.fetch(nameOff, nameEnd - nameOff))
         {
           funcAddr = pe.rawToVa(offset2);
           break;
