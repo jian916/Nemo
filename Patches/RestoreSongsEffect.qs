@@ -114,7 +114,7 @@ function RestoreSongsEffect()
     if (offset === -1)
         return "Failed in Step 3 - skill offset not found";
 
-    var sidOffset = exe.fetchHex(offset + jobOffset[0], jobOffset[1]);
+    var sidOffset = pe.fetchHex(offset + jobOffset[0], jobOffset[1]);
     logField("CGameActor::m_job", offset, jobOffset);
 
     //Step 4a - Prepare effectID list
@@ -169,7 +169,7 @@ function RestoreSongsEffect()
     var firstUnitID = 126;
     var LPUnirID = 157;
     var firstSongUnitID = 158;
-    var LPtblOffset = exe.fetchHex(pe.vaToRaw(iswTable + (LPUnirID - firstUnitID)), 1);
+    var LPtblOffset = pe.fetchHex(pe.vaToRaw(iswTable + (LPUnirID - firstUnitID)), 1);
 
     code = LPtblOffset.repeat(effectID.length - 1);
 
