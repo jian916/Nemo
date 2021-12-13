@@ -109,15 +109,15 @@ function CustomAuraLimits()
       return "Failed in Step 3 - Aura Call missing";
 
     if (argPush === "")
-      argPush = exe.fetch(offset2 + 2, 1);
+      argPush = pe.fetch(offset2 + 2, 1);
 
     //Step 3e - Extract the auraconst
-    var gAura = [exe.fetchHex(offset2 + 1, 1)];
+    var gAura = [pe.fetchHex(offset2 + 1, 1)];
     gAura[1] = gAura[2] = gAura[0];//Same value is used for All Auras - and therefore shows only 1 type of aura per job
 
     //Step 3f - Extract the Zero PUSH count
     var argCount = argPush.length;
-    argPush = exe.fetchHex(offset2 - 4 * argCount, 4 * argCount);
+    argPush = pe.fetchHex(offset2 - 4 * argCount, 4 * argCount);
 
     if (argPush.substr(0, 3 * argCount) === argPush.substr(9 * argCount))//First and Last is same means there are actually 4 PUSHes
       argCount = 4;
@@ -177,7 +177,7 @@ function CustomAuraLimits()
       return "Failed in Step 4 - Zero assignment missing";
 
     //Step 4g - Save it (only needed for new types)
-    var zeroAssign = exe.fetchHex(offset, code.hexlength());
+    var zeroAssign = pe.fetchHex(offset, code.hexlength());
 
     //Step 4h - Setup the Aura constants and Arg count
     var argCount = 4;
