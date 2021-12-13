@@ -25,7 +25,7 @@ function SkipLicenseScreen()
   var refaddr = pe.vaToRaw(pe.fetchDWord(offset + 3));//We need the raw address
 
   //Step 2c - Extract the 3rd Entry in the jumptable => Case 2. Case 0 and Case 1 are related to License Screen
-  var third = exe.fetchHex(refaddr + 8, 4);
+  var third = pe.fetchHex(refaddr + 8, 4);
 
   //Step 3 - Replace the 1st and 2nd entries with the third. i.e. Case 0 and 1 will now use Case 2
   exe.replace(refaddr, third, PTYPE_HEX);
