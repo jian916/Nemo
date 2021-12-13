@@ -94,7 +94,7 @@ function ExtendCashShopPreview()
 
     consoleLog("add new code");
 
-    var stolenCode = exe.fetchHex(offset1, stolenCodeSize);
+    var stolenCode = pe.fetchHex(offset1, stolenCodeSize);
 
     if (flag === 1)
         var name = "1";
