@@ -264,7 +264,7 @@ function pe_fetchString(addrRaw)
     var endOffset = pe.find("00", addrRaw);
     if (endOffset == -1)
         throw "String end not found";
-    return exe.fetch(addrRaw, endOffset - addrRaw);
+    return pe.fetch(addrRaw, endOffset - addrRaw);
 }
 
 function pe_getImportTable()
