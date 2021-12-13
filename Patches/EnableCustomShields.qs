@@ -42,7 +42,7 @@ function EnableCustomShields()
   }
   else
   {
-    var regPush = exe.fetchHex(hookReq + 1, 1).replace("4", "5");//PUSH reg32_A
+    var regPush = pe.fetchHex(hookReq + 1, 1).replace("4", "5");//PUSH reg32_A
   }
 
   //Step 1d - Find the address of _버클러 (Buckler's suffix)
