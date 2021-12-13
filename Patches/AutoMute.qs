@@ -98,7 +98,7 @@ function AutoMute()
   }
 
   //Fetch all informations for later
-  var soundMgr = exe.fetchHex(offset + soundMgrOffsets[0], 4);
+  var soundMgr = pe.fetchHex(offset + soundMgrOffsets[0], 4);
   var SetBgmFuncAddr = pe.rawToVa(offset + SetStreamVolumeOffset + 4) + pe.fetchDWord(offset + SetStreamVolumeOffset);
   var SetEff2DFuncAddr = pe.rawToVa(offset + Set2DEffectVolumeOffset + 4) + pe.fetchDWord(offset + Set2DEffectVolumeOffset);
   var SetEff3DFuncAddr = pe.rawToVa(offset + Set3DEffectVolumeOffset + 4) + pe.fetchDWord(offset + Set3DEffectVolumeOffset);
@@ -174,7 +174,7 @@ function AutoMute()
 
   var jumpAddr = offset + jmpOffset;
 
-  var varCode = exe.fetchHex(jumpAddr, 5);
+  var varCode = pe.fetchHex(jumpAddr, 5);
 
   //Step 3 - Find the API:GetActiveWindow pointer
   var GetActiveWindow = imports.ptrValidated("GetActiveWindow", "User32.dll");
