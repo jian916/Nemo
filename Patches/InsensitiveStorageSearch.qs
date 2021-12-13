@@ -47,7 +47,7 @@ function InsensitiveStorageSearch()
     return "Failed in Step 2 - String compair not found";
 
   //Fetch original code, just in case
-  var varcode = exe.fetchHex(offset + calloffset, 9);
+  var varcode = pe.fetchHex(offset + calloffset, 9);
   var retAddr = pe.rawToVa(offset + calloffset + 9);
 
   //Prepare our code
