@@ -105,18 +105,18 @@ function CancelToLoginWindow()
         }
         else
         {
-            var zeroPush = exe.fetchHex(offset + 5, 1);
+            var zeroPush = pe.fetchHex(offset + 5, 1);
         }
 
         if (offset === -1)
             continue;
 
         //Step 3b - Check for PUSH 118 before offset (only 2013+ clients have that for msgBox creation)
-        if (exe.fetchHex(offset - 5, 5) === " 68 18 01 00 00")
+        if (pe.fetchHex(offset - 5, 5) === " 68 18 01 00 00")
             offset -= 7;
 
         //Step 3c - Search push 0 before patched block
-        if (exe.fetchHex(offset - 2, 2) === " 6a 00")
+        if (pe.fetchHex(offset - 2, 2) === " 6a 00")
         {
             // do this change only for some 2017+ clients.
             if (exe.getClientDate() > 20170000)
@@ -168,7 +168,7 @@ function CancelToLoginWindow()
         ;
 
         //Step 4b - Extract and paste all the code between offset2 and offset3 to prep the register call (Window Maker)
-        code += exe.fetchHex(offset2, offset3 - offset2);
+        code += pe.fetchHex(offset2, offset3 - offset2);
 
         //Step 4c - PUSH 2723 and go to the location after the original PUSH 2 => offset3 + 2
         code +=
