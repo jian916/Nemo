@@ -18,7 +18,7 @@ function EnableDNSSupport()
         return "Failed in Step 1 - g_accountAddr assignment missing";
 
     //Step 1c - Extract g_accountAddr
-    var gAccountAddr = exe.fetchHex(offset + 2, 4);
+    var gAccountAddr = pe.fetchHex(offset + 2, 4);
 
     //Step 2a - Find the code to hook our function to
     code =
