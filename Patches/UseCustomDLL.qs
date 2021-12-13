@@ -25,13 +25,13 @@ function UseCustomDLL()
   var dirData = "";
   var offset = dir.offset;
 
-  for ( ; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+  for ( ; (curValue = pe.fetchHex(offset, 20)) !== finalValue; offset += 20)
   {
 
     //Step 1e - Get the DLL Name for the import entry
     var offset2 = pe.vaToRaw(pe.fetchDWord(offset + 12) + pe.getImageBase());
     var offset3 = pe.find("00", offset2);
-    var curDLL = exe.fetch(offset2, offset3 - offset2);
+    var curDLL = pe.fetch(offset2, offset3 - offset2);
 
     //Step 1f - Make sure there is no duplicate
     //if (curDLL === lastDLL) continue;
