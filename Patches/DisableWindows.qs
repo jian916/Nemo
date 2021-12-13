@@ -41,8 +41,8 @@ function DisableWindows()
   var ITSS = pe.fetchDWord(offset + 3);
 
   //Find the default case offset, should be same in ID 54 & 67
-  var dfCase = exe.fetchHex(pe.vaToRaw(ITSS + 54), 1);
-  if (dfCase !== exe.fetchHex(pe.vaToRaw(ITSS + 67), 1))
+  var dfCase = pe.fetchHex(pe.vaToRaw(ITSS + 54), 1);
+  if (dfCase !== pe.fetchHex(pe.vaToRaw(ITSS + 67), 1))
     return "Failed in Step 2";
 
   //Get disable windows id list from input file
