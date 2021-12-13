@@ -32,7 +32,7 @@ function DisableHallucinationWavyScreen()
     return "Failed in Step 1 - no references matched";
 
   //Step 1d - Extract g_useEffect
-  var gUseEffect = exe.fetchHex(offset + 2, 4);
+  var gUseEffect = pe.fetchHex(offset + 2, 4);
 
   //Step 2a - Find the Comparison we need
   code =
