@@ -81,7 +81,7 @@ function hooks_matchFunctionStart(storageKey, offset)
     }
     var obj = hooks.createHookObj();
     obj.patchAddr = offset;
-    obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
+    obj.stolenCode = pe.fetchHexBytes(offset, stolenCodeOffset);
     obj.stolenCode1 = obj.stolenCode;
     obj.continueOffsetVa = offsetVa + continueOffset;
     obj.retCode = "";
@@ -192,9 +192,9 @@ function hooks_matchFunctionEnd(storageKey, offset)
     }
     var obj = hooks.createHookObj();
     obj.patchAddr = offset;
-    obj.stolenCode = exe.fetchHexBytes(offset, stolenCodeOffset);
-    obj.stolenCode1 = exe.fetchHexBytes(offset, stolenCode1Offset);
-    obj.retCode = exe.fetchHexBytes(offset, retOffset);
+    obj.stolenCode = pe.fetchHexBytes(offset, stolenCodeOffset);
+    obj.stolenCode1 = pe.fetchHexBytes(offset, stolenCode1Offset);
+    obj.retCode = pe.fetchHexBytes(offset, retOffset);
     obj.continueOffsetVa = 0;
     obj.endHook = true;
     return obj;
