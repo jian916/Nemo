@@ -233,11 +233,11 @@ function registerLua()
             throw "LUAFL: found wrong call function: " + origFile;
 
         consoleLog("Read stolen code");
-        var allStolenCode = exe.fetchHex(hookLoader, strPushOffset);
-        var movStolenCode = exe.fetchHexBytes(hookLoader, moveOffset)
+        var allStolenCode = pe.fetchHex(hookLoader, strPushOffset);
+        var movStolenCode = pe.fetchHexBytes(hookLoader, moveOffset)
         if (pushFlagsOffset !== 0)
         {
-            var pushFlagsStolenCode = exe.fetchHexBytes(hookLoader, pushFlagsOffset);
+            var pushFlagsStolenCode = pe.fetchHexBytes(hookLoader, pushFlagsOffset);
         }
         else
         {
@@ -246,7 +246,7 @@ function registerLua()
         var shortStolenCode = movStolenCode + pushFlagsStolenCode;
         if (otherOffset !== 0)
         {
-            var otherStoleCode = exe.fetchHexBytes(hookLoader, otherOffset);
+            var otherStoleCode = pe.fetchHexBytes(hookLoader, otherOffset);
         }
         else
         {
