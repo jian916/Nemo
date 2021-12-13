@@ -93,7 +93,7 @@ function IncreaseHairSpritesOld()
 
     var tableCodeOffset = offsets[0];
     var vectorCallAddr = pe.fetchDWord(tableCodeOffset + callOffset) + tableCodeOffset + callOffset + 4;
-    var varCode = exe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
+    var varCode = pe.fetchHex(tableCodeOffset + fetchOffset, fetchSize);
     patchOffset = tableCodeOffset + patchOffset;
 
     // step 5 - allocate strings with hair id
