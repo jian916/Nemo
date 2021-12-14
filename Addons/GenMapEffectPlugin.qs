@@ -49,7 +49,7 @@ function GenMapEffectPlugin()
     logRawFunc("CWeather_ScriptProcess", offset, scriptProcessOffset);
 
     consoleLog("Save the g_Weather address");
-    var gWeather = exe.fetchHex(offset+1, 4);
+    var gWeather = pe.fetchHex(offset+1, 4);
 
     consoleLog("Look for the ending pattern after CI_Entry to get CGameMode_Initialize_RetPtr");
     code =
@@ -91,12 +91,12 @@ function GenMapEffectPlugin()
     var opcode = pe.fetchByte(offset) & 0xFF;//and mask to fix up Sign issues
     if (opcode === 0xA1)
     {
-        var gUseEffect = exe.fetchHex(offset+1, 4);
+        var gUseEffect = pe.fetchHex(offset+1, 4);
         logFieldAbs("CSession::m_isEffectOn", offset, [1, 4]);
     }
     else
     {
-        var gUseEffect = exe.fetchHex(offset+2, 4);
+        var gUseEffect = pe.fetchHex(offset+2, 4);
         logFieldAbs("CSession::m_isEffectOn", offset, [2, 4]);
     }
 
@@ -142,10 +142,10 @@ function GenMapEffectPlugin()
         offset++;//extra 1 to skip the second opcode byte
 
     consoleLog("Save g_renderer & the g_renderer->ClearColor offset");
-    var gRenderer = exe.fetchHex(offset, 4);
+    var gRenderer = pe.fetchHex(offset, 4);
     if (gRenderer != table.getHex4(table.g_renderer))
         throw "Found wrong g_renderer";
-    var gR_clrColor = exe.fetchHex(offset+6, 1);
+    var gR_clrColor = pe.fetchHex(offset+6, 1);
 
     logVaVar("g_renderer", offset, 0);
     logField("CRenderer::m_nClearColor", offset, [6, 1]);
