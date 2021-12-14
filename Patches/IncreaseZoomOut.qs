@@ -35,7 +35,7 @@ function IncreaseZoomOutCustom()
 
 function IncreaseZoomOut(newvalue)
 {
-    //Step 1 - Find the FAR_DIST location
+    consoleLog("Step 1 - Find the FAR_DIST location");
     var code =
         " 00 00 66 43" //DD FLOAT 230.000              zoom1 (min zoom level indoor/outdoor)
       + " 00 00 C8 43" //DD FLOAT 400.000 <- FAR_DIST  zoom2 (max outdoor zoom level)
@@ -46,16 +46,16 @@ function IncreaseZoomOut(newvalue)
     if (offset === -1)
         return "Failed in Step 1";
 
-    //Step 2 - Modify with the value supplied - Current value is 400.0
+    consoleLog("Step 2 - Modify with the value supplied - Current value is 400.0");
     exe.replace(offset + 4, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
 
     if (pe.stringRaw("/zoom") !== -1)
     {   // found zoom command. need do additional patching
-        //Step 3 - Patch /zoom enabled/disabled command
+        consoleLog("Step 3 - Patch /zoom enabled/disabled command");
         // get zoom2 addr bytes
         var zoom2 = pe.rawToVa(offset + 4).packToHex(4);
 
-        // search and patch also enabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
+        consoleLog("search and patch also enabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)");
         var code1 = " C7 05 " + zoom2 + " 00 00 F0 43"; // mov zoom2, 480.0
         var offsets = pe.findCodes(code1);
         if (offsets.length === 0)
@@ -68,7 +68,7 @@ function IncreaseZoomOut(newvalue)
         }
 
 
-        // search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)
+        consoleLog("search and patch also disabled zoom in two places (UIGraphicSettingWnd_virt136 and CGameMode_func)");
         var code2 = " C7 05 " + zoom2 + " 00 00 C8 43"; // mov zoom2, 480.0
         var offsets = pe.findCodes(code2);
         if (offsets.length === 0)
@@ -80,7 +80,7 @@ function IncreaseZoomOut(newvalue)
             exe.replace(offsets[i] + 6, newvalue, PTYPE_HEX);
         }
 
-        //Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)
+        consoleLog("Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)");
         var code =
             "F3 0F 10 0D ?? ?? ?? ??" +  // movss xmm1, zoom_max_load_enabled
             "EB 08" +                    // jmp +8
@@ -89,8 +89,8 @@ function IncreaseZoomOut(newvalue)
             "F3 0F 10 15 ?? ?? ?? ??" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2" +                 // comiss xmm0, xmm2
             "F3 0F 11 0D " + zoom2;      // movss zoom2_max_outdoor, xmm1
-        var enabledOffset = 4;
-        var disabledOffset = 14;
+        var enabledOffset = [4, 4];
+        var disabledOffset = [14, 4];
         offset = pe.findCode(code);
         if (offset === -1)
         {
@@ -103,20 +103,17 @@ function IncreaseZoomOut(newvalue)
             "F3 0F 10 05 ?? ?? ?? ??" +  // movss xmm0, ADDR1
             "F3 0F 10 15 ?? ?? ?? ??" +  // movss xmm2, g_outdoorViewLatitude
             "0F 2F C2";                  // comiss xmm0, xmm2
-            enabledOffset = 4;
-            disabledOffset = 24;
+            enabledOffset = [4, 4];
+            disabledOffset = [24, 4];
             offset = pe.findCode(code);
         }
         if (offset === -1)
             return "Failed in Step 4";
 
-        // patch enabled /zoom configuration limit
-        var enebledAddr = pe.vaToRaw(pe.fetchDWord(offset + enabledOffset));
-        exe.replace(enebledAddr, newvalue, PTYPE_HEX);
-
-        // patch disabled /zoom configuration limit
-        var disabledAddr = pe.vaToRaw(pe.fetchDWord(offset + disabledOffset));
-        exe.replace(disabledAddr, newvalue, PTYPE_HEX);
+        consoleLog("patch enabled and disabled /zoom configuration limit");
+        var valueAddr = pe.rawToVa(exe.insertHex(newvalue));
+        exe.setValue(offset, enabledOffset, valueAddr);
+        exe.setValue(offset, disabledOffset, valueAddr);
     }
 
     return true;
