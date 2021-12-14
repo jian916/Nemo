@@ -380,6 +380,18 @@ In offset2 also exists size of fetched value in bytes.
 
 On success return fetched relative address converted to absolute virtual address.
 
+### pe.fetchHex
+
+``pe.fetchHex(rawAddr, size)``
+
+Read hex bytes from given address.
+
+### pe.fetch
+
+``pe.fetch(addr, size)``
+
+Read null terminated string from given address.
+
 
 ### pe.getImportTable
 

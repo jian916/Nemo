@@ -4,18 +4,6 @@
 
 ## Actual functions
 
-### exe.fetchHex
-
-``exe.fetchHex(rawAddr, size)``
-
-Read hex bytes from given address.
-
-### exe.fetch
-
-``exe.fetch(addr, size)``
-
-Read null terminated string from given address.
-
 ### exe.findZeros
 
 ``exe.findZeros(size)``
@@ -67,18 +55,6 @@ exe.getUserInput(varName, valType, title, prompt, value, minValue, maxValue)
 ```
 
 Request information from user.
-
-### exe.getPEOffset
-
-``exe.getPEOffset()``
-
-Return PE header raw address.
-
-### exe.getImageBase
-
-``exe.getImageBase()``
-
-Return image base.
 
 ### exe.getClientDate
 
@@ -286,49 +262,6 @@ Insert given dword value into free block in binary.
 
 Return raw address where dword was inserter.
 
-### exe.match
-
-``exe.match(code, useMask, rawAddr)``
-
-Check is given bytes can be matched to given raw address.
-
-| Argument | Description |
-| -------- | ----------- |
-| code     | Matched hex bytes |
-| useMask  | Flag for enable use mask in matching |
-| rawAddr  | Raw address for check with given bytes |
-
-If given bytes matched, return true.
-
-In other case return false.
-
-### exe.fetchValue
-
-Please use pe.fetchValue
-
-### exe.fetchValueSimple
-
-Please use pe.fetchValueSimple
-
-### exe.fetchRelativeValue
-
-Please use pe.fetchRelativeValue
-
-### exe.fetchHexBytes
-
-``exe.fetchHexBytes(offset, offset2)``
-
-Allow fetch hex bytes from binary with raw address offset plus offset2.
-
-In offset2 also exists size of fetched value in bytes.
-
-| Argument | Description |
-| -------- | ----------- |
-| offset   | Raw address (int) |
-| offset2  | additional offset and size (two ints) |
-
-On success return fetched bytes in hex string format.
-
 ### exe.setValue
 
 ``exe.setValue(offset, offset2, value)``
@@ -390,6 +323,19 @@ Read unsigned byte from given address.
 ``exe.fetchByte(rawAddr)``
 
 Read signed byte from given address.
+
+### exe.fetchHex
+
+``exe.fetchHex(rawAddr, size)``
+
+Read hex bytes from given address.
+
+### exe.fetch
+
+``exe.fetch(addr, size)``
+
+Read null terminated string from given address.
+
 
 ### exe.findCode
 
@@ -504,3 +450,58 @@ Recommended to switch to pe.sectionVa(section)[0]
 ``exe.getVSize(section)``
 
 Return virtual size of given section.
+
+### exe.getPEOffset
+
+``exe.getPEOffset()``
+
+Return PE header raw address.
+
+### exe.getImageBase
+
+``exe.getImageBase()``
+
+Return image base.
+
+### exe.match
+
+``exe.match(code, useMask, rawAddr)``
+
+Check is given bytes can be matched to given raw address.
+
+| Argument | Description |
+| -------- | ----------- |
+| code     | Matched hex bytes |
+| useMask  | Flag for enable use mask in matching |
+| rawAddr  | Raw address for check with given bytes |
+
+If given bytes matched, return true.
+
+In other case return false.
+
+### exe.fetchValue
+
+Please use pe.fetchValue
+
+### exe.fetchValueSimple
+
+Please use pe.fetchValueSimple
+
+### exe.fetchRelativeValue
+
+Please use pe.fetchRelativeValue
+
+### exe.fetchHexBytes
+
+``exe.fetchHexBytes(offset, offset2)``
+
+Allow fetch hex bytes from binary with raw address offset plus offset2.
+
+In offset2 also exists size of fetched value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+
+On success return fetched bytes in hex string format.
