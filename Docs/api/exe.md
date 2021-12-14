@@ -289,6 +289,16 @@ In offset also exists size of saved value in bytes.
 | offset2  | Raw address and size (two ints) |
 | value    | Saved value in hex |
 
+### exe.insertHex
+
+``exe.insertHex(value)``
+
+Allocate space and insert given hex value.
+
+Return raw address of inserted value.
+
+On error throw exception.
+
 
 ## Legacy functions
 

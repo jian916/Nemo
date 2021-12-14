@@ -152,6 +152,17 @@ function exe_insertDWord(value, dryRun)
     return free;
 }
 
+function exe_insertHex(value)
+{
+    var size = value.hexlength();
+    var free = exe.findZeros(size);
+    if (free === -1)
+        fatalError("Failed in exe.insertHex - Not enough free space");
+
+    exe.insert(free, size, value, PTYPE_HEX);
+    return free;
+}
+
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
@@ -236,6 +247,7 @@ function registerExe()
     exe.insertAsmTextObj = exe_insertAsmTextObj;
     exe.insertAsmFile = exe_insertAsmFile;
     exe.insertDWord = exe_insertDWord;
+    exe.insertHex = exe_insertHex;
     exe.replaceAsmText = exe_replaceAsmText;
     exe.replaceAsmFile = exe_replaceAsmFile;
     exe.match = exe_match;
