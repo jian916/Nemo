@@ -28,7 +28,7 @@ function ExtractTxtNames()
         } while (code !== 0 && code !== 0x40);//loop till NULL or @ is reached.
 
     //Step 2c - Extract the string and write to file
-        var str = exe.fetch(offset+1,end - offset);
+        var str = pe.fetch(offset+1,end - offset);
         if (str !== ".txt") //Skip ".txt"
             fp.writeline(str);
     }
