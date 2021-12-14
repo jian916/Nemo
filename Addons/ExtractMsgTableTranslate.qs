@@ -79,7 +79,7 @@ function ExtractMsgTableTranslate()
             else
             {
                 var end_offset = pe.find("00 ", start_offset);
-                msgStr = exe.fetch(start_offset, end_offset - start_offset);
+                msgStr = pe.fetch(start_offset, end_offset - start_offset);
             }
 
             consoleLog("Step 3b - Map the Korean string to English");
