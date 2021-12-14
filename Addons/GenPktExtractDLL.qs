@@ -66,7 +66,7 @@ function GenPktExtractDLL()
     throw "g_PacketLenMap not found";
 
   //Step 1e - Extract the g_PacketLenMap assignment
-  var gPacketLenMap = exe.fetchHex(offset, 5);
+  var gPacketLenMap = pe.fetchHex(offset, 5);
 
   //Step 2a - Go inside the pktLen function following the assignment
   offset += pe.fetchDWord(offset+6) + 10;
