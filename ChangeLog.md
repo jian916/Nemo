@@ -1,3 +1,31 @@
+# 2021-12-15 Different updates
+
+## Patches
+
+- Fix patch [Disable OTP Login Packet](http://nemo.herc.ws/patches/DisableOTPLoginPacket/#success-clients) for some clients. (fix by @4144).
+- Fix patch [Remove hardcoded address/port](http://nemo.herc.ws/patches/RemoveHardcodedAddress/#success-clients) for some clients. (fix by @4144).
+- Fix drawing sprites in max zoom level in patch [Increase Zoom Out 25%](http://nemo.herc.ws/patches/IncreaseZoomOut25Per/#success-clients). (fix by @4144).
+- Fix drawing sprites in max zoom level in patch [Increase Zoom Out 50%](http://nemo.herc.ws/patches/IncreaseZoomOut50Per/#success-clients). (fix by @4144).
+- Fix drawing sprites in max zoom level in patch [Increase Zoom Out 75%](http://nemo.herc.ws/patches/IncreaseZoomOut75Per/#success-clients). (fix by @4144).
+- Fix drawing sprites in max zoom level in patch [Increase Zoom Out Max](http://nemo.herc.ws/patches/IncreaseZoomOutMax/#success-clients). (fix by @4144).
+- Fix drawing sprites in max zoom level in patch [Increase Zoom Out Custom](http://nemo.herc.ws/patches/IncreaseZoomOutCustom/#success-clients). (fix by @4144).
+- Add patch [Hide reputation button](http://nemo.herc.ws/patches/HideReputationButton/#success-clients). (by @4144).
+
+## For devs
+
+- Add function for fetch data similar to exe functions: pe.fetch, pe.fetchHex.
+- Add function for fetch hex bytes: pe.fetchHexBytes.
+- Add function for insert hex bytes: exe.insertHex.
+- Move more functions from exe object into legacy functions.
+
+## Other
+
+- Redesigned patches list drawing.
+- Add support for search by all columns in filter.
+- Update tables.
+- Replace many legacy functions usage to actual functions.
+
+
 # 2021-11-22 Different updates
 
 ## Patches
