@@ -122,7 +122,7 @@ function EnableDNSSupport()
         return "Failed in Step 3 - Not enough free space";
 
     //Step 4a - Create a call to our function at CALL g_ResMgr
-    exe.replace(offset+1, (pe.rawToVa(free) - pe.rawToVa(offset+5)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset+1, (pe.rawToVa(free) - pe.rawToVa(offset+5)).packToHex(4));
 
     //Step 4b - Find gethostbyname function address (#52 when imported by ordinal)
     var uGethostbyname = imports.ptrValidated("gethostbyname", "ws2_32.dll", 52);  // By Ordinal
