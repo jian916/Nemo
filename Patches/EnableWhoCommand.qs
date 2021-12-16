@@ -42,7 +42,7 @@ function EnableWhoCommand()
         return "Failed in Step 1 - LangType comparison missing";
 
     //Step 1b - Replace the First JE with JMP to LEA
-    exe.replace(offset + 5, "90 EB 18", PTYPE_HEX);
+    pe.replaceHex(offset + 5, "90 EB 18");
 
     //Step 2a - Find PUSH 0B2 followed by CALL MsgStr - Common pattern inside Zc_User_Count
     code =
@@ -113,7 +113,7 @@ function EnableWhoCommand()
     logRawFunc("IsGravityAid", offset2, isGravityAidOffset);
 
     //Step 2c - Replace First JNE with JMP
-    exe.replace(offset2 + patchOffset, "EB", PTYPE_HEX);
+    pe.replaceByte(offset2 + patchOffset, 0xEB);
 
     return true;
 }
