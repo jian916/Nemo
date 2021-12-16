@@ -90,7 +90,7 @@ function DisableHelpMsg()
         return "Failed in Step 3 - Pattern not found";
 
     consoleLog("Step 4 - Replace JNE with JMP");
-    exe.replace(offset2 + code.hexlength() - 1, "EB ", PTYPE_HEX);
+    pe.replaceByte(offset2 + code.hexlength() - 1, 0xEB);
 
     return true;
 }
