@@ -63,7 +63,7 @@ function Disable1rag1Params()
         logRawFunc("strstr", offset, strstrOffset);
 
     consoleLog("Step 3 - Replace JNZ/JNE with JMP");
-    exe.replace(offset + jmpOffset, "EB ", PTYPE_HEX);
+    pe.replaceHex(offset + jmpOffset, "EB ");
 
     return true;
 }
