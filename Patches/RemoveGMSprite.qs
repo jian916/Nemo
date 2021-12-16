@@ -54,7 +54,7 @@ function RemoveGMSprite()
       return "Failed in Step 2 - Iteration No." + i;
 
     //Step 2c - Replace JNE with NOP + JMP
-    exe.replace(offset + code.hexlength() - 2, " 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset + code.hexlength() - 2, " 90 E9");
   }
 
   return true;
