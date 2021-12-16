@@ -56,7 +56,7 @@ function ReadDataFolderFirst()
         return "Failed in Step 1 - loading reference missing";
 
     //Step 1c - Change conditional instruction to permanent setting - as a failsafe
-    exe.replace(offset2 + firstOffset, repl, PTYPE_HEX);
+    pe.replaceHex(offset2 + firstOffset, repl);
 
     //===================================================================//
     // Client also compares g_readFolderFirst even before it is assigned //
@@ -79,7 +79,7 @@ function ReadDataFolderFirst()
                 return "Failed in Step 2 - Iteration No." + i;
 
             //Step 2d - NOP out the JZ
-            exe.replace(offset, " 90 90", PTYPE_HEX);
+            pe.replaceHex(offset, " 90 90");
         }
 
         return true;
@@ -98,7 +98,7 @@ function ReadDataFolderFirst()
             return "Failed in Step 3 - Iteration No." + i;
 
         //Step 4c - Replace with 6 NOPs
-        exe.replace(offset, " 90 90 90 90 90 90", PTYPE_HEX);
+        pe.replaceHex(offset, " 90 90 90 90 90 90");
     }
 
     return true;
