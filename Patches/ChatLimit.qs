@@ -73,15 +73,15 @@ function ChatLimit(option)
             return "Patch Cancelled - New value is same as old value";
 
         // Step 2b1 - Replace 02 with new value
-        exe.replace(offset, "$allowChatFlood", PTYPE_STRING);
+        pe.replaceHex(offset, flood.packToHex(1));
     }
     else
     {
         // Step 2a2 - Replace JL with JMP
         if (isLong)
-            exe.replace(offset + 1, "90 E9 ", PTYPE_HEX);
+            pe.replaceHex(offset + 1, "90 E9 ");
         else
-            exe.replace(offset + 1, "EB ", PTYPE_HEX);
+            pe.replaceHex(offset + 1, "EB ");
     }
 
     return true;
