@@ -71,7 +71,7 @@ function LoadItemInfoPerServer()
   + " EB 05" //JMP to after iteminfoLoader call
   ;
 
-  exe.replace(offset + 5, code2, PTYPE_HEX);
+  pe.replaceHex(offset + 5, code2);
 
   //Step 2f - Extract iteminfoLoader function address
   offset += code.hexlength();
@@ -109,7 +109,7 @@ function LoadItemInfoPerServer()
     return "Failed in Step 3 - Arg Count Push missing";
 
   //Step 3d - Change the last PUSH 0 to PUSH 1 (since we have 1 input argument)
-  exe.replace(offset + 5, "01", PTYPE_HEX);
+  pe.replaceByte(offset + 5, 1);
 
   //Step 4a - Find the location where the iteminfo copier is called
   code =
@@ -184,7 +184,7 @@ function LoadItemInfoPerServer()
 
   //Step 6d - Change the LuaFnNamePusher call to a JMP to our code
   offset = freeRva - pe.rawToVa(mainInject + 5);
-  exe.replace(mainInject, "E9" + offset.packToHex(4), PTYPE_HEX);
+  pe.replaceHex(mainInject, "E9" + offset.packToHex(4));
 
   //Step 6e - Inject to allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
@@ -235,10 +235,10 @@ function LoadItemInfoPerServer()
 
   //Step 7d - Change the function call to a JMP to our custom code
   offset = freeRva - pe.rawToVa(allocInject + 5);
-  exe.replace(allocInject, "E9" + offset.packToHex(4), PTYPE_HEX);
+  pe.replaceHex(allocInject, "E9" + offset.packToHex(4));
 
   if (!directCall)
-    exe.replace(allocInject + 5, "90", PTYPE_HEX);
+    pe.replaceByte(allocInject + 5, 0x90);
 
   //Step 7e - Inject to allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
