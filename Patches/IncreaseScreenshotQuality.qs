@@ -89,7 +89,7 @@ function IncreaseScreenshotQuality()
     code += " 90".repeat(csize * 2 - code.hexlength());
 
   //Step 3b - Now write into client.
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }
