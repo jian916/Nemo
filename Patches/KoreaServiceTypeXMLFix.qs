@@ -58,7 +58,7 @@ function KoreaServiceTypeXMLFix()
       return "Failed in Step 2 - Calls missing for iteration no." + i;
 
     //Step 2b - Replace the JMP skipping SelectClientInfo
-    exe.replace(offset + offset2, repl, PTYPE_HEX);
+    pe.replaceHex(offset + offset2, repl);
 
     //Step 2c - Extract the refAddr
     offset = pe.vaToRaw(pe.fetchDWord(offset + 3));
@@ -66,7 +66,7 @@ function KoreaServiceTypeXMLFix()
         return "Failed in step 2c - found wrong offset for iteration no." + i;
     //Step 2d - Replace refAddr + 4 with the contents from refAddr, so that all valid langtypes will use same case as 0 i.e. Korea
     code = pe.fetchHex(offset, 4);
-    exe.replace(offset + 4, code, PTYPE_HEX);
+    pe.replaceHex(offset + 4, code);
   }
 
   return true;
