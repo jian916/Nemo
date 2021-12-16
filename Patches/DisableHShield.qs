@@ -30,7 +30,7 @@ function DisableHShield()
         return "Failed in Step 1c - Pattern not found";
 
     consoleLog("Step 1d - Replace the JZ + XOR with XOR + INC of EAX to return 1 without initializing AhnLab");
-    exe.replace(offset, "33 C0 40 90 ", PTYPE_HEX);
+    pe.replaceHex(offset, "33 C0 40 90 ");
 
     if ((exe.getClientDate() >= 20090000 && exe.getClientDate() <= 20110228) && !IsSakray())
     {
@@ -65,7 +65,7 @@ function DisableHShield()
             return "Failed in Step 2a - Pattern not found";
 
         consoleLog("Step 2b - Replace the CALL with MOV EAX");
-        exe.replace(offset + repLoc, "B8 01 " + "00 ".repeat(3), PTYPE_HEX);
+        pe.replaceHex(offset + repLoc, "B8 01 " + "00 ".repeat(3));
     }
 
     consoleLog("Step 3a - Search failure message - this is there in newer clients");
@@ -98,7 +98,7 @@ function DisableHShield()
                 "5E " +     // 03 POP ESI
                 "C3 ";      // 04 RETN
 
-            exe.replace(offset, code, PTYPE_HEX);
+            pe.replaceHex(offset, code);
         }
     }
 
@@ -149,7 +149,7 @@ function DisableHShield()
 
         consoleLog("Step 4e - Replace the JNE with JMP to always skip");
         if (offset2 !== -1)
-            exe.replace(offset2 + code.hexlength() - 1, "EB ", PTYPE_HEX);
+            pe.replaceByte(offset2 + code.hexlength() - 1, 0xEB);
     }
 
     if (exe.getClientDate() > 20140700)
@@ -191,8 +191,8 @@ function DisableHShield()
             var PEoffset = pe.getPeHeader();
 
             exe.insert(Import_Info.offset, (Import_Info.valuePre + newTblData).hexlength(), Import_Info.valuePre + newTblData, PTYPE_HEX);
-            exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x08, Import_Info.tblAddr);
-            exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x0C, Import_Info.tblSize);
+            pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x08, Import_Info.tblAddr);
+            pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x0C, Import_Info.tblSize);
         }
     }
     else
@@ -227,7 +227,7 @@ function DisableHShield()
         code += finalValue;
 
         consoleLog("Step 5h - Overwrite import table with the one we got");
-        exe.replace(dir.offset, code, PTYPE_HEX);
+        pe.replaceHex(dir.offset, code);
     }
 
     return true;
