@@ -23,7 +23,7 @@ function DeleteCharWithEmail()
     if (offset !== -1)
     {
         //Step 1b - Change the JE to JMP
-        exe.replace(offset + patchOffset, "EB", PTYPE_HEX);
+        pe.replaceHex(offset + patchOffset, "EB");
     }
     else
     {
@@ -38,7 +38,7 @@ function DeleteCharWithEmail()
         patchOffset = 3
 
         //Step 1b - Change the JE to JMP
-        exe.replace(offset + patchOffset, "EB", PTYPE_HEX);
+        pe.replaceHex(offset + patchOffset, "EB");
 
         //Step 1c - Change the JE to JMP in check before
         var code =
@@ -51,7 +51,7 @@ function DeleteCharWithEmail()
             return "Failed in Step 1c - g_serviceType not found";
 
         //Step 1d - Change the JNZ to JMP
-        exe.replace(offset + patchOffset, "EB", PTYPE_HEX);
+        pe.replaceHex(offset + patchOffset, "EB");
     }
 
     if (offset === -1)
@@ -72,7 +72,7 @@ function DeleteCharWithEmail()
         return "Failed in Step 2 - Comparison missing";
 
     //Step 2b - Change JNE to JMP
-    exe.replace(offset + 2, "EB", PTYPE_HEX);
+    pe.replaceHex(offset + 2, "EB");
 
     return true;
 }
