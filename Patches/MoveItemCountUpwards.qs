@@ -80,6 +80,6 @@ function MoveItemCountUpwards()
     return "Failed in Step 2 - Comparison missing";
 
   //Step 2c - Change the JE to JMP
-  exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX);
+  pe.replaceByte(offset + code.hexlength() - 1, 0xEB);
   return true;
 }
