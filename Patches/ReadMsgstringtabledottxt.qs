@@ -55,7 +55,7 @@ function ReadMsgstringtabledottxt()
         return "Failed in Step 1";
 
     //Step 2 - Change JNZ to JMP
-    exe.replace(offset + code.hexlength() - offset2, "EB", PTYPE_HEX);
+    pe.replaceByte(offset + code.hexlength() - offset2, 0xEB);
 
     return true;
 }
