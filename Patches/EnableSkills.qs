@@ -105,10 +105,10 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         ;
 
         consoleLog("Step 3.2 - Overwrite function with our code");
-        exe.replace(fnBegin, code, PTYPE_HEX);
+        pe.replaceHex(fnBegin, code);
 
         consoleLog("Step 3.3 - Add the function Names after the codes");
-        exe.replace(fnBegin + 0x80, funcName, PTYPE_STRING);
+        pe.replace(fnBegin + 0x80, funcName);
     }
     else
     {
@@ -141,7 +141,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         code = ReplaceVarHex(code, 1, pe.rawToVa(free + funcName.length) - pe.rawToVa(fnBegin + 10));
 
         consoleLog("Step 4.5 - Overwrite original function");
-        exe.replace(fnBegin, code, PTYPE_HEX);
+        pe.replaceHex(fnBegin, code);
     }
     return true;
 }
