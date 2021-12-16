@@ -37,7 +37,7 @@ function DisablePacketEncryption()
   + " EB" + code.hexlength().packToHex(1) //JMP addr
   ;
 
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }
