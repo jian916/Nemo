@@ -67,7 +67,7 @@ function DisableMultipleWindows()
     consoleLog("Replace the statement with MOV EAX, 00FFFFFF");
     if (pe.fetchUByte(offset + code.hexlength()) === 0xA1)
     {
-        exe.replace(offset + code.hexlength(), " B8 FF FF FF 00");
+        pe.replaceHex(offset + code.hexlength(), " B8 FF FF FF 00");
         return true;
     }
 
@@ -131,7 +131,7 @@ function DisableMultipleWindows()
         return "Failed in Step 2 - Not enough free space";
 
     consoleLog("Step 2d - Replace the resetTimer call with our code");
-    exe.replace(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4));
 
     consoleLog("Step 2e - Fill in the blanks");
     code = ReplaceVarHex(code, 0, resetTimer - pe.rawToVa(free + 5));
