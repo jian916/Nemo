@@ -350,11 +350,11 @@ function _IHL_JumpNCall(begin, end, func)
 {  //func is RAW
     //Step 1 - Create the JMP SHORT
     var code = " EB" + ((end - 5) - (begin + 2)).packToHex(1);
-    exe.replace(begin, code, PTYPE_HEX);
+    pe.replaceHex(begin, code);
 
     //Step 2 - Next CALL the Comparison function
     code = " E8" + (pe.rawToVa(func) - pe.rawToVa(end)).packToHex(4);
-    exe.replace(end - 5, code, PTYPE_HEX);
+    pe.replaceHex(end - 5, code);
 }
 
 function _IHL_UpdateScrollBar(oldLimit, newLimit)
@@ -409,8 +409,8 @@ function _IHL_UpdateScrollBar(oldLimit, newLimit)
     //Step 3b - Create a NOP sequence + CALL to the above at each of the matches
     for (var i = 0; i < offsets.length; i++)
     {
-        exe.replace(offsets[i], " 90".repeat(csize - 1), PTYPE_HEX);
-        exe.replaceDWord(offsets[i] + csize, freeRva - pe.rawToVa(offsets[i] + csize + 4));
+        pe.replaceHex(offsets[i], " 90".repeat(csize - 1));
+        pe.replaceDWord(offsets[i] + csize, freeRva - pe.rawToVa(offsets[i] + csize + 4));
     }
 
   return 0;
