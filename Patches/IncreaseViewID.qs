@@ -41,7 +41,7 @@ function IncreaseViewID()
   //Step 2c - Replace old with new for all
   for (var i = 0; i < offsets.length; i++)
   {
-    exe.replace(offsets[i], "$newValue", PTYPE_STRING);
+    pe.replaceDWord(offsets[i], newValue);
   }
 
   return true;
