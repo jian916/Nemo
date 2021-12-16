@@ -23,7 +23,7 @@ function HideRoulette()
     return "Patch Cancelled - Roulette is already hidden";
 
   //Step 2b - If yes JMP over it
-  exe.replace(offset, "EB 0D", PTYPE_HEX);//Skip over rest of the PUSH followed by ECX assignment and Function call
+  pe.replaceHex(offset, "EB 0D");  // Skip over rest of the PUSH followed by ECX assignment and Function call
   return true;
 }
 
