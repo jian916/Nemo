@@ -63,7 +63,7 @@ function PacketEncryptionKeys(varname, index)
     //Step 2b - Replace the PUSHed argument for the index in all of them
     for ( var i = 0; i < offsets.length; i++)
     {
-      exe.replace(offsets[i] + code.hexlength() - (index + 1) * 5, varname, PTYPE_STRING);
+      pe.replace(offsets[i] + code.hexlength() - (index + 1) * 5, varname);
     }
   }
   else
@@ -154,7 +154,7 @@ function PacketEncryptionKeys(varname, index)
 
     //Step 4d - Hijack info.ovrAddr to jmp to PEncInsert
     code = " E9" + (PEncInsert - pe.rawToVa(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
-    exe.replace(info.ovrAddr, code, PTYPE_HEX);
+    pe.replaceHex(info.ovrAddr, code);
 
     //Step 4e - Set PEncActive to index indicating this one has the changes
     PEncActive = index;
@@ -246,6 +246,6 @@ function _PacketEncryptionKeys(index)
 
   //Step 2e - Hijack info.ovrAddr to jmp to PEncInsert
   code = " E9" + (PEncInsert - pe.rawToVa(info.ovrAddr + 5)).packToHex(4);//JMP PEncInsert
-  exe.replace(info.ovrAddr, code, PTYPE_HEX);
+  pe.replaceHex(info.ovrAddr, code);
   return true;
 }
