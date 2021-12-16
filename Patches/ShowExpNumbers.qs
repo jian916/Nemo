@@ -210,7 +210,7 @@ function ShowExpNumbers()
   exe.insert(free, size, code, PTYPE_HEX);
 
   //Step 5b - Replace the CALL at injectAddr with a JMP to our new code.
-  exe.replace(injectAddr, "E9" + (freeRva - pe.rawToVa(injectAddr + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(injectAddr, "E9" + (freeRva - pe.rawToVa(injectAddr + 5)).packToHex(4));
 
   return true;
 }
