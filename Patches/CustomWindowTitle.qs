@@ -43,7 +43,7 @@ function CustomWindowTitle()
         return "Failed in Step 2";
 
     consoleLog("Update title address");
-    exe.replaceDWord(offset + code.hexlength() - 4, pe.rawToVa(newTitle));
+    pe.replaceDWord(offset + code.hexlength() - 4, pe.rawToVa(newTitle));
 
     return true;
 }
