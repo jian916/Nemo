@@ -177,7 +177,7 @@ function HideButtonOld(src, tgt)
         return "Failed in Step 1";
 
     consoleLog("Step 2 - Replace with corresponding value in tgt");
-    exe.replace(offset, tgt[i], PTYPE_STRING);
+    pe.replace(offset, tgt[i]);
 
     return true;
 }
@@ -225,7 +225,7 @@ function HideButtonNew(reference, prefix)
         return "Failed in Step 2 - Prefix assignment missing";
 
     consoleLog("Step 2c - Update the address to point to NULL");
-    exe.replaceDWord(offset, strAddr + prefix.length);
+    pe.replaceDWord(offset, strAddr + prefix.length);
 
     return true;
 }
