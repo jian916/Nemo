@@ -47,7 +47,7 @@ function IncreaseZoomOut(newvalue)
         return "Failed in Step 1";
 
     consoleLog("Step 2 - Modify with the value supplied - Current value is 400.0");
-    exe.replace(offset + 4, newvalue, PTYPE_HEX); // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
+    pe.replaceHex(offset + 4, newvalue);  // newvalue is actually just the higher 2 bytes of what is required, since lower 2 bytes are 0
 
     if (pe.stringRaw("/zoom") !== -1)
     {   // found zoom command. need do additional patching
@@ -64,7 +64,7 @@ function IncreaseZoomOut(newvalue)
             return "Failed in Step 3. Found wrong number of enabled /zoom usage count.";
         for (var i = 0; i < offsets.length; i++)
         {
-            exe.replace(offsets[i] + 6, newvalue, PTYPE_HEX);
+            pe.replaceHex(offsets[i] + 6, newvalue);
         }
 
 
@@ -77,7 +77,7 @@ function IncreaseZoomOut(newvalue)
             return "Failed in Step 3. Found wrong number of disabled /zoom usage count.";
         for (i = 0; i < offsets.length; i++)
         {
-            exe.replace(offsets[i] + 6, newvalue, PTYPE_HEX);
+            pe.replaceHex(offsets[i] + 6, newvalue);
         }
 
         consoleLog("Step 4 - Patch /zoom enabled/disabled load configuration (in CSession_lua_configuration)");
