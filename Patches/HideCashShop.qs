@@ -16,7 +16,7 @@ function HideCashShop()
     return "Patch Cancelled - Cash Shop already hidden";
 
   //Step 2 - If found then clean eax and JMP over it
-  exe.replace(offset, "31 C0 EB 0B", PTYPE_HEX); //xor eax,eax  jmp 0B
+  pe.replaceHex(offset, "31 C0 EB 0B"); //xor eax,eax  jmp 0B
   return true;
 }
 
