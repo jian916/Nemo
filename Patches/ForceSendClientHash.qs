@@ -25,7 +25,7 @@ function ForceSendClientHash()
   offset += code.hexlength();
 
   //Step 1b - Replace JE with JMP
-  exe.replace(offset - 1, " EB", PTYPE_HEX);
+  pe.replaceByte(offset - 1, 0xEB);
 
   //Step 1c - Update offset to the JE-ed location.
   offset += 1 + pe.fetchByte(offset);
@@ -44,7 +44,7 @@ function ForceSendClientHash()
   offset += code.hexlength() - 1;
 
   //Step 2b - Replace JNE with JMP
-  exe.replace(offset - 2, "EB", PTYPE_HEX);
+  pe.replaceByte(offset - 2, 0xEB);
 
   //Step 2c - Update offset to JNE-ed location
   offset += pe.fetchByte(offset - 1);
@@ -62,7 +62,7 @@ function ForceSendClientHash()
   offset += code.hexlength() - 1;
 
   //Step 3b - Replace JNE with JMP
-  exe.replace(offset, "EB", PTYPE_HEX);
+  pe.replaceByte(offset, 0xEB);
 
   return true;
 }
