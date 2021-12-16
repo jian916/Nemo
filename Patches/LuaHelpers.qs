@@ -463,7 +463,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
     }
     else
     {
-        exe.replaceAsmText(free, text, vars);
+        pe.replaceAsmText(free, text, vars);
     }
 
     consoleLog("Set jmp to own code");
