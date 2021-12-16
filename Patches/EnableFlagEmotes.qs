@@ -85,12 +85,12 @@ function EnableFlagEmotes()
     //Step 3d - Change the JZ to JMP & Get the JMPed address
     if (pe.fetchByte(offset) === 0x0F)
     {//Long
-      exe.replace(offset, " 90 E9", PTYPE_HEX);
+      pe.replaceHex(offset, " 90 E9");
       offset += pe.fetchDWord(offset + 2) + 6;
     }
     else
     { //Short
-      exe.replace(offset, " EB", PTYPE_HEX);
+      pe.replaceByte(offset, 0xEB);
       offset += pe.fetchByte(offset + 1) + 2;
     }
 
@@ -106,7 +106,7 @@ function EnableFlagEmotes()
       oldOffsets.push(offset);
 
       //Step 3d - Replace the emoteConstant with the one we read from input file.
-      exe.replace(offset + code2.hexlength() - 4, consts[i].toString(16), PTYPE_HEX);
+      pe.replaceHex(offset + code2.hexlength() - 4, consts[i].toString(16));
     }
   }
 
