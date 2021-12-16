@@ -144,8 +144,8 @@ function EnableMultipleGRFsV2()
     code += strcode.toHex();
 
     //Step 4f - Create a call to the free space that was found before.
-    exe.replace(offset + pushOffset, "B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
+    pe.replaceByte(offset + pushOffset, 0xB9);  // Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
+    pe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
 
     //Step 5 - Insert everything.
     exe.insert(free, size, code, PTYPE_HEX);
@@ -153,7 +153,7 @@ function EnableMultipleGRFsV2()
     //Step 6 - Find offset of rdata.grf (if present zero it out)
     offset = pe.stringRaw("rdata.grf");
     if (offset !== -1)
-        exe.replace(offset, "00", PTYPE_HEX);
+        pe.replaceByte(offset, 0);
 
     return true;
 }
