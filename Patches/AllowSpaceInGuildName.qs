@@ -66,7 +66,7 @@ function AllowSpaceInGuildName()
     if (code === "")
         return "Failed in Step 2 - No JMP forms follow code";
 
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
     return true;
 }
