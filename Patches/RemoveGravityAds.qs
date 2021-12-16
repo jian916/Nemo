@@ -10,7 +10,7 @@ function RemoveGravityAds()
   if (offset !== -1)
   {
     //Step 1b - Replace with NULL
-    exe.replace(offset + 1, "00", PTYPE_HEX);
+    pe.replaceByte(offset + 1, 0);
   }
   else if (!IsZero())
   {
@@ -23,7 +23,7 @@ function RemoveGravityAds()
     return "Failed in Step 2";
 
   //Step 2b - Replace with NULL
-  exe.replace(offset + 1, "00", PTYPE_HEX);
+  pe.replaceByte(offset + 1, 0);
 
   //Step 3a - Find address of Last Pic -> \T_테입%d.tga
   offset = pe.halfStringRaw("\\T_\xC5\xD7\xC0\xD4%d.tga");
@@ -31,7 +31,7 @@ function RemoveGravityAds()
     return "Failed in Step 3";
 
   //Step 3b - Replace with NULL
-  exe.replace(offset + 1, "00", PTYPE_HEX);
+  pe.replaceByte(offset + 1, 0);
 
   return true;
 }
