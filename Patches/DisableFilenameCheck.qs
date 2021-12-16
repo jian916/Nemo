@@ -106,7 +106,7 @@ function DisableFilenameCheck()
         return "Failed in Step 1";
 
     //Step 2 - Replace JNZ/JNE to JMP
-    exe.replace(offset + patchOffset, "EB", PTYPE_HEX);
+    pe.replaceByte(offset + patchOffset, 0xEB);
 
     return true;
 }
