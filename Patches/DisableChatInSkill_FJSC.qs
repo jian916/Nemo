@@ -26,7 +26,7 @@ function DisableChatInSkill(txtname)
     return "Failed in Step 1";
 
   //Step 1b - Zero it out
-  pe.replaceHex(offset, "00");
+  pe.replaceByte(offset, 0);
 
   //Step 2a - Find the 2nd one
   offset = pe.stringRaw(txtname);
@@ -34,7 +34,7 @@ function DisableChatInSkill(txtname)
     return "Failed in Step 2";
 
   //Step 2b - Zero it out
-  pe.replaceHex(offset, "00");
+  pe.replaceByte(offset, 0);
 
   return true;
 }
