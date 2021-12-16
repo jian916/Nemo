@@ -392,7 +392,7 @@ function pe_fetchHexBytes(offset, offset2)
 function pe_replace(addrRaw, data)
 {
     checkArgs("pe.replace", arguments, [["Number", "String"]]);
-    return pe.replaceHex(data.toHex());
+    return pe.replaceHex(addrRaw, data.toHex());
 }
 
 function pe_replaceAsmText(patchAddr, commands, vars)
