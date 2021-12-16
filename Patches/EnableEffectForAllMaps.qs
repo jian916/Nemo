@@ -21,7 +21,7 @@ function EnableEffectForAllMaps()
     return "Failed in Step 2 - Jump missing";
 
   //Step 2b - Replace with a JMP that skips over the 6 bytes (2 gone for the code itself hence 04)
-  exe.replace(offset, "EB 04", PTYPE_HEX);
+  pe.replaceHex(offset, "EB 04");
 
   return true;
 }
