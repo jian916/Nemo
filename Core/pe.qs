@@ -395,6 +395,19 @@ function pe_replace(addrRaw, data)
     return pe.replaceHex(data.toHex());
 }
 
+function pe_replaceAsmText(patchAddr, commands, vars)
+{
+    var obj = asm.textToHexRaw(patchAddr, commands, vars);
+    pe.replaceHex(patchAddr, obj);
+    return obj;
+}
+
+function pe_replaceAsmFile(fileName, vars)
+{
+    var commands = asm.load(fileName);
+    return pe_replaceAsmText(commands, vars);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -433,4 +446,6 @@ function registerPe()
     pe.fetchRelativeValue = pe_fetchRelativeValue;
     pe.fetchHexBytes = pe_fetchHexBytes;
     pe.replace = pe_replace;
+    pe.replaceAsmText = pe_replaceAsmText;
+    pe.replaceAsmFile = pe_replaceAsmFile;
 }

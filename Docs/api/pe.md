@@ -406,6 +406,36 @@ Patch binary block at given address.
 | code     | String like data to patch |
 
 
+### pe.replaceAsmText
+
+``pe.replaceAsmText(patchAddr, commands, vars)``
+
+Replace bytes at raw address patchAddr to given assembler code.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where code should be stored |
+| commands | Assembler text with commands |
+| vars     | Variables for assembler text |
+
+On success return bytes in hex format from assembler text.
+
+### pe.replaceAsmFile
+
+``pe.replaceAsmFile(fileName, commands, vars)``
+
+Replace bytes at raw address patchAddr to assembler code from given file name.
+
+| Argument | Description |
+| -------- | ----------- |
+| fileName | File name with assembler code |
+| commands | Assembler text with commands |
+| vars     | Variables for assembler text |
+
+On success return bytes in hex format from assembler text.
+
+
+
 ### pe.getImportTable
 
 ``pe.getImportTable()``
