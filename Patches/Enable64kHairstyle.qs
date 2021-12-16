@@ -21,7 +21,7 @@ function Enable64kHairstyle()
         return "Failed in Step 1 - String not found";
 
     //Step 1b - Change the 2nd %s to %u
-    exe.replace(offset + code.length - 7, "75", PTYPE_HEX);
+    pe.replaceByte(offset + code.length - 7, 0x75);
 
     //Step 1c - Find the string reference
     offset = pe.findCode("68" + pe.rawToVa(offset).packToHex(4));
@@ -177,7 +177,7 @@ function Enable64kHairstyle()
     code += " 90".repeat(csize - code.hexlength());//Fill rest with NOPs
 
     //Step 3e - Replace the original at assignOffset
-    exe.replace(assignOffset, code, PTYPE_HEX);
+    pe.replaceHex(assignOffset, code);
 
     //Step 4a - Find the string table fetchers
     code =
@@ -224,7 +224,7 @@ function Enable64kHairstyle()
     for (var i = 0; i < offsets.length; i++)
     {
         offset2 = offsets[i] + code.hexlength();
-        exe.replaceWord(offset2 - 1, 0x9010 + (pe.fetchByte(offset2) & 0x7));
+        pe.replaceWord(offset2 - 1, 0x9010 + (pe.fetchByte(offset2) & 0x7));
     }
 
     //Step 5a - Find the Hairstyle limiting comparison within the function
@@ -258,14 +258,14 @@ function Enable64kHairstyle()
     offset2 += code.hexlength();
 
     //Step 5b - Change the JLE to JMP
-    exe.replace(offset2 - 3, "EB", PTYPE_HEX);
+    pe.replaceByte(offset2 - 3, 0xEB);
 
     //Step 5c - Change 0D to 02 in MOV instruction
     code = pe.fetchUByte(offset2);
     if (code === 0x04 || code > 0x07)
-        exe.replace(offset2 + 2, "02");
+        pe.replaceByte(offset2 + 2, 2);
     else
-        exe.replace(offset2 + 1, "02");
+        pe.replaceByte(offset2 + 1, 2);
 
     //Remove the && 0 to enable for Doram
     if (doramOn && 0)
@@ -285,14 +285,14 @@ function Enable64kHairstyle()
         offset += code.hexlength();
 
         //Step 6b - Change the JLE to JMP
-        exe.replace(offset - 3, "EB", PTYPE_HEX);
+        pe.replaceByte(offset - 3, 0xEB);
 
         //Step 6c - Change 0D to 02 in MOV instruction
         code = pe.fetchUByte(offset);
         if (code === 0x04 || code > 0x07)
-            exe.replace(offset + 2, "02");
+            pe.replaceByte(offset + 2, 2);
         else
-            exe.replace(offset + 1, "02");
+            pe.replaceByte(offset + 1, 2);
     }
 
     return true;
