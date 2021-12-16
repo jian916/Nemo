@@ -28,7 +28,7 @@ function DisableLoginEncryption()
   + " 90 90 90 90" //NOPs
   ;
 
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }
