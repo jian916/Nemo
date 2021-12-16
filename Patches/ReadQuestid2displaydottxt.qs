@@ -29,9 +29,9 @@ function ReadQuestid2displaydottxt()
 
     //Step 2 - Replace JNE before PUSH 0 with NOP (for long JNE, byte at offset - 1 will be 0)
     if (pe.fetchByte(offset - 1) === 0)
-        exe.replace(offset - 6, " 90 90 90 90 90 90", PTYPE_HEX);
+        pe.replaceHex(offset - 6, " 90 90 90 90 90 90");
     else
-        exe.replace(offset - 2, " 90 90", PTYPE_HEX);
+        pe.replaceHex(offset - 2, " 90 90");
 
     return true;
 }
