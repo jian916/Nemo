@@ -253,7 +253,7 @@ function HighlightSkillSlotColor()
         return "Patch Cancelled - New Color is same as old";
 
     consoleLog("Step 2b - Replace with new color");
-    pe.replaceDWord(offset + colorOffset[0], "$HSkillSColor", color);
+    pe.replaceDWord(offset + colorOffset[0], color);
 
     return true;
 }
