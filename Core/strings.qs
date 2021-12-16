@@ -20,7 +20,7 @@ function eraseString(offset, val)
     var data = pe.fetchUByte(offset);
     while (data != 0)
     {
-        exe.replaceByte(offset, val);
+        pe.replaceByte(offset, val);
         offset++;
         data = pe.fetchUByte(offset);
     }

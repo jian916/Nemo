@@ -66,11 +66,11 @@ function HideBuildInfo()
         return "Failed in search ver string usage";
 
     consoleLog("Remove ver1");
-    exe.replaceByte(offset + ver1Offset, 0);
+    pe.replaceByte(offset + ver1Offset, 0);
     consoleLog("Remove ver2");
-    exe.replaceByte(offset + ver2Offset, 0);
+    pe.replaceByte(offset + ver2Offset, 0);
     consoleLog("Remove ver3");
-    exe.replaceByte(offset + ver3Offset, 0);
+    pe.replaceByte(offset + ver3Offset, 0);
 
     consoleLog("search sn string usage");
     var code =
@@ -115,9 +115,9 @@ function HideBuildInfo()
     var peHeader = pe.fetchDWord(0x3c);
     var optHeader = peHeader + 4 + 0x14;
     consoleLog("erase PE time stamp");
-    exe.replaceDWord(peHeader + 8, 0);
+    pe.replaceDWord(peHeader + 8, 0);
     consoleLog("erase PE checksum");
-    exe.replaceDWord(optHeader + 64, 0);
+    pe.replaceDWord(optHeader + 64, 0);
 
     return true;
 }
