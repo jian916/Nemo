@@ -84,7 +84,7 @@ function FixCameraAngles(newvalue)
     exe.insert(free, 4, newvalue, PTYPE_HEX);
 
     //Step 3b - Replace angleAddr reference with the allocated address
-    exe.replace(offset2, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset2, pe.rawToVa(free).packToHex(4));
   }
   else
   { //Older clients
@@ -101,7 +101,7 @@ function FixCameraAngles(newvalue)
     //Step 4b - Change the angle value for all in offsets
     for (var i = 0; i < offsets.length; i++)
     {
-      exe.replace(offsets[i] + 3, newvalue, PTYPE_HEX);
+      pe.replaceHex(offsets[i] + 3, newvalue);
     }
 
     //Step 5a - Now we need to find two stored angles -25.00000 and -65.00000 (dunno what this is for, but it was there in old patch)
@@ -120,7 +120,7 @@ function FixCameraAngles(newvalue)
     + " 00 00 B2 C2" //DD FLOAT -89.00000
     ;
 
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
   }
 
   return true;
