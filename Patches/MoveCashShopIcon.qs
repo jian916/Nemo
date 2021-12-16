@@ -158,7 +158,7 @@ function MoveCashShopIcon()
         "free": pe.rawToVa(free)
     };
 
-    exe.replaceAsmText(offset + patchOffset, text, vars);
+    pe.replaceAsmText(offset + patchOffset, text, vars);
 
     return true;
 }
