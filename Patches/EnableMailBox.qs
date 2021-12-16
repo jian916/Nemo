@@ -25,7 +25,7 @@ function EnableMailBox()
   //Step 1c - Change the first JE to JMP
   for (var i = 0; i < 3; i++)
   {
-    exe.replace(offsets[i] - 2, " EB 0C", PTYPE_HEX);
+    pe.replaceHex(offsets[i] - 2, " EB 0C");
   }
 
   //Step 1d - Find occurence of 2nd LangType comparison in the mailbox function
@@ -34,7 +34,7 @@ function EnableMailBox()
     return "Failed in Step 1 - Second pattern not found";
 
   //Step 1e - Change the first JE to JMP
-  exe.replace(offset-2, " EB 0C", PTYPE_HEX);
+  pe.replaceHex(offset-2, " EB 0C");
 
   //Step 2a - Prep codes for finding Long jumps
   var LANGTYPE = GetLangType();//Langtype value overrides Service settings hence they use the same variable - g_serviceType
@@ -58,8 +58,8 @@ function EnableMailBox()
     return "Failed in Step 2 - LangType comparisons missing";
 
   for (var i = 0; i < offsets.length; i++)
-{
-    exe.replace(offsets[i] + 5, " EB 18", PTYPE_HEX);
+  {
+    pe.replaceHex(offsets[i] + 5, " EB 18");
   }
 
   //Step 3 - If the count is 3 then there is an additional JE we missed
@@ -71,7 +71,7 @@ function EnableMailBox()
     if (offset === -1)
       return "Failed in Step 3";
 
-    exe.replace(offset - 2, " EB 18", PTYPE_HEX);
+    pe.replaceHex(offset - 2, " EB 18");
   }
 
   return true;
