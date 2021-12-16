@@ -53,7 +53,7 @@ function DisableHallucinationWavyScreen()
     return "Failed in Step 2";
 
   //Step 2b - Replace the JE with NOP + JMP
-  exe.replace(offset + code.hexlength() - 2, "90 E9", PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength() - 2, "90 E9");
 
   return true;
 }
