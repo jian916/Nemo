@@ -47,7 +47,7 @@ function EnableProxySupport()
   else
   {
     var bIndirectCALL = true;
-    exe.replace(offset2, " 90 E8", PTYPE_HEX);//Replace with direct call opcode (address will be changed afterwards)
+    pe.replaceHex(offset2, " 90 E8");  // Replace with direct call opcode (address will be changed afterwards)
     offset2++;
   }
 
@@ -102,7 +102,7 @@ function EnableProxySupport()
     code = ReplaceVarHex(code, 3, connAddr - (offsetRva + csize)); //Get Offset relative to JMP
 
   //Step 4a - Redirect connect call to our code.
-  exe.replaceDWord(offset2 + 1, offsetRva + 4 - pe.rawToVa(offset2 + 5));
+  pe.replaceDWord(offset2 + 1, offsetRva + 4 - pe.rawToVa(offset2 + 5));
 
   //Step 4b - Add our code to the client
   exe.insert(offset, 4 + csize, " 00 00 00 00" + code, PTYPE_HEX); //4 NULLs for g_saveIP filler
