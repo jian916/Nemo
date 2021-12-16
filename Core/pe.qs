@@ -389,6 +389,12 @@ function pe_fetchHexBytes(offset, offset2)
     return pe.fetchHex(addr, size);
 }
 
+function pe_replace(addrRaw, data)
+{
+    checkArgs("pe.replace", arguments, [["Number", "String"]]);
+    return pe.replaceHex(data.toHex());
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -426,4 +432,5 @@ function registerPe()
     pe.fetchValueSimple = pe_fetchValueSimple;
     pe.fetchRelativeValue = pe_fetchRelativeValue;
     pe.fetchHexBytes = pe_fetchHexBytes;
+    pe.replace = pe_replace;
 }

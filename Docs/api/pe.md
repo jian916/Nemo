@@ -392,6 +392,19 @@ Read hex bytes from given address.
 
 Read null terminated string from given address.
 
+### pe.replace
+
+```
+exe.replace(rawAddr, code)
+```
+
+Patch binary block at given address.
+
+| Argument | Description |
+| -------- | ----------- |
+| rawAddr  | Raw address where to patch data |
+| code     | String like data to patch |
+
 
 ### pe.getImportTable
 
