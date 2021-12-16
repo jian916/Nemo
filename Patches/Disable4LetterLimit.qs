@@ -69,18 +69,18 @@ function Disable4LetterLimit(index)
         for (var i = 0; i < offsets.length; i++)
         {
           if (i === idp || offsets[i] === offset2) continue;
-          exe.replace(offsets[i] + csize - 1, " 00", PTYPE_HEX);
+          pe.replaceHex(offsets[i] + csize - 1, " 00");
         }
         break;
       }
       case 1: {
         //Step 2b - For Index 1 i.e. Password, offsets[idp] get the replace
-        exe.replace(offsets[idp] + csize - 1, " 00", PTYPE_HEX);
+        pe.replaceHex(offsets[idp] + csize - 1, " 00");
         break;
       }
       case 2: {
         //Step 2c - For Index 2, i.e. ID, offset2 get the replace
-        exe.replace(offset2 + csize - 1, " 00", PTYPE_HEX);
+        pe.replaceHex(offset2 + csize - 1, " 00");
         break;
       }
     }
@@ -119,8 +119,8 @@ function Disable4LetterLimit(index)
           return "Failed in Step 1 - UINewMakeCharWnd::SendMsg:CharNameCheck not found";
 
         //Replace 4 with 0 in CMP EAX,4 in appropriate offsets
-        exe.replace(offset + 7, " 00", PTYPE_HEX);
-        exe.replace(offset2 + 7, " 00", PTYPE_HEX);
+        pe.replaceHex(offset + 7, " 00");
+        pe.replaceHex(offset2 + 7, " 00");
         break;
       }
       case 1:
@@ -131,7 +131,7 @@ function Disable4LetterLimit(index)
           return "Failed in Step 1 - Pass check not found.";
 
         //Replace 4 with 0 in CMP EAX,4 in appropriate offsets
-        exe.replace(offset + 7, " 00", PTYPE_HEX);
+        pe.replaceHex(offset + 7, " 00");
         break;
       }
       case 2:
@@ -151,8 +151,8 @@ function Disable4LetterLimit(index)
           return "Failed in Step 1 - ID check not found.";
 
         //Replace 4 with 0 in CMP EAX,4 in appropriate offsets
-        exe.replace(offset2 + 7, " 00", PTYPE_HEX);
-        exe.replace(offset3 + 7, " 00", PTYPE_HEX);
+        pe.replaceHex(offset2 + 7, " 00");
+        pe.replaceHex(offset3 + 7, " 00");
         break;
       }
     }
