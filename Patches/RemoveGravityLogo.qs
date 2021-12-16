@@ -11,7 +11,7 @@ function RemoveGravityLogo()
     return "Failed in Step 1";
 
   //Step 1b - Replace with NULL
-  exe.replace(offset + 1, "00", PTYPE_HEX);
+  pe.replaceByte(offset + 1, 0);
 
   return true;
 }
