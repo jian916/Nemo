@@ -11,7 +11,7 @@ function DisableSwearFilter()
         return "Failed in Step 1";
 
     //Step 2 - Replace with Zero
-    exe.replace(offset, "00", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     return true;
 }
