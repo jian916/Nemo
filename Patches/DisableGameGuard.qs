@@ -50,7 +50,7 @@ function DisableGameGuard()
     var offset2 = pe.fetchDWord(offsets[i] + 1) + pe.rawToVa(offsets[i] + 5);
     if (offset2 === offset)
     {
-      exe.replace(offsets[i], code, PTYPE_HEX);
+      pe.replaceHex(offsets[i], code);
       break;
     }
   }
@@ -89,7 +89,7 @@ function DisableGameGuard()
 
     //Step 4b - Replace JE with JMP
     if (offset !== -1)
-      exe.replace(offset + 2, "EB", PTYPE_HEX);
+      pe.replaceByte(offset + 2, 0xEB);
   }
 
   return true;
