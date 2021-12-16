@@ -23,7 +23,7 @@ function EnableMonsterTables()
     return "Failed in Step 1 -  Comparison not found";
 
   //Step 2 - Swap JNE with NOP + JMP
-  exe.replace(offset + code.hexlength() - 6, " 90 E9", PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength() - 6, " 90 E9");
 
   return true;
 }
