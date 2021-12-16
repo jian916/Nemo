@@ -24,7 +24,7 @@ function FixChatAt()
     //==============================================//
 
     //Step 1b - Change 0 to 1
-    exe.replace(offset + 5, "01", PTYPE_HEX);
+    pe.replaceHex(offset + 5, "01");
   }
   else
   { //Older clients
@@ -79,7 +79,7 @@ function FixChatAt()
     code = ReplaceVarHex(code, 2, func);
 
     //Step 4b - Change called address from func to our function.
-    exe.replaceDWord(offset + 3, pe.rawToVa(free) - pe.rawToVa(offset + 7));
+    pe.replaceDWord(offset + 3, pe.rawToVa(free) - pe.rawToVa(offset + 7));
 
     //Step 4c - Insert our function
     exe.insert(free, csize, code, PTYPE_HEX);
