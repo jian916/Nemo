@@ -356,19 +356,19 @@ function CustomAuraLimits()
     + " EB" + (cmpEnd - (cmpBegin + 9)).packToHex(1) //JMP SHORT cmpEnd
     ;
 
-    exe.replace(cmpBegin, code, PTYPE_HEX);
+    pe.replaceHex(cmpBegin, code);
   }
   else
   {
     //Step 7c - Find the function call... again and replace it with a CALL to our Function
     offset = pe.find(" E8 ?? ?? ?? FF", cmpBegin, cmpBegin + 0x30);
-    exe.replaceDWord(offset + 1, freeRva - pe.rawToVa(offset + 5));
+    pe.replaceDWord(offset + 1, freeRva - pe.rawToVa(offset + 5));
 
     offset += 5;
 
     //Step 7d - Fill with NOPs till cmpEnd
     if (offset < cmpEnd)
-      exe.replace(offset, " 90".repeat(cmpEnd - offset), PTYPE_HEX);
+      pe.replaceHex(offset, " 90".repeat(cmpEnd - offset));
   }
 
   return true;
