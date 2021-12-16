@@ -354,7 +354,7 @@ function registerLua()
         }
         else
         {
-            exe.replaceAsmText(free, loadObj.asmText, loadObj.vars);
+            pe.replaceAsmText(free, loadObj.asmText, loadObj.vars);
         }
 
         consoleLog("Set jmp to own code");
