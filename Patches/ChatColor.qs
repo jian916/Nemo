@@ -28,7 +28,7 @@ function ChatColorGuild()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$guildChatColor", PTYPE_STRING);
+  exe.replaceDWord(offset + code.hexlength() - 4, color);
 
   return true;
 }
@@ -62,9 +62,9 @@ function ChatColorGM()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace all the colors with new color
-  exe.replace(offset1 + 1, "$gmChatColor", PTYPE_STRING);
-  exe.replace(offset2 + 1, "$gmChatColor", PTYPE_STRING);
-  exe.replace(offset3 + 1, "$gmChatColor", PTYPE_STRING);
+  pe.replaceDWord(offset1 + 1, color);
+  pe.replaceDWord(offset2 + 1, color);
+  pe.replaceDWord(offset3 + 1, color);
 
   return true;
 }
@@ -98,7 +98,7 @@ function ChatColorPlayerSelf()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replace(offset + 1, "$yourChatColor", PTYPE_STRING);
+  pe.replaceDWord(offset + 1, color);
 
   return true;
 }
@@ -126,7 +126,7 @@ function ChatColorPlayerOther()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$otherChatColor", PTYPE_STRING);
+  pe.replaceDWord(offset + code.hexlength() - 4, color);
 
   return true;
 }
@@ -161,7 +161,7 @@ function ChatColorPartySelf()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$yourpartyChatColor", PTYPE_STRING);
+  pe.replaceDWord(offset + code.hexlength() - 4, color);
 
   return true;
 }
@@ -196,7 +196,7 @@ function ChatColorPartyOther()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replace(offset + code.hexlength() - 4, "$otherpartyChatColor", PTYPE_STRING);
+  pe.replaceDWord(offset + code.hexlength() - 4, color);
 
   return true;
 }
@@ -253,7 +253,7 @@ function HighlightSkillSlotColor()
         return "Patch Cancelled - New Color is same as old";
 
     consoleLog("Step 2b - Replace with new color");
-    exe.replace(offset + colorOffset[0], "$HSkillSColor", PTYPE_STRING);
+    pe.replaceDWord(offset + colorOffset[0], "$HSkillSColor", color);
 
     return true;
 }
