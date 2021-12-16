@@ -83,12 +83,12 @@ function UseCustomIcon(nomod)
   if (id === 119)
   {
     var newvalue = pe.fetchDWord(offset + 0x4);
-    exe.replaceDWord(offset + 0x8 + 0x4, newvalue);
+    pe.replaceDWord(offset + 0x8 + 0x4, newvalue);
   }
   else
   {
     var newvalue = pe.fetchDWord(offset + 0x8 + 0x4);
-    exe.replaceDWord(offset + 0x4, newvalue);
+    pe.replaceDWord(offset + 0x4, newvalue);
   }
 
   if (nomod)
@@ -164,12 +164,12 @@ function UseCustomIcon(nomod)
     return "Failed in Step 6 - Icon wont fit";//size should be 40 (header) + 256*4 (palette) + 32*32 (xor mask) + 32*32/8 (and mask)
 
   //Step 7a - Update the size in bytes dwBytesInRes and wPlanes as per the uploaded icon
-  exe.replaceWord(pos - 14 + 4, icondirentry.wPlanes);
-  exe.replaceWord(pos - 14 + 8, icondirentry.dwBytesInRes);
+  pe.replaceWord(pos - 14 + 4, icondirentry.wPlanes);
+  pe.replaceWord(pos - 14 + 8, icondirentry.dwBytesInRes);
 
   //Step 7b - Finally update the icon image
-  exe.replaceDWord(entry.addr + 4, icondirentry.dwBytesInRes);
-  exe.replace(entry.dataAddr, icondirentry.iconimage, PTYPE_HEX);
+  pe.replaceDWord(entry.addr + 4, icondirentry.dwBytesInRes);
+  pe.replaceHex(entry.dataAddr, icondirentry.iconimage);
 
   return true;
 }
