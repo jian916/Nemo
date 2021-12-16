@@ -24,7 +24,7 @@ function RemoveNewCharCreationBluredBackground()
     if (offset === -1)
         return "Error: background image not found";
 
-    exe.replaceByte(offset, 0);
+    pe.replaceByte(offset, 0);
     return true;
 }
 
