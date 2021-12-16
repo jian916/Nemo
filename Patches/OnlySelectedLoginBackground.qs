@@ -33,7 +33,7 @@ function OnlySelectedBackground(s1, s2)
     return "Failed in Step 1";
 
   //Step 2 - Replace with the other => s2
-  exe.replace(offset + 16, rep, PTYPE_STRING);
+  pe.replace(offset + 16, rep);
 
   return true;
 }
