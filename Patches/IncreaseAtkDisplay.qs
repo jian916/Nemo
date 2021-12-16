@@ -185,7 +185,7 @@ function IncreaseAtkDisplay()
   code = ReplaceVarHex(code, 1, offset - (refOffset + code.hexlength()));
 
   //Step 3d - Replace code at refOffset
-  exe.replace(refOffset, code, PTYPE_HEX);
+  pe.replaceHex(refOffset, code);
 
   //Step 4a - Find the end of the function
   if (fpEnb)
@@ -317,5 +317,5 @@ function offsetStack(loc, sign)
 {
   if (typeof(sign) === "undefined") sign = -1;
   var obyte = pe.fetchByte(loc) + sign * 16;
-  exe.replace(loc, obyte.packToHex(1), PTYPE_HEX);
+  pe.replaceByte(loc, obyte);
 }
