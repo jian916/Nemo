@@ -13,7 +13,7 @@ function FixTetraVortex()
             return "Failed in Step 1." + i;
 
         //Step 2 - Zero out the string
-        exe.replace(offset, "00", PTYPE_HEX);
+        pe.replaceByte(offset, 0);
     }
     return true;
 }
