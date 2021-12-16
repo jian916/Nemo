@@ -59,9 +59,9 @@ function ExtendNpcBox()
     return "Patch Cancelled - New value is same as old";
 
   //Step 2b - Change the Stack Allocation with new values
-  exe.replaceDWord(offset + 2, value + stackSub - 0x804);//Change x in SUB ESP, x
+  pe.replaceDWord(offset + 2, value + stackSub - 0x804);//Change x in SUB ESP, x
   if (!fpEnb)
-    exe.replaceDWord(offset2 + 2, value + stackSub - 0x804);//Change x in ADD ESP, x
+    pe.replaceDWord(offset2 + 2, value + stackSub - 0x804);//Change x in ADD ESP, x
 
   if (fpEnb)
   {
@@ -72,7 +72,7 @@ function ExtendNpcBox()
       offsets = pe.findAll(code, offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++)
       {
-        exe.replaceDWord(offsets[j], i - value);
+        pe.replaceDWord(offsets[j], i - value);
       }
     }
   }
@@ -84,7 +84,7 @@ function ExtendNpcBox()
       offsets = pe.findAll(i.packToHex(4), offset + 6, offset2);
       for (var j = 0; j < offsets.length; j++)
       {
-        exe.replaceDWord(offsets[j], value + i - 0x804);
+        pe.replaceDWord(offsets[j], value + i - 0x804);
       }
     }
   }
