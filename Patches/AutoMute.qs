@@ -283,7 +283,7 @@ function AutoMute()
 
   code = " E8" + ((freeRva + 16) - pe.rawToVa(jumpAddr + 5)).packToHex(4);
 
-  exe.replace(jumpAddr, code, PTYPE_HEX);
+  pe.replaceHex(jumpAddr, code);
 
 
   return true;
