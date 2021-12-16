@@ -293,7 +293,7 @@ function CustomExpBarLimits()
   }
 
   //Step 6b - Replace the function at baseBegin
-  exe.replace(baseBegin, code + " FF 00 FF 00" + tblAddrData, PTYPE_HEX);
+  pe.replaceHex(baseBegin, code + " FF 00 FF 00" + tblAddrData);
 
   //Step 6c - Insert the table at allocated location.
   exe.insert(free, tblSize, tblData, PTYPE_HEX);
