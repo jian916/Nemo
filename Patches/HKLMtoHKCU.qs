@@ -15,7 +15,7 @@ function HKLMtoHKCU()
   for (var i = 0; i < offsets.length; i++)
   {
     if (pe.fetchByte(offsets[i] + 5) !== 0x3B)
-      exe.replace(offsets[i] + 1, "01", PTYPE_HEX);
+      pe.replaceByte(offsets[i] + 1, 1);
   }
 
   return true;
