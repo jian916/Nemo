@@ -55,7 +55,7 @@ function IncreaseMapQuality()
   }
 
   //Step 2 - Change PUSH 1 to PUSH 4
-  exe.replace(offset, " 04", PTYPE_HEX);
+  pe.replaceByte(offset, 4);
 
   return true;
 }
