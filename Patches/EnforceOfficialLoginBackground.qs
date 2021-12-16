@@ -38,7 +38,7 @@ function EnforceOfficialLoginBackground()
   //Step 2 - Replace first JZ to JMP for all the matches
   for (var i = 0; i < offsets.length; i++)
   {
-    exe.replace(offsets[i], "EB", PTYPE_HEX);
+    pe.replaceByte(offsets[i], 0xEB);
   }
 
   return true;
