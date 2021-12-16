@@ -45,7 +45,7 @@ function IgnoreMissingPaletteError()
     return "Failed in Step 1 - Function call missing";
 
   //Step 2 - Replace JNZ with NOP + JMP
-  exe.replace(offset + code.hexlength() - 6, "90 E9", PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength() - 6, "90 E9");
 
   return true;
 }
