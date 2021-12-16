@@ -109,7 +109,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 3d - Change the MOV ECX to a JMP to above code
-  exe.replace(offset, " 90 E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 6)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset, " 90 E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 6)).packToHex(4));
 
   //******* Next we will work on DC during Gameplay *******//
 
@@ -207,7 +207,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 5d - Replace the code at offset with JMP to our code.
-  exe.replace(joffset, " E9" + (pe.rawToVa(free) - pe.rawToVa(joffset + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(joffset, " E9" + (pe.rawToVa(free) - pe.rawToVa(joffset + 5)).packToHex(4));
 
   return true;
 }
