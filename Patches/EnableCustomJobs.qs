@@ -47,7 +47,7 @@ function EnableCustomJobs()
 
         //Step 1f - Little trick to change the PUSH 3 to PUSH 0 so that EAX will point to the first location like we need
         offset = pe.find(" 6A 03", hooks[2] - 0x12, hooks[2]);
-        exe.replace(offset + 1, "00", PTYPE_HEX);
+        pe.replaceByte(offset + 1, 0);
     }
     if (hooks.length !== 3)
         return "Failed in Step 1 - Prefix reference missing or extra";
@@ -143,7 +143,7 @@ function EnableCustomJobs()
 
     code += (details[4].endOff - (hooks[4] + code.hexlength() + 4)).packToHex(4);
 
-    exe.replace(hooks[4], code, PTYPE_HEX);
+    pe.replaceHex(hooks[4], code);
 
     //Step 4c - Update hook location to address after the JMP
     hooks[4] += code.hexlength();
@@ -265,7 +265,7 @@ function EnableCustomJobs()
         return "Failed in Step 5 - LangType comparison missing";
 
     //Step 5e - Change the JNE to JMP
-    exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX)
+    pe.replaceByte(offset + code.hexlength() - 1, 0xEB)
 
     offset = offset2;
 
@@ -318,7 +318,7 @@ function EnableCustomJobs()
     //A1 <LANGTYPE> ; MOV EAX, DWORD PTR DS:[g_serviceType]
     //83 F8 0A    => push2 push1 90
     //0F 85 addr  => 90 E9 addr
-    exe.replace(offset2, push2.packToHex(1) + push1.packToHex(1) + " 90 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset2, push2.packToHex(1) + push1.packToHex(1) + " 90 90 E9");
 
     //Step 5h - Point offset2 to the MOV EAX before the CMP
     offset2 -= 5;
@@ -345,7 +345,7 @@ function EnableCustomJobs()
     code = ReplaceVarHex(code, 1, csize - code.hexlength());
 
     //Step 6e - Add it to client
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
     //=========================//
     // Inject Lua file loading //
@@ -401,7 +401,7 @@ function EnableCustomJobs()
         code += " C2 04 00"; //RETN 4
 
         //Step 7c - Replace at offset
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     //================================================//
@@ -459,7 +459,7 @@ function EnableCustomJobs()
         code += " C2 04 00"; //RETN 4
 
         //Step 8d - Replace at offset
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     return true;
@@ -532,7 +532,7 @@ function OverwriteString(srcString, tgtString)
         throw "String " + srcString + " not found";
     }
     //Step 2a - Overwrite it
-    exe.replace(offset, tgtString, PTYPE_STRING);
+    pe.replace(offset, tgtString);
 
     //Step 2b - Return the RVA of offset
     return pe.rawToVa(offset);
@@ -640,7 +640,7 @@ function WriteLoader(hookLoc, curReg, suffix, reqAddr, mapAddr, jmpLoc, extraDat
     else
         code += " C3"; //RETN
 
-    exe.replace(hookLoc, code, PTYPE_HEX);
+    pe.replaceHex(hookLoc, code);
 
     return code;
 }
