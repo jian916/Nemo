@@ -28,7 +28,7 @@ function ChatColorGuild()
     return "Patch Cancelled - New Color is same as old";
 
   //Step 2b - Replace with new color
-  exe.replaceDWord(offset + code.hexlength() - 4, color);
+  pe.replaceDWord(offset + code.hexlength() - 4, color);
 
   return true;
 }
