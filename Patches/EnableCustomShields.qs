@@ -111,7 +111,7 @@ function EnableCustomShields()
   code = regPush + " E9";
   code += (pe.rawToVa(free + funcName.length) - pe.rawToVa(hookReq + code.hexlength() + 4)).packToHex(4);
 
-  exe.replace(hookReq, code, PTYPE_HEX);
+  pe.replaceHex(hookReq, code);
 
   //=========================//
   // Inject Lua file loading //
@@ -163,7 +163,7 @@ function EnableCustomShields()
   //  NOP
   //  POP EAX
   //  OR EAX, -1
-  exe.replace(offset, " 90 58 83 C8 FF", PTYPE_HEX);
+  pe.replaceHex(offset, " 90 58 83 C8 FF");
 
   //Step 3d - Extract RAW address of GetShieldType function
   offset = offsets[0] + code.hexlength();
@@ -197,7 +197,7 @@ function EnableCustomShields()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 4d - Create a JMP at hookMap to the code
-  exe.replace(hookMap, "E9" + (pe.rawToVa(free + funcName.length) - pe.rawToVa(hookMap + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(hookMap, "E9" + (pe.rawToVa(free + funcName.length) - pe.rawToVa(hookMap + 5)).packToHex(4));
 
   //Step 5a - Find PUSH 5 before hookReq and replace with MaxShield if its there
   code =
@@ -209,7 +209,7 @@ function EnableCustomShields()
 
   if (offset !== -1)
   {
-    exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + 2, MaxShield);
   }
   else
   {
@@ -223,7 +223,7 @@ function EnableCustomShields()
     if (offset === -1)
       return "Failed in Step 5 - No Allocator PUSHes found";
 
-    exe.replace(offset, MaxShield.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset, MaxShield.packToHex(4));
 
     //Step 5c - Find EAX comparison with 5 before assignment and replace with MaxShield
     code =
@@ -235,7 +235,7 @@ function EnableCustomShields()
     if (offset === -1)
       return "Failed in Step 5 - Comparison Missing";
 
-    exe.replace(offset + 2, MaxShield.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + 2, MaxShield);
   }
 
   return true;
