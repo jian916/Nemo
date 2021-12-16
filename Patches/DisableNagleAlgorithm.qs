@@ -72,14 +72,14 @@ function DisableNagleAlgorithm()
 
   //Step 3b - Replace the address with our function.
   for (var i = 0; i < offsets.length; i++)
-    exe.replaceDWord(offsets[i] + 2, freeRva);
+    pe.replaceDWord(offsets[i] + 2, freeRva);
 
   //Step 3c - Find all CALL DWORD PTR to ws2_32.socket function
   offsets = pe.findCodes(" FF 15" + sockFunc.packToHex(4));
 
   //Step 3d - Replace the address with our function.
   for (var i = 0; i < offsets.length; i++)
-    exe.replaceDWord(offsets[i] + 2, freeRva);
+    pe.replaceDWord(offsets[i] + 2, freeRva);
 
   return true;
 }
