@@ -51,18 +51,18 @@ function EnableCustom3DBones()
     return "Failed in Step 2 - Index Test missing";
 
   //Step 3a - NOP out the TEST & Modify the short JNE to JMP at offset2
-  exe.replace(offset2, " 90 90 EB", PTYPE_HEX);
+  pe.replaceHex(offset2, " 90 90 EB");
 
   //Step 3b - Modify the JA/JGE instruction at offset to just skip the Jump.
   switch(pe.fetchUByte(offset))
   {
     case 0x77:
     case 0x7D: {// Short JA/JGE
-      exe.replace(offset, " 90 90", PTYPE_HEX);
+      pe.replaceHex(offset, " 90 90");
       break;
     }
     case 0x0F: {// Long JA/JGE
-      exe.replace(offset, " EB 04", PTYPE_HEX);
+      pe.replaceHex(offset, " EB 04");
       break;
     }
     default: {
@@ -79,7 +79,7 @@ function EnableCustom3DBones()
 
   //Step 4c - NOP out the call
   if (offset !== -1)
-    exe.replace(offset + 5, " 90 90 90 90 90", PTYPE_HEX);
+    pe.replaceHex(offset + 5, " 90 90 90 90 90");
 
   return true;
 }
