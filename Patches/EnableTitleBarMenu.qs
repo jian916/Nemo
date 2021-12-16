@@ -31,7 +31,7 @@ function EnableTitleBarMenu()
     return "Failed in Step 1 - Function call not found";
 
   //Step 2 - Change 0x02C2 => 0x02C2 | WS_SYSMENU = 0x02CA
-  exe.replace(offset + 3, "CA", PTYPE_HEX);
+  pe.replaceByte(offset + 3, 0xCA);
 
   return true;
 }
