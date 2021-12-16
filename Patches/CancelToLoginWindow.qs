@@ -182,7 +182,7 @@ function CancelToLoginWindow()
         code = code.replace(" XX", ((offset3 + 2) - (offset + code.hexlength())).packToHex(1));
 
         //Step 4f - Replace with prepared code
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
 
         matchcount++;
     }
