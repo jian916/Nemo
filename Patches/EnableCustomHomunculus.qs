@@ -87,7 +87,7 @@ function EnableCustomHomunculus()
   code += " E9" + (details.endOff - (hookLoc + code.hexlength() + 5)).packToHex(4);
 
   //Step 3b - Replace at hookLoc
-  exe.replace(hookLoc, code, PTYPE_HEX);
+  pe.replaceHex(hookLoc, code);
 
   //Step 4a - Find the homun limiter code for right click menu.
   code =
@@ -99,7 +99,7 @@ function EnableCustomHomunculus()
   if (offset !== -1)
   {
     //Step 4b - Replace the 33 with MaxHomun - 6001
-    exe.replace(offset + 6, (MaxHomun - 6001).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset + 6, (MaxHomun - 6001).packToHex(4));
     return true;
   }
 
@@ -115,7 +115,7 @@ function EnableCustomHomunculus()
     return "Failed in Step 4";
 
   //Step 4d - Replace 17A5 with MaxHomun
-  exe.replace(offset + code.hexlength() - 4, MaxHomun.packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength() - 4, MaxHomun.packToHex(4));
 
   return true;
 }
