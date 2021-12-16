@@ -83,7 +83,7 @@ function ChangeVendingLimit()
       return "Failed in Step 2 - Extra Comparison missing";
 
     //Step 2d - Change the JNE to JMP
-    exe.replace(offset + 4, "EB", PTYPE_HEX);
+    pe.replaceHex(offset + 4, "EB");
   }
 
   //Step 3a - Get the new value from user
@@ -93,14 +93,14 @@ function ChangeVendingLimit()
 
   //Step 3b - Replace the 1B string
   var str = newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '\0';
-  exe.replace(oneb, str, PTYPE_STRING);
+  pe.replace(oneb, str);
 
   //Step 3c - Replace the compared value
   if (!newstyle)
     newValue++;
 
-  exe.replaceDWord(offset1, newValue);
-  exe.replaceDWord(offset2, newValue);
+  pe.replaceDWord(offset1, newValue);
+  pe.replaceDWord(offset2, newValue);
 
   return true;
 }
