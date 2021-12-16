@@ -50,7 +50,7 @@ function EnableOfficialCustomFonts()
     logRawFunc("EotLibSetValidUrl", offset, EotLibSetValidUrlOffset);
 
     consoleLog("Replace JNE instruction with NOPs");
-    exe.replace(offset + replaceOffset, " 90 90 90 90 90 90", PTYPE_HEX);
+    pe.replaceHex(offset + replaceOffset, " 90 90 90 90 90 90");
 
     return true;
 }
