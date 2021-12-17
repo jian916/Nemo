@@ -32,7 +32,7 @@ function DisableCameraLock()
         return "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Zero it out string 'ViewPointTable.txt'");
-    exe.replace(offset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     return true;
 }
