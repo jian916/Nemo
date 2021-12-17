@@ -85,13 +85,13 @@ function ChangeAdventureAgencyLevelRange()
 
     for (var i = 0; i < offsetsU.length; i++)
     {
-        exe.replace(offsetsU[i] + rangeUOffset[0], upprangeVal.packToHex(1), PTYPE_HEX);
+        pe.replaceByte(offsetsU[i] + rangeUOffset[0], upprangeVal);
         logVaVar("MAX_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsU[i], rangeUOffset);
     }
 
     for (var i = 0; i < offsetsL.length; i++)
     {
-        exe.replace(offsetsL[i] + rangeLOffset[0], lowrangeVal.packToHex(1), PTYPE_HEX);
+        pe.replaceByte(offsetsL[i] + rangeLOffset[0], lowrangeVal);
         logVaVar("MIN_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsL[i], rangeLOffset);
     }
 
