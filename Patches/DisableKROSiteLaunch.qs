@@ -23,7 +23,7 @@ function DisableKROSiteLaunch()
         var offset = pe.stringRaw(urls[i]);
         if (offset !== -1)
         {
-            exe.replace(offset, "00", PTYPE_HEX);
+            pe.replaceByte(offset, 0);
             patched = true;
         }
     }
