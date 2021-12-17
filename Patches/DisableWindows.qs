@@ -73,7 +73,7 @@ function DisableWindows()
   //Make specified windows jump to default case
   for (var i = 0; i < WndID.length; i++)
   {
-    exe.replace(pe.vaToRaw(ITSS + WndID[i]), dfCase, PTYPE_HEX);
+    pe.replaceHex(pe.vaToRaw(ITSS + WndID[i]), dfCase);
   }
 
   return true;
