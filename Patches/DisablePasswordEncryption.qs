@@ -28,7 +28,7 @@ function DisablePasswordEncryption()
     var offset2 = pe.find(code, offset, offset + 0xFF);
     if (offset2 === -1)
         return "Failed in disable encryption for lang type 7";
-    exe.replace(offset2 + jmpOffset, "EB", PTYPE_HEX);
+    pe.replaceByte(offset2 + jmpOffset, 0xEB);
 
     //Disable password encrypt for lang type 4
     var code =
@@ -38,7 +38,7 @@ function DisablePasswordEncryption()
     offset2 = pe.find(code, offset, offset + 0xFF);
     if (offset2 === -1)
         return "Failed in disable encryption for lang type 4";
-    exe.replace(offset2 + jmpOffset, "EB", PTYPE_HEX);
+    pe.replaceByte(offset2 + jmpOffset, 0xEB);
 
     return true;
 }
