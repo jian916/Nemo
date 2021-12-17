@@ -190,7 +190,7 @@ function RemoveJobsFromBooking()
   exe.insert(free, size, idSet.join("") + code, PTYPE_HEX);
 
   //Step 4b - Change the MsgStr CALL with a CALL to our function.
-  exe.replaceDWord(offset, (freeRva + idSet.length * 2) - pe.rawToVa(offset + 4));
+  pe.replaceDWord(offset, (freeRva + idSet.length * 2) - pe.rawToVa(offset + 4));
 
   return true;
 }
