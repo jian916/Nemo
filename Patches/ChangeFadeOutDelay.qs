@@ -139,11 +139,11 @@ function ChangeFadeOutDelay()
     }
 
     // first delay in fade out function
-    exe.replace(addr1 + fadeOutDelayOffset1, delay.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(addr1 + fadeOutDelayOffset1, delay.packToHex(4));
     // second delay in fade out function
-    exe.replace(addr2 + fadeOutDelayOffset2, delay.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(addr2 + fadeOutDelayOffset2, delay.packToHex(4));
     // separate fade out code
-    exe.replace(addr3 + fadeOutDelayOffset3, delay.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(addr3 + fadeOutDelayOffset3, delay.packToHex(4));
 
     return true;
 }
