@@ -43,7 +43,7 @@ function FixArrowsCharset()
     if (offset !== -1)
     {
         consoleLog("Step 2-1a - Replace Arrows string for the correct match");
-            exe.replace(offset, "20 1B 00 00 20 18 00 00 20 1A 00 00 20 95 00 00 20 0F ", PTYPE_HEX);
+        pe.replaceHex(offset, "20 1B 00 00 20 18 00 00 20 1A 00 00 20 95 00 00 20 0F ");
     }
     else
     {
@@ -101,11 +101,11 @@ function FixArrowsCharset()
             return "Failed in Step 1-3b - Pattern not found";
 
         consoleLog("Step 2-1b - Replace Arrows string for the correct match");
-        exe.replace(offset1 - 1 + LeftLoc,  "20 1B ", PTYPE_HEX);
-        exe.replace(offset2 - 1 + UpLoc,    "20 18 ", PTYPE_HEX);
-        exe.replace(offset2 - 1 + RightLoc, "20 1A ", PTYPE_HEX);
-        exe.replace(offset2 - 1 + DownLoc,  "20 95 ", PTYPE_HEX);
-        exe.replace(offset3 - 1 + MenuLoc,  "20 0F ", PTYPE_HEX);
+        pe.replaceHex(offset1 - 1 + LeftLoc,  "20 1B ");
+        pe.replaceHex(offset2 - 1 + UpLoc,    "20 18 ");
+        pe.replaceHex(offset2 - 1 + RightLoc, "20 1A ");
+        pe.replaceHex(offset2 - 1 + DownLoc,  "20 95 ");
+        pe.replaceHex(offset3 - 1 + MenuLoc,  "20 0F ");
     }
 
     return true;
