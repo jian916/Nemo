@@ -117,7 +117,7 @@ function ButtonNew(buttonId, value)
     }
 
     // 0x169 is id for booking. should be set to switchTbl offset
-    exe.replaceByte(valueOffset, value);
+    pe.replaceByte(valueOffset, value);
 
     return true;
 }
