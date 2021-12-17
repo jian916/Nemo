@@ -70,7 +70,7 @@ function AlwaysLoadClientPlugins()
 
     offset += code.hexlength();
 
-    exe.replace(offset, " 90".repeat(6), PTYPE_HEX);
+    pe.replaceHex(offset, " 90".repeat(6));
 
     return true;
 }
