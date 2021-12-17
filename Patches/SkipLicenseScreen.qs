@@ -28,8 +28,8 @@ function SkipLicenseScreen()
   var third = pe.fetchHex(refaddr + 8, 4);
 
   //Step 3 - Replace the 1st and 2nd entries with the third. i.e. Case 0 and 1 will now use Case 2
-  exe.replace(refaddr, third, PTYPE_HEX);
-  exe.replace(refaddr + 4, third, PTYPE_HEX);
+  pe.replaceHex(refaddr, third);
+  pe.replaceHex(refaddr + 4, third);
 
   return true;
 }
