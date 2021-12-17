@@ -56,7 +56,7 @@ function RestoreRoulette()
 
   //Step 4 - Insert the code and create the JMP to it.
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
-  exe.replace(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4));
 
   return true;
 }
