@@ -38,7 +38,7 @@ function EnableRagHTTPEmblem()
     return "Failed in Step 1"
 
   //Step 2 - Change buffer offset
-  exe.replace(offset + modPos, " 3C", PTYPE_HEX);
+  pe.replaceByte(offset + modPos, 0x3C);
 
   logRawFunc("CPacketQueue_InsertFrontData", offset, InsertFrontDataOffset);
   logField("CRagConnection::m_recvQueue2", offset, recvQueue2Offset);
