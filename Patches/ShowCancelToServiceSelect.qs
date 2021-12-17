@@ -43,7 +43,7 @@ function ShowCancelToServiceSelect()
   offset = offset2 + code.hexlength();
 
   //Step 2b - Change 0xBD to 0x90 (its not a NOP xD)
-  exe.replace(offset - 4, " 90", PTYPE_HEX);
+  pe.replaceByte(offset - 4, 0x90);
 
   //Step 2c - Find the x-coord of cancel button after login coord.
   code = code.replace(" BD 00", " B2 01"); //swap 0BD with 1B2
@@ -55,7 +55,7 @@ function ShowCancelToServiceSelect()
   offset += code.hexlength();
 
   //Step 2d - Change 0x1B2 to 0xBD
-  exe.replace(offset - 4, " BD 00", PTYPE_HEX);
+  pe.replaceHex(offset - 4, " BD 00");
 
   return true;
 }
