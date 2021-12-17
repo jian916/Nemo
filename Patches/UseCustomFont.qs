@@ -38,7 +38,7 @@ function UseCustomFont()
   goffset &= 0xFFF00000;
   do
   {
-    exe.replaceDWord(offset, freeRva);
+    pe.replaceDWord(offset, freeRva);
     offset += 4;
   } while ((pe.fetchDWord(offset) & goffset) === goffset);
 
