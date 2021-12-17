@@ -65,12 +65,12 @@ function ShowRegisterButton()
   //Step 2c - Change the first JNE (LangType JNE) to JMP and goto the Jumped address
   if (type == 1)
   {
-    exe.replace(offset2 - 2, "EB", PTYPE_HEX);
+    pe.replaceByte(offset2 - 2, 0xEB);
     offset2 += pe.fetchByte(offset2 - 1);
   }
   else
   {
-    exe.replace(offset2 - 6, "90 E9", PTYPE_HEX);
+    pe.replaceHex(offset2 - 6, "90 E9");
     offset2 += pe.fetchDWord(offset2 - 4);
   }
 
@@ -93,7 +93,7 @@ function ShowRegisterButton()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 3e - Change the CModeMgr::Quit CALL with a CALL to our function
-  exe.replaceDWord(offset2 - 4, pe.rawToVa(free) - pe.rawToVa(offset2));
+  pe.replaceDWord(offset2 - 4, pe.rawToVa(free) - pe.rawToVa(offset2));
 
   //Step 4a - Find the prefix string for the button (pressed state)
   offset = pe.stringVa("btn_request_b");
@@ -117,7 +117,7 @@ function ShowRegisterButton()
     return "Failed in Step 4 - Langtype comparison missing";
 
   //Step 4d - Change the JNE to JMP. This way no langtype check occurs for any buttons
-  exe.replace(offset2 + 3, "EB", PTYPE_HEX);
+  pe.replaceByte(offset2 + 3, 0xEB);
 
   return true;
 }
