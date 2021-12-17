@@ -97,7 +97,7 @@ function ChangeDisplayCharDelDelay()
 
   code = ReplaceVarHex(code, 1, time32Func);
 
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
 
   // Step 4 - Remove displaying the text "X month X day" by changing coords
@@ -117,7 +117,7 @@ function ChangeDisplayCharDelDelay()
   if (offset === -1)
     return "Failed in Step 4";
 
-  exe.replace(offset + 2, " 90", PTYPE_HEX);
+  pe.replaceByte(offset + 2, 0x90);
 
   return true;
 }
