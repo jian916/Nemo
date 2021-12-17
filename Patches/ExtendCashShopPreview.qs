@@ -115,7 +115,7 @@ function ExtendCashShopPreview()
     exe.setJmpRaw(offset1, data.free);
 
     consoleLog("update block size");
-    exe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
+    pe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
 
     storage.ExtendCashShop = true;
 
