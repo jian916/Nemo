@@ -165,15 +165,12 @@ function exe_insertHex(value)
 
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
-    var obj = asm.textToHexRaw(patchAddr, commands, vars);
-    pe.replaceHex(patchAddr, obj);
-    return obj;
+    reportLegacy("Please replace exe.replaceAsmText to pe.replaceAsmText");
 }
 
 function exe_replaceAsmFile(fileName, vars)
 {
-    var commands = asm.load(fileName);
-    return exe_replaceAsmText(commands, vars);
+    reportLegacy("Please replace exe.replaceAsmFile to pe.replaceAsmFile");
 }
 
 function exe_match(code, useMask, addrRaw)

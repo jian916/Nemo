@@ -226,34 +226,6 @@ If success, return object.
 | vars     | Variables |
 | free     | Raw address where block was inserted |
 
-### exe.replaceAsmText
-
-``exe.replaceAsmText(patchAddr, commands, vars)``
-
-Replace bytes at raw address patchAddr to given assembler code.
-
-| Argument | Description |
-| -------- | ----------- |
-| patchAddr| Raw address where code should be stored |
-| commands | Assembler text with commands |
-| vars     | Variables for assembler text |
-
-On success return bytes in hex format from assembler text.
-
-### exe.replaceAsmFile
-
-``exe.replaceAsmFile(fileName, commands, vars)``
-
-Replace bytes at raw address patchAddr to assembler code from given file name.
-
-| Argument | Description |
-| -------- | ----------- |
-| fileName | File name with assembler code |
-| commands | Assembler text with commands |
-| vars     | Variables for assembler text |
-
-On success return bytes in hex format from assembler text.
-
 ### exe.insertDWord
 
 ``exe.insertDWord(value, dryRun)``
@@ -515,3 +487,11 @@ In offset2 also exists size of fetched value in bytes.
 | offset2  | additional offset and size (two ints) |
 
 On success return fetched bytes in hex string format.
+
+### exe.replaceAsmText
+
+Please use pe.replaceAsmText
+
+### exe.replaceAsmFile
+
+Please use pe.replaceAsmFile
