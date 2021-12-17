@@ -72,7 +72,7 @@ function IncreaseHairSprites()
         return "Failed in step 2 - hair limit missing";
 
     var currentLimit = pe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
-    exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
+    pe.replaceHex(offset + assignOffset, "90 90 90 90 90 90" + addNops);  // removing hair style limit assign
 
     consoleLog("step 3 - search doram jobs hair limit");
     if (!newclient)
@@ -107,7 +107,7 @@ function IncreaseHairSprites()
         return "Failed in step 3 - doram hair limit missing";
 
     var currentLimit = pe.fetchUByte(offset + valueOffset) + 1;  // current max hair limit
-    exe.replace(offset + assignOffset, "90 90 90 90 90 90" + addNops, PTYPE_HEX);  // removing hair style limit assign
+    pe.replaceHex(offset + assignOffset, "90 90 90 90 90 90" + addNops);  // removing hair style limit assign
 
     consoleLog("step 4 - search string \"2\" \"3\" \"4\"");
     code =
@@ -272,7 +272,7 @@ function IncreaseHairSprites()
     jmpAddr = jmpAddr - (pe.rawToVa(patchOffset) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
-    exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
+    pe.replaceHex(patchOffset, code);  // add patch with fill male hair table
 
     consoleLog("step 8 - search male doram hair table allocations in CSession::InitPcNameTable");
     if (!newclient)
@@ -373,7 +373,7 @@ function IncreaseHairSprites()
     jmpAddr = jmpAddr - (pe.rawToVa(patchOffset2) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
-    exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
+    pe.replaceHex(patchOffset2, code);  // add patch with fill female hair table
 
     consoleLog("step 9 - search female doram hair table and location for jump");
 
@@ -473,7 +473,7 @@ function IncreaseHairSprites()
     jmpAddr = jmpAddr - (pe.rawToVa(patchOffset) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
-    exe.replace(patchOffset, code, PTYPE_HEX);  // add patch with fill male hair table
+    pe.replaceHex(patchOffset, code);  // add patch with fill male hair table
 
 
     // ex 8
@@ -538,7 +538,7 @@ function IncreaseHairSprites()
     jmpAddr = jmpAddr - (pe.rawToVa(patchOffset2) + code.hexlength() + 4);
     code = code + jmpAddr.packToHex(4);
 
-    exe.replace(patchOffset2, code, PTYPE_HEX);  // add patch with fill female hair table
+    pe.replaceHex(patchOffset2, code);  // add patch with fill female hair table
 
     return true;
 }
