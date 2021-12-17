@@ -35,7 +35,7 @@ function MvpItemIdenfifyName()
     if (offset === -1)
         return "Failed in Step 1";
 
-    exe.replace(offset + patchOffset, "01", PTYPE_HEX);
+    pe.replaceByte(offset + patchOffset, 1);
     logRawFunc("UIWindowMgr_SendMsg", offset, sendMsgOffset);
 
     return true;
