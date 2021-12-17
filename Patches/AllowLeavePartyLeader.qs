@@ -49,7 +49,7 @@ function AllowLeavelPartyLeader()
         return "Failed in step 1 - wrong jz offset";
 
     logRawFunc("FRIEND_INFO_destructor", offset, friendInfoDestructorOffset);
-    exe.replace(offset + jzOffset, "EB", PTYPE_HEX);  // change jz addr3 to jmp addr3
+    pe.replaceByte(offset + jzOffset, 0xEB);  // change jz addr3 to jmp addr3
 
     return true;
 }
