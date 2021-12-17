@@ -73,7 +73,7 @@ function RestoreLoginWindow()
   ;
 
   //Step 3b - Overwrite with the code.
-  exe.replace(codeOffset + 24, code, PTYPE_HEX);
+  pe.replaceHex(codeOffset + 24, code);
 
   //===============================================//
   // Now for some additional stuff to make it work //
@@ -126,7 +126,7 @@ function RestoreLoginWindow()
   else
     var repl = "EB 0F";
 
-  exe.replace(offset - 0x11, repl, PTYPE_HEX);
+  pe.replaceHex(offset - 0x11, repl);
 
   /*===========================================================================================================================
   Shinryo: We need to make the client return to Login Interface when Error occurs (such as wrong password, failed to connect).
@@ -243,7 +243,7 @@ function RestoreLoginWindow()
   replace += " EB" + (code.hexlength() - replace.hexlength() - 2).packToHex(1); //Skip to the POP ESI
 
   //Step 5g - Overwrite the SendMsg function.
-  exe.replace(offset, replace, PTYPE_HEX);
+  pe.replaceHex(offset, replace);
 
   //==========================================================================//
   // Extra for certain 2013 - 2014 clients. Need to fix a function to return 1//
@@ -296,7 +296,7 @@ function RestoreLoginWindow()
     //  XOR EAX, EAX
     //  ADD ESP, 0C
     //  NOP
-    exe.replace(offset + 2, " 31 C0 83 C4 0C 90", PTYPE_HEX);
+    pe.replaceHex(offset + 2, " 31 C0 83 C4 0C 90");
   }
 
   return true;
