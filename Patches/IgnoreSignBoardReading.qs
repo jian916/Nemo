@@ -78,7 +78,7 @@ function IgnoreSignBoardReading()
         "90 90 90 90 90 " +  // 07 nops
         "90 90 90 90 90 ";   // 12 nops
 
-    exe.replace(offset + repLoc, code, PTYPE_HEX);
+    pe.replaceHex(offset + repLoc, code);
 
     return true;
 }
