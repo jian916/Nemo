@@ -31,7 +31,7 @@ function RemoveHardcodedHttpIP()
         found = true;
     for (var j = 0; j < offsets.length; j++)
     {
-      exe.replace(offsets[j], "http://0.0.0.0/\x00", PTYPE_STRING);
+      pe.replace(offsets[j], "http://0.0.0.0/\x00");
     }
   }
   if (found === false)
