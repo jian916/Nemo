@@ -122,6 +122,6 @@ function AllowCloseCutinByEsc()
 
     exe.insert(free, codeLen, newCode, PTYPE_HEX);
 
-    exe.replace(checkFuncOffset - 1, "E9" + (freeRva - pe.rawToVa(checkFuncOffset) - 4).packToHex(4), PTYPE_HEX); // replace call to check function into own function
+    pe.replaceHex(checkFuncOffset - 1, "E9" + (freeRva - pe.rawToVa(checkFuncOffset) - 4).packToHex(4)); // replace call to check function into own function
     return true;
 }
