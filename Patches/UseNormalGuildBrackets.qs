@@ -12,7 +12,7 @@ function UseNormalGuildBrackets()
 
   //Step 2 - Change the brackets to regular parentheses + blanks
   //         (since we are converting from UNICODE to ASCII 1 extra byte would be there for each korean character)
-  exe.replace(offset, "%s (%s) ", PTYPE_STRING);
+  pe.replace(offset, "%s (%s) ");
 
   return true;
 }
