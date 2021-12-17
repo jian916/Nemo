@@ -43,7 +43,7 @@ function DefaultBrowserInCashshop()
     for (var i = 0; i < offsets.length; i++)
     {
         offset = offsets[i];
-        exe.replace (offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     return true;
