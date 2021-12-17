@@ -37,7 +37,7 @@ function FixShortcutsInWine()
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    exe.replace(offset + patchOffset, "90 90 90 90 90 90", PTYPE_HEX); // replace jg to nops
+    pe.replaceHex(offset + patchOffset, "90 90 90 90 90 90");  // replace jg to nops
     return true;
 }
 
