@@ -52,7 +52,7 @@ function ChangeGuildExpLimit()
         return "Patch Cancelled - New value is same as old";
     }
 
-    exe.replace(offset + limitOffset, limit.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + limitOffset, limit);
 
     return true;
 }
