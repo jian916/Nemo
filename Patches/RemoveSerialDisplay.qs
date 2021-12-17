@@ -29,7 +29,7 @@ function RemoveSerialDisplay()
   // NOP
   // XOR EAX, EAX
   // CMP EAX, 1
-  exe.replace(offset, " 90 31 C0 83 F8 01", PTYPE_HEX);
+  pe.replaceHex(offset, " 90 31 C0 83 F8 01");
 
   return true;
 }
