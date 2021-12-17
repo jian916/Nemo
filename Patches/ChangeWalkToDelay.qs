@@ -225,7 +225,7 @@ function ChangeWalkToDelay(value1, value2)
     var offset = offsetObj.offset;
 
     consoleLog("Step 2a - Replace the first offset value");
-    exe.setValue(offset, offsetObj.delayOffset, value1);
+    pe.setValue(offset, offsetObj.delayOffset, value1);
 
     logField("CGameMode::m_leftBtnClickTick", offset, offsetObj.leftBtnClickTickOffset);
     logField("CGameMode::m_world", offset, offsetObj.worldOffset);
@@ -254,7 +254,7 @@ function ChangeWalkToDelay(value1, value2)
             return "Failed in Step 1b - Pattern not found";
 
         consoleLog("Step 2b - Replace the second offset value");
-        exe.setValue(offset, delayOffset, value2);
+        pe.setValue(offset, delayOffset, value2);
     }
 
     return true;
