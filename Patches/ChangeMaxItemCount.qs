@@ -65,12 +65,10 @@ function ChangeMaxItemCount(value)
 
       //Step 3 - Replace with new one's address
       for (var i = 0; i < offsets.length; i++)
-        {
-            var offset2 = offsets[i] + code.hexlength();
-            exe.replace(offset2 - 4, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
-        }
-
-
+      {
+          var offset2 = offsets[i] + code.hexlength();
+          exe.replaceDWord(offset2 - 4, pe.rawToVa(free));
+      }
 
   return true;
 }
