@@ -56,7 +56,7 @@ function ChangeNewCharNameHeight()
         return "Patch Cancelled - New value is same as old";
     }
 
-    exe.replaceByte(offset + heightOffset, height);
+    pe.replaceByte(offset + heightOffset, height);
 
     return true;
 }
