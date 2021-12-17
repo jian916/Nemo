@@ -76,7 +76,7 @@ function RemoveItemsEquipPreview()
     logRawFunc("UIBasicButton_UIBasicButton", offset, UIBasicButtonConstructorOffset);
 
     consoleLog("Step 3 - Replace the JZ offset with NOP + JMP at location found in Step 2");
-    exe.replace(offset + repLoc, "90 E9 ", PTYPE_HEX);
+    pe.replaceHex(offset + repLoc, "90 E9 ");
 
     return true;
 }
