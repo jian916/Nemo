@@ -119,7 +119,7 @@ function IgnoreTownInfoReading()
     logRawFunc("CTownInfoMgr_Load", offset, loadOffset);
 
     consoleLog("Step 1c - Replace with xor eax, eax followed by nops");
-    exe.replace(offset, "33 C0 90 90 90 ", PTYPE_HEX);  // xor eax, eax + nops
+    pe.replaceHex(offset, "33 C0 90 90 90 ");  // xor eax, eax + nops
 
     var hcode =
         head +               // nops
@@ -129,7 +129,7 @@ function IgnoreTownInfoReading()
         foot +               // nops
         "E8 ";               // call sub_A4F320
 
-    exe.replace(offset + hloc, hcode, PTYPE_HEX);
+    pe.replaceHex(offset + hloc, hcode);
 
     return true;
 }
