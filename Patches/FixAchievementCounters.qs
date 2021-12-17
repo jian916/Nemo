@@ -118,36 +118,36 @@ function FixAchievementCounters()
     // global counter
     if (addr1 !== false)
     {
-        exe.replace(addr1, "00", PTYPE_HEX);     // change wrong offset to correct one
+        pe.replaceByte(addr1, 0);     // change wrong offset to correct one
     }
 
     // 0
     // 52, 9d  - Adventure -> Battle
-    exe.replace(offsets[0] + type1Offset, type2Offsets[1].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(offsets[0] + type2Offset, type2Offsets[1].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(msgOffsets[0] + msgOffset, msgIds[1].packToHex(4), PTYPE_HEX);     // change wrong message id
+    pe.replaceHex(offsets[0] + type1Offset, type2Offsets[1].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(offsets[0] + type2Offset, type2Offsets[1].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(msgOffsets[0] + msgOffset, msgIds[1].packToHex(4));     // change wrong message id
 
     // 1
     // 52, cf  - Battle    -> Memorial
-    exe.replace(offsets[1] + type1Offset, type2Offsets[3].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(offsets[1] + type2Offset, type2Offsets[3].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(msgOffsets[1] + msgOffset, msgIds[3].packToHex(4), PTYPE_HEX);     // change wrong message id
+    pe.replaceHex(offsets[1] + type1Offset, type2Offsets[3].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(offsets[1] + type2Offset, type2Offsets[3].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(msgOffsets[1] + msgOffset, msgIds[3].packToHex(4));     // change wrong message id
 
     // 2
     // 180, 6b - Quest     -> Adventure
-    exe.replace(offsets[2] + type1Offset, type2Offsets[0].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(offsets[2] + type2Offset, type2Offsets[0].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(msgOffsets[2] + msgOffset, msgIds[0].packToHex(4), PTYPE_HEX);     // change wrong message id
+    pe.replaceHex(offsets[2] + type1Offset, type2Offsets[0].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(offsets[2] + type2Offset, type2Offsets[0].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(msgOffsets[2] + msgOffset, msgIds[0].packToHex(4));     // change wrong message id
 
     // 3
     // 180, 9d - Memorial  -> Quest
-    exe.replace(offsets[3] + type1Offset, type2Offsets[2].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(offsets[3] + type2Offset, type2Offsets[2].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
-    exe.replace(msgOffsets[3] + msgOffset, msgIds[2].packToHex(4), PTYPE_HEX);     // change wrong message id
+    pe.replaceHex(offsets[3] + type1Offset, type2Offsets[2].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(offsets[3] + type2Offset, type2Offsets[2].packToHex(1));  // change wrong offset to correct one
+    pe.replaceHex(msgOffsets[3] + msgOffset, msgIds[2].packToHex(4));     // change wrong message id
 
     // 4
     // 180, cf - Feat
-    exe.replace(offsets[4] + type1Offset, type2Offsets[4].packToHex(1), PTYPE_HEX);  // change wrong offset to correct one
+    pe.replaceHex(offsets[4] + type1Offset, type2Offsets[4].packToHex(1));  // change wrong offset to correct one
 
     return true;
 }
