@@ -38,7 +38,7 @@ function ChangeMaxPartyValue()
     var value = exe.getUserInput("$max_party_value", XTYPE_BYTE, _("Max Party"), _("Set Max Party Value: (Max:127, Default:12)"), "12", 1, 127);
 
     consoleLog("step 3");
-    exe.replace(offset + patchOffset, value.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + patchOffset, value);
 
     return true;
 }
