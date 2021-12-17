@@ -20,7 +20,7 @@ function Enable44khzAudio()
     }
 
     //Step 2 - Replace 22050 with 44100.
-    exe.replace(offset + patchOffset, " 44 AC 00 00", PTYPE_HEX); //44100
+    pe.replaceHex(offset + patchOffset, " 44 AC 00 00"); //44100
 
     return true;
 }
