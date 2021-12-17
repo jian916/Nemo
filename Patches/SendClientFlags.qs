@@ -64,7 +64,7 @@ function SendClientFlags()
 
     for (var i = 0; i < offsets.length; i ++)
     {
-        exe.replace(offsets[i], freeVaHex, PTYPE_HEX);
+        pe.replaceHex(offsets[i], freeVaHex);
     }
 
     storage.g_client_version = free;
@@ -80,7 +80,7 @@ function SendClientFlags_apply()
         flags |= 1;
 
     patch.removePatchData(storage.g_client_version);
-    exe.replace(storage.g_client_version, flags.packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(storage.g_client_version, flags);
 
     return true;
 }
