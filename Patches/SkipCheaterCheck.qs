@@ -48,7 +48,7 @@ function SkipCheaterCheck(msgNum)
     return "Failed in Step 1";
 
   //Step 2 - Change the JZ to JMP
-  exe.replace(offset + 2, "EB", PTYPE_HEX);
+  pe.replaceByte(offset + 2, 0xEB);
 
   return true;
 }
