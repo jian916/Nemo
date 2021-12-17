@@ -50,7 +50,7 @@ function UsePlainTextDescriptions()
     return "Failed in Step 1 - LangType Comparison missing";
 
   //Step 2 - Change JNE/JNZ to JMP
-  exe.replace(offset + repLoc, "EB", PTYPE_HEX);
+  pe.replaceByte(offset + repLoc, 0xEB);
 
   return true;
 }
