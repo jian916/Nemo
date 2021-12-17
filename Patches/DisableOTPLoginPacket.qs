@@ -18,8 +18,8 @@
 
 function DisableOTPLoginPacket()
 {
-    exe.replace(table.getRawValidated(table.OTPLoginPatchId1), 0x2710.packToHex(4), PTYPE_HEX);  // replace LMM_ constant
-    exe.replace(table.getRawValidated(table.OTPLoginPatchId2), " 00", PTYPE_HEX);
+    pe.replaceHex(table.getRawValidated(table.OTPLoginPatchId1), 0x2710.packToHex(4));  // replace LMM_ constant
+    pe.replaceByte(table.getRawValidated(table.OTPLoginPatchId2), 0);
 
     return true;
 }
