@@ -51,6 +51,6 @@ function FixActDelay()
         return "Failed in step 1 - found different act indexes";
     }
 
-    exe.replace(offset + patchOffset, "90 90", PTYPE_HEX);
+    pe.replaceHex(offset + patchOffset, "90 90");
     return true;
 }
