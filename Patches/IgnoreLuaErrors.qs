@@ -113,7 +113,7 @@ function IgnoreLuaErrors()
         "90 90 " +             // 10 nops
         "90 90 90 90 90 90 ";  // 12 nops
 
-    exe.replace(offset + repLoc, newCode, PTYPE_HEX);
+    pe.replaceHex(offset + repLoc, newCode);
 
     return true;
 }
