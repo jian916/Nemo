@@ -17,7 +17,7 @@ function Intravision()
     if (offset === -1)
         return "Failed in Step 1";
 
-    exe.replace(offset, " 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset, " 90 E9");
 
     return true;
 }
