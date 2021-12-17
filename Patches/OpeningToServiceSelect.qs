@@ -44,7 +44,7 @@ function OpeningToServiceSelect()
     //Step 2 - Change Opening button to Service Select
     var opOffset = switchTable + 100;
 
-    exe.replace(pe.vaToRaw(opOffset), "00", PTYPE_HEX);
+    pe.replaceByte(pe.vaToRaw(opOffset), 0);
 
     return true;
 }
