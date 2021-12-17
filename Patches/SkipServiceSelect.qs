@@ -47,7 +47,7 @@ function SkipServiceSelect()
         return "Failed in Step 2 - Pattern not found";
 
     // Step 3 - Change conditional instruction to permanent setting
-    exe.replace(offset2, repl, PTYPE_HEX);
+    pe.replaceHex(offset2, repl);
 
     return true;
 }
