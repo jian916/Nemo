@@ -19,7 +19,7 @@ function DisableDoram()
   if (offset === -1)
     return "Failed in step 1";
 
-  exe.replace(offset, "90 6A 00", PTYPE_HEX);
+  pe.replaceHex(offset, "90 6A 00");
 
   // Step 2a - MOV pattern
   code =
@@ -49,7 +49,7 @@ function DisableDoram()
 
   offset2 = offset2 - offset - 5;
 
-  exe.replace(offset, "E9" + offset2.packToHex(4) + " 90 90", PTYPE_HEX);
+  pe.replaceHex(offset, "E9" + offset2.packToHex(4) + " 90 90");
 
   // Step 3
   code =
@@ -64,7 +64,7 @@ function DisableDoram()
   if (offset === -1)
     return "Failed in step 3";
 
-  exe.replace(offset + code.hexlength(), "90 90 90 90 90 90", PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength(), "90 90 90 90 90 90");
   return true;
 }
 
