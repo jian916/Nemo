@@ -45,7 +45,7 @@ function ExtendBox(index)
   // 1 = Unknown
   // 2 = Private Message
   // 3 = Chat Box
-  exe.replace(offsets[index] + offset_for_patch, "EA", PTYPE_HEX);
+  pe.replaceByte(offsets[index] + offset_for_patch, 0xEA);
 
   return true;
 }
