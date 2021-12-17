@@ -244,7 +244,7 @@ function ChangeLubPath(old_path, new_path)
         return "Failed in Step 2 - Not enough free space";
 
     exe.insert(free, new_path.length, new_path, PTYPE_STRING);
-    exe.replace(offset + 1, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset + 1, pe.rawToVa(free));
 
     return true;
 }
