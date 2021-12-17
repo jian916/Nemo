@@ -299,7 +299,7 @@ function TaekwonJobNameFix()
         for (var j = 0; j < foundRef[i].length; j ++)
         {
             var addr = foundRef[i][j][1];
-            exe.replace(addr, enStr[i], PTYPE_HEX);
+            pe.replaceHex(addr, enStr[i]);
         }
     }
 
