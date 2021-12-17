@@ -35,7 +35,7 @@ function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
     }
 
     if (patch.getState() !== 2)
-        exe.replace(patchAddr, code, PTYPE_HEX);
+        pe.replaceHex(patchAddr, code);
     else
         pe.directReplace(patchAddr, code);
 }
@@ -52,7 +52,7 @@ function exe_setNops(patchAddr, nopsCount)
     {
         code = code + "90 ";
     }
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    pe.replaceHex(patchAddr, code);
 }
 
 function exe_setNopsRange(patchStartAddr, patchEndAddr)
@@ -166,7 +166,7 @@ function exe_insertHex(value)
 function exe_replaceAsmText(patchAddr, commands, vars)
 {
     var obj = asm.textToHexRaw(patchAddr, commands, vars);
-    exe.replace(patchAddr, obj, PTYPE_HEX);
+    pe.replaceHex(patchAddr, obj);
     return obj;
 }
 
@@ -200,7 +200,7 @@ function exe_setValue(offset, offset2, value)
 {
     var size = offset2[1];
     var addr = offset + offset2[0];
-    exe.replace(addr, value.packToHex(size), PTYPE_HEX);
+    pe.replaceHex(addr, value.packToHex(size));
 }
 
 function exe_setValueSimple(offset, value)
@@ -219,7 +219,7 @@ function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
     if (code.hexlength() !== 2)
         fatalError(cmd + " is not short");
 
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    pe.replaceHex(patchAddr, code);
 }
 
 function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
