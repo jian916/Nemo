@@ -54,6 +54,6 @@ function AllowSpamSkills()
         "90 " +    // nop
         "90 ";     // nop
 
-    exe.replace(offset + patchOffset, code, PTYPE_HEX);
+    pe.replaceHex(offset + patchOffset, code);
     return true;
 }
