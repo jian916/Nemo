@@ -61,7 +61,7 @@ function SharedPalettes(prefix, newString)
   exe.insert(free, newString.length, newString, PTYPE_STRING);
 
   //Step 3 - Replace with new one's address
-  exe.replace(offset + 1, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset + 1, pe.rawToVa(free).packToHex(4));
 
   return true;
 }
