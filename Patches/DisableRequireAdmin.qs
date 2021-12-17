@@ -39,7 +39,7 @@ function DisableRequireAdmin()
         for (var j = 0; j < offsets.length; j++)
         {
             consoleLog("Step 2 - Replace with asInvoker + 11 Spaces");
-            exe.replace(offsets[j], "asInvoker\x22\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20", PTYPE_STRING);
+            pe.replace(offsets[j], "asInvoker\x22\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20");
         }
     }
 
