@@ -107,7 +107,7 @@ function FixCharsetForFonts()
     code = " E9" + jump.packToHex(4) + " 90 90";
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
     return true;
 }
