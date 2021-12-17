@@ -133,6 +133,6 @@ function HideZeroDateInGuildMembers()
     code =
         "68 " + freeRva +  // push jmpAddr
         "C3";              // retn
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    pe.replaceHex(patchAddr, code);
     return true;
 }
