@@ -12,7 +12,7 @@ function SkipResurrectionButton()
     return "Failed in Step 1";
 
   //Step 2 - Replace the id with 0xFFFF - Fastest & Easiest method
-  exe.replace(offset + 1, " FF FF", PTYPE_HEX);
+  pe.replaceHex(offset + 1, " FF FF");
 
   return true;
 }
