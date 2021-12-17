@@ -34,7 +34,7 @@ function ChangeQuickSwitchDelay()
   for (var i = 0; i < size; ++i)
   {
     // replace the first found values
-    exe.replace(offsets[i]+1, new_tick_ms.packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offsets[i] + 1, new_tick_ms);
 
     // replace the later values that are shown in the chat window
     // "n seconds to next quick switch ..."
@@ -44,7 +44,7 @@ function ChangeQuickSwitchDelay()
     var offset = pe.find(code, start, end);
     if (offset === -1)
       return "Failed in Step 2 - Find delay subtraction for spot " + i;
-    exe.replace(offset+1, new_tick.packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset + 1, new_tick);
 
   }
 
@@ -64,7 +64,7 @@ function ChangeQuickSwitchDelay()
   if (offset === -1)
     return "Failed in Step 3b - Find Compare to " + tick_ms;
   if (offsets.indexOf(offset) === -1)
-    exe.replace(offset + 1, new_tick_ms.packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset + 1, new_tick_ms);
   return true;
 }
 
