@@ -190,7 +190,7 @@ function ChangeMaxFriendsValue()
     var value = exe.getUserInput("$max_friends_value", XTYPE_BYTE, _("Max Friends"), _("Set Max Friends Value: (Max:127, Default:40)"), "40", 1, 127);
 
     consoleLog("Step 5 - Replace with value from user input");
-    exe.replace(offset + repLoc, value.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + repLoc, value);
 
     return true;
 }
