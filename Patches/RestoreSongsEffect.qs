@@ -163,7 +163,7 @@ function RestoreSongsEffect()
     code = " E9" + (freeRva - pe.rawToVa(patchAddr + 5)).packToHex(4);
 
     exe.insert(free, size, ins, PTYPE_HEX);
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    pe.replaceHex(patchAddr, code);
 
     //Step 5 - Modify indirect switch table
     var firstUnitID = 126;
@@ -173,7 +173,7 @@ function RestoreSongsEffect()
 
     code = LPtblOffset.repeat(effectID.length - 1);
 
-    exe.replace(pe.vaToRaw(iswTable + (firstSongUnitID - firstUnitID)), code, PTYPE_HEX);
+    pe.replaceHex(pe.vaToRaw(iswTable + (firstSongUnitID - firstUnitID)), code);
 
     return true;
 }
