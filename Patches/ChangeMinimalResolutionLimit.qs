@@ -110,17 +110,13 @@ function ChangeMinimalResolutionLimit()
         return "Patch Cancelled - New width and height is same as old";
     }
 
-    width = width.packToHex(4);
-    height = height.packToHex(4);
-
     if (widthOffset1 !== -1)
     {
-        exe.replace(offset + widthOffset1, width, PTYPE_HEX);
+        pe.replaceDWord(offset + widthOffset1, width);
     }
-    exe.replace(offset + widthOffset2, width, PTYPE_HEX);
-    exe.replace(offset + heightOffset1, height, PTYPE_HEX);
-    exe.replace(offset + heightOffset2, height, PTYPE_HEX);
-
+    pe.replaceDWord(offset + widthOffset2, width);
+    pe.replaceDWord(offset + heightOffset1, height);
+    pe.replaceDWord(offset + heightOffset2, height);
 
     //Fix potential crash when access the Advanced Settings
     var screenWidthAdd = pe.fetchHex(offset + screenWidth1Offset, 4);
