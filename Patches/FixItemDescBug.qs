@@ -24,7 +24,7 @@ function FixItemDescBug()
   if (offset === -1)
     return "Failed in Step 1 - '[' string compare missing";
 
-  exe.replace(offset + patchLoc, " EB", PTYPE_HEX);
+  pe.replaceByte(offset + patchLoc, 0xEB);
 
   return true;
 }
