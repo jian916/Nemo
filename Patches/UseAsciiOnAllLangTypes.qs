@@ -16,7 +16,7 @@ function UseAsciiOnAllLangTypes()
     return "Failed in Step 1";
 
   //Step 2 - NOP out the JNZ
-  exe.replace(offset + 4, " 90 90", PTYPE_HEX);
+  pe.replaceHex(offset + 4, " 90 90");
 
   return true;
 }
