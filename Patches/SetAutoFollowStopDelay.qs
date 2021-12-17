@@ -41,7 +41,7 @@ function SetAutoFollowStopDelay()
     consoleLog("Replace the value");
     for (var i = 0; i < offsets.length; i++)
     {
-        exe.setValue(offsets[i], delayOffset, value);
+        pe.setValue(offsets[i], delayOffset, value);
     }
 
     return true;
