@@ -84,20 +84,20 @@ function LoadCustomClientInfo()
     exe.insert(free, myfile.length, "$newclientinfo", PTYPE_STRING);
     if (xmmPTR)
     {
-        exe.replace(offset1+3, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
+        pe.replaceHex(offset1+3, pe.rawToVa(free).packToHex(4));
     }
     else
     {
-        exe.replace(offset1+4, pe.rawToVa(free).packToHex(4), PTYPE_HEX);
+        pe.replaceHex(offset1 + 4, pe.rawToVa(free).packToHex(4));
         if (ciName == "sclientinfo.xml")
         {
-            exe.replace(offset2+4, pe.rawToVa(free+8).packToHex(4), PTYPE_HEX);
+            pe.replaceHex(offset2 + 4, pe.rawToVa(free+8).packToHex(4));
         }
         else
         {
-            exe.replace(offset2+1, pe.rawToVa(free+8).packToHex(4), PTYPE_HEX);
-            exe.replace(offset3+2, pe.rawToVa(free+0xC).packToHex(4), PTYPE_HEX);
-            exe.replace(offset4+1, pe.rawToVa(free+0xE).packToHex(4), PTYPE_HEX);
+            pe.replaceHex(offset2 + 1, pe.rawToVa(free+8).packToHex(4));
+            pe.replaceHex(offset3 + 2, pe.rawToVa(free+0xC).packToHex(4));
+            pe.replaceHex(offset4 + 1, pe.rawToVa(free+0xE).packToHex(4));
         }
     }
     return true;
