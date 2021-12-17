@@ -147,8 +147,8 @@ function UseCustomDLL()
 
   //Step 4b - Change the PE Table Import Data Directory Address
   var PEoffset = pe.find("50 45 00 00");
-  exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, baseAddr + strSize + dirEntryData.hexlength() );
-  exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, dirTableData.hexlength() - 20);
+  pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, baseAddr + strSize + dirEntryData.hexlength() );
+  pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, dirTableData.hexlength() - 20);
 
   //Step 4 - Hint for HShield Patch to not conflict with this one.
   Import_Info = {
