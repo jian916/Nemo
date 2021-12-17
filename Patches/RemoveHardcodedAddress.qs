@@ -58,7 +58,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
     logRawFunc("snprintf_s", offset, snprintfOffset);
 
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
-    exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset + 2, clientinfo_addr.packToHex(4));
 
     var atoi = imports.ptrHexValidated("atoi");
 
@@ -69,7 +69,7 @@ function RemoveHardcodedAddressOld(offset, overrideAddressOffset)
         "A3" + otpPort.packToHex(4) +              // mov otp_port, eax
         "83 C4 04" +                               // add esp, 4
         "C3"                                       // retn
-    exe.replace(overrideAddr, newCode, PTYPE_HEX);
+    pe.replaceHex(overrideAddr, newCode);
 
     return true;
 }
@@ -114,7 +114,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
     logVaVar("g_auth_addr", offset, authAddrOffset);
 
     consoleLog("step 3b - replace otp_addr to clientinfo_addr");
-    exe.replace(offset + 2, clientinfo_addr.packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset + 2, clientinfo_addr.packToHex(4));
 
     var atoi = imports.ptrHexValidated("atoi");
 
@@ -129,7 +129,7 @@ function RemoveHardcodedAddressNew(overrideAddr, retAddr)
         " 83 C4 04" +                              // 17 add esp, 4
         " E9" + continueAddr.packToHex(4)          // 20 jmp continue
 
-    exe.replace(overrideAddr, newCode, PTYPE_HEX);
+    pe.replaceHex(overrideAddr, newCode);
 
     return true;
 }
@@ -199,7 +199,7 @@ function RemoveHardcodedAddress20207(overrideAddr, retAddr, clientinfo_addr, cli
         "83 C4 18 " +                              // 34 add esp, 18h
         "E9 " + continueAddr.packToHex(4)          // 37 jmp continue
 
-    exe.replace(overrideAddr, newCode, PTYPE_HEX);
+    pe.replaceHex(overrideAddr, newCode);
 
     return true;
 }
