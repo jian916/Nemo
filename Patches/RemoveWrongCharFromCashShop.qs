@@ -50,7 +50,7 @@ function RemoveWrongCharFromCashShop()
         "90" +     // nop
         "90" +     // nop
         "90"       // nop
-    exe.replace(offset + pushOffset, code, PTYPE_HEX);
+    pe.replaceHex(offset + pushOffset, code);
 
     return true;
 }
