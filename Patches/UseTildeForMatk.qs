@@ -34,7 +34,7 @@ function UseTildeForMatk()
   }
 
   //Step 2e - Replace the PUSHed address for the 2nd match out of the 5
-  exe.replaceDWord(offsets[1] + 1, offset);
+  pe.replaceDWord(offsets[1] + 1, offset);
 
   return true;
 }
