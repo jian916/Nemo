@@ -68,7 +68,7 @@ function IgnoreQuestErrors()
         "90 90 90 90 90 90 " +  // 08 nops
         "90 90 90 90 90 90 ";   // 14 nops
 
-    exe.replace(offset + replaceOffset, newCode, PTYPE_HEX);
+    pe.replaceHex(offset + replaceOffset, newCode);
 
     return true;
 }
