@@ -40,7 +40,7 @@ function ShowLicenseScreen()
     return "Failed in Step 2 - LangType comparison missing";
 
   //Step 2b - Change the first JE to JMP
-  exe.replace(offset + 3, "EB", PTYPE_HEX);
+  pe.replaceByte(offset + 3, 0xEB);
 
   return true;
 }
