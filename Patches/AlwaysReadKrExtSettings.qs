@@ -61,7 +61,7 @@ function AlwaysReadKrExtSettings()
         var diff = korea_ref_offset - offset - 2;  // Value -2 for EB xx
 
         consoleLog("Step 5a - Replace JA with JMP");
-        exe.replace(offset, "EB " + diff.packToHex(1), PTYPE_HEX);
+        pe.replaceHex(offset, "EB " + diff.packToHex(1));
 
         return true;
     }
@@ -118,7 +118,7 @@ function AlwaysReadKrExtSettings()
         "FF E0 ";                       // 05 jmp eax
 
     consoleLog("Step 5b - Add jump to korean settings");
-    exe.replace(offset + patchOffset, code, PTYPE_HEX);
+    pe.replaceHex(offset + patchOffset, code);
 
     return true;
 }
