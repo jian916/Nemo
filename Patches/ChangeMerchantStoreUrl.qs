@@ -83,14 +83,14 @@ function ChangeMerchantStoreUrl()
     //Step 4 - Insert and replace everything
     exe.insert(free, size, ins, PTYPE_HEX);
 
-    exe.replace(offset1 + urlLen1, saveUrl.length.packToHex(1), PTYPE_HEX);
-    exe.replace(offset1 + urlLen2, loadUrl.length.packToHex(1), PTYPE_HEX);
-    exe.replace(offset1 + url1Ref, freeRva.packToHex(4), PTYPE_HEX);
-    exe.replace(offset1 + url2Ref, (freeRva + saveUrl.length + 1).packToHex(4), PTYPE_HEX);
+    pe.replaceByte(offset1 + urlLen1, saveUrl.length);
+    pe.replaceByte(offset1 + urlLen2, loadUrl.length);
+    pe.replaceDWord(offset1 + url1Ref, freeRva);
+    pe.replaceDWord(offset1 + url2Ref, (freeRva + saveUrl.length + 1));
 
-    exe.replace(offset2[1] + urlLen3, saveUrl.length.packToHex(4), PTYPE_HEX);
-    exe.replace(offset2[1] + url1aRef, freeRva.packToHex(4), PTYPE_HEX);
-    exe.replace(offset2[1] + url2aRef, (freeRva + saveUrl.length + 1).packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset2[1] + urlLen3, saveUrl.length);
+    pe.replaceDWord(offset2[1] + url1aRef, freeRva);
+    pe.replaceDWord(offset2[1] + url2aRef, (freeRva + saveUrl.length + 1));
 
     //Step 5 -Remove all official ip address
     var ipaddr = "http://112.175.128.140:3000";
@@ -98,7 +98,7 @@ function ChangeMerchantStoreUrl()
 
     for (var i =0; i < offsets.length; i ++)
     {
-        exe.replace(offsets[i], "http://0.0.0.0/\x00", PTYPE_STRING);
+        pe.replace(offsets[i], "http://0.0.0.0/\x00");
     }
 
     return true;
