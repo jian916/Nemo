@@ -55,8 +55,8 @@ function UseCustomAuraSprites()
     return "Failed in Step 2";
 
   //Step 2b - Replace the two string addresses.
-  exe.replace(offset + 1, afloat, PTYPE_HEX);
-  exe.replace(offset + roff, aring, PTYPE_HEX);
+  pe.replaceHex(offset + 1, afloat);
+  pe.replaceHex(offset + roff, aring);
 
   //===========================================//
   // For new clients above is left unused but  //
@@ -93,8 +93,8 @@ function UseCustomAuraSprites()
   //Step 3c - Replace the two string addresses.
   if (offsetP !== -1 && offsetR !== -1)
   {
-    exe.replace(offsetP + 1, aring, PTYPE_HEX);
-    exe.replace(offsetR + 1, afloat, PTYPE_HEX);
+    pe.replaceHex(offsetP + 1, aring);
+    pe.replaceHex(offsetR + 1, afloat);
   }
 
   return true;
