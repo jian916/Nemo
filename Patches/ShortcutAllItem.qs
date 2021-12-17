@@ -37,7 +37,7 @@ function ShortcutAllItem()
         code = "90 FF 25"        //NOP
                                 //JMP DWORD PTR [offsetB]
 
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     return true;
