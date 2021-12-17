@@ -90,7 +90,7 @@ function ChangeMvpHealthBarSize()
     code = " E9" + offset.packToHex(4) + " 90";
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset1, code, PTYPE_HEX);
+    pe.replaceHex(offset1, code);
 
     return true;
 }
