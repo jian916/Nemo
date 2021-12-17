@@ -57,14 +57,14 @@ function ShowReplayButton()
     code = " E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4);
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
   }
   else
   {
 
-  //Step 2.7 - Change the value to Mode 6 (Server Select)
-  exe.replace(offset + 3, "06", PTYPE_HEX);
+    //Step 2.7 - Change the value to Mode 6 (Server Select)
+    pe.replaceByte(offset + 3, 6);
   }
 
   //Step 3a - Find the ShowMsg case
@@ -150,7 +150,7 @@ function ShowReplayButton()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 4e - Create a JMP to our code from ShowMsg
-  exe.replace(offset - 5, "E9" + (freeRva - pe.rawToVa(offset)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset - 5, "E9" + (freeRva - pe.rawToVa(offset)).packToHex(4));
 
   return true;
 }
@@ -264,17 +264,17 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     }
     case 4:
     {  //Move LEA EAX, [EBP+a] downward, so we don't get wrong eax value.
-    offset = pe.find(" 8D 45 ??", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
-    if (offset === -1)
+      offset = pe.find(" 8D 45 ??", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
+      if (offset === -1)
         return "4";
-    var varCode = pe.fetchHex(offset, 3);
+      var varCode = pe.fetchHex(offset, 3);
       code =
         " 04 00 00 00"                          //MOV DWORD PTR DS:[EBP - x], 4
       + " 89 45" + pe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
       + varCode                                 //LEA EAX, [EBP+a]
       + " 90"                                   //NOP
       ;
-    exe.replace(offset, " 90 90 90", PTYPE_HEX);
+      pe.replaceHex(offset, " 90 90 90");
       break;
     }
   }
@@ -283,7 +283,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   var size = code.hexlength();
   if (type === 3 || type === 4)
   {//VC11
-    exe.replace(retAddr - size, code, PTYPE_HEX);
+    pe.replaceHex(retAddr - size, code);
   }
   else
   {//VC9 & VC10
@@ -299,7 +299,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     exe.insert(free, size, code, PTYPE_HEX);
 
     //Step .5d - Create a JMP to our code at jmpAddr
-    exe.replace(jmpAddr, "E9" + (pe.rawToVa(free) - pe.rawToVa(jmpAddr + 5)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(jmpAddr, "E9" + (pe.rawToVa(free) - pe.rawToVa(jmpAddr + 5)).packToHex(4));
   }
 
   return jmpAddr;//We return the address since we need it for the Mode comparison
