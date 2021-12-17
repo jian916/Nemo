@@ -91,7 +91,7 @@ function UseDefaultBrowser()
       + " 90 90"        //NOPS
       ;
 
-    exe.replace(coffset, call, PTYPE_HEX);
+    pe.replaceHex(coffset, call);
     exe.insert(free, size+4, code, PTYPE_HEX);
 
     //Step 3a - Find offset where calling ROWebBrowser
@@ -126,7 +126,7 @@ function UseDefaultBrowser()
       + " 90 90 90 90 90"    //NOPS
       ;
 
-    exe.replace(roffset, code, PTYPE_HEX);
+    pe.replaceHex(roffset, code);
 
 
     return true;
