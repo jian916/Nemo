@@ -34,7 +34,7 @@ function FixHomunculusAI()
     offset = offset + 0x1D;
 
     consoleLog("Step 3 - Replace (XOR AL,AL) with (MOV AL,01)");
-    exe.replace(offset, "B0 01 ", PTYPE_HEX);
+    pe.replaceHex(offset, "B0 01 ");
 
     consoleLog("Step 4 - Remove target cursor for all targets");
     var code =
@@ -74,7 +74,7 @@ function FixHomunculusAI()
             return "Failed in Step 4.1";
 
         offset += 2;
-        exe.replace(offset , "EB ", PTYPE_HEX);
+        pe.replaceByte(offset , 0xEB);
     }
 
     return true;
