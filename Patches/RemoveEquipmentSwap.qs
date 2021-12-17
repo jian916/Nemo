@@ -46,7 +46,7 @@ function RemoveEquipmentSwap()
     if (offset === -1)
         return "Failed in Step 1 - Pattern not found";
 
-    exe.replace(offset + repLoc, "C0 ", PTYPE_HEX);
+    pe.replaceByte(offset + repLoc, 0xC0);
 
     // Step 2 - Find the location where costume function is called
     var code =
@@ -64,7 +64,7 @@ function RemoveEquipmentSwap()
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
 
-    exe.replace(offset + repLoc, "FF ", PTYPE_HEX);
+    pe.replaceByte(offset + repLoc, 0xFF);
 
     return true;
 }
