@@ -221,12 +221,12 @@ function ChangeSecondCharCreateJob()
 
     consoleLog("Patching jobs");
 
-    exe.replace(doramJobOffset, newJob.packToHex(4), PTYPE_HEX);
-    exe.replace(doramIconJobOffset, newIconJob.packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(doramJobOffset, newJob);
+    pe.replaceDWord(doramIconJobOffset, newIconJob);
 
     consoleLog("Patching hair limit");
 
-    exe.replace(hairLimitOffset, (newHairLimit - 1).packToHex(1), PTYPE_HEX);
+    pe.replaceByte(hairLimitOffset, newHairLimit - 1);
 
     return true;
 }
