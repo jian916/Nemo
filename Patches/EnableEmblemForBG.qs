@@ -33,7 +33,7 @@ function EnableEmblemForBG_Normal(offset)
     exe.setShortJmpRaw(offset + jmp1, offset + jmp1Offset, "jnz");
 
     consoleLog("Swap the second JNZ to JZ");
-    exe.replace(offset + jmp2, "74 ", PTYPE_HEX);
+    pe.replaceByte(offset + jmp2, 0x74);
 }
 
 function EnableEmblemForBG_Small(offset)
