@@ -53,12 +53,12 @@ function TranslateClient()
             { // ASCII
                 str = str.substring(1, str.length - 1);
                 rStr = str
-                exe.replace(offset, str + "\x00", PTYPE_STRING);
+                pe.replace(offset, str + "\x00");
             }
             else
             { // HEX
                 rStr = str.toAscii();
-                exe.replace(offset, str + " 00", PTYPE_HEX);
+                pe.replaceHex(offset, str + " 00");
             }
 
             if (rStr.length > fStr.length)
