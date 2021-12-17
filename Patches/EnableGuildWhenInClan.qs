@@ -27,7 +27,7 @@ function EnableGuildWhenInClan()
     }
 
     // Replace the jump before message ID push
-    exe.replace(offset - 2, " EB", PTYPE_HEX);
+    pe.replaceByte(offset - 2, 0xEB);
 
     // Step 2 - Find the jump followed by push 0x168
     var code =
@@ -41,7 +41,7 @@ function EnableGuildWhenInClan()
         return "Failed in Step 2 - magic jump not found";
 
     // Replace the jump with NOPs
-    exe.replace(offset, " 90".repeat(6), PTYPE_HEX);
+    pe.replaceHex(offset, " 90".repeat(6));
 
     return true;
 }
