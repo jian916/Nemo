@@ -38,7 +38,7 @@ function DisableMapInfo()
         return "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Zero it out string 'system\mapInfo*.lub'");
-    exe.replace(offset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     consoleLog("Step 3 - Prep code for finding the CMapInfoMgr ErrorMsg window");
     var code =
@@ -68,7 +68,7 @@ function DisableMapInfo()
     logRawFunc("lua_pushcclosure", offset, pushcclosureOffset);
 
     consoleLog("Step 4 - Replace offset found in step 3 with NOP + JMP");
-    exe.replace(offset, "90 E9 ", PTYPE_HEX);
+    pe.replaceHex(offset, "90 E9 ");
 
     return true;
 }
