@@ -112,8 +112,8 @@ function IncreaseZoomOut(newvalue)
 
         consoleLog("patch enabled and disabled /zoom configuration limit");
         var valueAddr = pe.rawToVa(exe.insertHex(newvalue));
-        exe.setValue(offset, enabledOffset, valueAddr);
-        exe.setValue(offset, disabledOffset, valueAddr);
+        pe.setValue(offset, enabledOffset, valueAddr);
+        pe.setValue(offset, disabledOffset, valueAddr);
     }
 
     return true;
