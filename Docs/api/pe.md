@@ -434,6 +434,33 @@ Replace bytes at raw address patchAddr to assembler code from given file name.
 
 On success return bytes in hex format from assembler text.
 
+### pe.setValue
+
+``pe.setValue(offset, offset2, value)``
+
+Set value into binary with raw address offset plus offset2.
+
+In offset2 also exists size of saved value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+| value    | Saved value in hex |
+
+### pe.setValueSimple
+
+``pe.setValueSimple(offset, value)``
+
+Set value into binary with raw address offset.
+
+In offset also exists size of saved value in bytes.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset2  | Raw address and size (two ints) |
+| value    | Saved value in hex |
+
 
 
 ### pe.getImportTable

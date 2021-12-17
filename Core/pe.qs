@@ -408,6 +408,18 @@ function pe_replaceAsmFile(fileName, vars)
     return pe_replaceAsmText(commands, vars);
 }
 
+function pe_setValue(offset, offset2, value)
+{
+    var size = offset2[1];
+    var addr = offset + offset2[0];
+    pe.replaceHex(addr, value.packToHex(size));
+}
+
+function pe_setValueSimple(offset, value)
+{
+    pe_setValue(0, offset, value);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -448,4 +460,6 @@ function registerPe()
     pe.replace = pe_replace;
     pe.replaceAsmText = pe_replaceAsmText;
     pe.replaceAsmFile = pe_replaceAsmFile;
+    pe.setValue = pe_setValue;
+    pe.setValueSimple = pe_setValueSimple;
 }
