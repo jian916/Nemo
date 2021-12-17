@@ -32,7 +32,7 @@ function DisableBGMAudio()
         return "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Zero it out string 'mp3NameTable.txt'");
-    exe.replace(offset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     consoleLog("Step 3 - Search string 'bgm\\01.mp3'");
     var offset = pe.stringRaw("bgm\\01.mp3");
@@ -41,7 +41,7 @@ function DisableBGMAudio()
         return "Failed in Step 3 - String not found";
 
     consoleLog("Step 4 - Zero it out string 'bgm\\01.mp3'");
-    exe.replace(offset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     return true;
 }
