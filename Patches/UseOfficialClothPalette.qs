@@ -46,7 +46,7 @@ function UseOfficialClothPalette()
     return "Failed in Step 2 - Prefix reference missing";
 
   //Step 2e - NOP out the JNE
-  exe.replace(offset2, " 90 90 90 90 90 90", PTYPE_HEX);
+  pe.replaceHex(offset2, " 90 90 90 90 90 90");
 
   return true;
 }
