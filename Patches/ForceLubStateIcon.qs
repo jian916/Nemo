@@ -39,7 +39,7 @@ function ForceLubStateIcon()
         return "Failed in Step 3";
 
     consoleLog("step 4");
-    exe.replace(offset + patchOffset, " 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset + patchOffset, " 90 E9");
 
     return true;
 }
