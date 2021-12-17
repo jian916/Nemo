@@ -114,7 +114,7 @@ function InsensitiveStorageSearch()
   + " 90 90 90 90";
 
   //Insert jump to our code
-  exe.replace(offset + calloffset, code, PTYPE_HEX);
+  pe.replaceHex(offset + calloffset, code);
 
   return true;
 }
