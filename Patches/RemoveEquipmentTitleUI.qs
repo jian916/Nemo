@@ -56,7 +56,7 @@ function RemoveEquipmentTitleUI()
     logRawFunc("MsgStr", offset, msgStrOffset);
     logField("UIEquipWnd::m_UITabControl", offset, tabControlOffset);
 
-    exe.replace(offset + repLoc, "EB ", PTYPE_HEX);
+    pe.replaceByte(offset + repLoc, 0xEB);
 
     return true;
 }
