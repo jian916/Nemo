@@ -207,7 +207,7 @@ function DisableBlindEffect()
     }
 
     consoleLog("Step 2 - Replace the JE with NOP + JMP");
-    exe.replace(offset + code.hexlength() - repLoc, "90 E9 ", PTYPE_HEX);
+    pe.replaceHex(offset + code.hexlength() - repLoc, "90 E9 ");
 
     return true;
 }
