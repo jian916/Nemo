@@ -40,7 +40,7 @@ function RestoreChatFocus()
         "90 90 " +
         "90 90 90 90 90" +
         "90 90 90 90 90";
-    exe.replace(offset + patchOffset, code, PTYPE_HEX);  // replace edit lost focus call to nops
+    pe.replaceHex(offset + patchOffset, code);  // replace edit lost focus call to nops
 
     return true;
 }
