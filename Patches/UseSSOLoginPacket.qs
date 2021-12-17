@@ -53,7 +53,7 @@ function UseSSOLoginPacket()
   if (offset !== -1)
   {
     //Step 1b - Change first JZ to JMP
-    exe.replace(offset + code.hexlength() - 15, " 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset + code.hexlength() - 15, " 90 E9");
     return true;
   }
 
@@ -73,7 +73,7 @@ function UseSSOLoginPacket()
     return "Failed in Step 1";
 
   //Step 2b - Convert the JNE addr2 to NOP
-  exe.replace(offset + code.hexlength() - 6, " 90 90 90 90 90 90", PTYPE_HEX);
+  pe.replaceHex(offset + code.hexlength() - 6, " 90 90 90 90 90 90");
 
   return true;
 }
