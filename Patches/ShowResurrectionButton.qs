@@ -71,7 +71,7 @@ function ShowResurrectionButton()
         return "Failed in Step 2 - No comparisons matched";
 
     //Step 2b - Skip over the 3 comparisons using a short JMP
-    exe.replace(offset2, "EB" + (3 * code.hexlength() - 2).packToHex(1), PTYPE_HEX);
+    pe.replaceHex(offset2, "EB" + (3 * code.hexlength() - 2).packToHex(1));
 
     return true;
 }
