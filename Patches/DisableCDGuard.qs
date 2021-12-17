@@ -90,7 +90,7 @@ function DisableCDGuard()
         logField("CCheatDefenderMgr::m_enc_enabled", offset, encEnabledOffset);
         logRawFunc("CConnection_Connect", offset, CConnectionConnectOffset);
 
-        exe.replace(offset + cmpOffset, "00 ", PTYPE_HEX);
+        pe.replaceByte(offset + cmpOffset, 0);
     }
 
     var CCheatDefenderMgr = (pe.fetchDWord(offsets[0] + cheatDefenderMgrOffsets[0])).packToHex(4)
@@ -108,7 +108,7 @@ function DisableCDGuard()
         return "Failed in Step 2a - Pattern not found";
 
     consoleLog("Step 2b - Replace MOV BYTE PTR [eax+5], 1 to MOV BYTE PTR [eax+5], 0");
-    exe.replace(offset + enableOffset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset + enableOffset, 0);
 
     return true;
 }
