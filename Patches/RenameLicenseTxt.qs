@@ -32,7 +32,7 @@ function RenameLicenseTxt()
   exe.insert(free, txtFile.length, txtFile, PTYPE_STRING);
 
   //Step 2d - Update the reference to point to new name
-  exe.replaceDWord(offset + 6, pe.rawToVa(free));
+  pe.replaceDWord(offset + 6, pe.rawToVa(free));
 
   //Step 3a - Find the Error string address
   offset = pe.stringVa("No EULA text file. (licence.txt)");
@@ -59,7 +59,7 @@ function RenameLicenseTxt()
     var offsets = pe.findCodes(prefixes[i] + offset.packToHex(4));
     for (var j = 0; j < offsets.length; j++)
     {
-      exe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
+      pe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
     }
   }
 
