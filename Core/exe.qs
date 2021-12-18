@@ -27,17 +27,12 @@ function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
 
 function exe_setNops(patchAddr, nopsCount)
 {
-    var code = "";
-    for (var i = 0; i < nopsCount; i ++)
-    {
-        code = code + "90 ";
-    }
-    pe.replaceHex(patchAddr, code);
+    reportLegacy("Please replace exe.setNops to pe.setNops");
 }
 
 function exe_setNopsRange(patchStartAddr, patchEndAddr)
 {
-    exe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
+    reportLegacy("Please replace exe.setNopsRange to pe.setNopsRange");
 }
 
 function exe_insertAsmText(commands, vars, freeSpace)

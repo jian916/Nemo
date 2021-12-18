@@ -98,28 +98,6 @@ Store short jmp command (2 bytes) with address at given **patchAddr**.
 | jmpAddrEaw| Raw address where jmp should be jumped |
 | cmd      | Jump command. Can be jmp, jz, jnz etc |
 
-### exe.setNops
-
-``exe.setNops(patchAddr, nopsCount)``
-
-Store nops at given **patchAddr** with count **nopsCount**.
-
-| Argument | Description |
-| -------- | ----------- |
-| patchAddr| Raw address where nops should be stored |
-| nopsCount| Number of nop bytes stored |
-
-### exe.setNopsRange
-
-``exe.setNopsRange(patchStartAddr, patchEndAddr)``
-
-Store nops from address **patchStartAddr** to **patchEndAddr**.
-
-| Argument | Description |
-| -------- | ----------- |
-| patchStartAddr| Start raw address where nops should be stored |
-| patchEndAddr| End raw address where nops should be stored |
-
 ### exe.insertAsmText
 
 ``exe.insertAsmText(commands, vars, freeSpace)``
@@ -447,7 +425,14 @@ Please use pe.setValueSimple
 
 Please use pe.setJmpVa
 
-
 ### exe.setJmpRaw
 
 Please use pe.setJmpRaw
+
+### exe.setNops
+
+Please use pe.setNops
+
+### exe.setNopsRange
+
+Please use pe.setNopsRange
