@@ -30,7 +30,7 @@ function EnableEmblemForBG_Normal(offset)
     logRawFunc("CSession_IsBattleFieldMode", offset, IsBattleFieldModeOffset);
 
     consoleLog("Swap the first JZ to JNZ and addr to location after the check code");
-    exe.setShortJmpRaw(offset + jmp1, offset + jmp1Offset, "jnz");
+    pe.setShortJmpRaw(offset + jmp1, offset + jmp1Offset, "jnz");
 
     consoleLog("Swap the second JNZ to JZ");
     pe.replaceByte(offset + jmp2, 0x74);
