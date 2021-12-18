@@ -167,7 +167,7 @@ function ChangeMinimalResolutionLimit()
     };
 
     var data = exe.insertAsmFile("", vars);
-    exe.setJmpRaw(offset, data.free);
+    pe.setJmpRaw(offset, data.free);
 
     return true;
 }
