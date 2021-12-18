@@ -56,7 +56,7 @@ function EnableGvGDamage()
     logRawFunc("CSession_IsMasterAid", offset, isMasterAid);
 
     consoleLog("Step 2 - Replace offset found in step 1 with NOPs");
-    exe.setNopsRange(offset + nopsStart, offset + nopsEnd);
+    pe.setNopsRange(offset + nopsStart, offset + nopsEnd);
 
     return true;
 }
