@@ -54,7 +54,7 @@ function MoveShieldToTopPatch(floatAddr, offset, offset2, patchAddrOffset, conti
     exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
     // step 5 - add jump to own code
-    exe.setJmpRaw(patchAddr, free);
+    pe.setJmpRaw(patchAddr, free);
 }
 
 function MoveShieldToTop()
