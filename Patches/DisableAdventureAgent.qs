@@ -84,7 +84,7 @@ function DisableAdventureAgent()
     logRawFunc("UIBitmapButton_SetText", offset, setBitmapButtonTextOffset);
 
     consoleLog("Step 3 - NOPs out the assignment for the correct match");
-    exe.setNopsRange(offset + nopStart, offset + nopEnd);
+    pe.setNopsRange(offset + nopStart, offset + nopEnd);
 
     return true;
 }
