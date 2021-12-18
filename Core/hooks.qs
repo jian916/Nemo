@@ -32,7 +32,7 @@ function hooks_addPostEndHook(patchAddr, text, vars)
     var free = data[0]
 
     consoleLog("hooks.addPostEndHook: add jump to own code");
-    exe.setJmpRaw(patchAddr, free);
+    pe.setJmpRaw(patchAddr, free);
 
     var obj = hooks.createHookObj();
     obj.text = text;
@@ -322,7 +322,7 @@ function hooks_applyFinal(obj, dryRun)
             switch (obj.firstJmpType)
             {
                 case hooks.jmpTypes.JMP:
-                    exe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
+                    pe.setJmpRaw(obj.patchAddr, obj.allEntries[0].free);
                     break;
                 case hooks.jmpTypes.IMPORT:
                     var freeVa = pe.rawToVa(obj.allEntries[0].free);
@@ -339,7 +339,7 @@ function hooks_applyFinal(obj, dryRun)
             switch (obj.firstJmpType)
             {
                 case hooks.jmpTypes.JMP:
-                    exe.setJmpRaw(obj.patchAddr, srcObj.allEntries[0].free);
+                    pe.setJmpRaw(obj.patchAddr, srcObj.allEntries[0].free);
                     break;
                 case hooks.jmpTypes.IMPORT:
                     if (typeof(srcObj.importOffsetPatchedVa) === "undefined")
@@ -367,7 +367,7 @@ function hooks_applyFinal(obj, dryRun)
         if (entry.isFinal === true)
             continue;
         if (dryRun !== true)
-            exe.setJmpRaw(entry.free + entry.bytes.length, nextEntry.free);
+            pe.setJmpRaw(entry.free + entry.bytes.length, nextEntry.free);
     }
     var lastEntry = obj.allEntries[sz - 1];
     if (lastEntry.isFinal === false)
