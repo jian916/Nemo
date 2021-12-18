@@ -62,7 +62,7 @@ function LoginPacketSend_match()
 function RestoreOldLoginPacket()
 {
     var obj = LoginPacketSend_match();
-    exe.setNopsRange(obj.offset + obj.nopRangeOffset[0], obj.offset + obj.nopRangeOffset[1]);
+    pe.setNopsRange(obj.offset + obj.nopRangeOffset[0], obj.offset + obj.nopRangeOffset[1]);
 
     return true;
 }
