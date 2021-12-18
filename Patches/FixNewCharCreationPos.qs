@@ -161,7 +161,7 @@ function FixNewCharCreationPos()
         _("Enter y offset for new char creation window (wrong default: 70)"),
         0, -127, 127);
 
-    exe.setValue(obj.offset, obj.windowYOffset, yOffset);
+    pe.setValue(obj.offset, obj.windowYOffset, yOffset);
     return true;
 }
 
