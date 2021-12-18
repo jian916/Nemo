@@ -467,7 +467,7 @@ function InjectLuaFiles(origFile, nameList, free, loadBefore)
     }
 
     consoleLog("Set jmp to own code");
-    exe.setJmpRaw(hookLoader, free, "jmp", 6);
+    pe.setJmpRaw(hookLoader, free, "jmp", 6);
 
     return true;
 }
