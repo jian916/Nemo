@@ -50,7 +50,7 @@ function DisableAutofollow()
     for (var i = 0; i < offsets.length; i++)
     {
         var offset = offsets[i];
-        exe.setNopsRange(offset + starOffset, offset + endOffset);
+        pe.setNopsRange(offset + starOffset, offset + endOffset);
     }
 
     return true;
