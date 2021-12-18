@@ -284,7 +284,7 @@ function SkipHiddenMenuButtons()
     var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(patchAddr, data.free);
+    pe.setJmpRaw(patchAddr, data.free);
 
     return true;
 }
