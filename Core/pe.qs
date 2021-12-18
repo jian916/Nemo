@@ -465,6 +465,25 @@ function pe_setNopsRange(patchStartAddr, patchEndAddr)
     pe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
 }
 
+function pe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
+{
+    if (typeof(cmd) === "undefined")
+        cmd = "jmp";
+    var vars = {
+        "offset": jmpAddrVa,
+    };
+    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
+    if (code.hexlength() !== 2)
+        fatalError(cmd + " is not short");
+
+    pe.replaceHex(patchAddr, code);
+}
+
+function pe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
+{
+    pe_setShortJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -511,4 +530,6 @@ function registerPe()
     pe.setJmpRaw = pe_setJmpRaw;
     pe.setNops = pe_setNops;
     pe.setNopsRange = pe_setNopsRange;
+    pe.setShortJmpVa = pe_setShortJmpVa;
+    pe.setShortJmpRaw = pe_setShortJmpRaw;
 }

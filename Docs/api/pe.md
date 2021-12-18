@@ -517,6 +517,30 @@ Store nops from address **patchStartAddr** to **patchEndAddr**.
 | patchStartAddr| Start raw address where nops should be stored |
 | patchEndAddr| End raw address where nops should be stored |
 
+### pe.setShortJmpVa
+
+``pe.setShortJmpVa(patchAddr, jmpAddrVa, cmd)``
+
+Store short jmp command (2 bytes) with address at given patchAddr.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrVa| Virtual address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+
+### pe.setShortJmpRaw
+
+``pe.setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)``
+
+Store short jmp command (2 bytes) with address at given **patchAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrEaw| Raw address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+
 
 
 
