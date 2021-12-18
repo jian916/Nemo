@@ -450,6 +450,21 @@ function pe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
     pe_setJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd, codeLen);
 }
 
+function pe_setNops(patchAddr, nopsCount)
+{
+    var code = "";
+    for (var i = 0; i < nopsCount; i ++)
+    {
+        code = code + "90 ";
+    }
+    pe.replaceHex(patchAddr, code);
+}
+
+function pe_setNopsRange(patchStartAddr, patchEndAddr)
+{
+    pe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -494,4 +509,6 @@ function registerPe()
     pe.setValueSimple = pe_setValueSimple;
     pe.setJmpVa = pe_setJmpVa;
     pe.setJmpRaw = pe_setJmpRaw;
+    pe.setNops = pe_setNops;
+    pe.setNopsRange = pe_setNopsRange;
 }

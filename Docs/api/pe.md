@@ -495,6 +495,28 @@ Store jmp command with address at given **patchAddr**.
 | cmd      | Jump command. Can be jmp, jz, jnz etc |
 | codeLen  | Requested jmp code len. If need add nops at end |
 
+### pe.setNops
+
+``pe.setNops(patchAddr, nopsCount)``
+
+Store nops at given **patchAddr** with count **nopsCount**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where nops should be stored |
+| nopsCount| Number of nop bytes stored |
+
+### pe.setNopsRange
+
+``pe.setNopsRange(patchStartAddr, patchEndAddr)``
+
+Store nops from address **patchStartAddr** to **patchEndAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchStartAddr| Start raw address where nops should be stored |
+| patchEndAddr| End raw address where nops should be stored |
+
 
 
 
