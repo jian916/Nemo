@@ -358,7 +358,7 @@ function registerLua()
         }
 
         consoleLog("Set jmp to own code");
-        exe.setJmpRaw(loadObj.hookAddrRaw, free, "jmp", 6);
+        pe.setJmpRaw(loadObj.hookAddrRaw, free, "jmp", 6);
 
         return true;
     }
