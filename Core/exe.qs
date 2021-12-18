@@ -180,21 +180,12 @@ function exe_setValueSimple(offset, value)
 
 function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
 {
-    if (typeof(cmd) === "undefined")
-        cmd = "jmp";
-    var vars = {
-        "offset": jmpAddrVa,
-    };
-    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
-    if (code.hexlength() !== 2)
-        fatalError(cmd + " is not short");
-
-    pe.replaceHex(patchAddr, code);
+    reportLegacy("Please replace exe.setShortJmpVa to pe.setShortJmpVa");
 }
 
 function exe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
 {
-    exe_setShortJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd);
+    reportLegacy("Please replace exe.setShortJmpRaw to pe.setShortJmpRaw");
 }
 
 function exe_fetchRelativeValue(offset, offset2)
