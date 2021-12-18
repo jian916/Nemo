@@ -49,8 +49,8 @@ function ChangeCaptchaImageDecompressionSize()
     for (var i = 0; i < offsets.length; i++)
     {
         var offset = offsets[i];
-        exe.setValue(offset, sizeOffset1, capthaNewsize);
-        exe.setValue(offset, sizeOffset2, capthaNewsize);
+        pe.setValue(offset, sizeOffset1, capthaNewsize);
+        pe.setValue(offset, sizeOffset2, capthaNewsize);
 
         logVaVar("new2_flag", offset, new2FlagOffset);
         logVal("max captch image decompression size", offset, sizeOffset1);
