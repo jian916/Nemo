@@ -17,32 +17,12 @@
 
 function exe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
 {
-    if (typeof(cmd) === "undefined")
-        cmd = "jmp";
-    var vars = {
-        "offset": jmpAddrVa,
-    };
-    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
-    if (typeof(codeLen) !== "undefined")
-    {
-        var sz = code.hexlength();
-        if (sz > codeLen)
-            fatalError("Jmp Code bigger than requested");
-        for (var i = 0; i < codeLen - sz; i ++)
-        {
-            code = code + " 90";
-        }
-    }
-
-    if (patch.getState() !== 2)
-        pe.replaceHex(patchAddr, code);
-    else
-        pe.directReplace(patchAddr, code);
+    reportLegacy("Please replace exe.setJmpVa to pe.setJmpVa");
 }
 
 function exe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
 {
-    exe_setJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd, codeLen);
+    reportLegacy("Please replace exe.setJmpRaw to pe.setJmpRaw");
 }
 
 function exe_setNops(patchAddr, nopsCount)

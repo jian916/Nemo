@@ -74,40 +74,6 @@ Return true if client was packed with themida.
 
 Remove patched data for given patch.
 
-### exe.setJmpVa
-
-```
-exe.setJmpVa(patchAddr, jmpAddrVa)
-exe.setJmpVa(patchAddr, jmpAddrVa, cmd)
-exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
-```
-
-Store jmp command with address at given patchAddr.
-
-| Argument | Description |
-| -------- | ----------- |
-| patchAddr| Raw address where jmp should be stored |
-| jmpAddrVa| Virtual address where jmp should be jumped |
-| cmd      | Jump command. Can be jmp, jz, jnz etc |
-| codeLen  | Requested jmp code len. If need add nops at end |
-
-### exe.setJmpRaw
-
-```
-exe.setJmpRaw(patchAddr, jmpAddrRaw)
-exe.setJmpRaw(patchAddr, jmpAddrRaw, cmd)
-exe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
-```
-
-Store jmp command with address at given **patchAddr**.
-
-| Argument | Description |
-| -------- | ----------- |
-| patchAddr| Raw address where jmp should be stored |
-| jmpAddrEaw| Raw address where jmp should be jumped |
-| cmd      | Jump command. Can be jmp, jz, jnz etc |
-| codeLen  | Requested jmp code len. If need add nops at end |
-
 ### exe.setShortJmpVa
 
 ``exe.setShortJmpVa(patchAddr, jmpAddrVa, cmd)``
@@ -476,3 +442,12 @@ Please use pe.setValue
 ### exe.setValueSimple
 
 Please use pe.setValueSimple
+
+### exe.setJmpVa
+
+Please use pe.setJmpVa
+
+
+### exe.setJmpRaw
+
+Please use pe.setJmpRaw
