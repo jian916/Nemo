@@ -131,7 +131,7 @@ function RestoreAutoFollow()
     var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset + patchOffset, data.free, "call");
+    pe.setJmpRaw(offset + patchOffset, data.free, "call");
 
     return true;
 }
