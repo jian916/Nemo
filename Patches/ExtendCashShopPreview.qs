@@ -112,7 +112,7 @@ function ExtendCashShopPreview()
     var data = exe.insertAsmFile("ExtendCashShopPreview_" + name, vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset1, data.free);
+    pe.setJmpRaw(offset1, data.free);
 
     consoleLog("update block size");
     pe.setValue(offset2, blockSizeOffset, blockSize + 4 + 2);
