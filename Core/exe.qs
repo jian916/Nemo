@@ -195,14 +195,12 @@ function exe_fetchValueSimple(offset)
 
 function exe_setValue(offset, offset2, value)
 {
-    var size = offset2[1];
-    var addr = offset + offset2[0];
-    pe.replaceHex(addr, value.packToHex(size));
+    reportLegacy("Please replace exe.setValue to pe.setValue");
 }
 
 function exe_setValueSimple(offset, value)
 {
-    exe_setValue(0, offset, value);
+    reportLegacy("Please replace exe.setValueSimple to pe.setValueSimple");
 }
 
 function exe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)

@@ -234,33 +234,6 @@ Insert given dword value into free block in binary.
 
 Return raw address where dword was inserter.
 
-### exe.setValue
-
-``exe.setValue(offset, offset2, value)``
-
-Set value into binary with raw address offset plus offset2.
-
-In offset2 also exists size of saved value in bytes.
-
-| Argument | Description |
-| -------- | ----------- |
-| offset   | Raw address (int) |
-| offset2  | additional offset and size (two ints) |
-| value    | Saved value in hex |
-
-### exe.setValueSimple
-
-``exe.setValueSimple(offset, value)``
-
-Set value into binary with raw address offset.
-
-In offset also exists size of saved value in bytes.
-
-| Argument | Description |
-| -------- | ----------- |
-| offset2  | Raw address and size (two ints) |
-| value    | Saved value in hex |
-
 ### exe.insertHex
 
 ``exe.insertHex(value)``
@@ -495,3 +468,11 @@ Please use pe.replaceAsmText
 ### exe.replaceAsmFile
 
 Please use pe.replaceAsmFile
+
+### exe.setValue
+
+Please use pe.setValue
+
+### exe.setValueSimple
+
+Please use pe.setValueSimple
