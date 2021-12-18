@@ -83,7 +83,7 @@ function IgnoreEntryQueueErrors()
     logVaFunc("MessageBoxA", offset, messageBoxOffset);
 
     consoleLog("Step 3 - Replace with nops");
-    exe.setNopsRange(offset + replaceStartOffset, offset + replaceEndOffset);
+    pe.setNopsRange(offset + replaceStartOffset, offset + replaceEndOffset);
 
     return true;
 }
