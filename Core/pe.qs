@@ -420,6 +420,36 @@ function pe_setValueSimple(offset, value)
     pe_setValue(0, offset, value);
 }
 
+function pe_setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
+{
+    if (typeof(cmd) === "undefined")
+        cmd = "jmp";
+    var vars = {
+        "offset": jmpAddrVa,
+    };
+    var code = asm.textToHexRaw(patchAddr, cmd + " offset", vars);
+    if (typeof(codeLen) !== "undefined")
+    {
+        var sz = code.hexlength();
+        if (sz > codeLen)
+            fatalError("Jmp Code bigger than requested");
+        for (var i = 0; i < codeLen - sz; i ++)
+        {
+            code = code + " 90";
+        }
+    }
+
+    if (patch.getState() !== 2)
+        pe.replaceHex(patchAddr, code);
+    else
+        pe.directReplace(patchAddr, code);
+}
+
+function pe_setJmpRaw(patchAddr, jmpAddrRaw, cmd, codeLen)
+{
+    pe_setJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd, codeLen);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -462,4 +492,6 @@ function registerPe()
     pe.replaceAsmFile = pe_replaceAsmFile;
     pe.setValue = pe_setValue;
     pe.setValueSimple = pe_setValueSimple;
+    pe.setJmpVa = pe_setJmpVa;
+    pe.setJmpRaw = pe_setJmpRaw;
 }

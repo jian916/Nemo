@@ -461,6 +461,41 @@ In offset also exists size of saved value in bytes.
 | offset2  | Raw address and size (two ints) |
 | value    | Saved value in hex |
 
+### pe.setJmpVa
+
+```
+pe.setJmpVa(patchAddr, jmpAddrVa)
+pe.setJmpVa(patchAddr, jmpAddrVa, cmd)
+pe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
+```
+
+Store jmp command with address at given patchAddr.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrVa| Virtual address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+| codeLen  | Requested jmp code len. If need add nops at end |
+
+### pe.setJmpRaw
+
+```
+pe.setJmpRaw(patchAddr, jmpAddrRaw)
+pe.setJmpRaw(patchAddr, jmpAddrRaw, cmd)
+pe.setJmpVa(patchAddr, jmpAddrVa, cmd, codeLen)
+```
+
+Store jmp command with address at given **patchAddr**.
+
+| Argument | Description |
+| -------- | ----------- |
+| patchAddr| Raw address where jmp should be stored |
+| jmpAddrEaw| Raw address where jmp should be jumped |
+| cmd      | Jump command. Can be jmp, jz, jnz etc |
+| codeLen  | Requested jmp code len. If need add nops at end |
+
+
 
 
 ### pe.getImportTable
