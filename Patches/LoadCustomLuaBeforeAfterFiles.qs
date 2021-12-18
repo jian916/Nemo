@@ -56,7 +56,7 @@ function LoadCustomLuaBeforeAfterFiles()
     var data = exe.insertAsmFile("", vars);
 
     consoleLog("add jump to own code");
-    exe.setJmpRaw(offset, data.free);
+    pe.setJmpRaw(offset, data.free);
 
     return true;
 }
