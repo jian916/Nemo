@@ -66,7 +66,7 @@ function EnableEmblemForBG_Small(offset)
     var data = exe.insertAsmFile("", vars);
 
     consoleLog("Change call to CSession_IsSiegeMode to jmp to own code");
-    exe.setJmpRaw(offset + patchOffset, data.free);
+    pe.setJmpRaw(offset + patchOffset, data.free);
 }
 
 function EnableEmblemForBG()
