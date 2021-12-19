@@ -484,6 +484,15 @@ function pe_setShortJmpRaw(patchAddr, jmpAddrRaw, cmd)
     pe_setShortJmpVa(patchAddr, pe.rawToVa(jmpAddrRaw), cmd);
 }
 
+function pe_insertHexAt(insertAddr, code)
+{
+    checkArgs("pe.insertHexAt", arguments, [["Number", "String"]]);
+    var res = pe.replaceHex(addrRaw, data.toHex());
+    if (res === false)
+        return false;
+    return alloc.reserve(insertAddr);
+}
+
 function registerPe()
 {
     pe.importTable = undefined;
@@ -532,4 +541,5 @@ function registerPe()
     pe.setNopsRange = pe_setNopsRange;
     pe.setShortJmpVa = pe_setShortJmpVa;
     pe.setShortJmpRaw = pe_setShortJmpRaw;
+    pe.insertHexAt = pe_insertHexAt;
 }

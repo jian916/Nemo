@@ -452,6 +452,21 @@ Replace bytes at raw address patchAddr to assembler code from given file name.
 
 On success return bytes in hex format from assembler text.
 
+### pe.insertHexAt
+
+``pe.insertHexAt(rawAddr, code)``
+
+Insert code in hex format at given raw address.
+
+| Argument | Description |
+| -------- | ----------- |
+| rawAddr  | Address where insert data |
+| code     | Hex code of data to insert |
+
+On success return true.
+
+On error return false.
+
 ### pe.setValue
 
 ``pe.setValue(offset, offset2, value)``
@@ -558,9 +573,6 @@ Store short jmp command (2 bytes) with address at given **patchAddr**.
 | patchAddr| Raw address where jmp should be stored |
 | jmpAddrEaw| Raw address where jmp should be jumped |
 | cmd      | Jump command. Can be jmp, jz, jnz etc |
-
-
-
 
 ### pe.getImportTable
 
