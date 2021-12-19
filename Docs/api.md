@@ -1,6 +1,7 @@
 # Api reference
 
 - [Objects](api/objects.md)
+  - [alloc](api/alloc.md)
   - [asm](api/asm.md)
   - [exe](api/exe.md)
   - [hooks](api/hooks.md)
