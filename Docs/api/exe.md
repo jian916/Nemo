@@ -19,33 +19,6 @@ exe.insert(rawAddr, size, code, codeType)
 
 Insert custom block of bytes at address returned by exe.findZeros.
 
-### exe.replace
-
-```
-exe.replace(rawAddr, code)
-exe.replace(rawAddr, code, codeType)
-```
-
-Patch binary block at given address.
-
-### exe.replaceByte
-
-``exe.replaceByte(addr, data)``
-
-Patch byte at given address.
-
-### exe.replaceWord
-
-``exe.replaceWord(addr, data)``
-
-Patch word at given address.
-
-### exe.replaceDWord
-
-``exe.replaceDWord(addr, data)``
-
-Patch dword at given address.
-
 ### exe.getUserInput
 
 ```
@@ -380,6 +353,22 @@ In offset2 also exists size of fetched value in bytes.
 | offset2  | additional offset and size (two ints) |
 
 On success return fetched bytes in hex string format.
+
+### exe.replace
+
+Please use pe.replace
+
+### exe.replaceByte
+
+Please use pe.replaceByte
+
+### exe.replaceWord
+
+Please use pe.replaceWord
+
+### exe.replaceDWord
+
+Please use pe.replaceDWord
 
 ### exe.replaceAsmText
 

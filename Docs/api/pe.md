@@ -406,6 +406,24 @@ Patch binary block at given address.
 | code     | String like data to patch |
 
 
+### pe.replaceByte
+
+``pe.replaceByte(rawAddr, data)``
+
+Patch byte at given raw address.
+
+### pe.replaceWord
+
+``pe.replaceWord(rawAddr, data)``
+
+Patch word at given raw address.
+
+### pe.replaceDWord
+
+``pe.replaceDWord(rawAddr, data)``
+
+Patch dword at given raw address.
+
 ### pe.replaceAsmText
 
 ``pe.replaceAsmText(patchAddr, commands, vars)``
