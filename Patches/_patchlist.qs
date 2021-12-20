@@ -734,4 +734,6 @@ registerPatch(417, "DisablePasswordEncryption", 'Disable password encryption for
 
 registerPatch(418, "HideReputationButton", "Hide reputation button", "UI", 12, "4144", "Hide reputation button", false);
 
+registerPatch(419, "DisableOfficialCustomFonts", "Disable Official Custom Fonts", "UI", 0, "4144", "This option disable Official Custom Fonts (eot files int data folder) on all LangType", false);
+
 GlobalPostInit();
