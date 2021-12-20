@@ -736,4 +736,6 @@ registerPatch(418, "HideReputationButton", "Hide reputation button", "UI", 12, "
 
 registerPatch(419, "DisableOfficialCustomFonts", "Disable Official Custom Fonts", "UI", 0, "4144", "This option disable Official Custom Fonts (eot files int data folder) on all LangType", false);
 
+registerPatch(420, "FixCameraAnglesCustom", "Fix Camera Angles (custom)", "UI", 2, "4144", "Unlocks the possible camera angles to give more freedom of placement. This enable custom camera angle", false);
+
 GlobalPostInit();

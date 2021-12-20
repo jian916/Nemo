@@ -98,6 +98,7 @@ function exe_insertDWord(value, dryRun)
     if (typeof(dryRun) === "undefined")
         dryRun = false;
 
+    var size = 4;
     if (patch.getState() !== 2)
     {
         var free = exe.findZeros(size);
@@ -111,7 +112,6 @@ function exe_insertDWord(value, dryRun)
         free = storage.zero;
     }
     var obj = asm.textToObjRaw(free, "long " + value, {});
-    var size = 4;
     if (dryRun !== true)
     {
         if (patch.getState() !== 2)
