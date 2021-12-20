@@ -550,6 +550,17 @@ Store nops from address **patchStartAddr** to **patchEndAddr**.
 | patchStartAddr| Start raw address where nops should be stored |
 | patchEndAddr| End raw address where nops should be stored |
 
+### pe.setNopsValueRange
+
+``pe.setNopsValueRange(offset1, offset2)``
+
+Store nops from address **offset1** plus **offset2**.
+
+| Argument | Description |
+| -------- | ----------- |
+| offset   | Raw address (int) |
+| offset2  | additional offset and size (two ints) |
+
 ### pe.setShortJmpVa
 
 ``pe.setShortJmpVa(patchAddr, jmpAddrVa, cmd)``

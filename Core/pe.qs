@@ -465,6 +465,11 @@ function pe_setNopsRange(patchStartAddr, patchEndAddr)
     pe_setNops(patchStartAddr, patchEndAddr - patchStartAddr);
 }
 
+function pe_setNopsValueRange(offset, nopsValue)
+{
+    pe_setNops(offset + nopsValue[0], nopsValue[1]);
+}
+
 function pe_setShortJmpVa(patchAddr, jmpAddrVa, cmd)
 {
     if (typeof(cmd) === "undefined")
@@ -539,6 +544,7 @@ function registerPe()
     pe.setJmpRaw = pe_setJmpRaw;
     pe.setNops = pe_setNops;
     pe.setNopsRange = pe_setNopsRange;
+    pe.setNopsValueRange = pe_setNopsValueRange;
     pe.setShortJmpVa = pe_setShortJmpVa;
     pe.setShortJmpRaw = pe_setShortJmpRaw;
     pe.insertHexAt = pe_insertHexAt;
