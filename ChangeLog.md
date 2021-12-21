@@ -1,3 +1,25 @@
+# 2021-12-21 Different updates
+
+## Patches
+
+- Fix patch [Disable Hallucination Wavy Screen](http://nemo.herc.ws/patches/DisableHallucinationWavyScreen/#success-clients). (fix by @4144).
+- Add patch [Disable Official Custom Fonts](http://nemo.herc.ws/patches/DisableOfficialCustomFonts/#success-clients). (by @4144).
+- Add patch [Fix Camera Angles (custom)](http://nemo.herc.ws/patches/FixCameraAnglesCustom/#success-clients). (by @4144).
+
+## For devs
+
+- Add functions for replace: pe.replace, pe.replaceByte, pe.replaceWord, pe.replaceDWord.
+- Add function for reserve part of free binary: alloc.reserve.
+- Add functions for set value: pe.setValue, pe.setValueSimple.
+- Add functions for set jmp: pe.setJmpVa, pe.setJmpRaw, pe.setShortJmpVa, pe.setShortJmpRaw.
+- Add functions for set nops: pe.setNops, pe.setNopsRange, pe.setNopsValueRange.
+- Add function for insert hex bytes at selected address: pe.insertHexAt.
+
+## Other
+
+- Update tables.
+- Replace many legacy functions usage to actual functions.
+
 # 2021-12-15 Different updates
 
 ## Patches
