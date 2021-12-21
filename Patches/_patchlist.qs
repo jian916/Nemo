@@ -99,7 +99,7 @@ registerPatch( 12, "Disable4LetterPasswordLimit", "Disable 4 Letter Password Lim
 
 registerPatch( 13, "DisableFilenameCheck", "Disable Ragexe Filename Check", "Fix", 0, "Shinryo", "Disables the check that forces the client to quit if not called an official name like ragexe.exe for all LangTypes", true);
 
-registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "Fix", 0, "Shinryo", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
+registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "Fix", 0, "Shinryo, 4144", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
 
 registerPatch( 15, "DisableHShield", "Disable HShield", "Fix", 0, "Ai4rei/AN, Neo", "Disables HackShield", true);
 

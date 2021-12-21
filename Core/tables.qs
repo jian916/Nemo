@@ -70,6 +70,7 @@ function registerTables()
     table.OTPLoginPatchId2 = 65;
     table.g_accountAddr = 66;
     table.g_accountPort = 67;
+    table.CSession_isEffectOn = 68;
 
     registerTableFunctions();
 }
