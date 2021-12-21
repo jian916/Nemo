@@ -5,8 +5,7 @@
 
 function CustomExpBarLimits()
 {
-  var matches;
-  //Step 1a - Find the reference PUSHes (coord PUSHes ?)
+  consoleLog("Step 1a - Find the reference PUSHes (coord PUSHes ?)");
   var code =
     " 6A 4E"          //PUSH 4E
   + " 68 38 FF FF FF" //PUSH -0C8
@@ -16,7 +15,7 @@ function CustomExpBarLimits()
   if (refOffsets.length === 0)
     return "Failed in Step 1 - Reference PUSHes missing";
 
-  //Step 1b - Find the Job ID getter before the first reference
+  consoleLog("Step 1b - Find the Job ID getter before the first reference");
   code =
     getEcxSessionHex() //MOV ECX, OFFSET g_session
   + " E8 ?? ?? ?? 00" //CALL CSession::jobIdFunc
@@ -45,7 +44,9 @@ function CustomExpBarLimits()
 
   if (offset === -1)
   {
-    suffix = suffix.replace(" 8B 8E ?? 00 00 00", "");
+    suffix =
+      " BF 63 00 00 00"    //MOV EDI, 63
+    + " 85 C0"             //TEST EAX, EAX
     type = 3;//VC9 style 2
     offset = pe.find(code + suffix, refOffsets[0] - 0x120, refOffsets[0]);
   }
@@ -53,14 +54,14 @@ function CustomExpBarLimits()
   if (offset === -1)
     return "Failed in Step 1 - Comparison setup missing";
 
-  //Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable
+  consoleLog("Step 1c - Extract g_session, jobIdFunc and save the offset to baseBegin variable");
   var gSession = pe.fetchDWord(offset + 1);
   var jobIdFunc = pe.rawToVa(offset + 10) + pe.fetchDWord(offset + 6);
   var baseBegin = offset;
 
   offset += code.hexlength() + suffix.hexlength();
 
-  //Step 1d - Extract the base level comparison (for VC9+ clients we need to find the comparison after offset)
+  consoleLog("Step 1d - Extract the base level comparison (for VC9+ clients we need to find the comparison after offset)");
   if (type === 1)
   {
     var gLevel = pe.fetchDWord(offset - 9);
@@ -78,32 +79,32 @@ function CustomExpBarLimits()
     var gLevel = pe.fetchDWord(offset2 + 2);
   }
 
-  //Step 2a - Find the ESI+const movement to ECX between baseBegin and first reference offset
+  consoleLog("Step 2a - Find the ESI+const movement to ECX between baseBegin and first reference offset");
   offset = pe.find(" 8B 8E ?? 00 00 00", baseBegin, refOffsets[0]);//MOV ECX, DWORD PTR DS:[ESI+const]
   if (offset === -1)
     return "Failed in Step 2 - First ESI Offset missing";
 
-  //Step 2b - Extract the gNoBase and calculate other two
+  consoleLog("Step 2b - Extract the gNoBase and calculate other two");
   var gNoBase = pe.fetchDWord(offset + 2);
   var gNoJob = gNoBase + 4;
   var gBarOn = gNoBase + 8;
 
-  //Step 2c - Extract ESI offset and baseEnd
+  consoleLog("Step 2c - Extract ESI offset and baseEnd");
   if (pe.fetchUByte(refOffsets[1] + 8) >= 0xD0)
   {
     var funcOff = pe.fetchByte(refOffsets[1] - 1);
     var baseEnd = (refOffsets[1] + 11) + pe.fetchByte(refOffsets[1] + 10);
   }
   else
-{
+  {
     var funcOff = pe.fetchByte(refOffsets[1] + 9);
     var baseEnd = (refOffsets[1] + 12) + pe.fetchByte(refOffsets[1] + 11);
   }
 
-  //Step 2d - jobBegin is same as baseEnd
+  consoleLog("Step 2d - jobBegin is same as baseEnd");
   var jobBegin = baseEnd;
 
-  //Step 3a - Find the PUSHes for Job Exp bar
+  consoleLog("Step 3a - Find the PUSHes for Job Exp bar");
   code =
     " 6A 58"          //PUSH 58
   + " 68 38 FF FF FF" //PUSH -0C8
@@ -113,7 +114,7 @@ function CustomExpBarLimits()
   if (refOffsets2.length === 0)
     return "Failed in Step 3 - 2nd Reference PUSHes missing";
 
-  //Step 3b - Find jobEnd (JMP after the last PUSH will lead to jobEnd)
+  consoleLog("Step 3b - Find jobEnd (JMP after the last PUSH will lead to jobEnd)");
   offset = refOffsets2[refOffsets2.length - 1] + code.hexlength();
 
   if (pe.fetchUByte(offset) === 0xEB)
@@ -122,7 +123,7 @@ function CustomExpBarLimits()
   }
 
   if (pe.fetchUByte(offset + 1) >= 0xD0)
-  {//FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
+  {  //FF D0 (CALL reg) or FF 5# 1# CALL DWORD PTR DS:[reg + 1#]
     var jobEnd = offset + 2;
   }
   else
@@ -130,26 +131,27 @@ function CustomExpBarLimits()
     var jobEnd = offset + 3;
   }
 
-  //Step 3c - Find g_jobLevel reference between the 2nd reference set
+  consoleLog("Step 3c - Find g_jobLevel reference between the 2nd reference set");
   code = " 83 3D ?? ?? ?? 00 0A"; //CMP DWORD PTR DS:[g_jobLevel], 0A
 
   offset = pe.find(code, refOffsets2[0], refOffsets2[refOffsets2.length - 1]);
   if (offset === -1)
     return "Failed in Step 3 - g_jobLevel reference missing";
 
-  //Step 3d - Extract g_jobLevel
+  consoleLog("Step 3d - Extract g_jobLevel");
   var gJobLevel = pe.fetchDWord(offset + 2);
 
-  //Step 4a - Get the input file
+  consoleLog("Step 4a - Get the input file");
   var fp = new TextFile();
   var inpFile = GetInputFile(fp, "$expBarSpec", _("File Input - Custom Exp Bar Limits"), _("Enter the Exp Bar Spec file"), APP_PATH + "/Input/expBarSpec.txt");
   if (!inpFile)
     return "Patch Cancelled";
 
-  //Step 4b - Extract table from the file
+  consoleLog("Step 4b - Extract table from the file");
   var idLvlTable = [];
   var tblSize = 0;
   var index = -1;
+  var matches;
 
   while (!fp.eof())
   {
@@ -195,7 +197,7 @@ function CustomExpBarLimits()
   }
   fp.close();
 
-  //Step 5a - Prep code to replace at baseBegin
+  consoleLog("Step 5a - Prep code to replace at baseBegin");
   code =
     " 52"                     //PUSH EDX
   + " 53"                     //PUSH EBX
@@ -253,16 +255,16 @@ function CustomExpBarLimits()
   + " E9" + GenVarHex(11)     //JMP jobEnd
   ;
 
-  //Step 5b - Allocate space for the table to use in the above code
+  consoleLog("Step 5b - Allocate space for the table to use in the above code");
   var free = exe.findZeros(tblSize);
   if (free === -1)
     return "Failed in Step 5 - Not enough free space";
 
-  //Step 5c - Setup tblAddr
+  consoleLog("Step 5c - Setup tblAddr");
   var freeRva = pe.rawToVa(free);
   var tblAddr = baseBegin + code.hexlength() + 4;
 
-  //Step 5d - Fill in the blanks
+  consoleLog("Step 5d - Fill in the blanks");
   code = code.replace(/ XX/g, funcOff.packToHex(1));
 
   code = ReplaceVarHex(code, 1, gSession);
@@ -279,7 +281,7 @@ function CustomExpBarLimits()
 
   code = ReplaceVarHex(code, 11, jobEnd - (baseBegin + code.hexlength()));
 
-  //Step 6a - Construct the table pointers & limits to insert
+  consoleLog("Step 6a - Construct the table pointers & limits to insert");
   var tblAddrData = "";
   var tblData = "";
 
@@ -292,10 +294,10 @@ function CustomExpBarLimits()
     tblAddrData += idLvlTable[i].lvlTable.join("");
   }
 
-  //Step 6b - Replace the function at baseBegin
+  consoleLog("Step 6b - Replace the function at baseBegin");
   pe.replaceHex(baseBegin, code + " FF 00 FF 00" + tblAddrData);
 
-  //Step 6c - Insert the table at allocated location.
+  consoleLog("Step 6c - Insert the table at allocated location.");
   exe.insert(free, tblSize, tblData, PTYPE_HEX);
 
   return true;
