@@ -201,6 +201,28 @@ Find first string from provided patterns in whole binary and if found return raw
 
 If all strings not found, return -1.
 
+### pe.stringInfoVa
+
+```
+pe.stringInfoVa(strings)
+pe.stringInfoVa(strings, ...)
+```
+
+Find first string from provided patterns in whole binary and if found return array with string itself and virtual address of string.
+
+If all strings not found, return -1.
+
+### pe.stringInfoRaw
+
+```
+pe.stringInfoRaw(strings)
+pe.stringInfoRaw(strings, ...)
+```
+
+Find first string from provided patterns in whole binary and if found return array with string itself and raw address of string.
+
+If all strings not found, return -1.
+
 ### pe.rawToVa
 
 ``pe.rawToVa(rawAddr)``

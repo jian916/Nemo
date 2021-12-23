@@ -212,6 +212,30 @@ function pe_stringAnyRaw(strings)
     return -1;
 }
 
+function pe_stringInfoVa(strings)
+{
+    var args = Array.prototype.slice.call(arguments);
+    for (var i = 0; i < args.length; i ++)
+    {
+        var res = pe_stringRaw(args[i]);
+        if (res !== -1)
+            return [args[i], pe.rawToVa(res)];
+    }
+    return -1;
+}
+
+function pe_stringInfoRaw(strings)
+{
+    var args = Array.prototype.slice.call(arguments);
+    for (var i = 0; i < args.length; i ++)
+    {
+        var res = pe_stringRaw(args[i]);
+        if (res !== -1)
+            return [args[i], res];
+    }
+    return -1;
+}
+
 function pe_stringHex4(str)
 {
     checkArgs("pe.stringHex4", arguments, [["String"]]);
@@ -518,6 +542,8 @@ function registerPe()
     pe.stringHex4 = pe_stringHex4;
     pe.stringAnyVa = pe_stringAnyVa;
     pe.stringAnyRaw = pe_stringAnyRaw;
+    pe.stringInfoVa = pe_stringInfoVa;
+    pe.stringInfoRaw = pe_stringInfoRaw;
     pe.directReplace = pe_directReplace;
     pe.fetchUQWord = pe_fetchUQWord;
     pe.fetchUDWord = pe_fetchUDWord;
