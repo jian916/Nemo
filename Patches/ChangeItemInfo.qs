@@ -8,23 +8,20 @@ function ChangeItemInfo()
     //Step 1a - Check if the client is Renewal (iteminfo file name is "System/iteminfo_Sak.lub" for Renewal clients)
     if (IsSakray())
     {
-        var iiName = "System/iteminfo_Sak.lub";
+        var offset = pe.stringInfoVa("System/iteminfo_Sak.lub",
+            "System\\iteminfo_Sak.lub");
     }
     else
     {
-        // iteminfo in old clients
-        var iiName = "System/iteminfo.lub";
-        if (pe.stringVa(iiName) === -1)
-        {
-            // iteminfo in new clients
-            iiName = "System/iteminfo_true.lub";
-        }
+        var offset = pe.stringInfoVa("System/iteminfo.lub",
+            "System/iteminfo_true.lub",
+            "System\\iteminfo_true.lub");
     }
-
-    //Step 1b - Find offset of the original string
-    var offset = pe.stringVa(iiName);
     if (offset === -1)
         return "Failed in Step 1 - iteminfo file name not found";
+
+    var iiName = offset[0];
+    offset = offset[1];
 
     //Step 1b - Find its reference
     offset = pe.findCode("68" + offset.packToHex(4));
@@ -44,8 +41,8 @@ function ChangeItemInfo()
         return "Failed in Step 2 - Not enough free space";
 
     //Step 3 - Insert the new name and replace the iteminfo reference
-    exe.insert(free, myfile.length, "$newItemInfo", PTYPE_STRING);
-    pe.replaceHex(offset + 1, pe.rawToVa(free).packToHex(4));
+    exe.insert(free, myfile.length, myfile, PTYPE_STRING);
+    pe.replaceDWord(offset + 1, pe.rawToVa(free));
 
     return true;
 }
@@ -57,16 +54,13 @@ function ChangeItemInfo_()
 {
     if (IsSakray())
     {
-        var iiName = "System/iteminfo_Sak.lub";
+        return pe.stringAnyRaw("System/iteminfo_Sak.lub",
+            "System\\iteminfo_Sak.lub") !== -1;
     }
     else
     {
-        // iteminfo in old clients
-        var iiName = "System/iteminfo.lub";
-        if (pe.stringRaw(iiName) !== -1)
-            return true;
-        // iteminfo in new clients
-        iiName = "System/iteminfo_true.lub";
+        return pe.stringAnyRaw("System/iteminfo.lub",
+            "System/iteminfo_true.lub",
+            "System\\iteminfo_true.lub") !== -1;
     }
-    return (pe.stringRaw(iiName) !== -1);
 }
