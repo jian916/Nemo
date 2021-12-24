@@ -738,4 +738,10 @@ registerPatch(419, "DisableOfficialCustomFonts", "Disable Official Custom Fonts"
 
 registerPatch(420, "FixCameraAnglesCustom", "Fix Camera Angles (custom)", "UI", 2, "4144", "Unlocks the possible camera angles to give more freedom of placement. This enable custom camera angle", false);
 
+registerPatch(421, "ChangeRouletteGoldLimit", "Change minimal gold amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
+registerPatch(422, "ChangeRouletteSilverLimit", "Change minimal silver amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
+registerPatch(423, "ChangeRouletteBronzeLimit", "Change minimal bronze amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
 GlobalPostInit();

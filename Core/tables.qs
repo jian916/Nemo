@@ -71,6 +71,9 @@ function registerTables()
     table.g_accountAddr = 66;
     table.g_accountPort = 67;
     table.CSession_isEffectOn = 68;
+    table.roulette_gold_step = 69;
+    table.roulette_silver_step = 72;
+    table.roulette_bronze_step = 75;
 
     registerTableFunctions();
 }
