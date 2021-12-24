@@ -119,6 +119,7 @@ function pe_findAnyCode(codeObj)
         }
         ret.offset = foundOffset;
         ret.codeIndex = found;
+        ret.code = foundObj[0]
         return ret;
     }
     return -1;
@@ -132,6 +133,41 @@ function pe_match(code, addrRaw)
     if (offset !== addrRaw)
         return false;
     return true;
+}
+
+function pe_matchAny(matchObj, addrRaw)
+{
+    var foundObj;
+    var found = -1;
+    for (var i = 0; i < matchObj.length; i ++)
+    {
+        var obj = matchObj[i];
+        consoleLog("do match");
+        var res = pe.match(obj[0], addrRaw);
+        if (res !== false)
+        {
+            if (found !== -1)
+            {
+                fatalError("Found more than one patterns at indexes: " + found + " and " + i);
+            }
+            found = i;
+            foundObj = obj;
+        }
+    }
+    if (found !== -1)
+    {
+        var vars = foundObj[1];
+        var ret = Object();
+        for (var v in vars)
+        {
+            ret[v] = vars[v];
+        }
+        ret.offset = addrRaw;
+        ret.codeIndex = found;
+        ret.code = foundObj[0]
+        return ret;
+    }
+    return false;
 }
 
 function pe_stringRaw(str)
@@ -535,6 +571,7 @@ function registerPe()
     pe.findCodes = pe_findCodes;
     pe.findAnyCode = pe_findAnyCode;
     pe.match = pe_match;
+    pe.matchAny = pe_matchAny;
     pe.stringVa = pe_stringVa;
     pe.stringRaw = pe_stringRaw;
     pe.halfStringVa = pe_halfStringVa;
