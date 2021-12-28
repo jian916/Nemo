@@ -74,6 +74,8 @@ function registerTables()
     table.roulette_gold_step = 69;
     table.roulette_silver_step = 72;
     table.roulette_bronze_step = 75;
+    table.UINewMakeCharWnd_OnCreate = 78;
+    table.UINewMakeCharWnd_OnCreate_ret = 79;
 
     registerTableFunctions();
 }
