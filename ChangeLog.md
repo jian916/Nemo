@@ -1,3 +1,19 @@
+# 2021-12-28 Different updates
+
+## Patches
+
+- Fix patch [Load Custom lua file instead of iteminfo*.lub](http://nemo.herc.ws/patches/ChangeItemInfo/#success-clients). (fix by @4144).
+- Fix patch [Change new char name field height](http://nemo.herc.ws/patches/ChangeNewCharNameHeight/#success-clients). (fix by @4144).
+- Add patch [Change minimal gold amount for start roulette](http://nemo.herc.ws/patches/ChangeRouletteGoldLimit/#success-clients). (by @4144).
+- Add patch [Change minimal silver amount for start roulette](http://nemo.herc.ws/patches/ChangeRouletteSilverLimit/#success-clients). (by @4144).
+- Add patch [Change minimal bronze amount for start roulette](http://nemo.herc.ws/patches/ChangeRouletteBronzeLimit/#success-clients). (by @4144).
+
+## For devs
+
+- Add functions for search strings with information: pe.stringInfoVa and pe.stringInfoRaw.
+- Add function for match one of any block: pe.matchAny.
+- Add function for search one of any hex bytes block: pe.findAny.
+
 # 2021-12-21 Different updates
 
 ## Patches
