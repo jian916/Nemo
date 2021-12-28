@@ -66,6 +66,28 @@ code = [
 pe.findAnyCode(code);
 ```
 
+### pe.findAny
+
+```
+pe.findAny(codeArray, rawStart, rawEnd)
+```
+
+Search first hex bytes pattern in address range from rawStart to rawEnd from given array of patterns.
+
+Return object with first raw address with given bytes or -1 if nothing found.
+
+For more info see usage of ``pe.findAny`` in patches.
+
+Example:
+
+```
+code = [
+    ["3B ?? 00 00", {"offset1": [1, 1]}],
+    ["3B ?? 00 01", {"offset1": [1, 1]}]
+]
+pe.findAny(code, 0x1000, 0x100000);
+```
+
 ### pe.find
 
 ```
