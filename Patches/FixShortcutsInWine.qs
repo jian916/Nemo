@@ -23,21 +23,21 @@ function FixShortcutsInWine()
     // search in UIWindowMgr_handleShortcuts
     var code =
         "0F 57 C0 " +                 // 0 xorps xmm0, xmm0
-        "66 0F 13 45 AB " +           // 3 movlpd [ebp+var_8], xmm0
-        "8B 55 AB " +                 // 8 mov edx, dword ptr [ebp+var_8]
+        "66 0F 13 45 ?? " +           // 3 movlpd [ebp+var_8], xmm0
+        "8B 55 ?? " +                 // 8 mov edx, dword ptr [ebp+var_8]
         "85 D2 " +                    // 11 test edx, edx
-        "0F 8F AB AB AB 00 " +        // 13 jg loc_6FBE67
-        "83 BE AB AB AB 00 00 " +     // 19 cmp dword ptr [esi+34F0h], 0
-        "0F 85 AB AB AB 00 " +        // 26 jnz loc_6FBE67
-        "81 FF AB AB 00 00 " +        // 32 cmp edi, 0DBh
-        "0F 87 AB AB AB 00 " +        // 38 ja loc_6FBE67
+        "0F 8F ?? ?? ?? 00 " +        // 13 jg loc_6FBE67
+        "83 BE ?? ?? ?? 00 00 " +     // 19 cmp dword ptr [esi+34F0h], 0
+        "0F 85 ?? ?? ?? 00 " +        // 26 jnz loc_6FBE67
+        "81 FF ?? ?? 00 00 " +        // 32 cmp edi, 0DBh
+        "0F 87 ?? ?? ?? 00 " +        // 38 ja loc_6FBE67
         "0F B6 87 ";                  // 44 movzx eax, ds:byte_6FBF54[edi]
     var patchOffset = 13;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    exe.replace(offset + patchOffset, "90 90 90 90 90 90", PTYPE_HEX); // replace jg to nops
+    pe.replaceHex(offset + patchOffset, "90 90 90 90 90 90");  // replace jg to nops
     return true;
 }
 

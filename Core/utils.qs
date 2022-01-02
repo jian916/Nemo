@@ -43,7 +43,7 @@ function ReplaceVarHex(code, nums, values)
 
 function IsSakray()
 {
-    return(exe.findString("rdata.grf", RAW) !== -1);
+    return(pe.stringRaw("rdata.grf") !== -1);
 }
 
 //###########################################################
@@ -53,7 +53,7 @@ function IsSakray()
 function IsZero()
 {
     // search for "Software\Gravity Soft\RenewSetup Zero"
-    return(exe.find("53 6F 66 74 77 61 72 65 5C 47 72 61 76 69 74 79 20 53 6F 66 74 5C 52 65 6E 65 77 53  65 74 75 70 20 5A 65 72 6F", PTYPE_HEX) !== -1);
+    return(pe.find("53 6F 66 74 77 61 72 65 5C 47 72 61 76 69 74 79 20 53 6F 66 74 5C 52 65 6E 65 77 53  65 74 75 70 20 5A 65 72 6F") !== -1);
 }
 
 //###########################################################
@@ -64,23 +64,23 @@ function IsZero()
 function GetLangType()
 {
   //Step 1a - Get address of the string 'america'
-  var offset = exe.findString("america", RVA);
+  var offset = pe.stringVa("america");
   if (offset === -1)
     return ["'america' not found"];
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return ["'america' reference missing"];
 
   //Step 2a - Look for the g_serviceType assignment to 1 after it.
-  offset = exe.find(" C7 05 AB AB AB AB 01 00 00 00", PTYPE_HEX, true, "\xAB", offset + 5);
+  offset = pe.find(" C7 05 ?? ?? ?? ?? 01 00 00 00", offset + 5);
   if (offset === -1)
     return ["g_serviceType assignment missing"];
 
   logVaVar("g_serviceType", offset, 2);
   //Step 2b - Extract and return
-  var lang = exe.fetchHex(offset + 2, 4);
+  var lang = pe.fetchHex(offset + 2, 4);
   if (lang !== table.getHex4(table.g_serviceType))
     return ["found wrong g_serviceType"];
   return lang;
@@ -95,24 +95,24 @@ function GetServerType()
 {
 
   //Step 1a - Get address of the string 'sakray'
-  var offset = exe.findString("sakray", RVA);
+  var offset = pe.stringVa("sakray");
   if (offset === -1)
     throw "'sakray' not found";
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     throw "'sakray' reference missing";
 
   //Step 2a - Look for the g_serverType assignment to 1 after it.
-  offset = exe.find(" C7 05 AB AB AB AB 01 00 00 00", PTYPE_HEX, true, "\xAB", offset + 5);
+  offset = pe.find(" C7 05 ?? ?? ?? ?? 01 00 00 00", offset + 5);
   if (offset === -1)
     throw "g_serverType assignment missing";
 
   logVaVar("g_serverType", offset, 2);
 
   //Step 2b - Extract and return
-  return exe.fetchDWord(offset + 2);
+  return pe.fetchDWord(offset + 2);
 
 }
 
@@ -126,19 +126,19 @@ function GetWinMgrInfo(skipError)
     if (skipError !== true)
         logError("legacy function GetWinMgrInfo");
     //Step 1a - Find offset of NUMACCOUNT
-    var offset = exe.findString("NUMACCOUNT", RVA);
+    var offset = pe.stringVa("NUMACCOUNT");
     if (offset === -1)
         return "NUMACCOUNT missing";
 
     //Step 1b - Find its reference which comes after a Window Manager call
     var code =
         getEcxWindowMgrHex() +        // 0 mov ecx, offset g_windowMgr
-        "E8 AB AB AB AB " +           // 5 call UIWindowMgr_MakeWindow
+        "E8 ?? ?? ?? ?? " +           // 5 call UIWindowMgr_MakeWindow
         "6A 00 " +                    // 10 push 0
         "6A 00 " +                    // 12 push 0
         "68 " + offset.packToHex(4);  // 14 push offset aNumaccount
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1)
         return "NUMACCOUNT reference missing";
 
@@ -146,8 +146,8 @@ function GetWinMgrInfo(skipError)
     logRawFunc("UIWindowMgr_MakeWindow", offset, 6);
 
     return {
-        "gWinMgr": exe.fetchHex(offset, 5),
-        "makeWin": exe.fetchDWord(offset + 6) + exe.Raw2Rva(offset) + 10
+        "gWinMgr": pe.fetchHex(offset, 5),
+        "makeWin": pe.fetchDWord(offset + 6) + pe.rawToVa(offset) + 10
     };
 }
 
@@ -158,9 +158,8 @@ function GetWinMgrInfo(skipError)
 
 function HasFramePointer()
 {
-
-  //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
-  return (exe.fetch(exe.getROffset(CODE), 3) === "\x55\x8B\xEC");
+    //Fastest way to check - First 3 bytes of CODE Section would be PUSH EBP and MOV EBP, ESP
+    return (pe.fetch(pe.sectionRaw(CODE)[0], 3) === "\x55\x8B\xEC") || table.get(table.packetVersion) > 20190000;
 }
 
 //#################################################################################################
@@ -209,20 +208,20 @@ function FetchPacketKeyInfo()
 
   //Step 1a - Find address of string 'PACKET_CZ_ENTER' .
   //          If its not present then its probably new client and chances are packet keys will need a map
-  var offset = exe.findString("PACKET_CZ_ENTER", RVA);
+  var offset = pe.stringVa("PACKET_CZ_ENTER");
 
   //Step 1b - Find its reference
   if (offset !== -1)
-    offset = exe.findCode(" 68" + offset.packToHex(4), PTYPE_HEX, false);
+    offset = pe.findCode(" 68" + offset.packToHex(4));
 
   //Step 1c - In case its not there look for the Reference Pattern present usually after PACKET_CZ_ENTER
   if (offset === -1)
   {
 
     var code =          //template call format
-      " E8 AB AB AB AB" //CALL CRagConnection::instanceR
+      " E8 ?? ?? ?? ??" //CALL CRagConnection::instanceR
     + " 8B C8"          //MOV ECX, EAX
-    + " E8 AB AB AB AB" //CALL func
+    + " E8 ?? ?? ?? ??" //CALL func
     ;
 
     code =
@@ -239,7 +238,7 @@ function FetchPacketKeyInfo()
                //CALL CConnection::SetBlock
     + " 6A 06" //PUSH 6
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -247,23 +246,23 @@ function FetchPacketKeyInfo()
 
   //Step 2a - Find Pattern 1 - Keys pushed to the Key assigner function (Type 0)
   var code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
-  + " 68 AB AB AB AB"    //PUSH key3
-  + " 68 AB AB AB AB"    //PUSH key2
-  + " 68 AB AB AB AB"    //PUSH key1
+    " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
+  + " 68 ?? ?? ?? ??"    //PUSH key3
+  + " 68 ?? ?? ?? ??"    //PUSH key2
+  + " 68 ?? ?? ?? ??"    //PUSH key1
   + " E8"                //CALL CRagConnection::Obfuscate ; We will call it this for the time being
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+  var offset2 = pe.find(code, offset - 0x100, offset);
   if (offset2 !== -1)
   {
     //Step 2b - In case it succeeded Get the ECX assignment, RVA of the Obfuscate function & the packetKeys.
     retVal.type = 0;
-    retVal.refMov = exe.fetchHex(offset2, 6);
+    retVal.refMov = pe.fetchHex(offset2, 6);
 
     offset2 += code.hexlength();
-    retVal.funcAddr = exe.Raw2Rva(offset2 + 4) + exe.fetchDWord(offset2);
-    retVal.keys = [exe.fetchDWord(offset2 - 5), exe.fetchDWord(offset2 - 10), exe.fetchDWord(offset2 - 15)];
+    retVal.funcAddr = pe.rawToVa(offset2 + 4) + pe.fetchDWord(offset2);
+    retVal.keys = [pe.fetchDWord(offset2 - 5), pe.fetchDWord(offset2 - 10), pe.fetchDWord(offset2 - 15)];
 
     //Step 2c - Return the hash array
     return retVal;
@@ -272,45 +271,45 @@ function FetchPacketKeyInfo()
   //Step 3a - Find Pattern 2 - Encryption + Key assignment fused into one function with mode argument.
   //          0 = Encrypt & Assign Keys, 1 = Assign Base Keys, 2 = Assign 0s = No Encryption
   code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
+    " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
   + " 6A 01"             //PUSH 1
   + " E8"                //CALL CRagConnection::Obfuscate2
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+  var offset2 = pe.find(code, offset - 0x100, offset);
   if (offset2 == -1)
   {
       code =
-        " 8B 0D AB AB AB AB" //MOV ECX, DWORD PTR DS:[refAddr]
+        " 8B 0D ?? ?? ?? ??" //MOV ECX, DWORD PTR DS:[refAddr]
       + " 6A 01"             //PUSH 1
       + " E8"                //CALL CRagConnection::Obfuscate2
       ;
-      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x100, offset);
+      offset2 = pe.find(code, offset - 0x100, offset);
   }
   if (offset2 == -1)
     return "PKI: Failed to find Encryption call";
 
   //Step 3b - Get the ECX assignment & Function RVA
-  retVal.refMov = exe.fetchHex(offset2, 6);
+  retVal.refMov = pe.fetchHex(offset2, 6);
 
   offset2 += code.hexlength();
-  offset = offset2 + 4 + exe.fetchDWord(offset2);
+  offset = offset2 + 4 + pe.fetchDWord(offset2);
 
-  retVal.funcAddr = exe.Raw2Rva(offset);
+  retVal.funcAddr = pe.rawToVa(offset);
 
   //Step 3c - Go Inside and look for Base Key assignment (No Shared Key format)
   var prefix =
     " 83 F8 01" //CMP EAX,1
-  + " 75 AB"    //JNE short
+  + " 75 ??"    //JNE short
   ;
   code =
     prefix
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+x], <Key 1> ; Keys may not be assigned in order - depends on x, y and z values
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+y], <Key 2>
-  + " C7 41 AB AB AB AB AB"  //MOV DWORD PTR DS:[ECX+z], <Key 3>
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+x], <Key 1> ; Keys may not be assigned in order - depends on x, y and z values
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+y], <Key 2>
+  + " C7 41 ?? ?? ?? ?? ??"  //MOV DWORD PTR DS:[ECX+z], <Key 3>
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x50);
+  offset2 = pe.find(code, offset, offset + 0x50);
 
   if (offset2 !== -1)
   {
@@ -318,9 +317,9 @@ function FetchPacketKeyInfo()
     retVal.type = 1;
     offset2 += prefix.hexlength();
 
-    retVal.keys[exe.fetchByte(offset2 + 2)/4]  = exe.fetchDWord(offset2 + 3);
-    retVal.keys[exe.fetchByte(offset2 + 9)/4]  = exe.fetchDWord(offset2 + 10);
-    retVal.keys[exe.fetchByte(offset2 + 16)/4] = exe.fetchDWord(offset2 + 17);
+    retVal.keys[pe.fetchByte(offset2 + 2)/4]  = pe.fetchDWord(offset2 + 3);
+    retVal.keys[pe.fetchByte(offset2 + 9)/4]  = pe.fetchDWord(offset2 + 10);
+    retVal.keys[pe.fetchByte(offset2 + 16)/4] = pe.fetchDWord(offset2 + 17);
     retVal.keys.shift();//Shift all elements left
 
     retVal.ovrAddr = offset2;//Offset where the assignment occurs
@@ -332,13 +331,13 @@ function FetchPacketKeyInfo()
   //Step 4a - Look for Shared Key format
   code =
     prefix
-  + " B8 AB AB AB AB" // MOV EAX, Shared Key
-  + " 89 41 AB"       // MOV DWORD PTR DS:[ECX+x], EAX
-  + " 89 41 AB"       // MOV DWORD PTR DS:[ECX+y], EAX
+  + " B8 ?? ?? ?? ??" // MOV EAX, Shared Key
+  + " 89 41 ??"       // MOV DWORD PTR DS:[ECX+x], EAX
+  + " 89 41 ??"       // MOV DWORD PTR DS:[ECX+y], EAX
   + " C7 41"          // MOV DWORD PTR DS:[ECX+z], Unique Key
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x50);
+  offset2 = pe.find(code, offset, offset + 0x50);
 
   if (offset2 != -1)
   {
@@ -346,9 +345,9 @@ function FetchPacketKeyInfo()
     retVal.type = 1;
     offset2 += prefix.hexlength();
 
-    retVal.keys[exe.fetchByte(offset2 + 7)/4]   = exe.fetchDWord(offset2 + 1);
-    retVal.keys[exe.fetchByte(offset2 + 10)/4]  = exe.fetchDWord(offset2 + 1);
-    retVal.keys[exe.fetchByte(offset2 + 13)/4]  = exe.fetchDWord(offset2 + 14);
+    retVal.keys[pe.fetchByte(offset2 + 7)/4]   = pe.fetchDWord(offset2 + 1);
+    retVal.keys[pe.fetchByte(offset2 + 10)/4]  = pe.fetchDWord(offset2 + 1);
+    retVal.keys[pe.fetchByte(offset2 + 13)/4]  = pe.fetchDWord(offset2 + 14);
     retVal.keys.shift();//Shift all elements left
 
     retVal.ovrAddr = offset2;//Offset where the assignment occurs
@@ -388,7 +387,7 @@ function FetchPacketKeyInfo()
     //Step 5c - Assign the values to hash array
     retVal.type = 2;
     retVal.keys = [parseInt(keys[0], 16), parseInt(keys[1], 16), parseInt(keys[2], 16)];
-    retVal.ovrAddr = exe.Rva2Raw(retVal.funcAddr);
+    retVal.ovrAddr = pe.vaToRaw(retVal.funcAddr);
 
     if (HasFramePointer())//Account for PUSH EBP and MOV EBP, ESP
       retVal.ovrAddr += 3;
@@ -399,101 +398,6 @@ function FetchPacketKeyInfo()
 
   //Step 6 - All known options exhausted - return the default hash array (with all keys as 0 & type = -1)
   return retVal;
-}
-
-//######################################################################################
-//# Purpose: Find the RVA of the Function specified. Optionally dllName can be used    #
-//#          to pinpoint to a DLL and ordinal can be used in case of import by ordinal #
-//######################################################################################
-
-function GetFunction(funcName, dllName, ordinal)
-{
-
-  //Step 1a - Prep the optional arguments
-  if (typeof(dllName) === "undefined")
-    dllName = "";
-  else
-    dllName = dllName.toUpperCase();
-
-  if (typeof(ordinal) === "undefined")
-    ordinal = -1;
-
-  //Step 1b - Prep the constants and return variable
-  var funcAddr = -1; //The address will be stored here.
-  var offset = GetDataDirectory(1).offset;//Import Table
-  var imgBase = exe.getImageBase();//The Image Base
-
-  //Step 1c - Iterate through each IMAGE_IMPORT_DESCRIPTOR
-  for ( ;true; offset += 20)
-  {
-    var nameOff = exe.fetchDWord(offset+12);//Dll Name Offset (VA - ImageBase)
-    var iatOff  = exe.fetchDWord(offset+16); //Thunk Offset - Start of the Imported Functions
-
-    if (nameOff <= 0) break;//Ending entry wont have dll name so its offset will be 0
-    if (iatOff  <= 0) continue;//Import Address Table <- points to the First Thunk
-
-    //Step 1d - If DLL name is provided, only check if it matches with current DLL Name (case insensitively)
-    if (dllName !== "")
-    {
-      nameOff = exe.Rva2Raw(nameOff + imgBase);
-      var nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
-      if (dllName !== exe.fetch(nameOff, nameEnd - nameOff).toUpperCase()) continue;
-    }
-
-    //Step 1e - Get Raw Offset of FIrst Thunk
-    var offset2 = exe.Rva2Raw(iatOff + imgBase);
-
-    //Step 2a - Iterate through each IMAGE_THUNK_DATA
-    for ( ;true; offset2 += 4)
-    {
-      var funcData = exe.fetchDWord(offset2);//Ordinal Number or Offset of Function Name and Hint
-
-      //Step 2b - Ends with a NULL DWORD
-      if (funcData === 0) break;
-
-      //Step 2c - Sign Bit also serves as an indicator of whether this functions is imported by Name (0) or Ordinal (1)
-      if (funcData > 0)
-      {
-
-        //Step 2d - The Thunk will point to a location with first 2 bytes as Hint followed by Function Name.
-        //          So extract it after 2nd byte
-        nameOff = exe.Rva2Raw((funcData & 0x7FFFFFFF) + imgBase) + 2;
-        nameEnd = exe.find("00", PTYPE_HEX, false, "\xAB", nameOff);
-
-        //Step 2e - Check if the Function name matches. If it does, save the address in IAT and break
-        if (funcName === exe.fetch(nameOff, nameEnd - nameOff))
-        {
-          funcAddr = exe.Raw2Rva(offset2);
-          break;
-        }
-      }
-      else if ((funcData & 0xFFFF) === ordinal)
-      { //If ordinal import then just compare directly.
-        funcAddr = exe.Raw2Rva(offset2);
-        break;
-      }
-    }
-
-    //Step 2f - If we already got the address break out of the loop
-    if (funcAddr !== -1) break;
-  }
-
-  return funcAddr;
-}
-
-//###############################################################################
-//# Purpose: Get the offset and size of the Data Directory specified with index #
-//###############################################################################
-
-function GetDataDirectory(index)
-{
-  var offset = exe.getPEOffset() + 0x18 + 0x60;//Skipping header bytes unnecessary here.
-  if (offset === 0x67) //i.e. PE Offset === -1 which is unlikely but still
-    return -2;
-
-  var size = exe.fetchDWord(offset + 0x8*index + 0x4);
-  offset = exe.Rva2Raw(exe.fetchDWord(offset + 0x8*index) + exe.getImageBase());
-  return {"offset":offset, "size":size};
 }
 
 //######################################################################
@@ -532,13 +436,13 @@ function ResourceDir(rsrcAddr, addrOffset, id)
 
   this.id = id;
   this.addr = rsrcAddr + addrOffset;
-  this.numEntries = exe.fetchWord(this.addr + 12) + exe.fetchWord(this.addr + 14)
+  this.numEntries = pe.fetchWord(this.addr + 12) + pe.fetchWord(this.addr + 14)
   this.entries = [];
 
   for (var i = 0; i < this.numEntries; i++)
   {
-    id = exe.fetchDWord(this.addr + 16 + i*8);
-    addrOffset = exe.fetchDWord(this.addr + 16 + i*8 + 4);
+    id = pe.fetchDWord(this.addr + 16 + i*8);
+    addrOffset = pe.fetchDWord(this.addr + 16 + i*8 + 4);
 
     if (addrOffset < 0)
       this.entries.push( new ResourceDir(rsrcAddr, addrOffset & 0x7FFFFFFF, id));
@@ -556,8 +460,8 @@ function ResourceFile(rsrcAddr, addrOffset, id)
 {
   this.id = id;
   this.addr = rsrcAddr + addrOffset;
-  this.dataAddr = exe.Rva2Raw(exe.fetchDWord(this.addr) + exe.getImageBase());
-  this.dataSize = exe.fetchDWord(this.addr + 4);
+  this.dataAddr = pe.vaToRaw(pe.fetchDWord(this.addr) + pe.getImageBase());
+  this.dataSize = pe.fetchDWord(this.addr + 4);
 }
 
 //####################################################################################
@@ -594,8 +498,8 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
         throw "FetchTillEnd: Negative offset found";
 
     //Step 1a - Get Opcode and possible Mod R/M byte
-    var opcode = exe.fetchUByte(offset);
-    var modrm  = exe.fetchUByte(offset + 1);
+    var opcode = pe.fetchUByte(offset);
+    var modrm  = pe.fetchUByte(offset + 1);
 
     //Step 1b - Get the instruction details
     var details = GetOpDetails(opcode, modrm, offset);//contains length of instruction, distance to next offset, optional destination operand, optional source operand. Usually index 0 and 1 are same
@@ -651,7 +555,7 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
       case 0xBD:
       case 0xBE:
       case 0xBF: {//MOV reg32, OFFSET addr; No need to skip but do save for comparison later
-        regAssigns[opcode - 0xB8] = exe.fetchHex(offset, details.codesize);
+        regAssigns[opcode - 0xB8] = pe.fetchHex(offset, details.codesize);
         break;
       }
 
@@ -708,10 +612,10 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
         //CALL assigner
         var offset2 = details.nextOff + 7;
 
-        if (exe.fetchUByte(details.nextOff + 2) === 0xC7)
+        if (pe.fetchUByte(details.nextOff + 2) === 0xC7)
           offset2 += 6;
 
-        skip = (exe.fetchUByte(offset2 - 5) === 0xE8 && exe.fetchDWord(offset2 - 4) === (assigner - offset2));
+        skip = (pe.fetchUByte(offset2 - 5) === 0xE8 && pe.fetchDWord(offset2 - 4) === (assigner - offset2));
         if (skip)
         {
           details.nextOff = offset2;
@@ -735,9 +639,9 @@ function FetchTillEnd(offset, refReg, refOff, tgtReg, langType, endFunc, assigne
 
     //Step 1e - Extract the code if skip is not enabled
     if (!skip)
-      extract += exe.fetchHex(offset, details.codesize);
+      extract += pe.fetchHex(offset, details.codesize);
 
-    //codes += exe.Raw2Rva(offset).toBE() + " :" + exe.fetchHex(offset, details.codesize) + "\n";//debug
+    //codes += pe.rawToVa(offset).toBE() + " :" + pe.fetchHex(offset, details.codesize) + "\n";//debug
 
     //Step 1f - Update offset
 
@@ -773,7 +677,7 @@ function GetOpDetails(opcode, modrm, offset)
   if (opcode === 0x0F)
   {
     opcode2 = modrm;
-    modrm = exe.fetchUByte(offset + 2);
+    modrm = pe.fetchUByte(offset + 2);
   }
 
   //Step 1c - If none matched in OpcodeSizeMap, then modrm is valid and we need to parse it
@@ -800,14 +704,14 @@ function GetOpDetails(opcode, modrm, offset)
     //Step 2d - Check for Immediate 1 byte => Mode = 1
     if (details.mode === 0x1)
     {
-      details.tgtImm = exe.fetchByte(offset + details.codesize);
+      details.tgtImm = pe.fetchByte(offset + details.codesize);
       details.codesize++;
     }
 
     //Step 2e - Check for Immediate 4 byte => Mode = 0 and R/M = 5 or Mode = 2
     if (details.mode === 0x2 || (details.mode === 0x0 && (details.rm === 0x5 || details.rm === 0x4)))
     {
-      details.tgtImm = exe.fetchDWord(offset + details.codesize);
+      details.tgtImm = pe.fetchDWord(offset + details.codesize);
       details.codesize += 4;
     }
 
@@ -841,7 +745,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x7D:
     case 0x7E:
     case 0x7F: {//All SHORT jumps
-      details.tgtImm   = exe.fetchByte(offset + 1);
+      details.tgtImm   = pe.fetchByte(offset + 1);
       //details.nextOff += details.tgtImm;
       //details.codesize++;
       break;
@@ -849,7 +753,7 @@ function GetOpDetails(opcode, modrm, offset)
 
     case 0xE8:
     case 0xE9: {//Long Jump
-      details.tgtImm    = exe.fetchDWord(offset + 1);
+      details.tgtImm    = pe.fetchDWord(offset + 1);
       //details.nextOff  += details.tgtImm;
       //details.codesize += 4;
       break;
@@ -858,7 +762,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x0F: {//Two Byte Opcode
       if (opcode2 >= 0x80 && opcode2 <= 0x8F)
       {
-        details.tgtImm   = exe.fetchDWord(offset + 2);
+        details.tgtImm   = pe.fetchDWord(offset + 2);
         //details.nextOff  = 6 + details.tgtImm;
         details.codesize = 6;
       }
@@ -868,7 +772,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x69:
     case 0x81:
     case 0xC7: {//Imm32 Source
-      details.srcImm   = exe.fetchDWord(offset + details.codesize);
+      details.srcImm   = pe.fetchDWord(offset + details.codesize);
       details.codesize += 4;
       break;
     }
@@ -880,7 +784,7 @@ function GetOpDetails(opcode, modrm, offset)
     case 0x80:
     case 0x82:
     case 0x83: {//Imm8 Source
-      details.srcImm   = exe.fetchByte(offset + details.codesize);
+      details.srcImm   = pe.fetchByte(offset + details.codesize);
       details.codesize++;
       break;
     }

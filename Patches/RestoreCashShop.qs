@@ -16,13 +16,13 @@ function RestoreCashShop()
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 2";
 
   var offset2 = offset + code.hexlength() + 4;
 
-  if (exe.find("68 BE 00 00 00" + movEcx, PTYPE_HEX, false, "\xAB", offset - 0x30, offset) !== -1)
+  if (pe.find("68 BE 00 00 00" + movEcx, offset - 0x30, offset) !== -1)
     return "Patch Cancelled - Icon is already there";
 
   //Step 3a - Prep insert code (starting portion is same as above hence we dont repeat it)
@@ -39,16 +39,16 @@ function RestoreCashShop()
   if (free === -1)
     return "Failed in Step 3 - Not enough free space";
 
-  var refAddr = exe.Raw2Rva(free + (offset2 - offset));
+  var refAddr = pe.rawToVa(free + (offset2 - offset));
 
   //Step 3c - Fill in the blanks.
   code = ReplaceVarHex(code, 1, makeWin - (refAddr));
   code = ReplaceVarHex(code, 2, makeWin - (refAddr + 15)); // (PUSH + MOV + CALL)
-  code = ReplaceVarHex(code, 3, exe.Raw2Rva(offset2) - (refAddr + 20)); // (PUSH + MOV + CALL + JMP)
+  code = ReplaceVarHex(code, 3, pe.rawToVa(offset2) - (refAddr + 20)); // (PUSH + MOV + CALL + JMP)
 
   //Step 4 - Insert the code and create the JMP to it.
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
-  exe.replace(offset, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4));
 
   return true;
 }
@@ -58,5 +58,5 @@ function RestoreCashShop()
 //======================================================//
 function RestoreCashShop_()
 {
-  return (exe.findString("NC_CashShop", RAW) !== -1);
+  return (pe.stringRaw("NC_CashShop") !== -1);
 }

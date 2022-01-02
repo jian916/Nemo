@@ -11,12 +11,12 @@ function HideCashShop()
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Patch Cancelled - Cash Shop already hidden";
 
   //Step 2 - If found then clean eax and JMP over it
-  exe.replace(offset, "31 C0 EB 0B", PTYPE_HEX); //xor eax,eax  jmp 0B
+  pe.replaceHex(offset, "31 C0 EB 0B"); //xor eax,eax  jmp 0B
   return true;
 }
 
@@ -25,5 +25,5 @@ function HideCashShop()
 //======================================================//
 function HideCashShop_()
 {
-  return (exe.findString("NC_CashShop", RAW) !== -1);
+  return (pe.stringRaw("NC_CashShop") !== -1);
 }

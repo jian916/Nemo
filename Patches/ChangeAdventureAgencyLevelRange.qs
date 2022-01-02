@@ -18,7 +18,7 @@
 
 function ChangeAdventureAgencyLevelRange()
 {
-    var offset = exe.findString("%d", RVA);
+    var offset = pe.stringVa("%d");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -27,13 +27,13 @@ function ChangeAdventureAgencyLevelRange()
 
     var code =
         "8D 46 05" +          // 0 lea eax, [esi+5]
-        "66 C7 45 AB 00 00" + // 3 mov [ebp+var_20], 0
+        "66 C7 45 ?? 00 00" + // 3 mov [ebp+var_20], 0
         "50" +                // 9 push eax
         "68" + strHex +       // 10 push offset aD_2
         "6A FF";              // 15 push 0FFFFFFFFh
 
     var rangeUOffset = [2, 1];
-    var offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsetsU = pe.findCodes(code);
 
     if (offsetsU.length === 0)
     {
@@ -44,29 +44,29 @@ function ChangeAdventureAgencyLevelRange()
             "6A FF";          // 9 push 0FFFFFFFFh
 
         rangeUOffset = [2, 1];
-        offsetsU = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsetsU = pe.findCodes(code);
     }
 
     if (offsetsU.length === 0)
         return "Failed in Step 1 - AgencyUpperLevelRange not found";
 
     var code =
-        "8D 46 AB" +        // 0 lea eax, [esi-5]
+        "8D 46 ??" +        // 0 lea eax, [esi-5]
         "0F 57 C0" +        // 3 xorps xmm0, xmm0
         "3B C1" +           // 6 cmp eax, ecx
-        "66 0F D6 45 AB" +  // 8 movq [ebp+var_1C], xmm0
+        "66 0F D6 45 ??" +  // 8 movq [ebp+var_1C], xmm0
         "0F 4C C1" +        // 13 cmovl eax, ecx
         "50" +              // 16 push eax
         "68" + strHex +     // 17 push offset aD_2
         "6A FF";            // 22 push 0FFFFFFFFh
 
     var rangeLOffset = [2, 1];
-    var offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsetsL = pe.findCodes(code);
 
     if (offsetsL.length === 0)
     {
         var code =
-            "8D 46 AB" +      // 0 lea eax, [esi-5]
+            "8D 46 ??" +      // 0 lea eax, [esi-5]
             "3B C1" +         // 3 cmp eax, ecx
             "0F 4C C1" +      // 5 cmovl eax, ecx
             "50" +            // 8 push eax
@@ -74,7 +74,7 @@ function ChangeAdventureAgencyLevelRange()
             "6A FF";          // 14 push 0FFFFFFFFh
 
         rangeLOffset = [2, 1];
-        offsetsL = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsetsL = pe.findCodes(code);
     }
 
     if (offsetsL.length === 0)
@@ -85,13 +85,13 @@ function ChangeAdventureAgencyLevelRange()
 
     for (var i = 0; i < offsetsU.length; i++)
     {
-        exe.replace(offsetsU[i] + rangeUOffset[0], upprangeVal.packToHex(1), PTYPE_HEX);
+        pe.replaceByte(offsetsU[i] + rangeUOffset[0], upprangeVal);
         logVaVar("MAX_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsU[i], rangeUOffset);
     }
 
     for (var i = 0; i < offsetsL.length; i++)
     {
-        exe.replace(offsetsL[i] + rangeLOffset[0], lowrangeVal.packToHex(1), PTYPE_HEX);
+        pe.replaceByte(offsetsL[i] + rangeLOffset[0], lowrangeVal);
         logVaVar("MIN_ADVENTURE_AGENCY_LEVEL_RANGE", offsetsL[i], rangeLOffset);
     }
 
@@ -103,5 +103,5 @@ function ChangeAdventureAgencyLevelRange()
 //============================//
 function ChangeAdventureAgencyLevelRange_()
 {
-    return (exe.findString("btn_job_def_on", RAW) !== -1);
+    return (pe.stringRaw("btn_job_def_on") !== -1);
 }

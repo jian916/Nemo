@@ -22,16 +22,16 @@
 function ChangeMinimalResolutionLimit()
 {
     var code =
-        "8B 0D AB AB AB AB " +        // 0 mov ecx, screen_width
-        "A3 AB AB AB AB " +           // 6 mov screen_old_height, eax
+        "8B 0D ?? ?? ?? ?? " +        // 0 mov ecx, screen_width
+        "A3 ?? ?? ?? ?? " +           // 6 mov screen_old_height, eax
         "81 F9 00 04 00 00 " +        // 11 cmp ecx, 400h
         "72 0C " +                    // 17 jb short loc_ADA278
-        "A1 AB AB AB AB " +           // 19 mov eax, screen_height
+        "A1 ?? ?? ?? ?? " +           // 19 mov eax, screen_height
         "3D 00 03 00 00 " +           // 24 cmp eax, 300h
         "73 15 " +                    // 29 jnb short loc_ADA28D
         "B9 00 04 00 00 " +           // 31 mov ecx, 400h
         "B8 00 03 00 00 " +           // 36 mov eax, 300h
-        "89 0D AB AB AB AB " +        // 41 mov screen_width, ecx
+        "89 0D ?? ?? ?? ?? " +        // 41 mov screen_width, ecx
         "A3 ";                        // 47 mov screen_height, eax
     var widthOffset1 = 13;
     var widthOffset2 = 32;
@@ -45,18 +45,18 @@ function ChangeMinimalResolutionLimit()
     var widthLimit = 1024;
     var heightLimit1 = 768;
     var heightLimit2 = 768;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)  //Newer clients only compare screen_height
     {
         code =
-            "A3 AB AB AB AB " +           // 0 mov screen_old_height, eax
-            "A1 AB AB AB AB " +           // 5 mov eax, screen_height
+            "A3 ?? ?? ?? ?? " +           // 0 mov screen_old_height, eax
+            "A1 ?? ?? ?? ?? " +           // 5 mov eax, screen_height
             "3D 98 02 00 00 " +           // 10 cmp eax, 298h
             "73 17 " +                    // 15 jnb short loc_AAF6A6
             "B9 00 04 00 00 " +           // 17 mov ecx, 400h
             "B8 00 03 00 00 " +           // 22 mov eax, 300h
-            "89 0D AB AB AB AB " +        // 27 mov screen_width, ecx
+            "89 0D ?? ?? ?? ?? " +        // 27 mov screen_width, ecx
             "A3 ";                        // 33 mov screen_height, eax
         widthOffset1 = -1;
         widthOffset2 = 18;
@@ -70,29 +70,29 @@ function ChangeMinimalResolutionLimit()
         widthLimit = 1024;
         heightLimit1 = 664;
         heightLimit2 = 768;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
         return "Failed in step 1 - resolution limit not found";
 
-    if (widthOffset1 !== -1 && exe.fetchDWord(offset + widthOffset1) !== widthLimit)
+    if (widthOffset1 !== -1 && pe.fetchDWord(offset + widthOffset1) !== widthLimit)
     {
         return "Failed in step 1 - wrong width limit found";
     }
-    if (exe.fetchDWord(offset + widthOffset2) !== widthLimit)
+    if (pe.fetchDWord(offset + widthOffset2) !== widthLimit)
     {
         return "Failed in step 1 - wrong width limit found";
     }
-    if (exe.fetchDWord(offset + heightOffset1) !== heightLimit1 || exe.fetchDWord(offset + heightOffset2) !== heightLimit2)
+    if (pe.fetchDWord(offset + heightOffset1) !== heightLimit1 || pe.fetchDWord(offset + heightOffset2) !== heightLimit2)
     {
         return "Failed in step 1 - wrong height limit found";
     }
-    if (screenWidth2Offset !== -1 && exe.fetchDWord(offset + screenWidth1Offset) !== exe.fetchDWord(offset + screenWidth2Offset))
+    if (screenWidth2Offset !== -1 && pe.fetchDWord(offset + screenWidth1Offset) !== pe.fetchDWord(offset + screenWidth2Offset))
     {
         return "Failed in step 1 - wrong width found";
     }
-    if (exe.fetchDWord(offset + screenHeight1Offset) !== exe.fetchDWord(offset + screenHeight2Offset))
+    if (pe.fetchDWord(offset + screenHeight1Offset) !== pe.fetchDWord(offset + screenHeight2Offset))
     {
         return "Failed in step 1 - wrong height found";
     }
@@ -110,90 +110,69 @@ function ChangeMinimalResolutionLimit()
         return "Patch Cancelled - New width and height is same as old";
     }
 
-    width = width.packToHex(4);
-    height = height.packToHex(4);
-
     if (widthOffset1 !== -1)
     {
-        exe.replace(offset + widthOffset1, width, PTYPE_HEX);
+        pe.replaceDWord(offset + widthOffset1, width);
     }
-    exe.replace(offset + widthOffset2, width, PTYPE_HEX);
-    exe.replace(offset + heightOffset1, height, PTYPE_HEX);
-    exe.replace(offset + heightOffset2, height, PTYPE_HEX);
-
+    pe.replaceDWord(offset + widthOffset2, width);
+    pe.replaceDWord(offset + heightOffset1, height);
+    pe.replaceDWord(offset + heightOffset2, height);
 
     //Fix potential crash when access the Advanced Settings
-    var screenWidthAdd = exe.fetchHex(offset + screenWidth1Offset, 4);
-    var screenHeightAdd = exe.fetchHex(offset + screenHeight1Offset, 4);
+    var screenWidthAdd = pe.fetchHex(offset + screenWidth1Offset, 4);
+    var screenHeightAdd = pe.fetchHex(offset + screenHeight1Offset, 4);
 
     code =
         "3B 3D " + screenWidthAdd +    //cmp edi, screenWidth
-        "8B BD AB AB AB AB " +         //mov edi, [ebp-x]
-        "75 AB " +                     //jne short
+        "8B BD ?? ?? ?? ?? " +         //mov edi, [ebp-x]
+        "75 ?? " +                     //jne short
         "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-        "75 AB ";                      //jne short
+        "75 ?? ";                      //jne short
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1) //Newer clients
     {
         code =
-            "3B AB " + screenWidthAdd +    //cmp reg, screenWidth
-            "75 AB " +                     //jne short
+            "3B ?? " + screenWidthAdd +    //cmp reg, screenWidth
+            "75 ?? " +                     //jne short
             "3B 35 " + screenHeightAdd +   //cmp esi, screenHeight
-            "75 AB " +                     //jne short
+            "75 ?? " +                     //jne short
             "3B ";                         //cmp reg, screenColor
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
 
     }
     if (offset === -1)
         return "Failed in step 2a";
 
     code =
-        "A3 AB AB AB AB " +              //0 mov MODECNT, eax
-        "89 AB AB 00 00 00 ";            //5 mov [reg+UIGraphicSettingWnd.MODECNT], eax
+        "A3 ?? ?? ?? ?? " +              //0 mov MODECNT, eax
+        "89 ?? ?? 00 00 00 ";            //5 mov [reg+UIGraphicSettingWnd.MODECNT], eax
     var retAdd = 5;
     var modeCntOffset = [1, 4];
     var uiModeCntOffset = [7, 4];
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+    offset = pe.find(code, offset, offset + 0x80);
     if (offset === -1)
         return "Failed in step 2b";
 
     logVaVar("MODECNT", offset, modeCntOffset);
     logField("UIGraphicSettingWnd::MODECNT", offset, uiModeCntOffset);
 
-    var codeIns = exe.fetchHex(offset, retAdd);
-
-    var text = asm.combine(
-        "cmp eax, 0",
-        "jnl _no",
-        "xor eax, eax",
-        "_no: " + asm.hexToAsm(codeIns),
-        "push retAddr",
-        "ret"
-    );
+    var codeIns = pe.fetchHex(offset, retAdd);
 
     var vars = {
-        "retAddr": exe.Raw2Rva(offset + retAdd),
+        "retAddr": pe.rawToVa(offset + retAdd),
+        "codeIns": codeIns
     };
 
-    var size = asm.textToHexVaLength(0, text, vars);
-    var free = exe.findZeros(size + 4);
-    if (free === -1)
-        return "Failed in Step 3 - No enough free space";
-
-    var obj = asm.textToHexRaw(free, text, vars);
-    if (obj === false)
-        return "Asm code error";
-
-    exe.insert(free, size + 4, obj, PTYPE_HEX);
-    exe.setJmpRaw(offset, free);
+    var data = exe.insertAsmFile("", vars);
+    pe.setJmpRaw(offset, data.free);
 
     return true;
 }
 
 function ChangeMinimalResolutionLimit_()
 {
-    return (exe.findString("WIDTH", RAW) !== -1);
+    return (pe.stringRaw("WIDTH") !== -1);
 }

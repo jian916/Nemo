@@ -17,7 +17,7 @@ function TranslateClient()
     var fStr0 = "";
     var rStr = "";
 
-    // Step 2 - Loop through the text file, get the respective strings & do findString + replace
+    // Step 2 - Loop through the text file, get the respective strings & do find string + replace
     var found = false;
     while (!f.eof())
     {
@@ -40,7 +40,7 @@ function TranslateClient()
         }
         else if (str.charAt(0) === "R")
         {   // R: = Replace string. At this point we have both location and string to replace with
-            offset = exe.findString(fStr, RAW);
+            offset = pe.stringRaw(fStr);
             if (offset === -1)
             {
                 failmsgs.push(msg);  // No Match = Collect Failure message
@@ -53,12 +53,12 @@ function TranslateClient()
             { // ASCII
                 str = str.substring(1, str.length - 1);
                 rStr = str
-                exe.replace(offset, str + "\x00", PTYPE_STRING);
+                pe.replace(offset, str + "\x00");
             }
             else
             { // HEX
                 rStr = str.toAscii();
-                exe.replace(offset, str + " 00", PTYPE_HEX);
+                pe.replaceHex(offset, str + " 00");
             }
 
             if (rStr.length > fStr.length)
@@ -86,46 +86,9 @@ function TranslateClient()
 
         outfile.close();
     }
-
-    //==================================//
-    // Now for the TaeKwon Job name fix //
-    //==================================//
-
-    // Step 4a - Find the Langtype Check
-    var LANGTYPE = GetLangType();  // Langtype value overrides Service settings hence they use the same variable - g_serviceType
-    if (LANGTYPE.length === 1)
-        return "Failed in Step 4 - " + LANGTYPE[0];
-
-    var code =
-        " 83 3D" + LANGTYPE + " 00"   // CMP DWORD PTR DS:[g_serviceType], 0
-      + " B9 AB AB AB 00"             // MOV ECX, addr1
-      + " 75"                         // JNZ SHORT addr2
-    ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");  //VC9+ Clients
-
-    if (offset === -1)
+    if (found === false)
     {
-        code =
-            LANGTYPE            // MOV reg32_A, DWORD PTR DS:[g_serviceType] ; Usually reg32_A is EAX
-          + " B9 AB AB AB 00"   // MOV ECX, addr1
-          + " 85 AB"            // TEST reg32_A, reg32_A
-          + " 75"               // JNZ SHORT addr2
-        ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");  // Older Clients
+        return "Found nothing to translate";
     }
-
-    if (offset === -1) // This change isn't necessary. [Secret]
-    {
-        if (found === false)
-        {
-            return "Found nothing to translate";
-        }
-        //return "Failed in Step 4 - Translate Taekwon Job";
-        return true;
-    }
-
-    // Step 4b - Change the JNZ to JMP so that Korean names never get assigned.
-    exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX);
-
     return true;
 }

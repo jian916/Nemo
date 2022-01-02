@@ -6,12 +6,12 @@ function UseCustomFont()
 {
 
   //Step 1a - Find offset of "Gulim" - Korean language font which serves as the first entry of the array
-  var goffset = exe.findString("Gulim", RVA, false);
+  var goffset = pe.halfStringVa("Gulim");
   if (goffset === -1)
     return "Failed in Step 1 - Gulim not found";
 
   //Step 1b - Find its reference - We should limit the search to .data section but that would pose a problem with themida clients.
-  var offset = exe.find(goffset.packToHex(4), PTYPE_HEX, false);
+  var offset = pe.find(goffset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Gulim reference not found";
 
@@ -19,7 +19,7 @@ function UseCustomFont()
   var newFont = exe.getUserInput("$newFont", XTYPE_FONT, _('Font input'), _('Select the new Font Family'), "Arial");
 
   //Step 2b - Get its address if its already existing
-  var free = exe.findString(newFont, RAW);
+  var free = pe.stringRaw(newFont);
 
   //Step 2c - Otherwise Insert the font in the xdiff section
   if (free === -1)
@@ -32,15 +32,15 @@ function UseCustomFont()
     exe.insert(free, newFont.length + 1, '$newFont', PTYPE_STRING);
   }
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 3 - Overwrite all entries with the custom font address
   goffset &= 0xFFF00000;
   do
   {
-    exe.replaceDWord(offset, freeRva);
+    pe.replaceDWord(offset, freeRva);
     offset += 4;
-  } while ((exe.fetchDWord(offset) & goffset) === goffset);
+  } while ((pe.fetchDWord(offset) & goffset) === goffset);
 
   /*==================================================================
   NOTE: this might not be entirely fool-proof, but we cannot depend

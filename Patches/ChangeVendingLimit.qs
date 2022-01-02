@@ -7,14 +7,14 @@ function ChangeVendingLimit()
 {
 
   //Step 1a - Find the address of 1,000,000,000
-  var offset = exe.findString("1,000,000,000", RVA);
+  var offset = pe.stringVa("1,000,000,000");
   if (offset === -1)
     return "Failed in Step 1 - OneB string missing";
 
-  var oneb = exe.Rva2Raw(offset);//Needed later to change the string
+  var oneb = pe.vaToRaw(offset);//Needed later to change the string
 
   //Step 1b - Find its reference
-  var offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  var offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - OneB reference missing";
 
@@ -24,7 +24,7 @@ function ChangeVendingLimit()
   + " 7E"          //JLE SHORT addr
   ;
   var newstyle = true;
-  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
+  var offset2 = pe.find(code, offset - 0x10, offset);
   if (offset2 === -1)
   {
     code =
@@ -32,7 +32,7 @@ function ChangeVendingLimit()
     + " 7C"          //JL SHORT addr
     ;
     newstyle = false;
-    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x10, offset);
+    offset2 = pe.find(code, offset - 0x10, offset);
   }
 
   if (offset2 === -1)
@@ -44,7 +44,7 @@ function ChangeVendingLimit()
   + " 6A 02"          //PUSH 2
   + " 68 5C 02 00 00" //PUSH 25C ;Line no. 605
   ;
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 2 - MsgBox call missing";
 
@@ -63,12 +63,12 @@ function ChangeVendingLimit()
     + " 7D"          //JGE SHORT addr
     ;
   }
-  var offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
+  var offset1 = pe.find(code, offset - 0x80, offset);
 
   if (offset1 === -1 && newstyle)
 {
     code = code.replace("7E", "76");//Recent clients use JBE instead of JLE
-    offset1 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x80, offset);
+    offset1 = pe.find(code, offset - 0x80, offset);
   }
 
   if (offset1 === -1)
@@ -78,12 +78,12 @@ function ChangeVendingLimit()
   if (!newstyle)
   {
     code = code.replace("7D", "75");//JNE instead of JGE
-    offset = exe.find(code, PTYPE_HEX, false, '\xAB', offset - 0x60, offset);
+    offset = pe.find(code, offset - 0x60, offset);
     if (offset === -1)
       return "Failed in Step 2 - Extra Comparison missing";
 
     //Step 2d - Change the JNE to JMP
-    exe.replace(offset + 4, "EB", PTYPE_HEX);
+    pe.replaceHex(offset + 4, "EB");
   }
 
   //Step 3a - Get the new value from user
@@ -93,14 +93,14 @@ function ChangeVendingLimit()
 
   //Step 3b - Replace the 1B string
   var str = newValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '\0';
-  exe.replace(oneb, str, PTYPE_STRING);
+  pe.replace(oneb, str);
 
   //Step 3c - Replace the compared value
   if (!newstyle)
     newValue++;
 
-  exe.replaceDWord(offset1, newValue);
-  exe.replaceDWord(offset2, newValue);
+  pe.replaceDWord(offset1, newValue);
+  pe.replaceDWord(offset2, newValue);
 
   return true;
 }
@@ -110,5 +110,5 @@ function ChangeVendingLimit()
 //===================================================================//
 function ChangeVendingLimit_()
 {
-  return (exe.findString("1,000,000,000", RAW) !== -1);
+  return (pe.stringRaw("1,000,000,000") !== -1);
 }

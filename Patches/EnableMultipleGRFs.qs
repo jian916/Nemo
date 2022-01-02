@@ -22,14 +22,14 @@ function EnableMultipleGRFs()
 {
 
     //Step 1a - Find data.grf location
-    var grf = exe.findString("data.grf", RVA).packToHex(4);
+    var grf = pe.stringHex4("data.grf");
 
     //Step 1b - Find its reference
     var code =
         " 68" + grf       //PUSH OFFSET addr1; "data.grf"
       + getEcxFileMgrHex() //MOV ECX, OFFSET g_fileMgr
     ;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     var setEcxOffset = 5;
     var pushOffset = 0;
     var addpackOffset = -1;
@@ -39,10 +39,10 @@ function EnableMultipleGRFs()
         var code =
             getEcxFileMgrHex() +          // 0 mov ecx, offset g_FileMgr
             "85 C0 " +                    // 5 test eax, eax
-            "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
+            "0F 95 05 ?? ?? ?? ?? " +     // 7 setnz byte ptr g_session+4D8Eh
             "68 " + grf +                 // 14 push offset aData_grf
             "E8 ";                        // 19 call CFileMgr_AddPak
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
         setEcxOffset = 0;
         pushOffset = 14;
         fnoffset = offset;
@@ -59,31 +59,31 @@ function EnableMultipleGRFs()
     if (addpackOffset === -1)
     {
         code =
-            " E8 AB AB AB AB"    //CALL CFileMgr::AddPak()
-          + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
-          + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
+            " E8 ?? ?? ?? ??"    //CALL CFileMgr::AddPak()
+          + " 8B ?? ?? ?? ?? 00" //MOV reg32, DWORD PTR DS:[addr1]
+          + " A1 ?? ?? ?? 00"    //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        var fnoffset = pe.find(code, offset + 10, offset + 40);
         var addpackOffset = 1;
     }
 
     if (fnoffset === -1)
     { //VC9 Client
         code =
-          " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-        + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[addr2]
+          " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+        + " A1 ?? ?? ?? 00" //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
         addpackOffset = 1;
     }
 
     if (fnoffset === -1)
     { //Older Clients
         code =
-            " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-          + " BF AB AB AB 00" //MOV EDI, OFFSET addr2
+            " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+          + " BF ?? ?? ?? 00" //MOV EDI, OFFSET addr2
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
         addpackOffset = 1;
     }
 
@@ -91,7 +91,7 @@ function EnableMultipleGRFs()
         return "Failed in Step 2";
 
     //Step 2c - Extract AddPak function address
-    var AddPak = exe.Raw2Rva(fnoffset + addpackOffset + 4) + exe.fetchDWord(fnoffset + addpackOffset);
+    var AddPak = pe.rawToVa(fnoffset + addpackOffset + 4) + pe.fetchDWord(fnoffset + addpackOffset);
 
     //Step 3a - Prep code for reading INI file and loading GRFs
     var code =
@@ -181,17 +181,17 @@ function EnableMultipleGRFs()
     if (free === -1)
         return "Failed in Step 3 - Not enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 5d - Create a call to the free space that was found before
-    exe.replace(offset + pushOffset, " B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + addpackOffset, freeRva - exe.Raw2Rva(fnoffset + addpackOffset + 4));
+    pe.replaceByte(offset + pushOffset, 0xB9);  // Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
+    pe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
 
     //Step 5e - Replace the variables used in code
     var memPosition = freeRva + code.hexlength();
     code = ReplaceVarHex(code, 1, memPosition);//KERNEL32
-    code = ReplaceVarHex(code, 2, GetFunction("GetModuleHandleA", "KERNEL32.dll"));
-    code = ReplaceVarHex(code, 3, GetFunction("GetProcAddress", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 2, imports.ptrValidated("GetModuleHandleA", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 3, imports.ptrValidated("GetProcAddress", "KERNEL32.dll"));
 
     memPosition = memPosition + strings[0].length + 1;//1 for null
     code = ReplaceVarHex(code, 4, memPosition);//GetPrivateProfileStringA
@@ -220,9 +220,9 @@ function EnableMultipleGRFs()
     exe.insert(free, size + 8, code, PTYPE_HEX);
 
     //Step 7 - Find offset of rdata.grf (if present zero it out)
-    offset = exe.findString("rdata.grf", RAW);
+    offset = pe.stringRaw("rdata.grf");
     if (offset !== -1)
-        exe.replace(offset, "00", PTYPE_HEX);
+        pe.replaceByte(offset, 0);
 
     return true;
 }

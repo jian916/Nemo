@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2020-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 function IgnoreSignBoardReading()
 {
     consoleLog("Step 1 - Search string 'Lua Files\\SignBoardList_F'");
-    var offset = exe.findString("Lua Files\\SignBoardList_F", RVA);
+    var offset = pe.stringVa("Lua Files\\SignBoardList_F");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -34,7 +34,7 @@ function IgnoreSignBoardReading()
     var strHex = offset.packToHex(4);
 
     consoleLog("Step 2 - Search string 'Lua Files\\SignBoardList'");
-    offset = exe.findString("Lua Files\\SignBoardList", RVA);
+    offset = pe.stringVa("Lua Files\\SignBoardList");
 
     if (offset === -1)
         return "Failed in Step 2 - String not found";
@@ -43,32 +43,32 @@ function IgnoreSignBoardReading()
 
     consoleLog("Step 3 - Prep code for finding the SignBoardList");
     var code =
-        "8B 8E AB AB 00 00 " +  // 00 mov ecx, [esi+CSession.m_lua_state]
+        "8B 8E ?? ?? 00 00 " +  // 00 mov ecx, [esi+CSession.m_lua]
         "6A 00 " +              // 06 push 0
         "6A 01 " +              // 08 push 1
         "68 " + strHex +        // 10 push offset aLuaFilesSignbo
-        "E8 AB AB AB AB " +     // 15 call lua_script_load
-        "8B 8E AB AB 00 00 " +  // 20 mov ecx, [esi+CSession.m_lua_state]
+        "E8 ?? ?? ?? ?? " +     // 15 call CLua_Load
+        "8B 8E ?? ?? 00 00 " +  // 20 mov ecx, [esi+CSession.m_lua]
         "6A 00 " +              // 26 push 0
         "6A 01 " +              // 28 push 1
         "68 " + strHex2 +       // 30 push offset aLuaFilesSign_0
-        "E8 ";                  // 35 call lua_script_load
+        "E8 ";                  // 35 call CLua_Load
     var repLoc = 26;
-    var luaScriptLoadOffsets = [16, 36];
-    var luaStateOffsets = [[2, 4], [22, 4]]
+    var CLuaLoadOffsets = [16, 36];
+    var mLuaOffsets = [[2, 4], [22, 4]]
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
 
-    for (var i = 0; i < luaScriptLoadOffsets.length; i++)
+    for (var i = 0; i < CLuaLoadOffsets.length; i++)
     {
-        logRawFunc("lua_script_load", offset, luaScriptLoadOffsets[i]);
+        logRawFunc("CLua_Load", offset, CLuaLoadOffsets[i]);
     }
-    for (var i = 0; i < luaStateOffsets.length; i++)
+    for (var i = 0; i < mLuaOffsets.length; i++)
     {
-        logField("CSession::m_lua_state", offset, luaStateOffsets[i]);
+        logField("CSession::m_lua", offset, mLuaOffsets[i]);
     }
 
     consoleLog("Step 4 - Replace with XOR EAX, EAX followed by NOPs");
@@ -78,7 +78,7 @@ function IgnoreSignBoardReading()
         "90 90 90 90 90 " +  // 07 nops
         "90 90 90 90 90 ";   // 12 nops
 
-    exe.replace(offset + repLoc, code, PTYPE_HEX);
+    pe.replaceHex(offset + repLoc, code);
 
     return true;
 }
@@ -88,5 +88,5 @@ function IgnoreSignBoardReading()
 //=======================================================//
 function IgnoreSignBoardReading_()
 {
-    return (exe.findString("Lua Files\\SignBoardList_F", RVA) !== -1);
+    return (pe.stringVa("Lua Files\\SignBoardList_F") !== -1);
 }

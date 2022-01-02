@@ -85,78 +85,90 @@ function ChangeMapInfoPath()
 
 function ChangeLubPathGetIIName(type)
 {
+    function findStrings(args)
+    {
+        var args = Array.prototype.slice.call(arguments);
+        for (var i = 0; i < args.length; i ++)
+        {
+            var str = args[i];
+            var res = pe.stringVa(str);
+            if (res !== -1)
+                return str;
+            str = str.replaceAll("/", "\\");
+            res = pe.stringVa(str);
+            if (res !== -1)
+                return str;
+        }
+        return "";
+    }
+
     var iiName = "";
     switch(type)
     {
         case 1:
         {
             iiName = "system\\Achievement_list.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (pe.stringVa(iiName) !== -1) return iiName;
             return "";
         }
         case 2:
         {
             if (IsSakray())
             {
-                iiName = "System/monster_size_effect_sak_new.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
-                iiName = "System/monster_size_effect_sak.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                return findStrings(
+                    "System/monster_size_effect_sak_new.lub",
+                    "System/monster_size_effect_sak.lub",
+                    "System/monster_size_effect_new.lub",
+                    "System/monster_size_effect.lub"
+                );
             }
-            iiName = "System/monster_size_effect_new.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            iiName = "System/monster_size_effect.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            return "";
+            return findStrings(
+                "System/monster_size_effect_new.lub",
+                "System/monster_size_effect.lub"
+            )
         }
         case 3:
         {
-            iiName = "System/Towninfo.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            return "";
+            return findStrings("System/Towninfo.lub");
         }
         case 4:
         {
             if (IsSakray())
             {
                 iiName = "system\\PetEvolutionCln_sak.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             else
             {
                 iiName = "system\\PetEvolutionCln_true.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             iiName = "system\\PetEvolutionCln.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (pe.stringVa(iiName) !== -1) return iiName;
             return "";
         }
         case 5:
         {
-            iiName = "System/tipbox.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            return "";
+            return findStrings("System/tipbox.lub");
         }
         case 6:
         {
-            iiName = "System/CheckAttendance.lub";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
-            return "";
+            return findStrings("System/CheckAttendance.lub");
         }
         case 7:
         {
             if (IsSakray())
             {
                 iiName = "system\\OngoingQuestInfoList_Sakray";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             else
             {
                 iiName = "system\\OngoingQuestInfoList_True";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             iiName = "system\\OngoingQuestInfoList";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (pe.stringVa(iiName) !== -1) return iiName;
             return "";
         }
         case 8:
@@ -164,15 +176,15 @@ function ChangeLubPathGetIIName(type)
             if (IsSakray())
             {
                 iiName = "system\\RecommendedQuestInfoList_Sakray";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             else
             {
                 iiName = "system\\RecommendedQuestInfoList_True";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             iiName = "system\\RecommendedQuestInfoList";
-            if (exe.findString(iiName, RVA) !== -1) return iiName;
+            if (pe.stringVa(iiName) !== -1) return iiName;
             return "";
         }
         case 9:
@@ -180,12 +192,12 @@ function ChangeLubPathGetIIName(type)
             if (IsSakray())
             {
                 iiName = "System\\PrivateAirplane_Sakray.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             else
             {
                 iiName = "System\\PrivateAirplane_True.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             return "";
         }
@@ -194,12 +206,12 @@ function ChangeLubPathGetIIName(type)
             if (IsSakray())
             {
                 iiName = "system\\mapInfo_sak.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             else
             {
                 iiName = "system\\mapInfo_true.lub";
-                if (exe.findString(iiName, RVA) !== -1) return iiName;
+                if (pe.stringVa(iiName) !== -1) return iiName;
             }
             return "";
         }
@@ -213,11 +225,14 @@ function ChangeLubPathGetIIName(type)
 
 function ChangeLubPath(old_path, new_path)
 {
-    var offset = exe.findString(old_path, RVA);
+    if (old_path === "")
+        return "Old path not found";
+
+    var offset = pe.stringVa(old_path);
     if (offset === -1)
         return "Failed in Step 1a - file name not found";
 
-    offset = exe.findCode("68" + offset.packToHex(4),  PTYPE_HEX, false);
+    offset = pe.findCode("68" + offset.packToHex(4));
     if (offset === -1)
         return "Failed in Step 1b - reference not found";
 
@@ -229,7 +244,7 @@ function ChangeLubPath(old_path, new_path)
         return "Failed in Step 2 - Not enough free space";
 
     exe.insert(free, new_path.length, new_path, PTYPE_STRING);
-    exe.replace(offset+1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset + 1, pe.rawToVa(free));
 
     return true;
 }

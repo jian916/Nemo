@@ -30,7 +30,7 @@ function ChatLimit(option)
     // Step 1b - Now Search for the pattern chosen.
     var code =
         "83 3D " + LANGTYPE + "0A " +  // CMP DWORD PTR DS:[g_serviceType], 0A
-        "74 AB ";                      // JE SHORT addr
+        "74 ?? ";                      // JE SHORT addr
 
     if (HasFramePointer())
         code += "83 7D 08 02 "; // CMP DWORD PTR SS:[EBP-8], 02
@@ -39,21 +39,21 @@ function ChatLimit(option)
 
     code += "7C "; // JL SHORT addr
     var isLong = false;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
-        code = code.replace("0A 74 AB 83 7C 24 04 02 7C ", "0A 74 AB 83 7D 08 02 7C "); // Replace ESP+4 with EBP-8
+        code = code.replace("0A 74 ?? 83 7C 24 04 02 7C ", "0A 74 ?? 83 7D 08 02 7C "); // Replace ESP+4 with EBP-8
         isLong = false;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
-        code = code.replace("0A 74 AB 83 ", "0A 0F 84 AB 00 00 00 83 "); // Relative offset of the JE is > 7F but < FF. Hence changing to long
+        code = code.replace("0A 74 ?? 83 ", "0A 0F 84 ?? 00 00 00 83 "); // Relative offset of the JE is > 7F but < FF. Hence changing to long
         code = code.replaceAt(-3, "0F 8C "); // same reason as above for JL
         isLong = true;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -73,15 +73,15 @@ function ChatLimit(option)
             return "Patch Cancelled - New value is same as old value";
 
         // Step 2b1 - Replace 02 with new value
-        exe.replace(offset, "$allowChatFlood", PTYPE_STRING);
+        pe.replaceHex(offset, flood.packToHex(1));
     }
     else
     {
         // Step 2a2 - Replace JL with JMP
         if (isLong)
-            exe.replace(offset + 1, "90 E9 ", PTYPE_HEX);
+            pe.replaceHex(offset + 1, "90 E9 ");
         else
-            exe.replace(offset + 1, "EB ", PTYPE_HEX);
+            pe.replaceHex(offset + 1, "EB ");
     }
 
     return true;

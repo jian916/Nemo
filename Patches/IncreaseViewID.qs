@@ -7,12 +7,12 @@ function IncreaseViewID()
 {
 
   //Step 1a - Find "ReqAccName" offset
-  var offset = exe.findString("ReqAccName", RVA);
+  var offset = pe.stringVa("ReqAccName");
   if (offset === -1)
     return "Failed in Step 1 - Can't find ReqAccName";
 
   //Step 1b - Find where it is PUSHed - only 1 match would occur
-  offset = exe.findCode(" 68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode(" 68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Can't find Function reference";
 
@@ -30,7 +30,7 @@ function IncreaseViewID()
     return "Patch Cancelled - New value is same as old";
 
   //Step 2b - Find all occurrences of the old limit with the user specified value
-  var offsets = exe.findAll(oldValue.packToHex(4), PTYPE_HEX, false, "\xAB", offset - 0xA0, offset + 0x50);
+  var offsets = pe.findAll(oldValue.packToHex(4), offset - 0xA0, offset + 0x50);
 
   if (offsets.length === 0)
     return "Failed in Step 2 - No match found";
@@ -41,7 +41,7 @@ function IncreaseViewID()
   //Step 2c - Replace old with new for all
   for (var i = 0; i < offsets.length; i++)
   {
-    exe.replace(offsets[i], "$newValue", PTYPE_STRING);
+    pe.replaceDWord(offsets[i], newValue);
   }
 
   return true;
@@ -52,5 +52,5 @@ function IncreaseViewID()
 //=============================//
 function IncreaseViewID_()
 {
-  return(exe.findString("ReqAccName", RAW) !== -1);
+  return(pe.stringRaw("ReqAccName") !== -1);
 }

@@ -7,12 +7,12 @@ function RenameLicenseTxt()
 {
 
   //Step 1a - Find address of licence.txt string
-  var offset = exe.findString("..\\licence.txt", RVA);
+  var offset = pe.stringVa("..\\licence.txt");
   if (offset === -1)
     return "Failed in Step 1 - File string missing";
 
   //Step 1b - Find its reference
-  offset = exe.findCode(" C7 05 AB AB AB 00" + offset.packToHex(4), PTYPE_HEX, true, "\xAB");//MOV DWORD PTR DS:[g_licence], stringAddr
+  offset = pe.findCode(" C7 05 ?? ?? ?? 00" + offset.packToHex(4));//MOV DWORD PTR DS:[g_licence], stringAddr
   if (offset === -1)
     return "Failed in Step 1 - String reference missing";
 
@@ -32,10 +32,10 @@ function RenameLicenseTxt()
   exe.insert(free, txtFile.length, txtFile, PTYPE_STRING);
 
   //Step 2d - Update the reference to point to new name
-  exe.replaceDWord(offset + 6, exe.Raw2Rva(free));
+  pe.replaceDWord(offset + 6, pe.rawToVa(free));
 
   //Step 3a - Find the Error string address
-  offset = exe.findString("No EULA text file. (licence.txt)", RVA);
+  offset = pe.stringVa("No EULA text file. (licence.txt)");
   if (offset === -1)
     return "Failed in Step 3 - Error string missing";
 
@@ -52,14 +52,14 @@ function RenameLicenseTxt()
 
   //Step 3e - Update all the Error string references
   var prefixes = [" 6A 20 68", " BE", " BF"];
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   for (var i = 0; i < prefixes.length; i++)
   {
-    var offsets = exe.findCodes(prefixes[i] + offset.packToHex(4), PTYPE_HEX, false);
+    var offsets = pe.findCodes(prefixes[i] + offset.packToHex(4));
     for (var j = 0; j < offsets.length; j++)
     {
-      exe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
+      pe.replaceDWord(offsets[j] + prefixes[i].hexlength(), freeRva);
     }
   }
 

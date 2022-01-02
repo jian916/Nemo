@@ -23,24 +23,24 @@ function HideZeroDateInGuildMembers()
     // step 1
     // search in function called from UIGuildMemberManageWnd_virt68
     var code =
-        "8D 47 AB " +                 // 0 lea eax, [edi+74h]
+        "8D 47 ?? " +                 // 0 lea eax, [edi+74h]
         "50 " +                       // 3 push eax
-        "C7 85 AB AB AB AB 0F 00 00 00 " + // 4 mov [ebp+arg0.m_allocated_len], 0Fh
-        "C7 85 AB AB AB AB 00 00 00 00 " + // 14 mov [ebp+arg0.m_len], 0
-        "C6 85 AB AB AB AB 00 " +     // 24 mov byte ptr [ebp+arg0.m_cstr], 0
-        "FF 15 AB AB AB AB " +        // 31 call _localtime32
+        "C7 85 ?? ?? ?? ?? 0F 00 00 00 " + // 4 mov [ebp+arg0.m_allocated_len], 0Fh
+        "C7 85 ?? ?? ?? ?? 00 00 00 00 " + // 14 mov [ebp+arg0.m_len], 0
+        "C6 85 ?? ?? ?? ?? 00 " +     // 24 mov byte ptr [ebp+arg0.m_cstr], 0
+        "FF 15 ?? ?? ?? ?? " +        // 31 call _localtime32
         "83 C4 04 " +                 // 37 add esp, 4
         "50 " +                       // 40 push eax
         "68 C3 0B 00 00 " +           // 41 push 0BC3h
-        "E8 AB AB AB AB " +           // 46 call MsgStr
+        "E8 ?? ?? ?? ?? " +           // 46 call MsgStr
         "83 C4 04 " +                 // 51 add esp, 4
         "50 " +                       // 54 push eax
-        "8D 85 AB AB AB AB " +        // 55 lea eax, [ebp+timeStr]
-        "68 AB 00 00 00 " +           // 61 push 80h
+        "8D 85 ?? ?? ?? ?? " +        // 55 lea eax, [ebp+timeStr]
+        "68 ?? 00 00 00 " +           // 61 push 80h
         "50 " +                       // 66 push eax
-        "FF 15 AB AB AB AB " +        // 67 call strftime
+        "FF 15 ?? ?? ?? ?? " +        // 67 call strftime
         "83 C4 10 " +                 // 73 add esp, 10h
-        "8D 85 AB AB AB AB " +        // 76 lea eax, [ebp+timeStr]
+        "8D 85 ?? ?? ?? ?? " +        // 76 lea eax, [ebp+timeStr]
         "50 " +                       // 82 push eax
         "68 C4 0B 00 00 " +           // 83 push 0BC4h
         "E8 ";                        // 88 call MsgStr
@@ -52,28 +52,28 @@ function HideZeroDateInGuildMembers()
     var localTimeOffset = 33;
     var jmp1Offset = 37;
     var jmp2Offset = 82;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         var code =
-            "8D 47 AB " +                 // 0 lea eax, [edi+74h]
+            "8D 47 ?? " +                 // 0 lea eax, [edi+74h]
             "50 " +                       // 3 push eax
-            "C6 85 AB AB AB AB 00 " +     // 4 mov byte ptr [ebp+arg0.m_cstr], 0
-            "C7 85 AB AB AB AB 00 00 00 00 " + // 11 mov [ebp+arg0.m_len], 0
-            "C7 85 AB AB AB AB 0F 00 00 00 " + // 21 mov [ebp+arg0.m_allocated_len], 0Fh
-            "FF 15 AB AB AB AB " +        // 31 call _localtime32
+            "C6 85 ?? ?? ?? ?? 00 " +     // 4 mov byte ptr [ebp+arg0.m_cstr], 0
+            "C7 85 ?? ?? ?? ?? 00 00 00 00 " + // 11 mov [ebp+arg0.m_len], 0
+            "C7 85 ?? ?? ?? ?? 0F 00 00 00 " + // 21 mov [ebp+arg0.m_allocated_len], 0Fh
+            "FF 15 ?? ?? ?? ?? " +        // 31 call _localtime32
             "83 C4 04 " +                 // 37 add esp, 4
             "50 " +                       // 40 push eax
             "68 C3 0B 00 00 " +           // 41 push 0BC3h
-            "E8 AB AB AB AB " +           // 46 call MsgStr
+            "E8 ?? ?? ?? ?? " +           // 46 call MsgStr
             "83 C4 04 " +                 // 51 add esp, 4
             "50 " +                       // 54 push eax
-            "8D 85 AB AB AB AB " +        // 55 lea eax, [ebp+timeStr]
-            "68 AB 00 00 00 " +           // 61 push 80h
+            "8D 85 ?? ?? ?? ?? " +        // 55 lea eax, [ebp+timeStr]
+            "68 ?? 00 00 00 " +           // 61 push 80h
             "50 " +                       // 66 push eax
-            "FF 15 AB AB AB AB " +        // 67 call strftime
+            "FF 15 ?? ?? ?? ?? " +        // 67 call strftime
             "83 C4 10 " +                 // 73 add esp, 10h
-            "8D 85 AB AB AB AB " +        // 76 lea eax, [ebp+timeStr]
+            "8D 85 ?? ?? ?? ?? " +        // 76 lea eax, [ebp+timeStr]
             "50 " +                       // 82 push eax
             "68 C4 0B 00 00 " +           // 83 push 0BC4h
             "E8 ";                        // 88 call MsgStr
@@ -85,16 +85,16 @@ function HideZeroDateInGuildMembers()
         var localTimeOffset = 33;
         var jmp1Offset = 37;
         var jmp2Offset = 82;
-        var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
 
-    var msgStr1 = exe.Raw2Rva(exe.fetchDWord(offset + msgStrOffset1) + offset + msgStrOffset1 + 4);
-    var msgStr2 = exe.Raw2Rva(exe.fetchDWord(offset + msgStrOffset2) + offset + msgStrOffset2 + 4);
-    var localTime = exe.fetchDWord(offset + localTimeOffset).packToHex(4);
-    var timeStr1 = exe.fetchDWord(offset + timeStrOffset1);
-    var timeStr2 = exe.fetchDWord(offset + timeStrOffset2);
+    var msgStr1 = pe.rawToVa(pe.fetchDWord(offset + msgStrOffset1) + offset + msgStrOffset1 + 4);
+    var msgStr2 = pe.rawToVa(pe.fetchDWord(offset + msgStrOffset2) + offset + msgStrOffset2 + 4);
+    var localTime = pe.fetchDWord(offset + localTimeOffset).packToHex(4);
+    var timeStr1 = pe.fetchDWord(offset + timeStrOffset1);
+    var timeStr2 = pe.fetchDWord(offset + timeStrOffset2);
     if (msgStr1 !== msgStr2)
     {
         return "Failed in step 1 - found different MsgStr";
@@ -107,8 +107,8 @@ function HideZeroDateInGuildMembers()
     // step 2
 
     var timeStr = timeStr1.packToHex(4);
-    var jmp1Addr = exe.Raw2Rva(offset + jmp1Offset).packToHex(4);
-    var jmp2Addr = exe.Raw2Rva(offset + jmp2Offset).packToHex(4);
+    var jmp1Addr = pe.rawToVa(offset + jmp1Offset).packToHex(4);
+    var jmp2Addr = pe.rawToVa(offset + jmp2Offset).packToHex(4);
 
     var newCode =
         "83 38 00 " +          // cmp [eax], 0
@@ -124,7 +124,7 @@ function HideZeroDateInGuildMembers()
 
     var codeLen = newCode.hexlength();
     var free = exe.findZeros(codeLen);
-    var freeRva = exe.Raw2Rva(free).packToHex(4);
+    var freeRva = pe.rawToVa(free).packToHex(4);
     exe.insert(free, codeLen, newCode, PTYPE_HEX);
 
     // step 3
@@ -133,6 +133,6 @@ function HideZeroDateInGuildMembers()
     code =
         "68 " + freeRva +  // push jmpAddr
         "C3";              // retn
-    exe.replace(patchAddr, code, PTYPE_HEX);
+    pe.replaceHex(patchAddr, code);
     return true;
 }

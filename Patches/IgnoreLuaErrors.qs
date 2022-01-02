@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2017-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,77 +27,77 @@ function IgnoreLuaErrors()
 {
     consoleLog("Step 1 - Prep code for finding the LuaErrorMsg");
     var code =
-        "FF AB AB AB AB 00 " +  // 00 call vsprintf
-        "83 AB AB " +           // 06 add esp, 0Ch
-        "8D AB AB AB FF FF " +  // 09 lea eax, [ebp+Text]
+        "FF ?? ?? ?? ?? 00 " +  // 00 call vsprintf
+        "83 ?? ?? " +           // 06 add esp, 0Ch
+        "8D ?? ?? ?? FF FF " +  // 09 lea eax, [ebp+Text]
         "6A 00 " +              // 15 push 0
-        "AB " +                 // 17 push esi
-        "AB " +                 // 18 push eax
+        "?? " +                 // 17 push esi
+        "?? " +                 // 18 push eax
         "6A 00 " +              // 19 push 0
-        "FF 15 AB AB AB 00 ";   // 21 call MessageBoxA
+        "FF 15 ?? ?? ?? 00 ";   // 21 call MessageBoxA
 
     var repLoc = 9;
     var hCode = "33 C0 90 90 90 90 90 90 90 ";
     var vsprintfOffset = 2;
     var messageBoxAOffset = 23;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            "FF AB AB AB AB 00 " +  // 00 call vsprintf
-            "83 AB AB " +           // 06 add esp, 0Ch
+            "FF ?? ?? ?? ?? 00 " +  // 00 call vsprintf
+            "83 ?? ?? " +           // 06 add esp, 0Ch
             "6A 00 " +              // 09 push 0
-            "AB " +                 // 11 push esi
-            "8D AB AB AB FF FF " +  // 12 lea eax, [ebp+Text]
-            "AB " +                 // 18 push eax
+            "?? " +                 // 11 push esi
+            "8D ?? ?? ?? FF FF " +  // 12 lea eax, [ebp+Text]
+            "?? " +                 // 18 push eax
             "6A 00 " +              // 19 push 0
-            "FF 15 AB AB AB 00 ";   // 21 call MessageBoxA
+            "FF 15 ?? ?? ?? 00 ";   // 21 call MessageBoxA
 
         repLoc = 9;
         hCode = "90 90 90 33 C0 90 90 90 90 ";
         vsprintfOffset = 2;
         messageBoxAOffset = 23;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            "FF AB AB AB AB 00 " +  // 00 call ds:vsprintf
-            "83 AB AB " +           // 06 add esp, 0Ch
+            "FF ?? ?? ?? ?? 00 " +  // 00 call ds:vsprintf
+            "83 ?? ?? " +           // 06 add esp, 0Ch
             "6A 00 " +              // 09 push 0
-            "AB " +                 // 11 push esi
-            "8D AB AB AB " +        // 12 lea eax, [esp+204h+Dest]
-            "AB " +                 // 16 push eax
+            "?? " +                 // 11 push esi
+            "8D ?? ?? ?? " +        // 12 lea eax, [esp+204h+Dest]
+            "?? " +                 // 16 push eax
             "6A 00 " +              // 17 push 0
-            "FF 15 AB AB AB 00 ";   // 19 call ds:MessageBoxA
+            "FF 15 ?? ?? ?? 00 ";   // 19 call ds:MessageBoxA
 
         repLoc = 9;
         hCode = "90 90 90 33 C0 90 90 ";
         vsprintfOffset = 2;
         messageBoxAOffset = 21;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            "E8 AB AB AB 00 " +     // 00 call _vsprintf
-            "8B AB AB " +           // 05 mov eax, [ebp+lpCaption]
-            "83 AB AB " +           // 08 add esp, 0Ch
-            "8D AB AB AB FF FF " +  // 11 lea ecx, [ebp+Text]
+            "E8 ?? ?? ?? 00 " +     // 00 call _vsprintf
+            "8B ?? ?? " +           // 05 mov eax, [ebp+lpCaption]
+            "83 ?? ?? " +           // 08 add esp, 0Ch
+            "8D ?? ?? ?? FF FF " +  // 11 lea ecx, [ebp+Text]
             "6A 00 " +              // 17 push 0
-            "AB " +                 // 19 push eax
-            "AB " +                 // 20 push ecx
+            "?? " +                 // 19 push eax
+            "?? " +                 // 20 push ecx
             "6A 00 " +              // 21 push 0
-            "FF 15 AB AB AB 00 ";   // 23 call ds:MessageBoxA
+            "FF 15 ?? ?? ?? 00 ";   // 23 call ds:MessageBoxA
 
         repLoc = 11;
         hCode = "90 90 90 90 90 90 33 C0 90 ";
         vsprintfOffset = 1;
         messageBoxAOffset = 25;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -113,7 +113,7 @@ function IgnoreLuaErrors()
         "90 90 " +             // 10 nops
         "90 90 90 90 90 90 ";  // 12 nops
 
-    exe.replace(offset + repLoc, newCode, PTYPE_HEX);
+    pe.replaceHex(offset + repLoc, newCode);
 
     return true;
 }

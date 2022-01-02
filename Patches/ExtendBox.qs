@@ -28,13 +28,13 @@ function ExtendBox(index)
 
   //Step 1 - Find the Box Limiter Code - Atleast 4 matches should be there
   //         MOV DWORD PTR DS:[EAX+byte], 0x46
-  var offsets = exe.findCodes(" C7 40 AB 46 00 00 00", PTYPE_HEX, true, "\xAB");
+  var offsets = pe.findCodes(" C7 40 ?? 46 00 00 00");
 
   // new client detected, so!
   if (offsets.length < 4)
   {
     offset_for_patch = 6;
-    offsets = exe.findCodes(" C7 80 AB AB AB AB 46 00 00 00", PTYPE_HEX, true, "\xAB");
+    offsets = pe.findCodes(" C7 80 ?? ?? ?? ?? 46 00 00 00");
   }
 
   if (offsets.length < 4)
@@ -45,7 +45,7 @@ function ExtendBox(index)
   // 1 = Unknown
   // 2 = Private Message
   // 3 = Chat Box
-  exe.replace(offsets[index] + offset_for_patch, "EA", PTYPE_HEX);
+  pe.replaceByte(offsets[index] + offset_for_patch, 0xEA);
 
   return true;
 }

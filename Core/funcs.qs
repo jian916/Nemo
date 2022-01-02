@@ -1,127 +1,58 @@
-String.prototype.replaceAt = function(index, rstring)
-{
-    if (index < 0)
-    index = this.length + index;
-  return (this.substring(0,index) + rstring + this.substring(index + rstring.length));
-}
-
-String.prototype.repeat = function(num)
-{
-  var result = '';
-  for (var i = 0; i < num; i++)
-  {
-    result += this.toString();
-  }
-  return result;
-}
-
-String.prototype.hexlength = function()
-{
-    var l = this.replace(/ /g, "").length;
-    if (l%2 !== 0) l++;
-    return l/2;
-}
-
-String.prototype.toHex = function()
-{
-  var result = '';
-  for (var i = 0; i < this.length; i++)
-  {
-      var h = this.charCodeAt(i).toString(16);
-    if (h.length === 1)
-          h = '0' + h;
-    result += ' ' + h;
-  }
-  return result;
-}
-
-String.prototype.toHexUC = function()
-{
-  var result = '';
-  for (var i = 0; i < this.length; i++)
-  {
-    var h = this.charCodeAt(i).toString(16);
-    if (h.length === 1)
-        h = '0' + h;
-    result += ' 00 ' + h;
-  }
-  return result;
-}
-
-String.prototype.toAscii = function()
-{
-  var result = '';
-  var splits = this.trim().split(' ');
-  for (var i = 0; i < splits.length; i++)
-  {
-    var h = parseInt(splits[i], 16);
-    result += String.fromCharCode(h);
-  }
-  return result;
-}
-
-String.prototype.unpackToInt = function()
-{
-    return (-1 & parseInt("0x" + this.toBE(),16));
-}
-
-String.prototype.toBE = function()
-{
-  return this.split(" ").reverse().join("");
-}
-
-String.prototype.replaceAll = function(search, replacement)
-{
-    var target = this;
-    return target.split(search).join(replacement);
-};
-
-Number.prototype.packToHex = function(size)
-{
-    var number = this;
-    if (number < 0)
-        number = 0xFFFFFFFF + number + 1;
-
-    if (typeof(size) === "undefined" || size > 4)
-        size = 4;
-
-    var hex = number.toString(16);
-    size  = size * 2;
-
-    if (hex.length > size)
-        hex = hex.substr( hex.length - size);
-
-    while (hex.length < size)
-    {
-        hex = "0" + hex;
-    }
-
-    var result = "";
-    while (hex !== "")
-    {
-        result = " " + hex.substr(0,2) + result;
-        hex = hex.substr(2);
-    }
-
-    return result;
-}
-
-Number.prototype.toBE = function(size)
-{
-  return this.packToHex(size).toBE();
-}
-
-Array.prototype.toRvaBE = function()
-{
-  var result = [];
-  for (var i = 0; i < this.length; i++)
-  {
-    result.push(exe.Raw2Rva(this[i]).toBE());
-  }
-  return result;
-}
-
 function floatToHex(value)
 {
     return floatToDWord(value).packToHex(4);
+}
+
+function enablePatchAndCheck(name)
+{
+    if (isPatchActive(name) !== true)
+    {
+        enablePatch(name);
+        if (isPatchActive(name) !== true)
+            throw "Patch '" + name + "' must be enabled";
+    }
+}
+
+function isOneOfPatchesActive()
+{
+    var args = Array.prototype.slice.call(arguments);
+
+    for (var idx = 0; idx < args.length; idx ++)
+    {
+        if (isPatchActive(args[idx]) === true)
+            return true;
+    }
+    return false;
+}
+
+function enableOneOfPatchAndCheck()
+{
+    if (isOneOfPatchesActive(arguments) === true)
+        return;
+    var args = Array.prototype.slice.call(arguments);
+    var str = "";
+    for (var idx = 0; idx < args.length; idx ++)
+    {
+        var name = args[idx];
+        enablePatch(name);
+        if (isPatchActive(name) === true)
+            return;
+        str = str + " " + name;
+    }
+    throw "One of patches '" + str + "' must be enabled";
+}
+
+function partialCheckRetNeg(func, num)
+{
+    if (typeof(num) === "undefined")
+        num = 0;
+    var proxyFunc = function check1()
+    {
+        var args = Array.prototype.slice.call(arguments);
+        var res = func.apply(func, args);
+        if (res < 0)
+            throw "Error: " + args[num] + " not found";
+        return res;
+    }
+    return proxyFunc;
 }

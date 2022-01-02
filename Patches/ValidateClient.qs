@@ -21,7 +21,7 @@ function ValidateClient()
         return "Loaded file is not ragnarok client. Error 1.";
 
     var xmas1 = table.get(table.var1);
-    var xmas2 = exe.findString("xmas.rsw", RVA);
+    var xmas2 = pe.stringVa("xmas.rsw");
 
     if (xmas1 === 0)
         return "Loaded file is not ragnarok client. Error 2.";

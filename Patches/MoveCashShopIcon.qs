@@ -5,119 +5,162 @@
 
 function MoveCashShopIcon()
 {
+    if (table.get(table.UIWindowMgr_MakeWindow) === 0)
+        return "UIWindowMgr::MakeWindow not set";
 
-  //Step 1a - Find the XCoord calculation pattern
-  var code =
-    " 81 EA BB 00 00 00" //SUB EDX, 0BB
-  + " 52"                //PUSH EDX
-  ;
-  var tgtReg = 2;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var makeWindow = table.getRaw(table.UIWindowMgr_MakeWindow);
+    if (table.get(table.UIWindowMgr_MakeWindow_ret1) == 0)
+        return "UIWindowMgr::MakeWindow ret not set";
+    var endOffset = table.getRaw(table.UIWindowMgr_MakeWindow_ret1);
+    var endOffset2 = table.getRaw(table.UIWindowMgr_MakeWindow_ret2);
+    if (endOffset2 > endOffset)
+        endOffset = endOffset2;
 
-  if (offset === -1)
-  {
-    code = code.replace("81 EA", "2D").replace("52", "50");//change EDX to EAX
-    tgtReg = 0;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-  }
+    consoleLog("Step 1a - Find the XCoord calculation pattern");
+    var code =
+        " 81 EA BB 00 00 00" +  // 0 SUB EDX, 0BB
+        " 52";                  // 6 PUSH EDX
+    var patchOffset = 0;
+    var pushReg = "edx";
+    var stolenCodeOffset = 0;
+    var skipByte = true;
+    var offset = pe.find(code, makeWindow, endOffset);
 
-  if (offset === -1)
-  {
-    code = code.replace("50", "6A 10 50");//PUSH 10 before PUSH EAX
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
-
-    if (offset !== -1)
-    { //put the PUSH 10 before the CALL
-      exe.replace(offset, " 6A 10", PTYPE_HEX);
-      offset += 2;
+    if (offset === -1)
+    {
+        var code =
+            " 2D BB 00 00 00" +  // 0 SUB EAX, 0BB
+            " 50";               // 5 PUSH EAX
+        patchOffset = 0;
+        pushReg = "eax";
+        stolenCodeOffset = 0;
+        skipByte = false;
+        offset = pe.find(code, makeWindow, endOffset);
     }
-  }
 
-  if (offset === -1)
-    return "Failed in Step 1 - Coord calculation missing";
+    if (offset === -1)
+    {
+        var code =
+            " 2D BB 00 00 00" +  // 0 SUB EAX, 0BB
+            " 6A 10" +           // 5 PUSH 10h
+            " 50";               // 7 PUSH EAX
+        patchOffset = 0;
+        pushReg = "eax";
+        stolenCodeOffset = [5, 2];
+        skipByte = false;
+        offset = pe.find(code, makeWindow, endOffset);
+    }
 
-  //Step 1b - Accomodate for extra bytes by NOPing those
-  if (tgtReg === 2)
-  { //EDX
-    exe.replace(offset, "90", PTYPE_HEX);
-    offset++;
-  }
+    if (offset === -1)
+        return "Failed in Step 1 - Coord calculation missing";
 
-  //Step 1c - Find the pattern where the Screen Size is picked up (Width is at 0x24, Height is at 0x28) - We need the address of g_ScreenStats
-  code =
-    " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[g_ScreenStats]
-  + " 8B"                //MOV reg32_A, DWORD PTR DS:[reg32_B+const]
-  ;
+    if (stolenCodeOffset)
+    {
+        var stolenCode = pe.fetchHexBytes(offset, stolenCodeOffset);
+    }
+    else
+    {
+        var stolenCode = "";
+    }
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
+    consoleLog("Step 1b - Accomodate for extra bytes by NOPing those");
 
-  if (offset2 === -1)
-  {
-    code = code.replace("8B 0D", "A1");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset-0x18, offset);
-  }
+    var g_renderer = table.get(table.g_renderer);
+    if (g_renderer === 0)
+        return "g_renderer not set";
+    var g_renderer_width = table.get(table.g_renderer_m_width);
+    var g_renderer_height = table.get(table.g_renderer_m_height);
 
-  if (offset2 === -1)
-    return "Failed in Step 1 - Screen Size retrieval missing";
+    //Step 2a - Get User Coords
+    var xCoord = exe.getUserInput("$cashShopX", XTYPE_WORD, _("Number Input"), _("Enter new X coordinate:"), -0xBB, -0xFFFF, 0xFFFF);
+    var yCoord = exe.getUserInput("$cashShopY", XTYPE_WORD, _("Number Input"), _("Enter new Y coordinate:"), 0x10, -0xFFFF, 0xFFFF);
 
-  //Step 1d - Extract the g_ScreenStats
-  var g_ScreenStats = exe.fetchHex(offset2 + code.hexlength() - 5, 4);
+    if (xCoord === -0xBB && yCoord === 0x10)
+        return "Patch Cancelled - New coordinate is same as old";
 
-  //Step 2a - Get User Coords
-  var xCoord = exe.getUserInput("$cashShopX", XTYPE_WORD, _("Number Input"), _("Enter new X coordinate:"), -0xBB, -0xFFFF, 0xFFFF);
-  var yCoord = exe.getUserInput("$cashShopY", XTYPE_WORD, _("Number Input"), _("Enter new Y coordinate:"), 0x10, -0xFFFF, 0xFFFF);
+    consoleLog("Step 2b - Prep code to insert based on the sign of each coordinate (negative values are relative to width and height respectively)");
+    var text = "";
+    if (yCoord < 0)
+    {
+        yCoord = -yCoord;
+        text = asm.combine(
+            "push ecx",
+            "mov ecx, dword ptr [g_renderer]",
+            "mov ecx, dword ptr [ecx + g_renderer_height]",
+            "sub ecx, yCoord",
+            "mov dword ptr [esp + 8], ecx"
+        );
+    }
+    else
+    {
+        text = asm.combine(
+            "push ecx",
+            "mov ecx, yCoord",
+            "mov dword ptr [esp + 8], ecx"
+        );
+    }
 
-  if (xCoord === -0xBB && yCoord === 0x10)
-    return "Patch Cancelled - New coordinate is same as old";
+    if (xCoord < 0)
+    {
+        xCoord = -xCoord;
+        text = asm.combine(
+            text,
+            "mov ecx, dword ptr [g_renderer]",
+            "mov ecx, dword ptr [ecx + g_renderer_width]",
+            "sub ecx, xCoord",
+            "mov " + pushReg + ", ecx",
+            "pop ecx",
+            "ret"
+        );
+    }
+    else
+    {
+        text = asm.combine(
+            text,
+            "mov ecx, xCoord",
+            "mov " + pushReg + ", ecx",
+            "pop ecx",
+            "ret"
+        );
+    }
 
-  //Step 2b - Prep code to insert based on the sign of each coordinate (negative values are relative to width and height respectively)
-  code = "";
+    consoleLog("Step 3a - Insert the code");
+    var vars = {
+        "g_renderer": g_renderer,
+        "g_renderer_width": g_renderer_width,
+        "g_renderer_height": g_renderer_height,
+        "xCoord": xCoord,
+        "yCoord": yCoord
+    };
 
-  if (yCoord < 0)
-  {
-    code +=
-      " 8B 0D" + g_ScreenStats          //MOV ECX, DWORD PTR DS:[g_ScreenStats]
-    + " 8B 49 28"                       //MOV ECX, DWORD PTR DS:[ECX+28]
-    + " 81 E9" + (-yCoord).packToHex(4) //SUB ECX, -yCoord
-    ;
-  }
-  else
-  {
-    code += " B9" + yCoord.packToHex(4)  //MOV ECX, yCoord
-  }
+    var obj = exe.insertAsmTextObj(text, vars);
+    var free = obj.free;
 
-  code += " 89 4C 24 04";               //MOV DWORD PTR DS:[ESP+4], ECX
+    consoleLog("Step 3b - Change the 0xBB subtraction with a call to our code");
 
-  if (xCoord < 0)
-  {
-    code +=
-      " 8B 0D" + g_ScreenStats          //MOV ECX, DWORD PTR DS:[g_ScreenStats]
-    + " 8B 49 24"                       //MOV ECX, DWORD PTR DS:[ECX+24]
-    + " 81 E9" + (-xCoord).packToHex(4) //SUB ECX, -xCoord
-    ;
-  }
-  else
-  {
-    code += " B9" + xCoord.packToHex(4)  //MOV ECX, xCoord
-  }
+    if (skipByte)
+    {
+        text = asm.combine(
+            asm.hexToAsm(stolenCode),
+            "nop",
+            "call free"
+        );
+    }
+    else
+    {
+        text = asm.combine(
+            asm.hexToAsm(stolenCode),
+            "call free"
+        );
+    }
 
-  code +=
-    " 89" + (0xC8 | tgtReg).packToHex(1) //MOV tgtReg, ECX
-  + " C3"                                //RETN
-  ;
+    var vars = {
+        "free": pe.rawToVa(free)
+    };
 
-  //Step 2c - Allocate space for it
-  var free = exe.findZeros(code.hexlength());
-  if (free === -1)
-    return "Failed in Step 2 - Not enough free space";
+    pe.replaceAsmText(offset + patchOffset, text, vars);
 
-  //Step 3a - Insert the code
-  exe.insert(free, code.hexlength(), code, PTYPE_HEX);
-
-  //Step 3b - Change the 0xBB subtraction with a call to our code
-  exe.replace(offset, "E8" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4), PTYPE_HEX);
-
-  return true;
+    return true;
 }
 
 //=====================================================//
@@ -125,5 +168,5 @@ function MoveCashShopIcon()
 //=====================================================//
 function MoveCashShopIcon_()
 {
-  return (exe.findString("NC_CashShop", RAW) !== -1);
+    return (pe.stringRaw("NC_CashShop") !== -1);
 }

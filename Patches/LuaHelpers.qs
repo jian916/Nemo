@@ -14,58 +14,58 @@ delete LuaFnCaller;
 function _GetLuaAddrs()
 {
   //Step 1a - d>s
-  var offset = exe.findString("d>s", RVA);
+  var offset = pe.stringVa("d>s");
   if (offset === -1)
     return "LUA: d>s not found";
 
   D2S = offset.packToHex(4);
 
   //Step 1b - d>d
-  offset = exe.findString("d>d", RVA);
+  offset = pe.stringVa("d>d");
   if (offset === -1)
     return "LUA: d>d not found";
 
   D2D = offset.packToHex(4);
 
   //Step 2a - Find offset of ReqJobName
-  offset = exe.findString("ReqJobName", RVA);
+  offset = pe.stringVa("ReqJobName");
   if (offset === -1)
     return "LUA: ReqJobName not found";
 
   //Step 2b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "LUA: ReqJobName reference missing";
 
   //Step 2c - Find the ESP allocation before the reference and Extract the subtracted value
   var code =
-    " 83 EC AB" //SUB ESP, const
+    " 83 EC ??" //SUB ESP, const
   + " 8B CC"    //MOV ECX, ESP
   ;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x28, offset);
+  var offset2 = pe.find(code, offset - 0x28, offset);
   if (offset2 === -1)
     return "LUA: ESP allocation missing";
 
-  EspAlloc = exe.fetchByte(offset2 + 2);
+  EspAlloc = pe.fetchByte(offset2 + 2);
 
   //Step 2d - Extract String Allocator Function Address based on which opcode follows the PUSH
-  switch (exe.fetchUByte(offset + 5))
+  switch (pe.fetchUByte(offset + 5))
   {
     case 0xFF: {//CALL DWORD PTR DS:[func] -> VC9 Clients
       offset += 11;
-      StrAlloc = exe.fetchHex(offset - 4, 4);
+      StrAlloc = pe.fetchHex(offset - 4, 4);
       AllocType = 0;//0 means function is an MSVC import
       break;
     }
     case 0xE8: {//CALL func -> Older Clients
       offset += 10;
-      StrAlloc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+      StrAlloc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
       AllocType = 1;//1 means there is an argument PUSH which is a pointer.
       break;
     }
     case 0xC6: {//MOV BYTE PTR DS:[ECX], 0 -> VC10+ Clients
       offset += 13;
-      StrAlloc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+      StrAlloc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
       AllocType = 2;//2 means there needs to be an assignment of 0F and 0 to ECX+14 and ESP+10
       break;
     }
@@ -75,19 +75,19 @@ function _GetLuaAddrs()
   }
 
   //Step 2e - Find Lua_state assignment after offset and extract it
-  code = "8B AB AB AB AB 00"; //MOV reg32_A, DWORD PTR DS:[lua_state]
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10); //VC9 - VC10
+  code = "8B ?? ?? ?? ?? 00"; //MOV reg32_A, DWORD PTR DS:[lua_state]
+  offset2 = pe.find(code, offset, offset + 0x10); //VC9 - VC10
 
   if (offset2 === -1)
   {
-    code = "FF 35 AB AB AB 00"; //PUSH DWORD PTR DS:[lua_state]
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//VC11
+    code = "FF 35 ?? ?? ?? 00"; //PUSH DWORD PTR DS:[lua_state]
+    offset2 = pe.find(code, offset, offset + 0x10);//VC11
   }
 
   if (offset2 === -1)
   {
-    code = "A1 AB AB AB 00"; //MOV EAX, DWORD PTR DS:[lua_state]
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x10);//Older Clients
+    code = "A1 ?? ?? ?? 00"; //MOV EAX, DWORD PTR DS:[lua_state]
+    offset2 = pe.find(code, offset, offset + 0x10);//Older Clients
   }
 
   if (offset2 === -1)
@@ -95,14 +95,14 @@ function _GetLuaAddrs()
 
   offset2 += code.hexlength();
 
-  LuaState = exe.fetchHex(offset2 - 4, 4);
+  LuaState = pe.fetchHex(offset2 - 4, 4);
 
   //Step 2f - Find the Lua Function caller after offset2
-  offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x10);
+  offset = pe.find(" E8 ?? ?? ?? FF", offset2, offset2 + 0x10);
   if (offset === -1)
     return "LUA: Lua Function caller missing";
 
-  LuaFnCaller = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
+  LuaFnCaller = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
 
   return true;
 }
@@ -113,7 +113,6 @@ function _GetLuaAddrs()
 
 function GenLuaCaller(addr, name, nameAddr, format, inReg)
 {
-
   //Step 1a - Get the Global Addresses if not already obtained
   if (typeof(LuaFnCaller) === "undefined")
   {
@@ -185,10 +184,10 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 
   //Step 2d - Change the Indirect StrAlloc CALL to direct ( Non VC9 Clients )
   if (AllocType !== 0)
-    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - exe.Raw2Rva(addr + code.hexlength() - 12)).packToHex(4));//CALL StrAlloc
+    code = code.replace(" FF 15" + StrAlloc, " E8" + (StrAlloc - pe.rawToVa(addr + code.hexlength() - 12)).packToHex(4));  // CALL StrAlloc
 
   //Step 2e - Fill the Lua Function Caller
-  code = ReplaceVarHex(code, 1, LuaFnCaller - exe.Raw2Rva(addr + code.hexlength()));
+  code = ReplaceVarHex(code, 1, LuaFnCaller - pe.rawToVa(addr + code.hexlength()));
 
   //Step 2f - Now add the Stack restore and Function output retrieval
   code +=
@@ -208,91 +207,267 @@ function GenLuaCaller(addr, name, nameAddr, format, inReg)
 //# Purpose: Inject code to load Lua Files #
 //##########################################
 
-function InjectLuaFiles(origFile, nameList, free)
+function InjectLuaFiles(origFile, nameList, free, loadBefore)
 {
+    consoleLog("Find original file name string");
+    var origOffset = pe.stringVa(origFile);
+    if (origOffset === -1)
+        return "LUAFL: Filename missing";
 
-  //Step 1a - Find offset of origFile
-  var origOffset = exe.findString(origFile, RVA);
-  if (origOffset === -1)
-    return "LUAFL: Filename missing";
+    var strHex = origOffset.packToHex(4);
 
-  //Step 1b - Find its reference
-  var offset = exe.findCode("68" + origOffset.packToHex(4), PTYPE_HEX, false);
-  if (offset === -1)
-    return "LUAFL: Filename Reference missing";
+    consoleLog("Find original file name usage");
+    var type = table.get(table.CLua_Load_type);
+    if (type === 0)
+    {
+        throw "CLua_Load type not set";
+    }
 
-  //Step 1c - Find the ECX assignment before it - which is where we will jmp to our code
-  var hookLoader = exe.find(" 8B 8E AB AB 00 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
+    if (typeof(loadBefore) === "undefined")
+        loadBefore = true;
 
-  if (hookLoader === -1)
-  {
-    hookLoader = exe.find(" 8B 0D AB AB AB 00", PTYPE_HEX, true, "\xAB", offset - 10, offset);
-  }
+    var mLuaAbsHex = table.getSessionAbsHex4(table.CSession_m_lua_offset);
+    var mLuaHex = table.getHex4(table.CSession_m_lua_offset);
+    var CLua_Load = table.get(table.CLua_Load);
 
-  if (hookLoader === -1)
-    return "LUAFL: ECX assignment missing";
+    if (type == 4)
+    {
+        var code =
+            "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+            "6A ?? " +                    // 6 push 0
+            "6A ?? " +                    // 8 push 1
+            "68 " + strHex +              // 10 push offset aLuaFilesQues_3
+            "E8 ";                        // 15 call CLua_Load
+        var moveOffset = [0, 6];
+        var pushFlagsOffset = [6, 4];
+        var strPushOffset = 10;
+        var postOffset = 20;
+        var otherOffset = 0;
+        var callOffset = [16, 4];
+        var hookLoader = pe.find(code);
+        if (hookLoader === -1)
+        {
+            code =
+                "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                "6A ?? " +                    // 6 push 0
+                "6A ?? " +                    // 8 push 1
+                "68 " + strHex +              // 10 push offset aLuaFilesQues_3
+                "E8 ";                        // 15 call CLua_Load
+            moveOffset = [0, 6];
+            pushFlagsOffset = [6, 4];
+            strPushOffset = 10;
+            postOffset = 20;
+            otherOffset = 0;
+            callOffset = [16, 4];
+            hookLoader = pe.find(code);
+        }
+        if (hookLoader === -1)
+        {
+            var code =
+                "8B 8E " + mLuaHex +          // 0 mov ecx, [esi+5434h]
+                "53 " +                       // 6 push ebx
+                "6A ?? " +                    // 7 push 1
+                "68 " + strHex +              // 9 push offset aLuaFilesData_0
+                "E8 ";                        // 14 call CLua_Load
+            moveOffset = [0, 6];
+            pushFlagsOffset = [6, 3];
+            strPushOffset = 9;
+            postOffset = 19;
+            otherOffset = 0;
+            callOffset = [15, 4];
+            hookLoader = pe.find(code);
+        }
+    }
+    else if (type == 3)
+    {
+        var code =
+            "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+            "6A ?? " +                    // 6 push 1
+            "68 " + strHex +              // 8 push offset aLuaFilesQues_3
+            "E8 ";                        // 13 call CLua_Load
+        var moveOffset = [0, 6];
+        var pushFlagsOffset = [6, 2];
+        var strPushOffset = 8;
+        var postOffset = 18;
+        var otherOffset = 0;
+        var callOffset = [14, 4];
+        var hookLoader = pe.find(code);
+        if (hookLoader === -1)
+        {
+            code =
+                "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                "6A ?? " +                    // 6 push 1
+                "68 " + strHex +              // 8 push offset aLuaFilesQues_3
+                "E8 ";                        // 13 call CLua_Load
+            moveOffset = [0, 6];
+            pushFlagsOffset = [6, 2];
+            strPushOffset = 8;
+            postOffset = 18;
+            otherOffset = 0;
+            callOffset = [14, 4];
+            hookLoader = pe.find(code);
+        }
+    }
+    else if (type == 2)
+    {
+        var code =
+            "8B 8E " + mLuaHex +          // 0 mov ecx, g_session.m_lua
+            "68 " + strHex +              // 6 push offset aLuaFilesQues_3
+            "E8 ";                        // 11 call CLua_Load
+        var moveOffset = [0, 6];
+        var pushFlagsOffset = 0;
+        var strPushOffset = 6;
+        var postOffset = 16;
+        var otherOffset = 0;
+        var callOffset = [12, 4];
+        var hookLoader = pe.find(code);
+        if (hookLoader === -1)
+        {
+            code =
+                "8B 0D " + mLuaAbsHex +       // 0 mov ecx, g_session.m_lua
+                "68 " + strHex +              // 6 push offset aLuaFilesQues_3
+                "E8 ";                        // 11 call CLua_Load
+            moveOffset = [0, 6];
+            pushFlagsOffset = 0;
+            strPushOffset = 6;
+            postOffset = 16;
+            otherOffset = 0;
+            callOffset = [12, 4];
+            hookLoader = pe.find(code);
+        }
+        if (hookLoader === -1)
+        {
+            code =
+                "8B 8E " + mLuaHex +          // 0 mov ecx, [esi+44D8h]
+                "83 C4 ?? " +                 // 6 add esp, 4
+                "68 " + strHex +              // 9 push offset aLuaFilesDatain
+                "E8 ";                        // 14 call CLua_Load
+            moveOffset = [0, 6];
+            pushFlagsOffset = 0;
+            strPushOffset = 9;
+            postOffset = 19;
+            otherOffset = [6, 3];
+            callOffset = [15, 4];
+            hookLoader = pe.find(code);
+        }
+    }
+    else
+    {
+        throw "Unsupported CLua_Load type";
+    }
 
-  //Step 1d - Extract the necessary items. We will use the name CLua::LoadFile for the function
-  var retLoader = offset + 10;//point after PUSH filename and CALL instruction
-  var loaderFunc = exe.Raw2Rva(retLoader) + exe.fetchDWord(retLoader - 4);//Lua file loader function
+    if (hookLoader === -1)
+        return "LUAFL: CLua_Load call missing";
 
-  //Step 2a - Create template code
-  var template =
-    exe.fetchHex(hookLoader, offset - hookLoader) //Preparation code before CALL - Contains ECX assignment and other PUSHes before filename PUSH
-  + " 68" + GenVarHex(1)                          //PUSH OFFSET addr; fileName
-  + " E8" + GenVarHex(2)                          //CALL CLua::LoadFile
-  ;
+    var retLoader = hookLoader + postOffset;
 
-  var tSize = template.hexlength();
+    var callValue = pe.fetchRelativeValue(hookLoader, callOffset);
+    if (callValue !== CLua_Load)
+        throw "LUAFL: found wrong call function";
 
-  //Step 2b - Construct string code.
-  var nCode = nameList.join("\x00").toHex() + " 00";
+    consoleLog("Read stolen code");
+    var allStolenCode = pe.fetchHex(hookLoader, strPushOffset);
+    var movStolenCode = pe.fetchHexBytes(hookLoader, moveOffset)
+    if (pushFlagsOffset !== 0)
+    {
+        var pushFlagsStolenCode = pe.fetchHexBytes(hookLoader, pushFlagsOffset);
+    }
+    else
+    {
+        var pushFlagsStolenCode = "";
+    }
+    var shortStolenCode = movStolenCode + pushFlagsStolenCode;
+    if (otherOffset !== 0)
+    {
+        var otherStoleCode = pe.fetchHexBytes(hookLoader, otherOffset);
+    }
+    else
+    {
+        var otherStoleCode = "";
+    }
 
-  //Step 2c - Allocate space if free space is not provided.
-  //          Size of code needed = size of String offsets + size of Loaders
-  if (typeof(free) === "undefined" || free === -1)
-  {
-    var csize = (nameList.length + 1) * tSize + 6 + nCode.hexlength(); //6 is for the return JMP + a gap
+    consoleLog("Construct asm code with strings");
+    var stringsCode = "";
+    for (var i = 0; i < nameList.length; i++)
+    {
+        stringsCode = asm.combine(
+            stringsCode,
+            "var" + i + ":",
+            asm.stringToAsm(nameList[i] + "\x00")
+        )
+    }
 
-    var free = exe.findZeros(csize);
-    if (free === -1)
-      return "LUAFL: Not enough free space";
+    consoleLog("Create own code");
 
-    var argPresent = false;
-  }
-  else
-  {
-    var argPresent = true;
-  }
+    if (loadBefore === false)
+    {
+        var asmCode = asm.combine(
+            asm.hexToAsm(allStolenCode),
+            "push offset",
+            "call CLua_Load"
+        )
+        var vars = {
+            "offset": origOffset,
+            "CLua_Load": CLua_Load
+        };
+    }
+    else
+    {
+        var asmCode = "";
+    }
+    for (var i = 0; i < nameList.length; i++)
+    {
+        var asmCode = asm.combine(
+            asmCode,
+            asm.hexToAsm(shortStolenCode),
+            "push var" + i,
+            "call CLua_Load"
+        )
+        var vars = {
+            "CLua_Load": CLua_Load
+        };
+    }
 
-  offset = exe.Raw2Rva(free);
+    if (loadBefore === true)
+    {
+        var text = asm.combine(
+            asmCode,
+            asm.hexToAsm(allStolenCode),
+            "push offset",
+            "call CLua_Load",
+            "jmp continueAddr",
+            asm.hexToAsm("00"),
+            stringsCode
+        )
+    }
+    else
+    {
+        var text = asm.combine(
+            asmCode,
+            "jmp continueAddr",
+            asm.hexToAsm("00"),
+            stringsCode
+        )
+    }
+    var vars = {
+        "offset": origOffset,
+        "CLua_Load": CLua_Load,
+        "continueAddr": pe.rawToVa(retLoader)
+    };
 
-  //Step 2d - Create a JMP at hookLoader to the allocated location
-  exe.replace(hookLoader, "90 E9" + (offset - exe.Raw2Rva(hookLoader + 6)).packToHex(4), PTYPE_HEX);
+    consoleLog("Set own code into exe");
+    if (typeof(free) === "undefined" || free === -1)
+    {
+        var obj = exe.insertAsmTextObj(text, vars);
+        var free = obj.free;
+    }
+    else
+    {
+        pe.replaceAsmText(free, text, vars);
+    }
 
-  //Step 2e - Construct the file loader code for all the files using the template
-  var lCode = "";
-  loaderFunc -= (offset + tSize);//Relative offset to CLua::LoadFile
-  offset += (nameList.length + 1) * tSize + 6;//Offset of first string
+    consoleLog("Set jmp to own code");
+    pe.setJmpRaw(hookLoader, free, "jmp", 6);
 
-  for (var i = 0; i < nameList.length; i++)
-  {
-    lCode += ReplaceVarHex(template, [1, 2], [offset, loaderFunc]);
-    offset += nameList[i].length + 1;//1 for NULL
-    loaderFunc -= tSize;
-  }
-
-  lCode += ReplaceVarHex(template, [1, 2], [origOffset, loaderFunc]);//Load the origFile
-
-  //Step 2f - Add the return Jump
-  lCode +=
-    " E9" + (exe.Raw2Rva(retLoader) - exe.Raw2Rva(free + lCode.hexlength() + 5)).packToHex(4)//JMP retLoader
-  + " 00" //Just a Gap
-  ;
-
-  //Step 2g - Insert/Overwrite with the loader + strings.
-  if (argPresent)
-    exe.replace(free, lCode + nCode, PTYPE_HEX);
-  else
-    exe.insert(free, csize, lCode + nCode, PTYPE_HEX);
+    return true;
 }

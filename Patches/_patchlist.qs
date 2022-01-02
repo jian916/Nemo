@@ -87,7 +87,7 @@ registerPatch(  6, "ForceSendClientHash", "Force Send Client Hash Packet", "Pack
 
 //registerPatch(  7, "ChangeGravityErrorHandler", "Change Gravity Error Handler", "Fix", 0, " ", "It changes the Gravity Error Handler Mesage for a Custom One Pre-Defined by Diff Team", false);
 
-registerPatch(  8, "CustomWindowTitle", "Custom Window Title", "UI", 0, "Shinryo", "Changes window title. Normally, the window title is 'Ragnarok'", false);
+registerPatch(  8, "CustomWindowTitle", "Custom Window Title", "UI", 0, "Shinryo, 4144", "Changes window title. Normally, the window title is 'Ragnarok'", false);
 
 registerPatch(  9, "Disable1rag1Params", "Disable 1rag1 type parameters", "Fix", 0, "Shinryo", "Enable this to launch the client directly without patching or any 1rag1, 1sak1 etc parameters", true);
 
@@ -99,13 +99,13 @@ registerPatch( 12, "Disable4LetterPasswordLimit", "Disable 4 Letter Password Lim
 
 registerPatch( 13, "DisableFilenameCheck", "Disable Ragexe Filename Check", "Fix", 0, "Shinryo", "Disables the check that forces the client to quit if not called an official name like ragexe.exe for all LangTypes", true);
 
-registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "Fix", 0, "Shinryo", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
+registerPatch( 14, "DisableHallucinationWavyScreen", "Disable Hallucination Wavy Screen", "Fix", 0, "Shinryo, 4144", "Disables the Hallucination effect (screen becomes wavy and lags the client), used by baphomet, horongs, and such", true);
 
 registerPatch( 15, "DisableHShield", "Disable HShield", "Fix", 0, "Ai4rei/AN, Neo", "Disables HackShield", true);
 
 registerPatch( 16, "DisableSwearFilter", "Disable Swear Filter", "UI", 0, "Shinryo", "The content of manner.txt has no impact on ability to send text", false);
 
-registerPatch( 17, "EnableOfficialCustomFonts", "Enable Official Custom Fonts", "UI", 0, "Shinryo", "This option forces Official Custom Fonts (eot files int data folder) on all LangType", false);
+registerPatch( 17, "EnableOfficialCustomFonts", "Enable Official Custom Fonts", "UI", 0, "Shinryo, 4144", "This option forces Official Custom Fonts (eot files int data folder) on all LangType", false);
 
 registerPatch( 18, "SkipServiceSelect", "Skip Service Selection Screen", "UI", 0, "Shinryo", "Jumps directly to the login interface without asking to select a service", false);
 
@@ -131,11 +131,11 @@ registerPatch( 28, "IncreaseViewID", "Increase Headgear ViewID", "Data", 0, "Shi
 
 registerPatch( 29, "DisableGameGuard", "Disable Game Guard", "Fix", 0, "Neo", "Disables Game Guard from new clients", true);
 
-registerPatch( 30, "IncreaseZoomOut50Per", "Increase Zoom Out 50%", "UI", 3, "Shinryo", "Increases the zoom-out range by 50 percent", false);
+registerPatch( 30, "IncreaseZoomOut50Per", "Increase Zoom Out 50%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 50 percent", false);
 
-registerPatch( 31, "IncreaseZoomOut75Per", "Increase Zoom Out 75%", "UI", 3, "Shinryo", "Increases the zoom-out range by 75 percent", false);
+registerPatch( 31, "IncreaseZoomOut75Per", "Increase Zoom Out 75%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 75 percent", false);
 
-registerPatch( 32, "IncreaseZoomOutMax", "Increase Zoom Out Max", "UI", 3, "Shinryo", "Maximizes the zoom-out range", false);
+registerPatch( 32, "IncreaseZoomOutMax", "Increase Zoom Out Max", "UI", 3, "Shinryo, 4144", "Maximizes the zoom-out range", false);
 
 registerPatch( 33, "KoreaServiceTypeXMLFix", "Always Call SelectKoreaClientInfo()", "Fix", 0, "Shinryo", "Calls SelectKoreaClientInfo() always before SelectClientInfo() allowing you to use features that would be only visible on Korean Service Type", true);
 
@@ -159,7 +159,7 @@ registerPatch( 42, "SkipResurrectionButton", "Skip Resurrection Button", "UI", 1
 
 registerPatch( 43, "DeleteCharWithEmail", "Always Use Email for Char Deletion", "Fix", 0, "Neo", "Makes the Client use Email as Deletion Password for all LangTypes", false);
 
-registerPatch( 44, "TranslateClient", "Translate Client", "UI", 0, "Ai4rei/AN, Neo", "This will translate some of the Hard-coded Korean phrases with strings stored in TranslateClient.txt. It also fixes the Korean Job name issue with LangType", true);
+registerPatch( 44, "TranslateClient", "Translate Client", "UI", 0, "Ai4rei/AN, Neo", "This will translate some of the Hard-coded Korean phrases with strings stored in TranslateClient.txt", true);
 
 registerPatch( 45, "UseCustomAuraSprites", "Use Custom Aura Sprites", "Data", 0, "Shinryo", "This option will make it so your warp portals will not be affected by your aura sprites. For this you will have to make aurafloat.tga and auraring.bmp and place them in your 'data\\texture\\effect' folder", false);
 
@@ -214,9 +214,9 @@ registerPatch( 69, "ExtendNpcBox", "Extend Npc Dialog Box", "UI", 0, "Ai4rei/AN"
 
 registerPatch( 70, "CustomExpBarLimits", "Use Custom Exp Bar Limits", "UI", 0, "Neo", "Allows client to use user specified limits for Exp Bars", false);
 
-registerPatch( 71, "IgnoreResourceErrors", "Ignore Resource Errors", "Fix", 0, "Shinryo", "Prevents the client from displaying a variety of Error messages (but not all of them) including missing files. This does not guarantee the client will work in-spite of missing files", false);
+registerPatch( 71, "IgnoreResourceErrors", "Ignore Resource Errors", "Error", 0, "Shinryo", "Prevents the client from displaying a variety of Error messages (but not all of them) including missing files. This does not guarantee the client will work in-spite of missing files", false);
 
-registerPatch( 72, "IgnoreMissingPaletteError", "Ignore Missing Palette Error", "Fix", 0, "Shinryo", "Prevents the client from displaying error messages about missing palettes. It does not guarantee client will not crash if files are missing", false);
+registerPatch( 72, "IgnoreMissingPaletteError", "Ignore Missing Palette Error", "Error", 0, "Shinryo", "Prevents the client from displaying error messages about missing palettes. It does not guarantee client will not crash if files are missing", false);
 
 registerPatch( 73, "RemoveHourlyAnnounce", "Remove Hourly Announce", "UI", 0, "Ai4rei/AN", "Remove hourly game grade and hourly play time minder announcements", true);
 
@@ -228,7 +228,7 @@ registerPatch( 76, "EnforceOfficialLoginBackground", "Enforce Official Login Bac
 
 registerPatch( 77, "EnableCustom3DBones", "Enable Custom 3D Bones", "Data", 0, "Ai4rei/AN", "Enables the use of custom 3D monsters (Granny) by lifting Hard-coded ID limit", false);
 
-registerPatch( 78, "MoveCashShopIcon", "Move Cash Shop Icon", "UI",  11, "Neo", "Move the Cash Shop icon to user specified co-ordinates. Positive values are relative to left and top, Negative values are relative to right and bottom", false);
+registerPatch( 78, "MoveCashShopIcon", "Move Cash Shop Icon", "UI",  11, "Neo, 4144", "Move the Cash Shop icon to user specified co-ordinates. Positive values are relative to left and top, Negative values are relative to right and bottom", false);
 
 registerPatch( 79, "SharedBodyPalettesV2", "Shared Body Palettes Type2", "UI", 6, "Ai4rei/AN, Neo", "Makes the client use a single cloth palette set (body_%d.pal) for all job classes both genders", false);
 
@@ -276,7 +276,7 @@ registerPatch(101, "SkipCheaterFriendCheck", "Skip Friend list Cheat Check", "UI
 
 registerPatch(102, "SkipCheaterGuildCheck", "Skip Guild Member Cheat Check", "UI", 0, "Ai4rei/AN", "Prevents warnings during PM's when the sender has similar name to one of your guild members", false);
 
-registerPatch(103, "DisableAutofollow", "Disable Auto follow", "UI", 0, "Functor, Neo", "Disables player auto-follow on Shift+Right click", false);
+registerPatch(103, "DisableAutofollow", "Disable Auto follow", "UI", 0, "Functor, Neo, 4144", "Disables player auto-follow on Shift+Right click", false);
 
 registerPatch(104, "IncreaseHairLimits", "Increase creation Hair Style & Color Limits", "UI", 0, "Neo", "Modify the limits used in Make Character Window for Hair Style and Color to user specified values");
 
@@ -304,8 +304,6 @@ registerPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experi
 
 //registerPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "UI", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 
-//FixTetraVortex patch is removed since the black screen animation issue is fixed Server Side
-
 //======================================//
 // Special Patches by Neo and Curiosity //
 //======================================//
@@ -324,7 +322,7 @@ registerPatch(205, "EnableMonsterTables", "Enable Monster Tables", "Custom", 0, 
 
 registerPatch(206, "LoadCustomQuestLua", "Load Custom Quest Lua/Lub files", "Custom", 0, "Neo", "Enables loading of custom lua files used for quests. You need to specify a txt file containing list of files in the 'lua files\\quest' folder to load (one file per line)", false);
 
-registerPatch(207, "ResizeFont", "Resize Font", "Custom", 0, "Yommy, Neo", "Resizes the height of the font used to the value specified", false);
+registerPatch(207, "ResizeFont", "Change all fonts abs size to fixed value", "Size", 0, "Yommy, Neo, 4144", "Resizes all fonts abs height to fixed value", false);
 
 registerPatch(208, "RestoreCashShop", "Restore Cash Shop Icon", "Special", 0, "Neo", "Restores the Cash Shop Icon in RE clients that can have them", false);
 
@@ -362,15 +360,15 @@ registerPatch(223, "MoveItemCountUpwards", "Move Item Count Upwards [Experimenta
 
 registerPatch(225, "ShowRegisterButton", "Show Register Button", "Custom", 0, "Neo", "Makes the client always show register button on Login Window for all Langtypes. Clicking the button will open <registrationweb> from clientinfo and closes the client.", false);
 
-registerPatch(226, "DisableWalkToDelay", "Disable Walk To Delay.", "Fix", 16, "MegaByte", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
+registerPatch(226, "DisableWalkToDelay", "Disable Walk To Delay.", "Fix", 16, "MegaByte, 4144", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
 
-registerPatch(227, "SetWalkToDelay", "Change Walk To Delay.", "Fix", 16, "MegaByte", "Can have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
+registerPatch(227, "SetWalkToDelay", "Change Walk To Delay.", "Fix", 16, "MegaByte, 4144", "Can have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
 
 registerPatch(228, "DisableDoram", "Disable Doram Character Creation UI [Experimental]", "UI", 0, "Ai4Rei, Secret", "Disable Doram race in the character creation UI. Server-side disabling is also recommended", false);
 
-registerPatch(229, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "Neo", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
+registerPatch(229, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "Neo, 4144", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
 
-registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSettings lua file", "Fix", 0, "Secret, 4144", "Makes the client load Korea server's ExternalSettings file for all langtypes.", false);
+registerPatch(230, "AlwaysReadKrExtSettings", "Always load Korea ExternalSettings lua file", "Fix", 0, "Secret, 4144", "Makes the client load Korea server's ExternalSettings file for all langtypes.", true);
 
 registerPatch(231, "RemoveHardcodedAddress", "Remove hardcoded address/port", "Fix", 0, "4144", "Remove hardcoded connection addresses and ports.", true);
 
@@ -378,7 +376,7 @@ registerPatch(232, "RestoreOldLoginPacket", "Restore old login packet", "Fix", 1
 
 registerPatch(233, "HideSNSButton", "Hide SNS Button", "UI", 12, "Secret, 4144", "Hide SNS (Twitter) button", false);
 
-registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Fix", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
+registerPatch(234, "IgnoreLuaErrors", "Ignore Lua Errors", "Error", 0, "4144", "Prevents the client from displaying a error messages from lua code like 'attempt to call nil value'.", false);
 
 registerPatch(235, "EnableGuildWhenInClan", "Enable guild while in clan", "Custom", 0, "Functor, Secret", "Remove restriction of guild functionality while being a member of a clan", false);
 
@@ -408,7 +406,7 @@ registerPatch(247, "ChangeNewCharNameHeight", "Change new char name field height
 
 registerPatch(248, "RemoveWrongCharFromCashShop", "Remove wrong chars from cash shop", "Custom", 0, "4144", "Hide wrong field with random values in cash shop", false);
 
-registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Custom", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
+registerPatch(249, "ChangeMinimalResolutionLimit", "Change minimal screen resolution limit", "Resolution", 0, "4144", "Allow change minimal client resolution (default value is 1024x768", false);
 
 registerPatch(250, "AllowLeavelPartyLeader", "Allow leader to leave party if no members on map", "Custom", 0, "4144", "Allow leader to leave party if not party members on same map", false);
 
@@ -420,7 +418,7 @@ registerPatch(253, "SkipHiddenMenuButtons", "Skip some hidden menu icon buttons"
 
 registerPatch(254, "SetMaxItemCount", "Change Max Items in inventory", "UI", 0, "Jchcc", "Change maximum items in player inventory.", false);
 
-registerPatch(255, "SetAutoFollowDelay", "Change Auto Follow Delay", "Custom", 0, "Jchcc", "Can reduce auto follow delay.", false);
+registerPatch(255, "SetAutoFollowDelay", "Change auto follow delay", "Custom", 0, "Jchcc, 4144", "Can reduce auto follow delay.", false);
 
 registerPatch(256, "DefaultBrowserInCashshop", "Use Default Web Browser In Cashshop", "Custom", 0, "Jchcc", "Open URL in the cashshop window with default web browser instead of IExplore.", false);
 
@@ -484,7 +482,7 @@ registerPatch(285, "FixActDelay", "Fix act delay for act files with many frames"
 
 registerPatch(286, "HideZeroDateInGuildMembers", "Hide zero date (1969-01-01) in guild members window", "Fix", 0, "4144", "Hide zero date (1969-01-01) in guild members window", false);
 
-registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deletion time from actual date to relative date", "Custom", 0, "Functor", "Change character display deletion time from actual date to relative date", false);
+registerPatch(287, "ChangeDisplayCharDelDelay", "Change character display deletion time", "Custom", 0, "Functor", "Change character display deletion time from actual date to relative date", false);
 
 registerPatch(288, "MoveShieldToTop", "Draw shield on top of other player sprites", "Custom", 0, "4144", "Move shield sprite closed to camera for draw on top of other player sprites", false);
 
@@ -544,7 +542,7 @@ registerPatch(315, "HighlightSkillSlotColor", "Highlight Skillslot Color", "Colo
 
 registerPatch(316, "RemoveEquipmentSwap", "Remove Equipment Swap Button", "UI", 12, "Functor, X-EcutiOnner", "Remove equipment swap button on the equipment window", false);
 
-registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
+registerPatch(317, "IgnoreQuestErrors", "Ignore Quest Errors", "Error", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Not found Quest Info = XXXX'.", false);
 
 registerPatch(318, "FixCharsetForFonts", "Fix Charset For Custom Fonts", "Fix", 0, "jchcc", "Use correct charset for Official Custom Fonts on all LangType", false);
 
@@ -562,7 +560,7 @@ registerPatch(324, "ChangeSecondCharCreateJob", "Change second char create job",
 
 registerPatch(325, "RemoveEquipmentTitleUI", "Remove Equipment Title UI", "UI", 12, "jchcc, X-EcutiOnner", "Remove equipment title ui on the equipment window", false);
 
-registerPatch(326, "DisableOTPLoginPacket", "Disable OTP Login Packet", "Fix", 0, "jchcc", "Disable OTP Login Packet, which causing connect issue after disconnect.", true);
+registerPatch(326, "DisableOTPLoginPacket", "Disable OTP Login Packet", "Fix", 0, "jchcc, 4144", "Disable OTP Login Packet, which causing connect issue after disconnect.", true);
 
 registerPatch(327, "AutoMute", "Auto Mute Audio [Experimental]", "Custom", 0, "jchcc", "Auto mute audio when game window not actived.", false);
 
@@ -580,7 +578,7 @@ registerPatch(333, "ChangeMaxFriendsValue", "Change Max Friends Value", "UI", 0,
 
 registerPatch(334, "RemoveHardcodedHttpIP", "Remove Hardcoded HTTP IP", "Fix", 0, "jchcc", "Remove hardcoded HTTP service ip address, Prevent client from sending HTTP request to official server.", false);
 
-registerPatch(335, "EnableRagHTTPEmblem", "Enable HTTP Emblem on Ragexe", "Fix", 0, "jchcc", "Enable HTTP Emblem on Ragexe, HTTP service required.", false);
+registerPatch(335, "EnableRagHTTPEmblem", "Fix HTTP Emblems in clients", "Fix", 0, "jchcc", "Fix HTTP Emblem client clients with cheat defender. HTTP service required.", false);
 
 registerPatch(336, "RemoveItemsEquipPreview", "Remove Equipment Preview Button", "UI", 12, "X-EcutiOnner", "Remove equipment preview button on the items description window", false);
 
@@ -588,16 +586,167 @@ registerPatch(337, "ChangeAdventureAgencyLevelRange", "Change adventurer agency 
 
 registerPatch(338, "ValidateClient", "Additional client validation", "Nemo", 0, "4144", "Validate is loaded client detected as correct client. If this patch failed, other patches can be wrong.", true);
 
-registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Fix", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
+registerPatch(339, "IgnoreEntryQueueErrors", "Ignore Entry Queue Errors", "Error", 0, "X-EcutiOnner, 4144", "Prevents the client from displaying a error messages like 'Load Failed Data\Table\EntryQueue.bex'.", false);
 
 registerPatch(340, "DisableBGMAudio", "Disable mp3NameTable.txt", "Custom", 0, "X-EcutiOnner", "Disable all .mp3 audio files in BGM folder for playing background music", false);
 
 registerPatch(341, "DisableMapInfo", "Disable map sign display", "UI", 0, "X-EcutiOnner", "Disable all map sign display listing in MapInfo*.lub when players entering map.", false);
 
-registerPatch(350, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
+registerPatch(342, "ExtendCashShopPreview", "Add support for preview button in cash shop", "Fix", 0, "4144", "Extend cash shop packet for support equipment preview.", false);
 
-registerPatch(400, "CustomWindowTitleHex", "Custom Window Title Hex", "UI", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+registerPatch(343, "ChangeMerchantStoreUrl", "Change MerchantStore Url", "Custom", 20, "jchcc", "Change hardcoded URL for MerchantStore save and load, HTTP service required.", false);
 
-registerPatch(401, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc", "Change Mvp drop item use identified name", false);
+registerPatch(344, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc, 4144", "Change Mvp drop item use identified name", false);
+
+registerPatch(345, "EnableSlashAtCommands", "Send at commands to server", "Custom", 0, "4144", "Allow send at commands unsupported by client to server", false);
+
+registerPatch(346, "RestoreAutoFollow", "Restore auto follow", "Fix", 0, "4144", "Restore auto follow functionality in zero clients", false);
+
+registerPatch(347, "DisableRequireAdmin", "Disable OS Privileges execution level", "Fix", 0, "X-EcutiOnner", "Disable OS Privileges execution level for run client by user account", false);
+
+registerPatch(348, "SendClientFlags", "Send client flags to server", "Custom", 0, "4144", "Send main clients to server for avoid different flags on client and server", true);
+
+registerPatch(349, "EnableGvGDamage", "Enable GvG Damage display", "UI", 0, "X-EcutiOnner, 4144", "Show Damage on GvG Maps during the Guild War", false);
+
+registerPatch(350, "DisableAdventureAgent", "Disable Adventure Agent button on Party Window", "UI", 12, "X-EcutiOnner, 4144", "Disable Adventure Agency button on Party Window", false);
+
+registerPatch(351, "FixArrowsCharset", "Translate arrows buttons text from korean to english", "UI", 0, "X-EcutiOnner, 4144", "Translate arrows buttons in hotkey setting ui from korean to english", false);
+
+registerPatch(352, "IncreaseZoomOut25Per", "Increase Zoom Out 25%", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by 25 percent", false);
+
+registerPatch(353, "IncreaseZoomOutCustom", "Increase Zoom Out to custom value", "UI", 3, "Shinryo, 4144", "Increases the zoom-out range by custom value", false);
+
+// 354 - 360 reserved
+
+registerPatch(361, "LoadCustomLuaBeforeAfterFiles", "Load custom lua files for most loaded lua files", "Custom", 0, "4144", "Load custom lua files before and after for most loaded lua files", false);
+
+registerPatch(362, "TaekwonJobNameFix", "Fixes the Korean Job name issue with LangType", "UI", 0, "Ai4rei/AN, Neo, 4144", "Fixes the Korean Job name issue with LangType", true);
+
+registerPatch(363, "AddCustomLua", "Add loading custom lua files", "Custom", 0, "llchrisll, 4144", "Add loading custom lua files for llchrisll", false);
+
+registerPatch(364, "ChangeUIBalloonTextFontSize", "Change default font size for base class of all balloons", "Size", 0, "4144", "Change default font size for class UIBalloonText", false);
+
+//registerPatch(365, "ChangeUINameBalloonTextFontSize", "Change default font size for class UINameBalloonText", "Size", 0, "4144", "Change default font size for class UINameBalloonText", false);
+
+registerPatch(366, "ChangeUITransBalloonTextFontSize", "Change default font size for class UITransBalloonText", "Size", 0, "4144", "Change default font size for class UITransBalloonText", false);
+
+//registerPatch(367, "ChangeUIAchBalloonTextFontSize", "Change default font size for class UIAchBalloonText", "Size", 0, "4144", "Change default font size for class UIAchBalloonText", false);
+
+registerPatch(368, "ChangeUICharInfoBalloonTextFontSize", "Change default font size for class UICharInfoBalloonText", "Size", 0, "4144", "Change default font size for class UICharInfoBalloonText", false);
+
+//registerPatch(369, "ChangeUIVerticalNameBalloonTextFontSize", "Change default font size for class UIVerticalNameBalloonText", "Size", 0, "4144", "Change default font size for class UIVerticalNameBalloonText", false);
+
+registerPatch(370, "ChangeUIBalloonTextFontColor", "Change default font color for base class of all balloons", "Color", 0, "4144", "Change default font color for class UIBalloonText", false);
+
+//registerPatch(371, "ChangeUINameBalloonTextFontColor", "Change default font color for class UINameBalloonText", "Color", 0, "4144", "Change default font color for class UINameBalloonText", false);
+
+registerPatch(372, "ChangeUITransBalloonTextFontColor", "Change default font color for class UITransBalloonText", "Color", 0, "4144", "Change default font color for class UITransBalloonText", false);
+
+//registerPatch(373, "ChangeUIAchBalloonTextFontColor", "Change default font color for class UIAchBalloonText", "Color", 0, "4144", "Change default font color for class UIAchBalloonText", false);
+
+registerPatch(374, "ChangeUICharInfoBalloonTextFontColor", "Change default font color for class UICharInfoBalloonText", "Color", 0, "4144", "Change default font color for class UICharInfoBalloonText", false);
+
+//registerPatch(375, "ChangeUIVerticalNameBalloonTextFontColor", "Change default font color for class UIVerticalNameBalloonText", "Color", 0, "4144", "Change default font color for class UIVerticalNameBalloonText", false);
+
+registerPatch(376, "ChangeUIBalloonTextBgColor", "Change default shadow color for base class of all balloons", "Color", 0, "4144", "Change default shadow color for class UIBalloonText", false);
+
+//registerPatch(377, "ChangeUINameBalloonTextBgColor", "Change default shadow color for class UINameBalloonText", "Color", 0, "4144", "Change default shadow color for class UINameBalloonText", false);
+
+registerPatch(378, "ChangeUITransBalloonTextBgColor", "Change default shadow color for class UITransBalloonText", "Color", 0, "4144", "Change default shadow color for class UITransBalloonText", false);
+
+//registerPatch(379, "ChangeUIAchBalloonTextBgColor", "Change default shadow color for class UIAchBalloonText", "Color", 0, "4144", "Change default shadow color for class UIAchBalloonText", false);
+
+registerPatch(380, "ChangeUICharInfoBalloonTextBgColor", "Change default shadow color for class UICharInfoBalloonText", "Color", 0, "4144", "Change default shadow color for class UICharInfoBalloonText", false);
+
+//registerPatch(381, "ChangeUIVerticalNameBalloonTextBgColor", "Change default shadow color for class UIVerticalNameBalloonText", "Color", 0, "4144", "Change default shadow color for class UIVerticalNameBalloonText", false);
+
+registerPatch(382, "ChangeUINameBalloonTextIconType", "Change default icon type for class UINameBalloonText", "Icon", 0, "4144", "Change default icon type for class UINameBalloonText", false);
+
+registerPatch(383, "ChangeUINameBalloonTextWidth", "Change default text width for class UINameBalloonText", "Font", 0, "4144", "Change default text width class UINameBalloonText", false);
+
+registerPatch(384, "ChangeUIVerticalNameBalloonTextWidth", "Change default text width for class UIVerticalNameBalloonText", "Font", 0, "4144", "Change default text width class UIVerticalNameBalloonText", false);
+
+registerPatch(385, "ChangeUITransBalloonTextDecoration", "Change default text decoration for class UITransBalloonText", "Font", 0, "4144", "Change default text decoration for class UITransBalloonText", false);
+
+registerPatch(386, "ChangeUITransBalloonTextFillColor", "Change default border color for class UITransBalloonText", "Color", 0, "4144", "Change default border color for class UITransBalloonText", false);
+
+registerPatch(387, "SetAutoFollowStopDelay", "Change auto follow stop delay", "Custom", 0, "4144", "Can change auto follow disappear delay.", false);
+
+registerPatch(388, "ResizeFontL", "Change all fonts logical size to fixed value", "Size", 0, "4144", "Resizes all fonts logical height to fixed value", false);
+
+registerPatch(389, "ResizeFontSizeMinL", "Limit all fonts logical minimal size", "Size", 0, "4144", "Limit all fonts logical minimal size", false);
+
+registerPatch(390, "ResizeFontSizeMaxL", "Limit all fonts logical maximum size", "Size", 0, "4144", "Limit all fonts logical maximum size", false);
+
+registerPatch(391, "ResizeFontSizeAdjL", "Adjust all fonts logical size", "Size", 0, "4144", "Adjust all fonts logical size", false);
+
+registerPatch(392, "SetFontWeight", "Set all fonts weight to fixed value", "Font", 0, "4144", "Set all fonts weight to fixed value", false);
+
+registerPatch(393, "SetBoldFontWeight", "Change all bold fonts weight to fixed value", "Font", 0, "4144", "Change all bold fonts weight to fixed value", false);
+
+registerPatch(394, "SetNormalFontWeight", "Change all normal fonts weight to fixed value", "Font", 0, "4144", "Change all normal (regular) fonts weight to fixed value", false);
+
+registerPatch(395, "SetFontWeightAdjust", "Adjust all fonts weight to fixed value", "Size", 0, "4144", "Adjust all fonts weight to fixed value", false);
+
+registerPatch(396, "SetFontCharset", "Change all fonts charset", "Font", 0, "4144", "Change all fonts charset", false);
+
+registerPatch(397, "SetFontName", "Change all fonts face", "Font", 0, "4144", "Change all fonts face name", false);
+
+registerPatch(398, "HideDebugger", "Hide debugger", "Hacks", 0, "4144", "Hide presence of debugger (IsDebuggerPresent)", false);
+
+registerPatch(399, "SetPriorityClassHigh", "Set high priority class for active client", "Perf", 0, "4144", "Set high priority class for active client window", false);
+
+registerPatch(400, "SetPriorityClassNormal", "Set normal priority class for inactive client", "Perf", 0, "4144", "Set normal priority class for inactive client window", false);
+
+registerPatch(401, "ChangeSleep0", "Add input delay", "Perf", 0, "4144", "Add input delay in Sleep", false);
+
+registerPatch(402, "ChangeSleep1", "Change Sleep delay in game loop", "Perf", 0, "4144", "Change Sleep delay in game loop", false);
+
+registerPatch(403, "IgnoreMostErrors", "Ignore most errors", "Error", 0, "4144", "Ignore most errors (hide all message boxes)", false);
+
+registerPatch(404, "UseBorderlessFullScreen", "Use borderless mode in full screen", "Resolution", 0, "4144", "Use borderless mode in full screen", true);
+
+registerPatch(405, "LimitMinResolutionWidth", "Limit minimal width in all resolutions", "Resolution", 0, "4144", "Limit minimal width in all screen resolutions", false);
+
+registerPatch(406, "LimitMinResolutionHeight", "Limit minimal height in all resolutions", "Resolution", 0, "4144", "Limit minimal height in all screen resolutions", false);
+
+registerPatch(407, "LimitMaxResolutionWidth", "Limit maximum width in all resolutions", "Resolution", 0, "4144", "Limit maximum width in all screen resolutions", false);
+
+registerPatch(408, "LimitMaxResolutionHeight", "Limit maximum height in all resolutions", "Resolution", 0, "4144", "Limit maximum height in all screen resolutions", false);
+
+registerPatch(409, "AddCloseButton", "Add close button to game window", "Window", 0, "4144", "Add close button and menu to game window", false);
+
+registerPatch(410, "UseSmallTitleBar", "Use small titlebar in game window", "Window", 0, "4144", "Use small title bar in game window", false);
+
+registerPatch(411, "ShowErrorsIcon", "Show icon with error messages", "Error", 0, "4144", "Show icon with error message boxes", false);
+
+registerPatch(412, "ReplaceErrorMessageToSound", "Plays sound instead of error message", "Error", 0, "4144", "Plays sound instead of error message", false);
+
+registerPatch(413, "ChangeCaptchaImageDecompressionSize", "Fix captcha decompression buffer size", "Data", 0, "Asheraf", "Changes the default zlib decompression size for captcha images.", false);
+
+registerPatch(414, "FixNewCharCreationPos", "Fix default position of new char create window", "Fix", 0, "4144", "Fix default position of new char create window", false);
+
+registerPatch(415, "RemoveNewCharCreationBluredBackground", "Remove blured background from new char creation window", "Fix", 0, "4144", "Remove blured background from new char creation window", false);
+
+registerPatch(416, "FixTetraVortex", 'Fix Tetra Vortex', 'UI', 0, "sanosan33, Neo", 'Fixes the black screen animation issue of tetra vortex', false);
+
+registerPatch(417, "DisablePasswordEncryption", 'Disable password encryption for lang types 4, 7', 'Login', 0, "Jchcc, 4144", 'Disable password encryption for lang types 4, 7', false);
+
+registerPatch(418, "HideReputationButton", "Hide reputation button", "UI", 12, "4144", "Hide reputation button", false);
+
+registerPatch(419, "DisableOfficialCustomFonts", "Disable Official Custom Fonts", "UI", 0, "4144", "This option disable Official Custom Fonts (eot files int data folder) on all LangType", false);
+
+registerPatch(420, "FixCameraAnglesCustom", "Fix Camera Angles (custom)", "UI", 2, "4144", "Unlocks the possible camera angles to give more freedom of placement. This enable custom camera angle", false);
+
+registerPatch(421, "ChangeRouletteGoldLimit", "Change minimal gold amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
+registerPatch(422, "ChangeRouletteSilverLimit", "Change minimal silver amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
+registerPatch(423, "ChangeRouletteBronzeLimit", "Change minimal bronze amount for start roulette", "Roulette", 0, "4144", "Also need change this limit in emulator side", false);
+
+
+registerPatch(500, "CustomWindowTitleHex", "Custom Window Title Hex", "UI", 0, "Jian", "Changes window title use Hex code. Normally, the window title is '52 61 67 6E 61 72 6F 6B' (Ragnarok)", false);
+
+registerPatch(501, "MvpItemIdenfifyName", "Mvp Drop Item Use Identified Name", "Fix", 0, "Jchcc", "Change Mvp drop item use identified name", false);
 
 GlobalPostInit();

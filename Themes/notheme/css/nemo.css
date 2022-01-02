@@ -1,0 +1,39 @@
+QScrollBar:left-arrow:horizontal {
+    background-image: url(Themes/notheme/icons/arrowleft.png);
+}
+
+QScrollBar:left-arrow:horizontal:pressed {
+    background-image: url(Themes/notheme/icons/arrowleftpress.png);
+}
+
+QScrollBar::right-arrow:horizontal {
+    background-image: url(Themes/notheme/icons/arrowright.png);
+}
+
+QScrollBar::right-arrow:horizontal:pressed {
+    background-image: url(Themes/notheme/icons/arrowrightpress.png);
+}
+
+QScrollBar::up-arrow:vertical {
+    background-image: url(Themes/notheme/icons/arrowup.png);
+}
+
+QScrollBar::up-arrow:vertical:pressed {
+    background-image: url(Themes/notheme/icons/arrowuppress.png);
+}
+
+QScrollBar::down-arrow:vertical {
+    background-image: url(Themes/notheme/icons/arrowdown.png);
+}
+
+QScrollBar::down-arrow:vertical:pressed {
+    background-image: url(Themes/notheme/icons/arrowdownpress.png);
+}
+
+QCheckBox::indicator::unchecked {
+    image:url(Themes/notheme/icons/unchecked.png);
+}
+
+QCheckBox::indicator::checked {
+    image:url(Themes/notheme/icons/checked.png);
+}

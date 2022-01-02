@@ -5,62 +5,53 @@
 
 function DisableAutofollow()
 {
-
-  //Step 1 - Find the assignment statement
-  var code =
-    " 6A 01"             //PUSH 1
-  + " 6A 1A"             //PUSH 1A
-  + " 8B CE"             //MOV ECX, ESI
-  + " FF AB"             //CALL reg32_A
-  + " 8B AB AB AB 00 00" //MOV reg32_B, DWORD PTR DS:[reg32_C+const]
-  + " A3 AB AB AB 00"    //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], EAX ;in this instance reg32_B = EAX
-  ;
-  var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-
-  if (offsets.length === 0)
-  {
-    code = code.replace(" FF AB", " FF AB AB"); //CALL DWORD PTR DS:[reg32_C + x]
-    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  }
-
-  if (offsets.length === 0)
-  { // 2017 clients [Secret]
-    code = code.replace(" A3 AB AB AB 00", " A3 AB AB AB AB");
-    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  }
-
-  if (offsets.length === 0)
-  {
-    code = code.replace(" A3", " 89 AB"); //MOV DWORD PTR DS:[CGameMode::m_lastLockOnPcGid], reg32_B
-    offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
-  }
-
-  if (offsets.length === 0)
-    return "Failed in Step 1";
-
-  //Step 2 - NOP out the assignment for the correct match (pattern might match more than one location)
-  var found = false;
-  for (var i = 0; i < offsets.length; i++)
-  {
-    var offset = offsets[i] + code.hexlength() - 4;
-    var opcode = exe.fetchUByte(offset);
-    if (opcode === 0xA3)
-    { //MOV from EAX
-      exe.replace(offset - 1, " 90 90 90 90 90");
-      found = true;
-      break;
+    if (table.get(table.m_lastLockOnPcGid) === 0)
+    {
+        return "Auto follow not found";
     }
-    else if (opcode & 0xC7 === 0x5)
-    { //MOV from other registers (mode bits should be 0 & r/m bits should be 5)
-      exe.replace(offset - 2, " 90 90 90 90 90 90");
-      found = true;
-      break;
-    }
-  }
-  if (found === false)
-  {
-    return "Found nothing to patch";
-  }
+    var lastLockOnPcGid = table.getHex4(table.m_lastLockOnPcGid);
 
-  return true;
+    //Step 1 - Find the assignment statement
+    var code =
+        "8B 87 ?? ?? ?? 00 " +        // 0 mov eax, [edi+CGameActor.m_aid]
+        "A3 " + lastLockOnPcGid;      // 6 mov m_lastLockOnPcGid, eax
+    var starOffset = 6;
+    var endOffset = 11;
+
+    var offsets = pe.findCodes(code);
+
+    if (offsets.length === 0)
+    {
+        code =
+            "8B 8B ?? ?? ?? 00 " +        // 0 mov ecx, [ebx+CGameActor.m_aid]
+            "89 0D " + lastLockOnPcGid;   // 6 mov m_lastLockOnPcGid, ecx
+        starOffset = 6;
+        endOffset = 12;
+
+        offsets = pe.findCodes(code);
+    }
+
+    if (offsets.length === 0)
+    {
+        code =
+            "8B 83 ?? ?? 00 00 " +        // 0 mov eax, [ebx+CGameActor.m_aid]
+            "A3 " + lastLockOnPcGid;      // 6 mov m_lastLockOnPcGid, eax
+        starOffset = 6;
+        endOffset = 11;
+
+        offsets = pe.findCodes(code);
+    }
+
+    if (offsets.length === 0)
+        return "Failed in Step 1";
+
+    //Step 2 - NOP out the assignment for the correct match (pattern might match more than one location)
+    var found = false;
+    for (var i = 0; i < offsets.length; i++)
+    {
+        var offset = offsets[i];
+        pe.setNopsRange(offset + starOffset, offset + endOffset);
+    }
+
+    return true;
 }

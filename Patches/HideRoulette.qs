@@ -12,18 +12,18 @@ function HideRoulette()
   + " E8"              //CALL UIWindowMgr::MakeWindow
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Reference Code missing";
 
   offset += code.hexlength() + 4;
 
   //Step 2a - Check if the Succeding operation is Roulette UIWindow creation or not
-  if (exe.fetchDWord(offset+1) !== 0x11D)
+  if (pe.fetchDWord(offset+1) !== 0x11D)
     return "Patch Cancelled - Roulette is already hidden";
 
   //Step 2b - If yes JMP over it
-  exe.replace(offset, "EB 0D", PTYPE_HEX);//Skip over rest of the PUSH followed by ECX assignment and Function call
+  pe.replaceHex(offset, "EB 0D");  // Skip over rest of the PUSH followed by ECX assignment and Function call
   return true;
 }
 
@@ -32,5 +32,5 @@ function HideRoulette()
 //======================================================//
 function HideRoulette_()
 {
-  return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\roullette\\RoulletteIcon.bmp", RAW) !== -1);
+  return (pe.stringRaw("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\basic_interface\\roullette\\RoulletteIcon.bmp") !== -1);
 }

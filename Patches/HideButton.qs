@@ -145,6 +145,11 @@ function HideAdventurerAgencyButton()
     return HideButton2("adventurerAgency");
 }
 
+function HideReputationButton()
+{
+    return HideButton2("repute");
+}
+
 //##########################################################
 //# Purpose: Find the first match amongst the src prefixes #
 //#          and replace it with corresponding tgt prefix  #
@@ -152,19 +157,18 @@ function HideAdventurerAgencyButton()
 
 function HideButtonOld(src, tgt)
 {
-
-    //Step 1a - Ensure both are lists/arrays
+    consoleLog("Step 1a - Ensure both are lists/arrays");
     if (typeof(src) === "string")
         src = [src];
 
     if (typeof(tgt) === "string")
         tgt = [tgt];
 
-    //Step 1b - Loop through and find first match
+    consoleLog("Step 1b - Loop through and find first match");
     var offset = -1;
     for (var i = 0; i < src.length; i++)
     {
-        offset = exe.findString(src[i], RAW, false);
+        offset = pe.halfStringRaw(src[i]);
         if (offset !== -1)
             break;
     }
@@ -172,8 +176,8 @@ function HideButtonOld(src, tgt)
     if (offset === -1)
         return "Failed in Step 1";
 
-    //Step 2 - Replace with corresponding value in tgt
-    exe.replace(offset, tgt[i], PTYPE_STRING);
+    consoleLog("Step 2 - Replace with corresponding value in tgt");
+    pe.replace(offset, tgt[i]);
 
     return true;
 }
@@ -192,36 +196,36 @@ function HideButton2(prefix)
 //#######################################################################
 function HideButtonNew(reference, prefix)
 {
-    //Step 1a - Find the address of the reference prefix "info" (needed since some prefixes are matching multiple areas)
-    var refAddr = exe.findString(reference, RVA);
+    consoleLog("Step 1a - Find the address of the reference prefix \"info\" (needed since some prefixes are matching multiple areas)");
+    var refAddr = pe.stringVa(reference);
     if (refAddr === -1)
         return "Failed in Step 1 - info missing";
 
-    //Step 1b - Find the address of the string
-    var strAddr = exe.findString(prefix, RVA);
+    consoleLog("Step 1b - Find the address of the string");
+    var strAddr = pe.stringVa(prefix);
     if (strAddr === -1)
         return "Failed in Step 1 - Prefix missing";
 
-    //Step 2a - Find assignment of "info" inside UIBasicWnd::OnCreate
+    consoleLog("Step 2a - Find assignment of \"info\" inside UIBasicWnd::OnCreate");
     var suffix = " C7";
-    var offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
+    var offset = pe.findCode(refAddr.packToHex(4) + suffix);
 
     if (offset === -1)
     {
         suffix = " 8D";
-        offset = exe.findCode(refAddr.packToHex(4) + suffix, PTYPE_HEX, false);
+        offset = pe.findCode(refAddr.packToHex(4) + suffix);
     }
 
     if (offset === -1)
         return "Failed in Step 2 - info assignment missing";
 
-    //Step 2b - Find the assignment of prefix after "info" assignment
-    offset = exe.find(strAddr.packToHex(4) + suffix, PTYPE_HEX, false, "\xAB", offset + 5, offset + 0x550);
+    consoleLog("Step 2b - Find the assignment of prefix after \"info\" assignment");
+    offset = pe.find(strAddr.packToHex(4) + suffix, offset + 5, offset + 0x570);
     if (offset === -1)
         return "Failed in Step 2 - Prefix assignment missing";
 
-    //Step 2c - Update the address to point to NULL
-    exe.replaceDWord(offset, strAddr + prefix.length);
+    consoleLog("Step 2c - Update the address to point to NULL");
+    pe.replaceDWord(offset, strAddr + prefix.length);
 
     return true;
 }
@@ -231,7 +235,7 @@ function HideButtonNew(reference, prefix)
 //#######################################################################
 function UseNewIcons()
 {
-    return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\menu_icon\\bt_%s.bmp") !== -1);
+    return (pe.stringVa("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\menu_icon\\bt_%s.bmp") !== -1);
 }
 
 //========================================================//
@@ -240,75 +244,80 @@ function UseNewIcons()
 
 function HideRodex_()
 {
-    return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\mail", RAW) !== -1 || (UseNewIcons() && exe.findString("navigation") !== -1));
+    return (pe.stringRaw("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\mail") !== -1 || (UseNewIcons() && pe.stringVa("navigation") !== -1));
 }
 
 function HideAchieve_()
 {
-    return (exe.findString("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\achievement", RAW) !== -1 || (UseNewIcons() && exe.findString("achievement") !== -1));
+    return (pe.stringRaw("\xC0\xAF\xC0\xFA\xC0\xCE\xC5\xCD\xC6\xE4\xC0\xCC\xBD\xBA\\RO_menu_icon\\achievement") !== -1 || (UseNewIcons() && pe.stringVa("achievement") !== -1));
 }
 
 function HideSNSButton_()
 {
-    return (exe.findString("sns") !== -1);
+    return (pe.stringVa("sns") !== -1);
 }
 
 function HideKeyboardButton_()
 {
-    return (exe.findString("keyboard") !== -1);
+    return (pe.stringVa("keyboard") !== -1);
 }
 
 function HideStatusButton_()
 {
-    return (exe.findString("status") !== -1);
+    return (pe.stringVa("status") !== -1);
 }
 
 function HideEquipButton_()
 {
-    return (exe.findString("equip") !== -1);
+    return (pe.stringVa("equip") !== -1);
 }
 
 function HideItemButton_()
 {
-    return (exe.findString("item") !== -1);
+    return (pe.stringVa("item") !== -1);
 }
 
 function HideSkillButton_()
 {
-    return (exe.findString("skill") !== -1);
+    return (pe.stringVa("skill") !== -1);
 }
 
 function HidePartyButton_()
 {
-    return (exe.findString("party") !== -1);
+    return (pe.stringVa("party") !== -1);
 }
 
 function HideGuildButton_()
 {
-    return (exe.findString("guild") !== -1);
+    return (pe.stringVa("guild") !== -1);
 }
 
 function HideOptionButton_()
 {
-    return (exe.findString("option") !== -1);
+    return (pe.stringVa("option") !== -1);
 }
 
 function HideTipButton_()
 {
-    return (exe.findString("tip") !== -1);
+    return (pe.stringVa("tip") !== -1);
 }
 
 function HideShopButton_()
 {
-    return (exe.findString("shop") !== -1);
+    return (pe.stringVa("shop") !== -1);
 }
 
 function HideAttendanceButton_()
 {
-    return (exe.findString("attendance") !== -1);
+    return (pe.stringVa("attendance") !== -1);
 }
 
 function HideAdventurerAgencyButton_()
 {
-    return (exe.findString("adventurerAgency") !== -1);
+    return (pe.stringVa("adventurerAgency") !== -1);
+}
+
+function HideReputationButton_()
+{
+    return (pe.stringVa("repute") !== -1);
 }

@@ -25,7 +25,7 @@ function FixHomunculusAI()
         "5D " +                 // POP EBP
         "C2 04 00 ";            // RET 04
 
-    var offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in step 1: function missing.";
@@ -34,7 +34,7 @@ function FixHomunculusAI()
     offset = offset + 0x1D;
 
     consoleLog("Step 3 - Replace (XOR AL,AL) with (MOV AL,01)");
-    exe.replace(offset, "B0 01 ", PTYPE_HEX);
+    pe.replaceHex(offset, "B0 01 ");
 
     consoleLog("Step 4 - Remove target cursor for all targets");
     var code =
@@ -49,7 +49,7 @@ function FixHomunculusAI()
         "6A 00 " +          // PUSH 00
         "68 86 00 00 00 ";  // PUSH 86
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, false);
+    var offsets = pe.findCodes(code);
 
     if (offsets.length !== 2)
     {
@@ -60,7 +60,7 @@ function FixHomunculusAI()
             "6A 00 " +          // PUSH 00
             "68 86 00 00 00 ";  // PUSH 86
 
-        offsets = exe.findCodes(code, PTYPE_HEX, false);
+        offsets = pe.findCodes(code);
     }
 
     if (offsets.length !== 2)
@@ -68,13 +68,13 @@ function FixHomunculusAI()
 
     for (var i = 0; i < offsets.length; i++)
     {
-        offset = exe.find("84 C0 74 AB ", PTYPE_HEX, true, "\xAB", offsets[i]-8, offsets[i]);
+        offset = pe.find("84 C0 74 ?? ", offsets[i] - 8, offsets[i]);
 
         if (offset === -1)
             return "Failed in Step 4.1";
 
         offset += 2;
-        exe.replace(offset , "EB ", PTYPE_HEX);
+        pe.replaceByte(offset , 0xEB);
     }
 
     return true;

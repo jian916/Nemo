@@ -1,62 +1,66 @@
+//
+// Copyright (C) 2018-2021  Andrei Karas (4144)
+//
+// Hercules is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
 //########################################################################
 //# Purpose: Hijack CreateFontA function calls to change the pushed Font #
 //#          height before Jumping to actual CreateFontA                 #
 //########################################################################
 
+function CreateFontAHook_imp(name, text, def, min, max)
+{
+    var value = exe.getUserInput(name, XTYPE_DWORD,
+        _("Number Input"),
+        text,
+        def, min, max);
+
+    var vars = {
+        "value": value
+    }
+
+    var hooksList = hooks.initImportHooks("CreateFontA", "GDI32.dll");
+    if (hooksList.length === 0)
+        throw "CreateFontA call usages not found";
+    hooksList.addFilePre("", vars);
+    hooksList.validate();
+
+    return true;
+}
+
 function ResizeFont()
 {
+    return CreateFontAHook_imp("$newFontHgt", _("Enter fixed abs font height"), 10, 0, 1000);
+}
 
-  //Step 1a - Find CreateFontA function address
-  var offset = GetFunction("CreateFontA", "GDI32.dll");
-  if (offset === -1)
-    return "Failed in Step 1 - CreateFontA not found";
-
-  //Step 1b - Find its references i.e. all called locations
-  var offsets = exe.findCodes(" FF 15" + offset.packToHex(4), PTYPE_HEX, false); //CALL DWORD PTR DS:[<&GDI32.CreateFontA>]
-  if (offsets.length === 0)
-    return "Failed in Step 1 - CreateFontA calls missing";
-
-  //Step 2a - Construct the Pseudo-CreateFontA function which changes the Font Height
-  var code =
-    GenVarHex(1)                  //This will contain RVA of 4 bytes later
-  + " C7 44 E4 04" + GenVarHex(2) //MOV DWORD PTR SS:[ESP+4], newHeight
-  + " FF 25" + GenVarHex(3)       //JMP DWORD PTR DS:[<&GDI32.CreateFontA>]
-  ;
-
-  var csize = code.hexlength();
-
-  //Step 2b - Allocate space for the function.
-  var free = exe.findZeros(csize);
-  if (free === -1)
-    return "Failed in Step 2 - Not enough space";
-
-  var freeRva = exe.Raw2Rva(free);
-
-  //Step 2c - Get the new Font height
-  var newHeight = exe.getUserInput("$newFontHgt", XTYPE_BYTE, _("Number Input"), _("Enter the new Font Height(1-127) - snaps to closest valid value"), 10, 1, 127);
-  if (newHeight === 10)
-    return "Patch Cancelled - New value is same as old";
-
-  //Step 2d - Fill in the Blanks
-  code = ReplaceVarHex(code, 1, freeRva + 4);
-  code = ReplaceVarHex(code, 2, -newHeight);
-  code = ReplaceVarHex(code, 3, offset);
-
-  //Step 3a - Insert it
-  exe.insert(free, csize, code, PTYPE_HEX);
-
-  for (var i = 0; i < offsets.length; i++)
+function ResizeFontL()
 {
-    //Step 3b - Replace CreateFontA calls with call to freeRva
-    exe.replaceDWord(offsets[i] + 2, freeRva);
-  }
+    return CreateFontAHook_imp("$newFontHgtL", _("Enter fixed logical font height"), 10, 0, 1000);
+}
 
-  //Step 3c - Look for any JMP to CreateFontA calls as a failsafe
-  offset = exe.findCode(" FF 25" + offset.packToHex(4), PTYPE_HEX, false);
+function ResizeFontSizeMinL()
+{
+    return CreateFontAHook_imp("$newFontSizeMinL", _("Enter minimal logical font height"), 10, 0, 1000);
+}
 
-  //Step 3d - Same step as 3b
-  if (offset !== -1)
-    exe.replaceDWord(offset + 2, freeRva);
+function ResizeFontSizeMaxL()
+{
+    return CreateFontAHook_imp("$newFontSizeMaxL", _("Enter maximum logical font height"), 10, 0, 1000);
+}
 
-  return true;
+function ResizeFontSizeAdjL()
+{
+    return CreateFontAHook_imp("$newFontSizeAdjL", _("Enter number for adjust font size height (-100, +100)"), 10, -1000, 1000);
 }

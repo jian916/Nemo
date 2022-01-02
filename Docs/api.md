@@ -1,0 +1,18 @@
+# Api reference
+
+- [Objects](api/objects.md)
+  - [alloc](api/alloc.md)
+  - [asm](api/asm.md)
+  - [exe](api/exe.md)
+  - [hooks](api/hooks.md)
+  - [imports](api/imports.md)
+  - [lua](api/lua.md)
+  - [macroasm](api/macroasm.md)
+  - [patch](api/patch.md)
+  - [pe](api/pe.md)
+  - [table](api/table.md)
+- [Classes](api/classes.md)
+  - [BinFile](api/binfile.md)
+  - [TextFile](api/textfile.md)
+- [Vars](api/vars.md)
+- [Functions](api/functions.md)

@@ -23,34 +23,34 @@ function FixCharsetForFonts()
 {
     //Find the code inside DrawDC::SetFont function
     var code =
-        "89 56 AB " +                 // 0 mov [esi+DrawDC.m_fontType], edx
-        "89 4E AB " +                 // 3 mov [esi+DrawDC.m_fontHeight], ecx
+        "89 56 ?? " +                 // 0 mov [esi+DrawDC.m_fontType], edx
+        "89 4E ?? " +                 // 3 mov [esi+DrawDC.m_fontHeight], ecx
         "85 FF " +                    // 6 test edi, edi
         "75 0A " +                    // 8 jnz short loc_479E75
-        "A1 AB AB AB AB " +           // 10 mov eax, g_fontCharSet
+        "A1 ?? ?? ?? ?? " +           // 10 mov eax, g_fontCharSet
         "83 FA 14 " +                 // 15 cmp edx, 14h
         "7D 07 ";                     // 18 jge short loc_479E7C
     var gfontCharSetOfsset = 11;
     var fontTypeOffset = [2, 1];
     var fontHeightOffset = [5, 1];
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1) //Old Clients
     {
         code =
             "85 FF " +                    // 0 test edi, edi
-            "0F 85 AB 00 00 00 " +        // 2 jnz loc_42CBF0
+            "0F 85 ?? 00 00 00 " +        // 2 jnz loc_42CBF0
             "83 FA 14 " +                 // 8 cmp edx, 14h
-            "0F 8C AB 00 00 00 " +        // 11 jl loc_42CBF0
-            "89 56 AB " +                 // 17 mov [esi+DrawDC.m_fontType], edx
-            "89 4E AB " +                 // 20 mov [esi+DrawDC.m_fontHeight], ecx
-            "A1 AB AB AB AB ";            // 23 mov eax, g_fontCharSet
+            "0F 8C ?? 00 00 00 " +        // 11 jl loc_42CBF0
+            "89 56 ?? " +                 // 17 mov [esi+DrawDC.m_fontType], edx
+            "89 4E ?? " +                 // 20 mov [esi+DrawDC.m_fontHeight], ecx
+            "A1 ?? ?? ?? ?? ";            // 23 mov eax, g_fontCharSet
         var gfontCharSetOfsset = 24;
         var fontTypeOffset = [19, 1];
         var fontHeightOffset = [22, 1];
 
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
     if (offset === -1)
         return "Failed in Step 1";
@@ -60,10 +60,10 @@ function FixCharsetForFonts()
     logVaVar("g_fontCharSet", offset, gfontCharSetOfsset);
 
     // fetch address of g_fontCharSet
-    var cTable = exe.fetchHex(offset + gfontCharSetOfsset, 4);
+    var cTable = pe.fetchHex(offset + gfontCharSetOfsset, 4);
 
     // Find the patch point, should be MOV EAX,[EDX*4+g_fontCharSet]
-    offset = exe.findCode(" 8B 04 95" + cTable, PTYPE_HEX, false);
+    offset = pe.findCode(" 8B 04 95" + cTable);
 
     if (offset === -1)
         return "Failed in Step 1b";
@@ -86,7 +86,7 @@ function FixCharsetForFonts()
     + " 0F B6 87" + GenVarHex(1)                //MOVZX EAX,BYTE PTR [EDI + newCharSetTable]
     + " EB 07"                                  //JMP short
     + " 8B 04 95" + cTable                      //MOV EAX,[EDX*4+cTable]
-    + " 68" + exe.Raw2Rva(retAdd).packToHex(4)  //PUSH retAdd
+    + " 68" + pe.rawToVa(retAdd).packToHex(4)  //PUSH retAdd
     + " C3"                                     //RET
     ;
 
@@ -98,16 +98,16 @@ function FixCharsetForFonts()
     if (free === -1)
         return "Failed in Step 3 - No enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     ins = ReplaceVarHex(ins, 1, freeRva);
 
-    var jump = exe.Raw2Rva(free + 21) - exe.Raw2Rva(offset + 5);
+    var jump = pe.rawToVa(free + 21) - pe.rawToVa(offset + 5);
 
     code = " E9" + jump.packToHex(4) + " 90 90";
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
     return true;
 }

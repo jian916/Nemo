@@ -7,7 +7,7 @@ function EnableMultipleGRFsV2()
 { //The initial steps are same as EnableMultipleGRFs. Maybe we can make it shared?
 
     //Step 1a - Find data.grf location
-    var grf = exe.findString("data.grf", RVA).packToHex(4);
+    var grf = pe.stringHex4("data.grf");
 
     //Step 1b - Find its reference
     var code =
@@ -15,7 +15,7 @@ function EnableMultipleGRFsV2()
       + getEcxFileMgrHex() //MOV ECX, OFFSET g_fileMgr
     ;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     var setEcxOffset = 5;
     var pushOffset = 0;
     var addpackOffset = -1;
@@ -25,10 +25,10 @@ function EnableMultipleGRFsV2()
         var code =
             getEcxFileMgrHex() +          // 0 mov ecx, offset g_FileMgr
             "85 C0 " +                    // 5 test eax, eax
-            "0F 95 05 AB AB AB AB " +     // 7 setnz byte ptr g_session+4D8Eh
+            "0F 95 05 ?? ?? ?? ?? " +     // 7 setnz byte ptr g_session+4D8Eh
             "68 " + grf +                 // 14 push offset aData_grf
             "E8 ";                        // 19 call CFileMgr_AddPak
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
         setEcxOffset = 0;
         pushOffset = 14;
         fnoffset = offset;
@@ -45,37 +45,37 @@ function EnableMultipleGRFsV2()
     if (addpackOffset === -1)
     {
         code =
-            " E8 AB AB AB AB"    //CALL CFileMgr::AddPak()
-          + " 8B AB AB AB AB 00" //MOV reg32, DWORD PTR DS:[addr1]
-          + " A1 AB AB AB 00"    //MOV EAX, DWORD PTR DS:[addr2]
+            " E8 ?? ?? ?? ??"    //CALL CFileMgr::AddPak()
+          + " 8B ?? ?? ?? ?? 00" //MOV reg32, DWORD PTR DS:[addr1]
+          + " A1 ?? ?? ?? 00"    //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        var fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        var fnoffset = pe.find(code, offset + 10, offset + 40);
         var addpackOffset = 1;
     }
 
     if (fnoffset === -1)
     { //VC9 Client
         code =
-            " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-          + " A1 AB AB AB 00" //MOV EAX, DWORD PTR DS:[addr2]
+            " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+          + " A1 ?? ?? ?? 00" //MOV EAX, DWORD PTR DS:[addr2]
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
     }
 
     if (fnoffset === -1)
     { //Older Clients
         code =
-            " E8 AB AB AB AB" //CALL CFileMgr::AddPak()
-          + " BF AB AB AB 00" //MOV EDI, OFFSET addr2
+            " E8 ?? ?? ?? ??" //CALL CFileMgr::AddPak()
+          + " BF ?? ?? ?? 00" //MOV EDI, OFFSET addr2
         ;
-        fnoffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset + 10, offset + 40);
+        fnoffset = pe.find(code, offset + 10, offset + 40);
     }
 
     if (fnoffset === -1)
         return "Failed in Step 2";
 
     //Step 2c - Extract AddPak function address
-    var AddPak = exe.Raw2Rva(fnoffset + addpackOffset + 4) + exe.fetchDWord(fnoffset + addpackOffset);
+    var AddPak = pe.rawToVa(fnoffset + addpackOffset + 4) + pe.fetchDWord(fnoffset + addpackOffset);
 
     //Step 3a - Get the INI file from user to read
     var f = new TextFile();
@@ -126,7 +126,7 @@ function EnableMultipleGRFsV2()
     if (free === -1)
         return "Failed in Step 4 - Not enough free space";
 
-    var freeRva = exe.Raw2Rva(free);
+    var freeRva = pe.rawToVa(free);
 
     //Step 4d - Starting offsets to replace GenVarHex with
     var o2 = freeRva + grfs.length * template.hexlength() + 2;
@@ -144,16 +144,16 @@ function EnableMultipleGRFsV2()
     code += strcode.toHex();
 
     //Step 4f - Create a call to the free space that was found before.
-    exe.replace(offset + pushOffset, "B9", PTYPE_HEX);//Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
-    exe.replaceDWord(fnoffset + addpackOffset, freeRva - exe.Raw2Rva(fnoffset + addpackOffset + 4));
+    pe.replaceByte(offset + pushOffset, 0xB9);  // Little trick to avoid changing 10 bytes - apparently the push gets nullified in the original
+    pe.replaceDWord(fnoffset + addpackOffset, freeRva - pe.rawToVa(fnoffset + addpackOffset + 4));
 
     //Step 5 - Insert everything.
     exe.insert(free, size, code, PTYPE_HEX);
 
     //Step 6 - Find offset of rdata.grf (if present zero it out)
-    offset = exe.findString("rdata.grf", RAW);
+    offset = pe.stringRaw("rdata.grf");
     if (offset !== -1)
-        exe.replace(offset, "00", PTYPE_HEX);
+        pe.replaceByte(offset, 0);
 
     return true;
 }

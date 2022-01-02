@@ -1,33 +1,33 @@
 ## Nemo Ragexe Diff From [ROLab](https://rolab.org)
-> ¡c≈È§∆™∫ Nemo Ragexe Diff •— https://rolab.org ¶@¶P∫˚≈@  
-> ®œ•Œ [MStr3am Neo Exe Fork](https://github.com/MStr3am/NEMO) ¨∞∞Ú©≥, §∫Æe¨∞ @MStr3am (NeoMind) ™©≈v©“¶≥  
-> ®√¶P®B [Secret Fork](https://github.com/secretdataz/NEMO) ßÛ∑s, ≥°§¿§∫Æe¨∞ @secretdataz ™©≈v©“¶≥  
-> §Œ¶P®B [4144 Fork](https://gitlab.com/4144/Nemo) ßÛ∑s, ≥°§¿§∫Æe¨∞ @4144 ™©≈v©“¶≥  
-> •H§Œ©“¶≥¶@¶P•I•XßV§O™∫πŸ¶Ò  
+> ÁπÅÈ´îÂåñÁöÑ Nemo Ragexe Diff Áî± https://rolab.org ÂÖ±ÂêåÁ∂≠Ë≠∑  
+> ‰ΩøÁî® [MStr3am Neo Exe Fork](https://github.com/MStr3am/NEMO) ÁÇ∫Âü∫Â∫ï, ÂÖßÂÆπÁÇ∫ @MStr3am (NeoMind) ÁâàÊ¨äÊâÄÊúâ  
+> ‰∏¶ÂêåÊ≠• [Secret Fork](https://github.com/secretdataz/NEMO) Êõ¥Êñ∞, ÈÉ®ÂàÜÂÖßÂÆπÁÇ∫ @secretdataz ÁâàÊ¨äÊâÄÊúâ  
+> ÂèäÂêåÊ≠• [4144 Fork](https://gitlab.com/4144/Nemo) Êõ¥Êñ∞, ÈÉ®ÂàÜÂÖßÂÆπÁÇ∫ @4144 ÁâàÊ¨äÊâÄÊúâ  
+> ‰ª•ÂèäÊâÄÊúâÂÖ±Âêå‰ªòÂá∫Âä™ÂäõÁöÑÂ§•‰º¥  
 
-### ´e®•
-> •—©Û Nemo ™∫∂}µo™Ã MStr3am §ŒßÛ∑s™Ã Secret ¨“§£¶AßÛ∑s  
-> µn§Jæπ§S§£¬_™∫±¿≥Ø•X∑s, •H¶‹©Û Nemo ≥°§¿ Diff µL™k®œ•Œ  
-> ¨Gµo∞_¶π±MÆ◊, ∫…∑L¡°§ß§O∞µ§@®«≠◊•ø∏Ú¡c≈È§∆  
-> ®√•— ROLab ™∫πŸ¶Ò¶@¶P∫˚≈@  
+### ÂâçË®Ä
+> Áî±Êñº Nemo ÁöÑÈñãÁôºËÄÖ MStr3am ÂèäÊõ¥Êñ∞ËÄÖ Secret ÁöÜ‰∏çÂÜçÊõ¥Êñ∞  
+> ÁôªÂÖ•Âô®Âèà‰∏çÊñ∑ÁöÑÊé®Èô≥Âá∫Êñ∞, ‰ª•Ëá≥Êñº Nemo ÈÉ®ÂàÜ Diff ÁÑ°Ê≥ï‰ΩøÁî®  
+> ÊïÖÁôºËµ∑Ê≠§Â∞àÊ°à, Áõ°ÂæÆËñÑ‰πãÂäõÂÅö‰∏Ä‰∫õ‰øÆÊ≠£Ë∑üÁπÅÈ´îÂåñ  
+> ‰∏¶Áî± ROLab ÁöÑÂ§•‰º¥ÂÖ±ÂêåÁ∂≠Ë≠∑  
 
-### ™¨∫A
-> •ÿ´e´O´˘ßÛ∑s§§  
-> ≈w™Ô¶^≥¯•Ù¶Û∞›√D Issues  
-> ¥£•Ê´ÿƒ≥ Pull requests  
-> ©Œ¨O¶‹ [ROLab](https://rolab.org) Ω◊æ¬∏ﬂ∞›  
-> ¶˝®√§£´O√“Ø‡ßYÆ…™∫±o®Ï¶^¬–©Œ≠◊•ø  
+### ÁãÄÊÖã
+> ÁõÆÂâç‰øùÊåÅÊõ¥Êñ∞‰∏≠  
+> Ê≠°ËøéÂõûÂ†±‰ªª‰ΩïÂïèÈ°å Issues  
+> Êèê‰∫§Âª∫Ë≠∞ Pull requests  
+> ÊàñÊòØËá≥ [ROLab](https://rolab.org) Ë´ñÂ£áË©¢Âïè  
+> ‰ΩÜ‰∏¶‰∏ç‰øùË≠âËÉΩÂç≥ÊôÇÁöÑÂæóÂà∞ÂõûË¶ÜÊàñ‰øÆÊ≠£  
 
-### •Œ≥~
-> •ª§u®„•iß÷≥t≠◊ßÔ§w≤Ê¥ﬂ∞Æ≤b™∫ Ragexe µn§Jæπ
-> * ªsß@µn§Jæπ±–æ« https://rolab.org/thread-40-1-1.html  
-> * ≤Ê¥ﬂµn§Jæπ§U∏¸ https://rolab.org/thread-39-1-1.html  
+### Áî®ÈÄî
+> Êú¨Â∑•ÂÖ∑ÂèØÂø´ÈÄü‰øÆÊîπÂ∑≤ËÑ´ÊÆº‰πæÊ∑®ÁöÑ Ragexe ÁôªÂÖ•Âô®
+> * Ë£Ω‰ΩúÁôªÂÖ•Âô®ÊïôÂ≠∏ https://rolab.org/thread-40-1-1.html  
+> * ËÑ´ÊÆºÁôªÂÖ•Âô®‰∏ãËºâ https://rolab.org/thread-39-1-1.html  
 
-### ™`∑N
-> ®√´D©“¶≥µn§Jæπ (Ragexe) ™©•ª≥£æA•Œ  
-> ∂»∫…•iØ‡™∫§‰¥©©“¶≥™©•ª  
-> ≠Y•X≤{•Ù¶Û∞›√D¨∆¶‹≥y¶®∑l•¢, ®œ•Œ™ÃΩ–¶€¶Ê©”æ·  
-> •ª§H§£≠t•Ù¶Û≥d•Ù  
+### Ê≥®ÊÑè
+> ‰∏¶ÈùûÊâÄÊúâÁôªÂÖ•Âô® (Ragexe) ÁâàÊú¨ÈÉΩÈÅ©Áî®  
+> ÂÉÖÁõ°ÂèØËÉΩÁöÑÊîØÊè¥ÊâÄÊúâÁâàÊú¨  
+> Ëã•Âá∫Áèæ‰ªª‰ΩïÂïèÈ°åÁîöËá≥ÈÄ†ÊàêÊêçÂ§±, ‰ΩøÁî®ËÄÖË´ãËá™Ë°åÊâøÊìî  
+> Êú¨‰∫∫‰∏çË≤†‰ªª‰ΩïË≤¨‰ªª  
 
 ## Game guard files
 For disable game guard Cheat Defender need:
@@ -36,4 +36,4 @@ For disable game guard Cheat Defender need:
 
 ## License
 Original code and binary files licensed under unknown free use license.
-All additional changes licensed under GPL3.
+Litecoin - ``MPt5Ke7wD63F3YnbG32kCAUJ7KpCD9EWi7``

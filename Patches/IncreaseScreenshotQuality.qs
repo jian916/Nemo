@@ -11,27 +11,37 @@ function IncreaseScreenshotQuality()
   if (fpEnb)
   {
     var code =
-      " C7 85 AB AB FF FF 03 00 00 00" //MOV DWORD PTR SS:[EBP-x], 3 ; DIBChannels = 3
-    + " C7 85 AB AB FF FF 02 00 00 00" //MOV DWORD PTR SS:[EBP-y], 2 ; DIBColor = 2
+      " C7 85 ?? ?? FF FF 03 00 00 00" //MOV DWORD PTR SS:[EBP-x], 3 ; DIBChannels = 3
+    + " C7 85 ?? ?? FF FF 02 00 00 00" //MOV DWORD PTR SS:[EBP-y], 2 ; DIBColor = 2
     ;
   }
   else
   {
     var code =
-      " C7 44 24 AB 03 00 00 00" //MOV DWORD PTR SS:[ESP+x], 3 ; DIBChannels = 3
-    + " C7 44 24 AB 02 00 00 00" //MOV DWORD PTR SS:[ESP+y], 2 ; DIBColor = 2
+      " C7 44 24 ?? 03 00 00 00" //MOV DWORD PTR SS:[ESP+x], 3 ; DIBChannels = 3
+    + " C7 44 24 ?? 02 00 00 00" //MOV DWORD PTR SS:[ESP+y], 2 ; DIBColor = 2
     ;
   }
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset === -1)
   {
     if (fpEnb)
-      code = code.replace(/ 85 AB AB FF FF/g, " 45 AB");
+    {
+        var code =
+          " C7 45 ?? 03 00 00 00"
+        + " C7 45 ?? 02 00 00 00"
+        ;
+    }
     else
-      code = code.replace(/ 44 24 AB/g, " 84 24 AB AB 00 00");
+    {
+        var code =
+          " C7 84 24 ?? ?? 00 00 03 00 00 00"
+        + " C7 84 24 ?? ?? 00 00 02 00 00 00"
+        ;
+    }
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -50,10 +60,10 @@ function IncreaseScreenshotQuality()
   else
     var offset2 = offset + 3;
 
-  if ((exe.fetchUByte(offset + 1) & 0x80) !== 0)//Whether the stack offset is 4 byte or 1 byte
-    offset2 = exe.fetchDWord(offset2) + 60;
+  if ((pe.fetchUByte(offset + 1) & 0x80) !== 0)//Whether the stack offset is 4 byte or 1 byte
+    offset2 = pe.fetchDWord(offset2) + 60;
   else
-    offset2 = exe.fetchByte(offset2) + 60;
+    offset2 = pe.fetchByte(offset2) + 60;
 
   //Step 2c - Prep code to change DIBChannels member assignment to jquality member assignment.
   //          By default DIBChannels is 3 and DIBColor is 2 already, so overwriting their assignments doesnt matter
@@ -79,7 +89,7 @@ function IncreaseScreenshotQuality()
     code += " 90".repeat(csize * 2 - code.hexlength());
 
   //Step 3b - Now write into client.
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }

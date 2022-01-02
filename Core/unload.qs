@@ -29,4 +29,10 @@ function Global_clear()
     delete PEncActive;
 
     dllFile = false;
+
+    storage_init();
+    registerHooks();
+    registerImports();
+    registerPe();
+    registerMacroAsm();
 }

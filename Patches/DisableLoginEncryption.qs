@@ -9,26 +9,26 @@ function DisableLoginEncryption()
 
   //Step 1 - Find Encryptor function call.
   var code =
-    " E8 AB AB AB FF" //CALL Encryptor (preceded by PUSH reg32_A)
+    " E8 ?? ?? ?? FF" //CALL Encryptor (preceded by PUSH reg32_A)
   + " B9 06 00 00 00" //MOV ECX,6
   + " 8D"             //LEA reg32_B, [EBP-x]
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Encryptor call missing";
 
   //Step 2a - Extract the register PUSHed - Arg.1 which contains the Original Password
-  var regPush = exe.fetchByte(offset - 1) - 0x50;
+  var regPush = pe.fetchByte(offset - 1) - 0x50;
 
   //Step 2b - Change the LEA to LEA reg32_B, [reg32_A]
   offset += code.hexlength();
   code =
-    ((exe.fetchUByte(offset) & 0x38) | regPush).packToHex(1) //LEA reg32_B, [reg32_A]
+    ((pe.fetchUByte(offset) & 0x38) | regPush).packToHex(1) //LEA reg32_B, [reg32_A]
   + " 90 90 90 90" //NOPs
   ;
 
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }

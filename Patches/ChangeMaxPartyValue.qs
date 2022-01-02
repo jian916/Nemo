@@ -21,7 +21,7 @@ function ChangeMaxPartyValue()
     consoleLog("step 1");
     var code =
         "68 9F 0C 00 00 ";            // 0 push 0C9Fh
-    var offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1";
 
@@ -31,14 +31,14 @@ function ChangeMaxPartyValue()
         "6A 0C " +                    // 5 push 0Ch
         "E8";                         // 7 call CSession_GetNumParty
     var patchOffset = 6;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x60);
+    offset = pe.find(code, offset, offset + 0x60);
     if (offset === -1)
         return "Failed in Step 2";
 
     var value = exe.getUserInput("$max_party_value", XTYPE_BYTE, _("Max Party"), _("Set Max Party Value: (Max:127, Default:12)"), "12", 1, 127);
 
     consoleLog("step 3");
-    exe.replace(offset + patchOffset, value.packToHex(1), PTYPE_HEX);
+    pe.replaceByte(offset + patchOffset, value);
 
     return true;
 }

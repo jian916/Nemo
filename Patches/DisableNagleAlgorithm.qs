@@ -52,36 +52,34 @@ function DisableNagleAlgorithm()
   if (free === -1)
     return "Failed in Step 2 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 2b - Find address of ws2_32.socket (#23 when imported by ordinal)
-  var sockFunc = GetFunction("socket", "ws2_32.dll", 23);
-  if (sockFunc === -1)
-    return "Failed in Step 2 - socket function missing";
+  var sockFunc = imports.ptrValidated("socket", "ws2_32.dll", 23);
 
   //Step 2c - Fill in the blanks
   code = ReplaceVarHex(code, 0, freeRva + 4);//Actual Function address
   code = ReplaceVarHex(code, 1, sockFunc);
-  code = ReplaceVarHex(code, 2, exe.findString("ws2_32.dll", RVA));
-  code = ReplaceVarHex(code, 3, GetFunction("GetModuleHandleA", "KERNEL32.dll"));
-  code = ReplaceVarHex(code, 4, GetFunction("GetProcAddress", "KERNEL32.dll"));
+  code = ReplaceVarHex(code, 2, pe.stringVa("ws2_32.dll"));
+  code = ReplaceVarHex(code, 3, imports.ptrValidated("GetModuleHandleA", "KERNEL32.dll"));
+  code = ReplaceVarHex(code, 4, imports.ptrValidated("GetProcAddress", "KERNEL32.dll"));
 
   //Step 2d - Insert the code to allocated area
   exe.insert(free, size, code, PTYPE_HEX);
 
   //Step 3a - Find all JMP DWORD PTR to ws2_32.socket function
-  var offsets = exe.findCodes(" FF 25" + sockFunc.packToHex(4), PTYPE_HEX, false);
+  var offsets = pe.findCodes(" FF 25" + sockFunc.packToHex(4));
 
   //Step 3b - Replace the address with our function.
   for (var i = 0; i < offsets.length; i++)
-    exe.replaceDWord(offsets[i] + 2, freeRva);
+    pe.replaceDWord(offsets[i] + 2, freeRva);
 
   //Step 3c - Find all CALL DWORD PTR to ws2_32.socket function
-  offsets = exe.findCodes(" FF 15" + sockFunc.packToHex(4), PTYPE_HEX, false);
+  offsets = pe.findCodes(" FF 15" + sockFunc.packToHex(4));
 
   //Step 3d - Replace the address with our function.
   for (var i = 0; i < offsets.length; i++)
-    exe.replaceDWord(offsets[i] + 2, freeRva);
+    pe.replaceDWord(offsets[i] + 2, freeRva);
 
   return true;
 }

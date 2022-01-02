@@ -12,7 +12,7 @@ function CustomAuraLimits()
   + " 6A 6D"          //PUSH 6D
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Value PUSHes missing";
 
@@ -20,40 +20,40 @@ function CustomAuraLimits()
 
   //Step 1b - Find the call below it
   code =
-    " 8B AB AB 00 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B+const]
-  + " 8B AB AB"          //MOV ECX, DWORD PTR DS:[reg32_A+const2]
-  + " E8 AB AB AB 00"    //CALL CPlayer::ReLaunchBlurEffects
+    " 8B ?? ?? 00 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B+const]
+  + " 8B ?? ??"          //MOV ECX, DWORD PTR DS:[reg32_A+const2]
+  + " E8 ?? ?? ?? 00"    //CALL CPlayer::ReLaunchBlurEffects
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
+  var offset2 = pe.find(code, offset, offset + 0x100);
   if (offset2 === -1)
     return "Failed in Step 1 - ReLaunchBlurEffects call missing";
 
   offset2 += code.hexlength();
 
   //Step 1c - Extract the RAW address of ReLaunchBlurEffects
-  offset = offset2 + exe.fetchDWord(offset2 - 4);
+  offset = offset2 + pe.fetchDWord(offset2 - 4);
 
   //Step 2a - Find the first JE inside the function
-  offset = exe.find(" 0F 84 AB AB 00 00", PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+  offset = pe.find(" 0F 84 ?? ?? 00 00", offset, offset + 0x80);
   if (offset === -1)
     return "Failed in Step 2 - First JE missing";
 
   //Step 2b - Save the Raw location
-  var cmpEnd = (offset + 6) + exe.fetchDWord(offset + 2);
+  var cmpEnd = (offset + 6) + pe.fetchDWord(offset + 2);
 
   //Step 2c - Find PUSH 2E2 after it (only there in 2010+)
-  offset = exe.find(" 68 E2 02 00 00", PTYPE_HEX, false, "\xAB", offset + 6, offset + 0x100);
+  offset = pe.find(" 68 E2 02 00 00", offset + 6, offset + 0x100);
   if (offset === -1)
     return "Failed in Step 2 - 2E2 push missing";
 
   //Step 2d - Now find the JE after it
-  offset = exe.find(" 0F 84 AB AB 00 00", PTYPE_HEX, true, "\xAB", offset + 5, offset + 0x80);
+  offset = pe.find(" 0F 84 ?? ?? 00 00", offset + 5, offset + 0x80);
   if (offset === -1)
     return "Failed in Step 2 - JE missing";
 
   //Step 2e - Save the Raw location
-  var cmpBegin = (offset + 6) + exe.fetchDWord(offset + 2);
+  var cmpBegin = (offset + 6) + pe.fetchDWord(offset + 2);
 
   //---------------------------------------------------------------------
   // Now we Check for the comparison style.
@@ -61,23 +61,23 @@ function CustomAuraLimits()
   //   New Clients do it in a seperate function (by New i mean 2013+)
   //---------------------------------------------------------------------
 
-  if (exe.fetchUByte(cmpBegin) === 0xB9)
+  if (pe.fetchUByte(cmpBegin) === 0xB9)
   { //MOV ECX, g_session ; Old Style
 
     var directComparison = true;
 
     //Step 3a - Extract g_session and job Id getter addresses
-    var gSession = exe.fetchDWord(cmpBegin + 1);
-    var jobIdFunc = exe.Raw2Rva(cmpBegin + 10) + exe.fetchDWord(cmpBegin + 6);
+    var gSession = pe.fetchDWord(cmpBegin + 1);
+    var jobIdFunc = pe.rawToVa(cmpBegin + 10) + pe.fetchDWord(cmpBegin + 6);
 
     //Step 3b - Find the Level address comparison
-    code = " A1 AB AB AB 00"; //MOV EAX, DWORD PTR DS:[g_level] ; EAX is later compared with 96
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x20);
+    code = " A1 ?? ?? ?? 00"; //MOV EAX, DWORD PTR DS:[g_level] ; EAX is later compared with 96
+    offset = pe.find(code, cmpBegin, cmpBegin + 0x20);
 
     if (offset === -1)
     {
-      code = " 81 3D AB AB AB 00"; //CMP DWORD PTR DS:[g_level], 96
-      offset = exe.find(code, PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x80);
+      code = " 81 3D ?? ?? ?? 00"; //CMP DWORD PTR DS:[g_level], 96
+      offset = pe.find(code, cmpBegin, cmpBegin + 0x80);
     }
 
     if (offset === -1)
@@ -86,38 +86,38 @@ function CustomAuraLimits()
     offset += code.hexlength();
 
     //Step 3c - Extract g_level address
-    var gLevel = exe.fetchDWord(offset - 4);
+    var gLevel = pe.fetchDWord(offset - 4);
 
     //Step 3d - Find the Aura Displayer Call (its a reg call so dunno the name of the function)
     code =
-      " 6A AB" //PUSH auraconst
+      " 6A ??" //PUSH auraconst
     + " 6A 00" //PUSH 0
     + " 8B CE" //MOV ECX, ESI
     + " FF"    //CALL reg32 or CALL DWORD PTR DS:[reg32+8]
     ;
     var argPush = "\x6A\x00";
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+    var offset2 = pe.find(code, offset, offset + 0x20);
 
     if (offset2 === -1)
     {
-      code = code.replace("6A 00", "AB");//swap PUSH 0 with PUSH reg32_B
+      code = code.replace("6A 00", "??");//swap PUSH 0 with PUSH reg32_B
       argPush = "";
-      offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x20);
+      offset2 = pe.find(code, offset, offset + 0x20);
     }
 
     if (offset2 === -1)
       return "Failed in Step 3 - Aura Call missing";
 
     if (argPush === "")
-      argPush = exe.fetch(offset2 + 2, 1);
+      argPush = pe.fetch(offset2 + 2, 1);
 
     //Step 3e - Extract the auraconst
-    var gAura = [exe.fetchHex(offset2 + 1, 1)];
+    var gAura = [pe.fetchHex(offset2 + 1, 1)];
     gAura[1] = gAura[2] = gAura[0];//Same value is used for All Auras - and therefore shows only 1 type of aura per job
 
     //Step 3f - Extract the Zero PUSH count
     var argCount = argPush.length;
-    argPush = exe.fetchHex(offset2 - 4 * argCount, 4 * argCount);
+    argPush = pe.fetchHex(offset2 - 4 * argCount, 4 * argCount);
 
     if (argPush.substr(0, 3 * argCount) === argPush.substr(9 * argCount))//First and Last is same means there are actually 4 PUSHes
       argCount = 4;
@@ -133,51 +133,51 @@ function CustomAuraLimits()
     var directComparison = false;
 
     //Step 4a - Extract g_level address
-    var gLevel = exe.fetchDWord(cmpBegin + 3);
+    var gLevel = pe.fetchDWord(cmpBegin + 3);
 
     //Step 4b - Find the comparison function call
-    offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x30);
+    offset = pe.find(" E8 ?? ?? ?? FF", cmpBegin, cmpBegin + 0x30);
     if (offset === -1)
       return "Failed in Step 4 - Function call missing";
 
     //Step 4c - Go inside the function
-    offset = (offset + 5) + exe.fetchDWord(offset + 1);
+    offset = (offset + 5) + pe.fetchDWord(offset + 1);
 
     var offset0 = offset
     //Step 4d - Find g_session assignment
     code =
-      " E8 AB AB AB AB" //CALL jobIdFunc
+      " E8 ?? ?? ?? ??" //CALL jobIdFunc
     + " 50"             //PUSH EAX
     + getEcxSessionHex() //MOV ECX, g_session
     + " E8"             //CALL addr
     ;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset0, offset0 + 0x20);
+    offset = pe.find(code, offset0, offset0 + 0x20);
     if (offset === -1)
     {
         code =
-          " E8 AB AB AB AB" //CALL jobIdFunc
+          " E8 ?? ?? ?? ??" //CALL jobIdFunc
         + " 50"             //PUSH EAX
         + getEcxSessionHex() //MOV ECX, g_session
         + " E8"             //CALL addr
         ;
 
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset0, offset0 + 0x20);
+        offset = pe.find(code, offset0, offset0 + 0x20);
     }
     if (offset === -1)
       return "Failed in Step 4 - g_session reference missing";
 
     //Step 4e - Extract job Id getter address (we dont need the gSession for this one)
-    var jobIdFunc = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
+    var jobIdFunc = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
 
     //Step 4f - Find the Zero assignment at the end of the function
-    code = " C7 86 AB AB 00 00 00 00 00 00"; //MOV DWORD PTR DS:[ESI + const], 0
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x180);
+    code = " C7 86 ?? ?? 00 00 00 00 00 00"; //MOV DWORD PTR DS:[ESI + const], 0
+    offset = pe.find(code, offset, offset + 0x180);
     if (offset === -1)
       return "Failed in Step 4 - Zero assignment missing";
 
     //Step 4g - Save it (only needed for new types)
-    var zeroAssign = exe.fetchHex(offset, code.hexlength());
+    var zeroAssign = pe.fetchHex(offset, code.hexlength());
 
     //Step 4h - Setup the Aura constants and Arg count
     var argCount = 4;
@@ -321,7 +321,7 @@ function CustomAuraLimits()
   if (free === -1)
     return "Failed in Step 6 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 6c - Fill in the blanks
   code = ReplaceVarHex(code, 1, gSession);
@@ -352,23 +352,23 @@ function CustomAuraLimits()
   //Step 7b - Since there was no existing Function CALL, We add a CALL to our function after ECX assignment
     code =
       " 8B CE" //MOV ECX, ESI
-    + " E8" + (freeRva - exe.Raw2Rva(cmpBegin + 7)).packToHex(4) //CALL func
+    + " E8" + (freeRva - pe.rawToVa(cmpBegin + 7)).packToHex(4) //CALL func
     + " EB" + (cmpEnd - (cmpBegin + 9)).packToHex(1) //JMP SHORT cmpEnd
     ;
 
-    exe.replace(cmpBegin, code, PTYPE_HEX);
+    pe.replaceHex(cmpBegin, code);
   }
   else
   {
     //Step 7c - Find the function call... again and replace it with a CALL to our Function
-    offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", cmpBegin, cmpBegin + 0x30);
-    exe.replaceDWord(offset + 1, freeRva - exe.Raw2Rva(offset + 5));
+    offset = pe.find(" E8 ?? ?? ?? FF", cmpBegin, cmpBegin + 0x30);
+    pe.replaceDWord(offset + 1, freeRva - pe.rawToVa(offset + 5));
 
     offset += 5;
 
     //Step 7d - Fill with NOPs till cmpEnd
     if (offset < cmpEnd)
-      exe.replace(offset, " 90".repeat(cmpEnd - offset), PTYPE_HEX);
+      pe.replaceHex(offset, " 90".repeat(cmpEnd - offset));
   }
 
   return true;

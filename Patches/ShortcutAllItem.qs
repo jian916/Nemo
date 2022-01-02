@@ -20,12 +20,12 @@ function ShortcutAllItem()
 {
     //Step 1 - Find the item type table fetchers
     var code =
-        " 0F B6 80 AB AB AB 00"    //MOVZX EAX,BYTE PTR [EAX+offsetA]
-      + " FF 24 85 AB AB AB 00"    //JMP DWORD PTR [EAX*4+offsetB]
-      + " 83 BD AB AB AB AB 00"    //CMP DWORD PTR [EBP-x],00
+        " 0F B6 80 ?? ?? ?? 00"    //MOVZX EAX,BYTE PTR [EAX+offsetA]
+      + " FF 24 85 ?? ?? ?? 00"    //JMP DWORD PTR [EAX*4+offsetB]
+      + " 83 BD ?? ?? ?? ?? 00"    //CMP DWORD PTR [EBP-x],00
       ;
 
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
     if (offsets.length === 0)
         return "Failed in Step 1 - Codes not found";
 
@@ -37,7 +37,7 @@ function ShortcutAllItem()
         code = "90 FF 25"        //NOP
                                 //JMP DWORD PTR [offsetB]
 
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     return true;

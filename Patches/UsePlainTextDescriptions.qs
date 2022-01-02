@@ -14,23 +14,23 @@ function UsePlainTextDescriptions()
  //Step 1b - Find the LangType comparison in the DataTxtDecode function
   var code =
     " 83 3D" + LANGTYPE + " 00" //CMP DWORD PTR DS:[g_serviceType], 0
-  + " 75 AB" //JNZ SHORT addr
+  + " 75 ??" //JNZ SHORT addr
   + " 56"    //PUSH ESI
   + " 57"    //PUSH EDI
   ;
   var repLoc = 7;//Position of JNZ relative to offset
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9+ Clients
+  var offset = pe.findCode(code);//VC9+ Clients
 
   if (offset === -1)
   {
-    code = code.replace(" 75 AB 56 57", " 75 AB 57");//remove PUSH ESI
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
+    code = code.replace(" 75 ?? 56 57", " 75 ?? 57");//remove PUSH ESI
+    offset = pe.findCode(code);//Latest Clients
   }
 
    if (offset === -1)
    {
-    code = code.replace(" 75 AB 57", " 75 AB 8B 4D 08 56");
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");//Latest Clients
+    code = code.replace(" 75 ?? 57", " 75 ?? 8B 4D 08 56");
+    offset = pe.findCode(code);//Latest Clients
   }
 
   if (offset === -1)
@@ -43,14 +43,14 @@ function UsePlainTextDescriptions()
     + " 75"            //JNZ SHORT addr
     ;
     repLoc = code.hexlength() - 1;
-    offset = exe.findCode(code, PTYPE_HEX, false);//Older Clients
+    offset = pe.findCode(code);//Older Clients
   }
 
   if (offset === -1)
     return "Failed in Step 1 - LangType Comparison missing";
 
   //Step 2 - Change JNE/JNZ to JMP
-  exe.replace(offset + repLoc, "EB", PTYPE_HEX);
+  pe.replaceByte(offset + repLoc, 0xEB);
 
   return true;
 }

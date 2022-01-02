@@ -10,11 +10,11 @@ function FixChatAt()
   //Step 1a - Find the JZ after '@' Comparison
   var code =
     " 74 04"       //JZ SHORT addr -> POP EDI below
-  + " C6 AB AB 00" //MOV BYTE PTR DS:[reg32_A+const], 0 ; <- this is the value we need to change
+  + " C6 ?? ?? 00" //MOV BYTE PTR DS:[reg32_A+const], 0 ; <- this is the value we need to change
   + " 5F"          //POP EDI
   + " 5E"          //POP ESI
   ;
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
 
   if (offset !== -1)
   { //VC9+ Clients
@@ -24,25 +24,25 @@ function FixChatAt()
     //==============================================//
 
     //Step 1b - Change 0 to 1
-    exe.replace(offset + 5, "01", PTYPE_HEX);
+    pe.replaceHex(offset + 5, "01");
   }
   else
   { //Older clients
     //Step 2a - Find the call inside UIWindowMgr::ProcessPushButton
     code =
       " 8B CE"             //MOV ECX, ESI
-    + " E8 AB AB 00 00"    //CALL func <- this is what we need to hijack
+    + " E8 ?? ?? 00 00"    //CALL func <- this is what we need to hijack
     + " 84 C0"             //TEST AL, AL
-    + " 74 AB"             //JZ SHORT addr
-    + " 8B AB AB AB 00 00" //MOV reg32_A, DWORD PTR DS:[ESI+const]
+    + " 74 ??"             //JZ SHORT addr
+    + " 8B ?? ?? ?? 00 00" //MOV reg32_A, DWORD PTR DS:[ESI+const]
     ;
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1)
       return "Failed in Step 2 - Function call missing";
 
     //Step 2b - Extract the called address (RVA).
-    var func = exe.Raw2Rva(offset + 7) + exe.fetchDWord(offset + 3);
+    var func = pe.rawToVa(offset + 7) + pe.fetchDWord(offset + 3);
 
     //Step 3a - Construct our function.
     code =
@@ -75,11 +75,11 @@ function FixChatAt()
       return "Failed in Step 3 - Not enough free space";
 
     //Step 4a - Fill in the blanks
-    code = ReplaceVarHex(code, 1, GetFunction("GetAsyncKeyState", "USER32.dll"));
+    code = ReplaceVarHex(code, 1, imports.ptrValidated("GetAsyncKeyState", "USER32.dll"));
     code = ReplaceVarHex(code, 2, func);
 
     //Step 4b - Change called address from func to our function.
-    exe.replaceDWord(offset + 3, exe.Raw2Rva(free) - exe.Raw2Rva(offset + 7));
+    pe.replaceDWord(offset + 3, pe.rawToVa(free) - pe.rawToVa(offset + 7));
 
     //Step 4c - Insert our function
     exe.insert(free, csize, code, PTYPE_HEX);

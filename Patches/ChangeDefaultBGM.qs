@@ -6,11 +6,11 @@
 function ChangeDefaultBGM()
 {
     var org_name = "bgm\\01.mp3";
-    var offset = exe.findString(org_name, RVA);
+    var offset = pe.stringVa(org_name);
     if (offset === -1)
         return "Failed in Step 1a - Default BGM file name not found";
 
-    offset = exe.findCode("68" + offset.packToHex(4),  PTYPE_HEX, false);
+    offset = pe.findCode("68" + offset.packToHex(4));
     if (offset === -1)
         return "Failed in Step 1b - Default BGM reference not found";
 
@@ -23,7 +23,7 @@ function ChangeDefaultBGM()
         return "Failed in Step 2 - Not enough free space";
 
     exe.insert(free, myfile.length, "$newBGMPath", PTYPE_STRING);
-    exe.replace(offset+1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+    pe.replaceDWord(offset+1, pe.rawToVa(free));
 
     return true;
 }
@@ -33,5 +33,5 @@ function ChangeDefaultBGM()
 //=================================//
 function ChangeDefaultBGM_()
 {
-    return (exe.findString("bgm\\01.mp3", RAW) !== -1);
+    return (pe.stringRaw("bgm\\01.mp3") !== -1);
 }

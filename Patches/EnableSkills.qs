@@ -14,12 +14,12 @@ function EnablePlayerSkills()
 {
     return EnableSkills(
         " 3D 7D 02 00 00"    //CMP EAX, 27D
-    +   " 0F 8F AB AB 00 00" //JG addr
+    +   " 0F 8F ?? ?? 00 00" //JG addr
     +   " 3D 7C 02 00 00"    //CMP EAX, 27C
     ,
         " 3D 06 01 00 00"    //CMP EAX, 106
-    +   " 7F AB"             //JG SHORT addr
-    +   " 0F 84 AB AB 00 00" //JE addr2
+    +   " 7F ??"             //JG SHORT addr
+    +   " 0F 84 ?? ?? 00 00" //JE addr2
     ,
     233,
     "IsPlayerSkill\0",
@@ -31,7 +31,7 @@ function EnableHomunSkills() //Incomplete
 {
     return EnableSkills(
         " 3D 40 1F 00 00" //CMP EAX, 1F40
-    +   " 7C AB"          //JL SHORT addr
+    +   " 7C ??"          //JL SHORT addr
     +   " 3D 51 1F 00 00" //CMP EAX, 1F51
     ,
         " 05 C0 E0 FF FF" //ADD EAX, -1F40
@@ -47,11 +47,11 @@ function EnableMerceSkills() //Incomplete
 {
     return EnableSkills(
         " 3D 08 20 00 00" //CMP EAX, 2008
-    +   " 7C AB"          //JL SHORT addr
+    +   " 7C ??"          //JL SHORT addr
     +   " 3D 31 20 00 00" //CMP EAX, 2031
     ,
-        " 8D AB F8 DF FF FF" //LEA reg32_B, [reg32_A - 2008]
-    +   " 83 AB 29"          //CMP reg32_B, 29
+        " 8D ?? F8 DF FF FF" //LEA reg32_B, [reg32_A - 2008]
+    +   " 83 ?? 29"          //CMP reg32_B, 29
     ,
     235,
     "IsMercenarySkill\0",
@@ -73,7 +73,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         var code = newPatn; //VC9+
 
     consoleLog("Step 1.2 - Find the code inside the function");
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - ID checker missing";
 
@@ -95,7 +95,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
     if (isPlayerFn)
     {
         consoleLog("Step 3.1 - Prep Lua Function caller");
-        var result = GenLuaCaller(fnBegin + 4, funcName, exe.Raw2Rva(fnBegin + 0x80), "d>d", " 50");
+        var result = GenLuaCaller(fnBegin + 4, funcName, pe.rawToVa(fnBegin + 0x80), "d>d", " 50");
         if (result.indexOf("LUA:") !== -1)
           return result;
         code =
@@ -105,10 +105,10 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         ;
 
         consoleLog("Step 3.2 - Overwrite function with our code");
-        exe.replace(fnBegin, code, PTYPE_HEX);
+        pe.replaceHex(fnBegin, code);
 
         consoleLog("Step 3.3 - Add the function Names after the codes");
-        exe.replace(fnBegin + 0x80, funcName, PTYPE_STRING);
+        pe.replace(fnBegin + 0x80, funcName);
     }
     else
     {
@@ -118,7 +118,7 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
             return "Failed in Step 4 - Not enough free space";
 
         consoleLog("Step 4.2 - Prep function which calls the Lua function");
-          var result = GenLuaCaller(free, funcName, exe.Raw2Rva(fnBegin + 0x10), "d>d", " 52");
+          var result = GenLuaCaller(free, funcName, pe.rawToVa(fnBegin + 0x10), "d>d", " 52");
           if (result.indexOf("LUA:") !== -1)
               return result;
         code =
@@ -138,10 +138,10 @@ function EnableSkills(oldPatn, newPatn, patchID, funcName, isPlayerFn)
         +   " 5A"                //POP EDX
         +   " C2 04 00"          //RETN 4
         ;
-        code = ReplaceVarHex(code, 1, exe.Raw2Rva(free + funcName.length) - exe.Raw2Rva(fnBegin + 10));
+        code = ReplaceVarHex(code, 1, pe.rawToVa(free + funcName.length) - pe.rawToVa(fnBegin + 10));
 
         consoleLog("Step 4.5 - Overwrite original function");
-        exe.replace(fnBegin, code, PTYPE_HEX);
+        pe.replaceHex(fnBegin, code);
     }
     return true;
 }

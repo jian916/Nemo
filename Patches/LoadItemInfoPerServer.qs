@@ -9,11 +9,11 @@ function LoadItemInfoPerServer()
 {
   //Step 1a - Find the pattern before Server Name is pushed to StringAllocator Function
   var code =
-    " C1 AB 05"                   //SHL EDI,5
-  + " 66 83 AB AB AB AB 00 00 03" //CMP WORD PTR DS:[ESI+EDI+1F4],3
+    " C1 ?? 05"                   //SHL EDI,5
+  + " 66 83 ?? ?? ?? ?? 00 00 03" //CMP WORD PTR DS:[ESI+EDI+1F4],3
   ;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 1 - Pattern not found";
 
@@ -21,18 +21,18 @@ function LoadItemInfoPerServer()
 
   //Step 1b - Find the StringAllocator call after pattern
   code =
-    " B9 AB AB AB 00"    //MOV ECX, addr
-  + " E8 AB AB AB AB"    //CALL StringAllocator
-  + " 8B AB AB AB 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B + const]
+    " B9 ?? ?? ?? 00"    //MOV ECX, addr
+  + " E8 ?? ?? ?? ??"    //CALL StringAllocator
+  + " 8B ?? ?? ?? 00 00" //MOV reg32_A, DWORD PTR DS:[reg32_B + const]
   ;
   var directCall = true;
-  var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
+  var offset2 = pe.find(code, offset, offset + 0x40);
 
   if (offset2 === -1)
   {
     code = code.replace(" E8", " FF 15");//CALL DWORD PTR DS:[StringAllocator]
     directCall = false;
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x40);
+    offset2 = pe.find(code, offset, offset + 0x40);
   }
 
   if (offset2 === -1)
@@ -41,28 +41,28 @@ function LoadItemInfoPerServer()
   var allocInject = offset2 + 5;
 
   //Step 2a - Find address of ItemInfo Error string
-  offset = exe.findString("ItemInfo file Init", RVA);
+  offset = pe.stringVa("ItemInfo file Init");
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo String missing";
 
   //Step 2b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo String reference missing";
 
   //Step 2c - Find the ItemInfo Loader call before it
   code =
-    " E8 AB AB AB AB"    //CALL iteminfoPrep
-  + " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
-  + " E8 AB AB AB AB"    //CALL iteminfoLoader
+    " E8 ?? ?? ?? ??"    //CALL iteminfoPrep
+  + " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
+  + " E8 ?? ?? ?? ??"    //CALL iteminfoLoader
   ;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x30, offset);
+  offset = pe.find(code, offset - 0x30, offset);
   if (offset === -1)
     return "Failed in Step 2 - ItemInfo Loader missing";
 
   //Step 2d - Extract the MOV ECX statement
-  var refMov = exe.fetchHex(offset + 5, 6);
+  var refMov = pe.fetchHex(offset + 5, 6);
 
   //Step 2e - Change the MOV statement to JMP for skipping the loader
   var code2 =
@@ -71,15 +71,15 @@ function LoadItemInfoPerServer()
   + " EB 05" //JMP to after iteminfoLoader call
   ;
 
-  exe.replace(offset + 5, code2, PTYPE_HEX);
+  pe.replaceHex(offset + 5, code2);
 
   //Step 2f - Extract iteminfoLoader function address
   offset += code.hexlength();
-  offset += exe.fetchDWord(offset - 4);
-  var iiLoaderFunc = exe.Raw2Rva(offset);
+  offset += pe.fetchDWord(offset - 4);
+  var iiLoaderFunc = pe.rawToVa(offset);
 
   //Step 3a - Find offset of "main"
-  offset2 = exe.findString("main", RVA);
+  offset2 = pe.stringVa("main");
   if (offset2 === -1)
     return "Failed in Step 3 - main string missing";
 
@@ -87,15 +87,15 @@ function LoadItemInfoPerServer()
   code =
     " 68" + offset2.packToHex(4) //PUSH OFFSET addr; ASCII "main"
   + " 68 EE D8 FF FF"           //PUSH -2712
-  + " AB"                       //PUSH reg32_A
-  + " E8 AB AB AB 00"           //CALL LuaFnNamePusher
+  + " ??"                       //PUSH reg32_A
+  + " E8 ?? ?? ?? 00"           //CALL LuaFnNamePusher
   ;
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+  offset2 = pe.find(code, offset, offset + 0x200);
 
   if (offset2 === -1)
   {
-    code = code.replace(" FF FF AB E8", "FF FF FF 75 AB E8");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+    code = code.replace(" FF FF ?? E8", "FF FF FF 75 ?? E8");
+    offset2 = pe.find(code, offset, offset + 0x200);
   }
 
   if (offset2 === -1)
@@ -104,48 +104,48 @@ function LoadItemInfoPerServer()
   var mainInject = offset2 + code.hexlength() - 5;
 
   //Step 3c - Find the arg count PUSHes after it
-  offset = exe.find(" 6A 00 6A 02 6A 00", PTYPE_HEX, false, "\xAB", mainInject + 5, mainInject + 0x20);
+  offset = pe.find(" 6A 00 6A 02 6A 00", mainInject + 5, mainInject + 0x20);
   if (offset === -1)
     return "Failed in Step 3 - Arg Count Push missing";
 
   //Step 3d - Change the last PUSH 0 to PUSH 1 (since we have 1 input argument)
-  exe.replace(offset + 5, "01", PTYPE_HEX);
+  pe.replaceByte(offset + 5, 1);
 
   //Step 4a - Find the location where the iteminfo copier is called
   code =
     refMov            //MOV ECX, DWORD PTR DS:[refAddr]
-  + " 68 AB AB AB 00" //PUSH OFFSET iiAddr
-  + " E8 AB AB AB FF" //CALL iteminfoCopier
+  + " 68 ?? ?? ?? 00" //PUSH OFFSET iiAddr
+  + " E8 ?? ?? ?? FF" //CALL iteminfoCopier
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 4 - ItemInfo copy function missing";
 
   offset += refMov.hexlength();
 
   //Step 4b - Extract the PUSH statement and Copier Function address
-  var iiPush = exe.fetchHex(offset, 5);
-  var iiCopierFunc = exe.Raw2Rva(offset + 10) + exe.fetchDWord(offset + 6);
+  var iiPush = pe.fetchHex(offset, 5);
+  var iiCopierFunc = pe.rawToVa(offset + 10) + pe.fetchDWord(offset + 6);
 
   //Step 5a - Find the 's' input Push Function call inside the LuaFn Caller
   code =
-    " 8B AB"          //MOV reg32_A, DWORD PTR DS:[reg32_B]
-  + " 8B AB"          //MOV reg32_C, DWORD PTR DS:[reg32_D]
-  + " 83 AB 04"       //ADD reg32_B, 4
-  + " AB"             //PUSH reg32_A
-  + " AB"             //PUSH reg32_C
-  + " E8 AB AB AB 00" //CALL StringPusher
+    " 8B ??"          //MOV reg32_A, DWORD PTR DS:[reg32_B]
+  + " 8B ??"          //MOV reg32_C, DWORD PTR DS:[reg32_D]
+  + " 83 ?? 04"       //ADD reg32_B, 4
+  + " ??"             //PUSH reg32_A
+  + " ??"             //PUSH reg32_C
+  + " E8 ?? ?? ?? 00" //CALL StringPusher
   + " 83 C4 08"       //ADD ESP, 8
   ;
-  offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  offset = pe.findCode(code);
 
   if (offset === -1)
   {
-    code = code.replace(" 8B AB 8B AB", " FF AB");//PUSH DWORD PTR DS:[reg32_B]
-    code = code.replace(" AB AB E8", " FF AB E8");//PUSH DWORD PTR DS:[reg32_D]
+    code = code.replace(" 8B ?? 8B ??", " FF ??");//PUSH DWORD PTR DS:[reg32_B]
+    code = code.replace(" ?? ?? E8", " FF ?? E8");//PUSH DWORD PTR DS:[reg32_D]
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
   }
 
   if (offset === -1)
@@ -154,7 +154,7 @@ function LoadItemInfoPerServer()
   offset += code.hexlength() - 3;
 
   //Step 5b - Extract the Function address
-  var stringPushFunc = exe.Raw2Rva(offset) + exe.fetchDWord(offset - 4);
+  var stringPushFunc = pe.rawToVa(offset) + pe.fetchDWord(offset - 4);
 
   //Step 6a - Prep code to Push String after "main" push
   code =
@@ -172,19 +172,19 @@ function LoadItemInfoPerServer()
   if (free === -1)
     return "Failed in Step 6 - Not enough space available";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
   var serverAddr = freeRva + code.hexlength() - 4;
 
   //Step 6c - Fill in the blanks
-  offset = exe.Raw2Rva(mainInject + 5) + exe.fetchDWord(mainInject + 1) - (freeRva + 5);
+  offset = pe.rawToVa(mainInject + 5) + pe.fetchDWord(mainInject + 1) - (freeRva + 5);
   code = ReplaceVarHex(code, 1, offset);
   code = ReplaceVarHex(code, 2, serverAddr);
   code = ReplaceVarHex(code, 3, stringPushFunc - (serverAddr - 5));
-  code = ReplaceVarHex(code, 4, exe.Raw2Rva(mainInject + 5) - serverAddr);
+  code = ReplaceVarHex(code, 4, pe.rawToVa(mainInject + 5) - serverAddr);
 
   //Step 6d - Change the LuaFnNamePusher call to a JMP to our code
-  offset = freeRva - exe.Raw2Rva(mainInject + 5);
-  exe.replace(mainInject, "E9" + offset.packToHex(4), PTYPE_HEX);
+  offset = freeRva - pe.rawToVa(mainInject + 5);
+  pe.replaceHex(mainInject, "E9" + offset.packToHex(4));
 
   //Step 6e - Inject to allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
@@ -212,13 +212,13 @@ function LoadItemInfoPerServer()
   if (free === -1)
     return "Failed in Step 7 - Not enough space available";
 
-  freeRva = exe.Raw2Rva(free);
+  freeRva = pe.rawToVa(free);
 
   //Step 7c - Fill in the blanks
   if (directCall)
-    offset = exe.Raw2Rva(allocInject + 5) + exe.fetchDWord(allocInject + 1) - (freeRva + 5);
+    offset = pe.rawToVa(allocInject + 5) + pe.fetchDWord(allocInject + 1) - (freeRva + 5);
   else
-    offset = exe.fetchDWord(allocInject + 2);
+    offset = pe.fetchDWord(allocInject + 2);
 
   code = ReplaceVarHex(code, 1, offset);
   code = ReplaceVarHex(code, 2, serverAddr);
@@ -230,15 +230,15 @@ function LoadItemInfoPerServer()
   offset = iiCopierFunc - (freeRva + code.hexlength() - 5);
   code = ReplaceVarHex(code, 5, offset);
 
-  offset = exe.Raw2Rva(allocInject + 5) - (freeRva + code.hexlength());
+  offset = pe.rawToVa(allocInject + 5) - (freeRva + code.hexlength());
   code = ReplaceVarHex(code, 6, offset);
 
   //Step 7d - Change the function call to a JMP to our custom code
-  offset = freeRva - exe.Raw2Rva(allocInject + 5);
-  exe.replace(allocInject, "E9" + offset.packToHex(4), PTYPE_HEX);
+  offset = freeRva - pe.rawToVa(allocInject + 5);
+  pe.replaceHex(allocInject, "E9" + offset.packToHex(4));
 
   if (!directCall)
-    exe.replace(allocInject + 5, "90", PTYPE_HEX);
+    pe.replaceByte(allocInject + 5, 0x90);
 
   //Step 7e - Inject to allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
@@ -251,5 +251,5 @@ function LoadItemInfoPerServer()
 //=================================//
 function LoadItemInfoPerServer_()
 {
-  return (exe.findString("System/iteminfo.lub", RAW) !== -1);
+  return (pe.stringRaw("System/iteminfo.lub") !== -1);
 }

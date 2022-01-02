@@ -39,16 +39,16 @@ function SharedPalettes(prefix, newString)
 {
 
   //Step 1a - Find address of original Format String
-  var offset = exe.findString(prefix + "%s%s_%d.pal", RVA);//<prefix>%s%s_%d.pal - Old Format
+  var offset = pe.stringVa(prefix + "%s%s_%d.pal");  // <prefix>%s%s_%d.pal - Old Format
 
   if (offset === -1)
-    offset = exe.findString(prefix + "%s_%s_%d.pal", RVA);//<prefix>%s_%s_%d.pal - New Format
+    offset = pe.stringVa(prefix + "%s_%s_%d.pal");  // <prefix>%s_%s_%d.pal - New Format
 
   if (offset === -1)
     return "Failed in Step 1 - Format String missing";
 
   //Step 1b - Find its reference
-  offset = exe.findCode("68" + offset.packToHex(4), PTYPE_HEX, false);
+  offset = pe.findCode("68" + offset.packToHex(4));
   if (offset === -1)
     return "Failed in Step 1 - Format String reference missing";
 
@@ -61,7 +61,7 @@ function SharedPalettes(prefix, newString)
   exe.insert(free, newString.length, newString, PTYPE_STRING);
 
   //Step 3 - Replace with new one's address
-  exe.replace(offset + 1, exe.Raw2Rva(free).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset + 1, pe.rawToVa(free).packToHex(4));
 
   return true;
 }

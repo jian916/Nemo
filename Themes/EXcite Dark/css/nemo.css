@@ -1,0 +1,385 @@
+/*
+* This file is part of NEMO (Neo Exe Modification Organizer).
+* http://nemo.herc.ws - http://gitlab.com/4144/Nemo
+*
+* Copyright (C) 2021 Andrei Karas (4144)
+* Copyright (C) 2021 X-EcutiOnner (xex.ecutionner@gmail.com)
+*
+* Hercules is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+*/
+/*#############################################################*/
+
+QWidget {
+    background-color: rgb(35, 38, 33);
+    color: rgb(0, 148, 255);
+    font: bold;
+}
+
+QMenuBar {
+    background-color: rgb(199, 0, 199);
+    color: rgb(0, 0, 0);
+}
+
+QPushButton {
+    color: rgb(255, 106, 0);
+    border-radius: 10px;
+    border: 1px solid rgb(127, 106, 0);
+    min-width: 60px;
+    min-height: 20px;
+    padding: 1px;
+    background-color: rgb(35, 38, 33);
+}
+
+QPushButton:disabled {
+    background: grey;
+    border: 1px solid #686868;
+}
+
+QToolButton {
+    color: #2020A0;
+    padding: 1px;
+}
+
+QPushButton:hover, QToolButton:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 106, 0);
+    border: 1px solid rgb(76, 255, 0);
+}
+
+QPushButton:pressed, QToolButton:pressed {
+    color: rgb(255, 106, 0);
+    background-color: rgb(76, 255, 0);
+    border: 1px solid rgb(255, 106, 0);
+    padding: 2px 0px 0px 2px;
+}
+
+QLabel {
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(182, 255, 0);
+}
+
+QLineEdit {
+    background-color: rgb(48, 48, 48);
+    border-radius: 8px;
+    border: 1px solid rgb(127, 106, 0);
+    min-height: 20px;
+    padding: 1px;
+    color: rgb(255, 106, 0);
+}
+
+QLineEdit:disabled {
+    background: qlineargradient(
+        x1:0, y1:0, x2:0, y2:1,
+        stop:0 #8080A0,
+        stop: 0.2 #D0D0F0,
+        stop:0.9 #D0D0F0,
+        stop:1 #8080A0
+    );
+}
+
+QListView, QTableView, QTextEdit {
+    background-color: rgb(48, 48, 48);
+    border-radius: 5px;
+    border: 1px solid rgb(127, 106, 0);
+    min-height: 20px;
+    padding: 2px;
+    color: rgb(193, 193, 0);
+}
+
+QToolBar {
+    background-color: rgb(48, 48, 48);
+}
+
+QToolBar QToolButton {
+    background: transparent
+}
+
+QToolBar QToolButton:hover:enabled {
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 3px;
+}
+
+QScrollBar:horizontal {
+    border: 1px solid rgb(100, 100, 100);
+    background: rgb(200, 200, 200);
+    height: 20px;
+    margin: 0 19px 0 19px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: rgb(33, 33, 33);
+    min-width: 20px;
+    border: 1px solid rgb(127, 106, 0);
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::add-line:horizontal {
+    border: 1px solid rgb(100, 100, 100);
+    width: 18px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    border: 1px solid rgb(100, 100, 100);
+    width: 18px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QScrollBar:left-arrow:horizontal {
+    background-image: url(Themes/EXcite Dark/icons/arrowleft.png);
+}
+
+QScrollBar:left-arrow:horizontal:pressed {
+    background-image: url(Themes/EXcite Dark/icons/arrowleftpress.png);
+}
+
+QScrollBar::right-arrow:horizontal {
+    background-image: url(Themes/EXcite Dark/icons/arrowright.png);
+}
+
+QScrollBar::right-arrow:horizontal:pressed {
+    background-image: url(Themes/EXcite Dark/icons/arrowrightpress.png);
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background-color: rgb(48, 48, 48);
+}
+
+QScrollBar:vertical {
+    border: 1px solid rgb(100, 100, 100);
+    background: rgb(200, 200, 200);
+    width: 20px;
+    margin: 19px 0 19px 0;
+}
+
+QScrollBar::handle:vertical {
+    background-color: rgb(33, 33, 33);
+    border: 1px solid rgb(127, 106, 0);
+    min-height: 20px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::add-line:vertical {
+    border: 1px solid rgb(100, 100, 100);
+    height: 18px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    border: 1px solid rgb(100, 100, 100);
+    height: 18px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical {
+    background-image: url(Themes/EXcite Dark/icons/arrowup.png);
+}
+
+QScrollBar::up-arrow:vertical:pressed {
+    background-image: url(Themes/EXcite Dark/icons/arrowuppress.png);
+}
+
+QScrollBar::down-arrow:vertical {
+    background-image: url(Themes/EXcite Dark/icons/arrowdown.png);
+}
+
+QScrollBar::down-arrow:vertical:pressed {
+    background-image: url(Themes/EXcite Dark/icons/arrowdownpress.png);
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background-color: rgb(48, 48, 48);
+}
+
+QAbstractScrollArea::corner {
+    background-color: rgb(48, 48, 48);
+}
+
+QGroupBox {
+    background-color: transparent;
+}
+
+QHeaderView::section {
+    background-color: rgb(199, 0, 199);
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(160, 160, 160);
+    padding: 1px;
+    padding-left: 2px;
+}
+
+QSpinBox {
+    color: rgb(255, 106, 0);
+    background-color: rgb(48, 48, 48);
+}
+
+QCheckBox {
+    background: transparent;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator::unchecked {
+    image: url(Themes/EXcite Dark/icons/unchecked.png);
+}
+
+QCheckBox::indicator::checked {
+    image: url(Themes/EXcite Dark/icons/checked.png);
+}
+
+QTableView::item {
+    border: 3px solid rgb(48, 48, 48);
+}
+
+QTableView::item:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 106, 0);
+    border: 3px solid rgb(255, 106, 0);
+}
+
+QTableView::item:selected {
+    color: rgb(48, 48, 48);
+    background-color: rgb(146, 204, 0);
+    border: 3px solid rgb(146, 204, 0);
+}
+
+#bold {
+    color: rgb(255, 106, 0);
+    background-color: rgb(48, 48, 48);
+    font: bold;
+}
+
+#bolditalic {
+    color: rgb(255, 106, 0);
+    background-color: rgb(48, 48, 48);
+    font: bold italic;
+}
+
+#italic {
+    color: rgb(255, 106, 0);
+    background-color: rgb(48, 48, 48);
+    font: italic;
+}
+
+#regular {
+    color: rgb(255, 106, 0);
+    background-color: rgb(48, 48, 48);
+    font: regular;
+}
+
+#exeInput[cssStyle="default"] {
+}
+
+#exeInput[cssStyle="3629657203"] {
+    color: rgb(255, 106, 0);
+}
+
+#exeInput[cssStyle="2892337636"] {
+    color: rgb(255, 106, 0);
+}
+
+#exeStatus[cssStyle="2802148609"], #exeStatus[cssStyle="3533514090"] {
+    color: rgb(225, 0, 0);
+}
+
+#exeStatus[cssStyle="4182919787"] {
+    color: rgb(0, 180, 0);
+}
+
+#exeStatus[cssStyle="default"] {
+}
+
+#filterInputClear[cssStyle="1709095774"] {
+    border-radius: 0px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-left: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
+    border-right: 0px;
+    min-width: 16px;
+}
+
+#filterInputClear[cssStyle="629610772"] {
+    border-radius: 0px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-right: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
+    border-left: 0px;
+    min-width: 16px;
+}
+
+#filterInputClear[cssStyle="default"] {
+}
+
+#filterInput[cssStyle="2268811773"] {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-left: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
+    border-right: 0px;
+}
+
+#filterInput[cssStyle="408797514"] {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius:0;
+    border-bottom-left-radius:0;
+    border-top: 1px solid rgb(127, 106, 0);
+    border-right: 1px solid rgb(127, 106, 0);
+    border-bottom: 1px solid rgb(127, 106, 0);
+    border-left: 0px;
+}
+
+#filterInput[cssStyle="default"] {
+}
+
+#fontSelect[cssStyle="409888683"] {
+    background-color: rgb(48, 48, 48);
+}
+
+#fontSelect[cssStyle="default"] {
+}
+
+#input[cssStyle="2892337636"] {
+    color: rgb(255, 106, 0);
+}
+
+#input[cssStyle="default"] {
+}
+
+#menuBar[cssStyle="3826588206"] {
+    selection-background-color: rgba(0, 167, 255, 50);
+}
+
+#menuBar[cssStyle="default"] {
+}
+
+QTableView QToolTip {
+    background-color: rgb(48, 48, 48);
+    border: 1px solid rgb(127, 106, 0);
+    color: rgb(193, 193, 0);
+}

@@ -23,19 +23,19 @@ function ShowReplayButton()
     " 83 78 04 1E" //CMP DWORD PTR DS:[EAX+4], 1E
   + " 75"          //JNE SHORT addr
   ;
-  var offset = exe.find(code, PTYPE_HEX, false, "\xAB", result, result + 0x40);
+  var offset = pe.find(code, result, result + 0x40);
   if (offset === -1)  //New clients - reconstruct mode comparison
   {
     code =
-        " E8 AB AB AB AB"       //CALL func
-      + " 8D 45 AB"             //LEA EAX, [EBP+a]
+        " E8 ?? ?? ?? ??"       //CALL func
+      + " 8D 45 ??"             //LEA EAX, [EBP+a]
       ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", result, result + 0x20);
+    offset = pe.find(code, result, result + 0x20);
     if (offset === -1)
         return "Failed in Step 2.6 - Mode comparison missing";
 
-    var jumpfunc = exe.Raw2Rva(offset + 5) + exe.fetchDWord(offset + 1);
-    var varCode = exe.fetchHex(result, 14);
+    var jumpfunc = pe.rawToVa(offset + 5) + pe.fetchDWord(offset + 1);
+    var varCode = pe.fetchHex(result, 14);
     var retAddr = offset + 5;
 
     var ins =
@@ -43,7 +43,7 @@ function ShowReplayButton()
       + " 83 78 04 06"                             //CMP DWORD PTR [EAX+4], 6
       + " 75 0E"                                   //JNE 0E
       + varCode
-      + " 68" + exe.Raw2Rva(retAddr).packToHex(4)  //PUSH retAdd
+      + " 68" + pe.rawToVa(retAddr).packToHex(4)  //PUSH retAdd
       + " C3"                                      //RET
       ;
 
@@ -52,19 +52,19 @@ function ShowReplayButton()
     if (free === -1)
         return "Failed in Step 2.7 - No enough free space";
 
-    ins = ReplaceVarHex(ins, 3, jumpfunc - exe.Raw2Rva(free + 5));
+    ins = ReplaceVarHex(ins, 3, jumpfunc - pe.rawToVa(free + 5));
 
-    code = " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 5)).packToHex(4);
+    code = " E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4);
 
     exe.insert(free, size + 4, ins, PTYPE_HEX);
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
   }
   else
   {
 
-  //Step 2.7 - Change the value to Mode 6 (Server Select)
-  exe.replace(offset + 3, "06", PTYPE_HEX);
+    //Step 2.7 - Change the value to Mode 6 (Server Select)
+    pe.replaceByte(offset + 3, 6);
   }
 
   //Step 3a - Find the ShowMsg case
@@ -73,7 +73,7 @@ function ShowReplayButton()
   + " 68 29 27 00 00" //PUSH 2729
   ;
 
-  offset = exe.findCode(code, PTYPE_HEX, false);
+  offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 3 - Select Server case missing";
 
@@ -81,49 +81,49 @@ function ShowReplayButton()
 
   //Step 3b - Find the Replay Mode Enable bit setting
   code =
-    " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
-  + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    " C6 40 ?? 01"          //MOV BYTE PTR DS:[EAX + const], 1
+  + " C7 ?? 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
   ;
   var assignedLen = 4;
 
-  var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset2 = pe.findCode(code);
   if (offset2 === -1)
   {
     code =
-      " C6 80 AB AB 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
-    + " C7 AB 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+      " C6 80 ?? ?? 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
+    + " C7 ?? 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
     assignedLen = 7;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
   {
      code =
-      " C6 40 AB 01"          //MOV BYTE PTR DS:[EAX + const], 1
+      " C6 40 ?? 01"          //MOV BYTE PTR DS:[EAX + const], 1
     + " 33 C0"                 //XOR EAX, EAX
-    + " C7 AB 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    + " C7 ?? 0C 1B 00 00 00" //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
   var assignedLen = 4;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
   {
     code =
-      " C6 80 AB AB 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
+      " C6 80 ?? ?? 00 00 01"  //MOV BYTE PTR DS:[EAX + const], 1
     + " 33 C0"                 //XOR EAX, EAX
-    + " C7 AB 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
+    + " C7 ?? 0C 1B 00 00 00"  //MOV DWORD PTR DS:[reg32_A + 0C], 1B
     ;
     assignedLen = 7;
-    offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset2 = pe.findCode(code);
   }
   if (offset2 === -1)
     return "Failed in Step 3 - Replay mode setter missing";
 
   //Step 3c - Get the Function address before the setter & the assigner
   // get address of CRagConnection::instanceR
-  var func = exe.Raw2Rva(offset2) + exe.fetchDWord(offset2 - 4);
+  var func = pe.rawToVa(offset2) + pe.fetchDWord(offset2 - 4);
   // get command related to CRagConnection::replayFlag ?
-  var assigner = exe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
+  var assigner = pe.fetchHex(offset2, assignedLen).replace(" 01", " 00");
 
   //Step 4a - Prep code to disable the Replay Mode and send 2722 instead of 2729
   code =
@@ -140,17 +140,17 @@ function ShowReplayButton()
   if (free === -1)
     return "Failed in Step 4 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Step 4c - Fill in the blanks
   code = ReplaceVarHex(code, 1, func - (freeRva + 6));
-  code = ReplaceVarHex(code, 2, exe.Raw2Rva(offset) - (freeRva + code.hexlength()));
+  code = ReplaceVarHex(code, 2, pe.rawToVa(offset) - (freeRva + code.hexlength()));
 
   //Step 4d - Insert in allocated space
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 4e - Create a JMP to our code from ShowMsg
-  exe.replace(offset - 5, "E9" + (freeRva - exe.Raw2Rva(offset)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset - 5, "E9" + (freeRva - pe.rawToVa(offset)).packToHex(4));
 
   return true;
 }
@@ -163,19 +163,19 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 {
 
   //Step .0 - Find the Button Image address
-  var offset = exe.findString(btnImg, RVA, false);
+  var offset = pe.halfStringVa(btnImg);
   if (offset === -1)
     return "0 - Button String missing";
 
   //Step .1 - Find its reference inside the UI*Wnd::OnCreate function
   var code = offset.packToHex(4);
-  offset = exe.findCode(code + " C7", PTYPE_HEX, false);
+  offset = pe.findCode(code + " C7");
 
   if (offset === -1)
-    offset = exe.findCode(code + " 89", PTYPE_HEX, false);
+    offset = pe.findCode(code + " 89");
 
   if (offset === -1)
-    offset = exe.findCode(code + "AB AB AB AB C7", PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code + "?? ?? ?? ?? C7");
 
   if (offset === -1)
     return "1 - OnCreate function missing";
@@ -183,36 +183,42 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   offset += 5;
 
   //Step .2 - Find the coordinate assignment for the Cancel/Exit button
-  var offset2 = exe.find(" EA 00 00 00", PTYPE_HEX, false, "\xAB", offset, offset + 0x50);
+  var offset2 = pe.find(" EA 00 00 00", offset, offset + 0x50);
   if (offset2 === -1)
     return "2 - 2nd Button asssignment missing";
 
   //Step .3 - Find the coordinate assignment for the button we need
   var type = 1; //VC9
   var code =
-    " 89 AB 24 AB" //MOV DWORD PTR SS:[ESP + x], reg32_A ; x-coord
-  + " 89 AB 24 AB" //MOV DWORD PTR SS:[ESP + y], reg32_A ; y-coord
+    " 89 ?? 24 ??" //MOV DWORD PTR SS:[ESP + x], reg32_A ; x-coord
+  + " 89 ?? 24 ??" //MOV DWORD PTR SS:[ESP + y], reg32_A ; y-coord
   ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
-  var jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+  var jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
 
   if (jmpAddr === -1)
   {
     type = 2;//VC10
-    code = code.replace(/ 89 AB 24/g, " 89 AB");//change ESP + to EBP -
-    jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    code =
+      " 89 ?? ??" //MOV DWORD PTR SS:[EBP + x], reg32_A ; x-coord
+    + " 89 ?? ??" //MOV DWORD PTR SS:[EBP + y], reg32_A ; y-coord
+    ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
+    jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
   {
     type = 3; //VC11
-    code = code.replace(/ 89 AB AB/g, " C7 45 AB 9C FF FF FF");//change ESI to -64
-    jmpAddr = exe.find(code + suffix2, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    code =
+      " C7 45 ?? 9C FF FF FF" //MOV DWORD PTR SS:[EBP + x], reg32_A ; x-coord
+    + " C7 45 ?? 9C FF FF FF" //MOV DWORD PTR SS:[EBP + y], reg32_A ; y-coord
+    ;                //followed by suffix which would be either CALL addr or MOV DWORD PTR SS:[ESP+const], 0
+    jmpAddr = pe.find(code + suffix2, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
   {
     type = 4; //VC14
-    jmpAddr = exe.find(code + suffix, PTYPE_HEX, true, "\xAB", offset2, offset2 + 0x50);
+    jmpAddr = pe.find(code + suffix, offset2, offset2 + 0x50);
   }
 
   if (jmpAddr === -1)
@@ -226,7 +232,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   {
     case 1:
     {
-      offset2 = exe.fetchByte(jmpAddr + 3);
+      offset2 = pe.fetchByte(jmpAddr + 3);
       code =
         " C7 44 24" + offset2.packToHex(1) + " 04 00 00 00" //MOV DWORD PTR DS:[ESP + x], 4
       + " 89 44 24" + (offset2 + 4).packToHex(1)            //MOV DWORD PTR DS:[ESP + y], EAX
@@ -236,7 +242,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     }
     case 2:
     {
-      offset2 = exe.fetchByte(jmpAddr + 2);
+      offset2 = pe.fetchByte(jmpAddr + 2);
       code =
         " 50"                                            //PUSH EAX ; needed since we lost the y-coord we need to retrieve it from the OK button
       + " 8B 45" + (offset2 - 20).packToHex(1)           //MOV EAX, DWORD PTR DS:[EBP - yOk]
@@ -251,24 +257,24 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
     {
       code =
         " 04 00 00 00"                          //MOV DWORD PTR DS:[EBP - x], 4
-      + " 89 45" + exe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
+      + " 89 45" + pe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
       + " 90 90 90 90"                          //NOP x4
       ;
       break;
     }
     case 4:
     {  //Move LEA EAX, [EBP+a] downward, so we don't get wrong eax value.
-    offset = exe.find(" 8D 45 AB", PTYPE_HEX, true, "\xAB", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
-    if (offset === -1)
+      offset = pe.find(" 8D 45 ??", jmpAddr - 0xFF, jmpAddr); //LEA EAX, [EBP+a]
+      if (offset === -1)
         return "4";
-    var varCode = exe.fetchHex(offset, 3);
+      var varCode = pe.fetchHex(offset, 3);
       code =
         " 04 00 00 00"                          //MOV DWORD PTR DS:[EBP - x], 4
-      + " 89 45" + exe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
+      + " 89 45" + pe.fetchHex(retAddr - 5, 1) //MOV DWORD PTR DS:[EBP - y], EAX
       + varCode                                 //LEA EAX, [EBP+a]
       + " 90"                                   //NOP
       ;
-    exe.replace(offset, " 90 90 90", PTYPE_HEX);
+      pe.replaceHex(offset, " 90 90 90");
       break;
     }
   }
@@ -277,7 +283,7 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
   var size = code.hexlength();
   if (type === 3 || type === 4)
   {//VC11
-    exe.replace(retAddr - size, code, PTYPE_HEX);
+    pe.replaceHex(retAddr - size, code);
   }
   else
   {//VC9 & VC10
@@ -287,13 +293,13 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
       return "5 - Not enough free space";
 
     //Step .5b - Fill in the blanks
-    code = ReplaceVarHex(code, 1, exe.Raw2Rva(retAddr) - exe.Raw2Rva(free + size));
+    code = ReplaceVarHex(code, 1, pe.rawToVa(retAddr) - pe.rawToVa(free + size));
 
     //Step .5c - Insert the code
     exe.insert(free, size, code, PTYPE_HEX);
 
     //Step .5d - Create a JMP to our code at jmpAddr
-    exe.replace(jmpAddr, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(jmpAddr + 5)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(jmpAddr, "E9" + (pe.rawToVa(free) - pe.rawToVa(jmpAddr + 5)).packToHex(4));
   }
 
   return jmpAddr;//We return the address since we need it for the Mode comparison
@@ -304,5 +310,5 @@ function _SRB_FixupButton(btnImg, suffix, suffix2)
 //=====================================================================//
 function ShowReplayButton_()
 {
-  return (exe.findString("replay_interface\\btn_replay_b", RAW, false) !== -1);
+  return (pe.halfStringRaw("replay_interface\\btn_replay_b") !== -1);
 }

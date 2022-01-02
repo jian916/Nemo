@@ -8,7 +8,7 @@ function LoadCustomQuestLua()
 
   //Step 1 - Check if Quest_function is being loaded (same check as below but adding again just for safety)
   var prefix = "lua files\\quest\\";
-  if (exe.findString(prefix + "Quest_function", RAW) === -1)
+  if (pe.stringRaw(prefix + "Quest_function") === -1)
     return "Failed in Step 1 - Quest_function not found";
 
   //Step 2a - Get the list file
@@ -46,5 +46,5 @@ function LoadCustomQuestLua()
 //================================================================//
 function LoadCustomQuestLua_()
 {
-  return (exe.findString("lua files\\quest\\Quest_function", RAW) !== -1);
+  return (pe.stringRaw("lua files\\quest\\Quest_function") !== -1);
 }

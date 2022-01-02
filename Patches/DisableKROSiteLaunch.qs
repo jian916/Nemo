@@ -3,20 +3,32 @@
 // Author: mrjnumber1
 function DisableKROSiteLaunch()
 {
-    //Step 1 - Find offset of ro.gnjoy.com
-    var offset = exe.findString("ro.gnjoy.com", RAW);
-    if (offset === -1)
+    var urls = [
+        "ro.gnjoy.com",
+        "http://ro.gnjoy.com",
+        "http://ro.gnjoy.com/",
+        "http://ro.hangame.com/login/loginstep.asp?prevURL=/NHNCommon/NHN/Memberjoin.asp",
+        "http://www.ragnarok.co.in/index.php",
+        "https://iro.ragnarokonline.com/member/memberjoin1.asp?mNum=1",
+        "http://t.kunlun.com/?act=voucher.main&cid=1000&pid=61",
+        "http://www.hangame.com",
+        "http://ragnarok.co.kr",
+        "http://roz.gnjoy.com",
+        "http://roz.gnjoy.com/"
+    ]
+    var patched = false;
+
+    for (var i = 0; i < urls.length; i ++)
     {
-        offset = exe.findString("http://ro.gnjoy.com/", RAW);
+        var offset = pe.stringRaw(urls[i]);
+        if (offset !== -1)
+        {
+            pe.replaceByte(offset, 0);
+            patched = true;
+        }
     }
 
-    if (offset === -1)
-    {
+    if (patched === false)
         return "Failed in Step 1";
-    }
-
-    //Step 2 - Replace with Zero
-    exe.replace(offset, "00", PTYPE_HEX);
-
     return true;
 }

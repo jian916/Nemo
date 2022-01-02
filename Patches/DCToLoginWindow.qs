@@ -13,11 +13,11 @@ function DCToLoginWindow()
   //Step 1b - Find the MsgString ID references of "Sorry the character you are trying to use is banned for testing connection." - common in Login/Char & Map server DC
   var code = " 68 35 06 00 00"; //PUSH 635
 
-  var offsets = exe.findCodes(code, PTYPE_HEX, false);
+  var offsets = pe.findCodes(code);
   if (offsets.length !== 2)//Choose different MsgString ID references for new clients
   {
       code = " 68 E5 07 00 00 E8"; //PUSH 7E5
-      offsets = exe.findCodes(code, PTYPE_HEX, false);
+      offsets = pe.findCodes(code);
   }
   if (offsets.length !== 2)//1 for Login/Char & 1 for Map
     return "Failed in Part 1 - MsgString ID missing";
@@ -28,31 +28,31 @@ function DCToLoginWindow()
   //******* First we will work on DC during Login/Char Selection screens ********//
 
   //Step 2a - Find the format string address
-  var offset = exe.findString("%s(%d)", RVA);
+  var offset = pe.stringVa("%s(%d)");
   if (offset === -1)
     return "Failed in Part 2 - Format string missing";
 
   //Step 2b - Find its reference after the MsgString ID PUSH
-  var soffset = exe.find(" 68" + offset.packToHex(4), PTYPE_HEX, false, "\xAB", offsets[1], offsets[1] + 0x120);
+  var soffset = pe.find(" 68" + offset.packToHex(4), offsets[1], offsets[1] + 0x120);
   if (offset === -1)
     return "Failed in Part 2 - Format reference missing";
 
   //Step 2c - Find the Mode refAddr movement after it. We will inject a Jump to our code here.
   code =
-    " E8 AB AB AB FF"    //CALL addr
-  + " 8B 0D AB AB AB 00" //MOV ECX, DWORD PTR DS:[refAddr]
+    " E8 ?? ?? ?? FF"    //CALL addr
+  + " 8B 0D ?? ?? ?? 00" //MOV ECX, DWORD PTR DS:[refAddr]
   ;
   var refOffset = 5;
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", soffset + 0x5, soffset + 0x80);
+  offset = pe.find(code, soffset + 0x5, soffset + 0x80);
   if (offset === -1)
   {
     code =
       " C2 04 00"           //RETN 4
-    + " 8B 0D AB AB AB 00"  //MOV ECX, DWORD PTR DS:[refAddr]
+    + " 8B 0D ?? ?? ?? 00"  //MOV ECX, DWORD PTR DS:[refAddr]
     + " 6A 00"              //PUSH 0
     ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", soffset + 0x5, soffset + 0xB0);
+    offset = pe.find(code, soffset + 0x5, soffset + 0xB0);
     refOffset = 3;
   }
 
@@ -62,7 +62,7 @@ function DCToLoginWindow()
   offset += refOffset;
 
   //Step 2d - Extract the ECX assignment which we will need twice later on.
-  var movEcx = exe.fetchHex(offset, 6);
+  var movEcx = pe.fetchHex(offset, 6);
 
   //Step 2e - Find the Mode Changer CALL after <offset>
   code =
@@ -70,19 +70,19 @@ function DCToLoginWindow()
   + " FF D0" //CALL EAX
   ;
 
-  var offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
+  var offset2 = pe.find(code, offset + 0x6, offset + 0x20);
 
   if (offset2 === -1)
   {
     code = code.replace(" D0", " 50 18");
-    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x6, offset + 0x20);
+    offset2 = pe.find(code, offset + 0x6, offset + 0x20);
   }
 
   if (offset2 === -1)
     return "Failed in Part 2 - Mode Changer call missing";
 
   //Step 2f - Get the number of PUSH 0 s . We need to push the same number in our code
-  var zeroPushes = exe.findAll(" 6A 00", PTYPE_HEX, false, "\xAB", offset + 6, offset2);
+  var zeroPushes = pe.findAll(" 6A 00", offset + 6, offset2);
   if (zeroPushes.length === 0)
     return "Failed in Part 2 - Zero Pushes not found";
 
@@ -96,7 +96,7 @@ function DCToLoginWindow()
   + " 6A 00".repeat(zeroPushes.length)        //PUSH 0 - n times
   + " 68 1D 27 00 00"                         //PUSH 271D
   + " C7 41 0C 03 00 00 00"                   //MOV DWORD PTR DS:[ECX+0C],3
-  + " 68" + exe.Raw2Rva(offset2).packToHex(4) //PUSH offset2
+  + " 68" + pe.rawToVa(offset2).packToHex(4)  //PUSH offset2
   + " FF 60 18"                               //JMP DWORD PTR DS:[EAX+18]
   ;
 
@@ -109,41 +109,41 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 3d - Change the MOV ECX to a JMP to above code
-  exe.replace(offset, " 90 E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset + 6)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(offset, " 90 E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 6)).packToHex(4));
 
   //******* Next we will work on DC during Gameplay *******//
 
   //Step 4a - Check if there is a short Jump after the MsgString ID PUSH . If its there go to the address
-  if (exe.fetchUByte(offsets[0]) === 0xEB)
+  if (pe.fetchUByte(offsets[0]) === 0xEB)
   {
-    offset = offsets[0] + 2 + exe.fetchByte(offsets[0] + 1);
+    offset = offsets[0] + 2 + pe.fetchByte(offsets[0] + 1);
   }
   else
   {
     //Step 4b - If not look for a Long Jump after the PUSH
-    offset = exe.find(" E9 AB AB 00 00", PTYPE_HEX, true, "\xAB", offsets[0], offsets[0] + 0x100);
+    offset = pe.find(" E9 ?? ?? 00 00", offsets[0], offsets[0] + 0x100);
     if (offset === -1)
       return "Failed in Part 4 - JMP to Mode call missing";
 
     //Step 4c - Goto the JMP address
-    offset += 5 + exe.fetchDWord(offset + 1);
+    offset += 5 + pe.fetchDWord(offset + 1);
   }
 
   //Step 4d - Look for the ErrorMsg (Error Message Window displayer function) CALL after the offset
   code =
     getEcxWindowMgrHex() //MOV ECX, OFFSET g_windowMgr
-  + " E8 AB AB AB FF" //CALL UIWindowMgr::ErrorMsg
+  + " E8 ?? ?? ?? FF" //CALL UIWindowMgr::ErrorMsg
   ;
   var jumpOffset = 10;
 
-  var joffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
+  var joffset = pe.find(code, offset, offset + 0x100);
   if (joffset === -1)
   {
     code =
-      " E8 AB AB AB FF" //CALL UIWindowMgr::ErrorMsg
+      " E8 ?? ?? ?? FF" //CALL UIWindowMgr::ErrorMsg
     + " 8B 07"          //MOV EAX, [EDI]
     ;
-    joffset = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x100);
+    joffset = pe.find(code, offset, offset + 0x100);
     jumpOffset = 5;
   ;
 
@@ -161,24 +161,24 @@ function DCToLoginWindow()
   + " FF 50 18" //CALL DWORD PTR DS:[EAX+18]
   ;
 
-  offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
+  offset2 = pe.find(code, joffset, joffset + 0x20);
 
   if (offset2 === -1)
   {
     code = code.replace(" 50 18", " D0");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
+    offset2 = pe.find(code, joffset, joffset + 0x20);
   }
 
   if (offset2 === -1)
   {
     code = code.replace(" D0", " D2").replace(" 8B CF", "");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
+    offset2 = pe.find(code, joffset, joffset + 0x20);
   }
 
   if (offset2 === -1)
   {
     code = code.replace(" D2", " 50 18");
-    offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", joffset, joffset + 0x20);
+    offset2 = pe.find(code, joffset, joffset + 0x20);
   }
 
   if (offset2 === -1)
@@ -194,7 +194,7 @@ function DCToLoginWindow()
   + " 8B 01"                                  //MOV EAX, DWORD PTR DS:[ECX]
   + " 6A 00".repeat(zeroPushes.length)        //PUSH 0 - n times
   + " 68 8D 00 00 00"                         //PUSH 8D
-  + " 68" + exe.Raw2Rva(offset2).packToHex(4) //PUSH offset2
+  + " 68" + pe.rawToVa(offset2).packToHex(4)  //PUSH offset2
   + " FF 60 18"                               //JMP DWORD PTR DS:[EAX+18]
   ;
 
@@ -207,7 +207,7 @@ function DCToLoginWindow()
   exe.insert(free, code.hexlength(), code, PTYPE_HEX);
 
   //Step 5d - Replace the code at offset with JMP to our code.
-  exe.replace(joffset, " E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(joffset + 5)).packToHex(4), PTYPE_HEX);
+  pe.replaceHex(joffset, " E9" + (pe.rawToVa(free) - pe.rawToVa(joffset + 5)).packToHex(4));
 
   return true;
 }

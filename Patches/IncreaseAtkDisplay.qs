@@ -8,16 +8,16 @@ function IncreaseAtkDisplay()
 
   //Step 1a - Find the location where 999999 is checked
   var code =
-    " 81 AB 3F 42 0F 00" //CMP reg32_A, 0F423F ; 999999 = 0x0F423F
+    " 81 ?? 3F 42 0F 00" //CMP reg32_A, 0F423F ; 999999 = 0x0F423F
   + " 7E 07"             //JLE SHORT addr1
-  + " AB 3F 42 0F 00"    //MOV reg32_A, 0F423F
+  + " ?? 3F 42 0F 00"    //MOV reg32_A, 0F423F
   ;
-  var refOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var refOffset = pe.findCode(code);
 
   if (refOffset === -1)
   {
-    code = code.replace(" 7E", " AB 7E");//Insert Byte before JLE to represent PUSH reg32
-    refOffset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 7E", " ?? 7E");//Insert Byte before JLE to represent PUSH reg32
+    refOffset = pe.findCode(code);
   }
 
   if (refOffset === -1)
@@ -26,17 +26,17 @@ function IncreaseAtkDisplay()
   //Step 1b - Find the start of the Function
   code =
     " 6A FF"             //PUSH -1
-  + " 68 AB AB AB 00"    //PUSH addr1
+  + " 68 ?? ?? ?? 00"    //PUSH addr1
   + " 64 A1 00 00 00 00" //MOV EAX, DWORD PTR FS:[0]
   + " 50"                //PUSH EAX
   + " 83 EC"             //SUB ESP, const1
   ;
-  var offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x40, refOffset);
+  var offset = pe.find(code, refOffset - 0x40, refOffset);
 
   if (offset === -1)
   {
     code = code.replace(" 50", " 50 64 89 25 00 00 00 00"); //Insert MOV DWORD PTR FS:[0], ESP after PUSH EAX
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset - 0x40, refOffset);
+    offset = pe.find(code, refOffset - 0x40, refOffset);
   }
 
   if (offset === -1)
@@ -51,64 +51,64 @@ function IncreaseAtkDisplay()
   var fpEnb = HasFramePointer();
 
   if (fpEnb)
-    code = "C7 45 AB 01 00 00 00";//MOV DWORD PTR SS:[EBP-x], 1
+    code = "C7 45 ?? 01 00 00 00";//MOV DWORD PTR SS:[EBP-x], 1
   else
-    code = "C7 44 24 AB 01 00 00 00";//MOV DWORD PTR SS:[ESP+x], 1
+    code = "C7 44 24 ?? 01 00 00 00";//MOV DWORD PTR SS:[ESP+x], 1
 
-  offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset + 0x10, refOffset + 0x28);
+  offset = pe.find(code, refOffset + 0x10, refOffset + 0x28);
 
   if (offset === -1)
   {
     code =
       " 7E 07"          //JLE SHORT addr
-    + " AB 06 00 00 00" //MOV reg32_B, 6
+    + " ?? 06 00 00 00" //MOV reg32_B, 6
     + " EB"             //JMP SHORT addr2
     ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", refOffset + 0x10, refOffset + 0x28);
+    offset = pe.find(code, refOffset + 0x10, refOffset + 0x28);
   }
 
   if (offset === -1)
     return "Failed in Step 2 - Digit Counter missing";
 
   //Step 2b.1 - Extract the stack offset from the instruction if it is a stack assignment
-  if (exe.fetchUByte(offset) === 0xC7)
+  if (pe.fetchUByte(offset) === 0xC7)
   {
-    var offByte = exe.fetchByte(offset + code.hexlength() - 5);
+    var offByte = pe.fetchByte(offset + code.hexlength() - 5);
   }
   else
   {
     //Step 2b.2 - If its a register assignment extract the register and see if it assigns to stack later
-    var offByte = exe.fetchUByte(offset + 2) - 0xB8;
+    var offByte = pe.fetchUByte(offset + 2) - 0xB8;
 
     code = (offByte << 3) | 0x44;//modrm for MOV
     if (fpEnb)
-      code = " 89" + (code+1).packToHex(1) + " AB 8D";//MOV DWORD PTR SS:[EBP-x], reg32_B . followed by LEA
+      code = " 89" + (code+1).packToHex(1) + " ?? 8D";//MOV DWORD PTR SS:[EBP-x], reg32_B . followed by LEA
     else
-      code = " 89" + code.packToHex(1) + " 24 AB 8D" ;//MOV DWORD PTR SS:[ESP+x], reg32_B . followed by LEA
+      code = " 89" + code.packToHex(1) + " 24 ?? 8D" ;//MOV DWORD PTR SS:[ESP+x], reg32_B . followed by LEA
 
-    var offset2 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x80);
+    var offset2 = pe.find(code, offset, offset + 0x80);
 
     if (offset2 === -1)
       offByte = " 89" + (0xF0 | offByte).packToHex(1);//MOV reg32_B, ESI ; because ESI will be holding the digit count finally
     else
-      offByte = exe.fetchByte(offset2 + code.hexlength() - 2);
+      offByte = pe.fetchByte(offset2 + code.hexlength() - 2);
   }
 
   //Step 2c - Find Location where the digit extraction starts
-  offset = exe.find("B8 67 66 66 66", PTYPE_HEX, false, "\xAB", offset);//MOV EAX, 66666667
+  offset = pe.find("B8 67 66 66 66", offset);//MOV EAX, 66666667
   if (offset === -1)
     return "Failed in Step 2 - Digit Extractor missing";
 
   //Step 2d - Find the first digit movement to allocated stack after it
   if (fpEnb)
-    code = " 89 AB AB"; //MOV DWORD PTR SS:[EBP-x], reg32_A
+    code = " 89 ?? ??"; //MOV DWORD PTR SS:[EBP-x], reg32_A
   else
-    code = " 89 AB 24 AB"; //MOV DWORD PTR SS:[ESP+x], reg32_A
+    code = " 89 ?? 24 ??"; //MOV DWORD PTR SS:[ESP+x], reg32_A
 
-  var offset2 = exe.find(code + " 8B", PTYPE_HEX, true, "\xAB", offset + 0x5, offset + 0x28);//MOV instruction following assignment - VC9+ clients
+  var offset2 = pe.find(code + " 8B", offset + 0x5, offset + 0x28);//MOV instruction following assignment - VC9+ clients
 
   if (offset2 === -1)
-    offset2 = exe.find(code + " F7", PTYPE_HEX, true, "\xAB", offset + 0x5, offset + 0x28);//IMUL instruction following assignment - Older clients
+    offset2 = pe.find(code + " F7", offset + 0x5, offset + 0x28);//IMUL instruction following assignment - Older clients
 
   if (offset2 === -1)
     return "Failed in Step 2 - Digit movement missing";
@@ -116,18 +116,18 @@ function IncreaseAtkDisplay()
   offset2 += code.hexlength();
 
   //Step 2e - Extract the stack offset for the first digit (all the succeeding ones will be in increasing order from this one).
-  var offByte2 = exe.fetchByte(offset2 - 1);
+  var offByte2 = pe.fetchByte(offset2 - 1);
 
   //Step 2f - Find the g_modeMgr assignment
-  offset = exe.find(getEcxModeMgrHex(), PTYPE_HEX, true, "\xAB", offset2);//MOV ECX, g_modeMgr
+  offset = pe.find(getEcxModeMgrHex(), offset2);//MOV ECX, g_modeMgr
   if (offset === -1)
     return "Failed in Step 2 - g_modeMgr assignment missing";
 
   //Step 2g - Extract the assignment
-  var movECX = exe.fetchHex(offset, 5);
+  var movECX = pe.fetchHex(offset, 5);
 
   //Step 2h - Now find the CModeMgr::GetGameMode call after it - this is where we need to Jump to after digit count and extraction
-  offset = exe.find(" E8 AB AB AB FF", PTYPE_HEX, true, "\xAB", offset + 5);//CALL CModeMgr::GetGameMode
+  offset = pe.find(" E8 ?? ?? ?? FF", offset + 5);//CALL CModeMgr::GetGameMode
   if (offset === -1)
     return "Failed in Step 2 - GetGameMode call missing";
 
@@ -147,7 +147,7 @@ function IncreaseAtkDisplay()
 
   //Step 3b - Prep code to replace at refOffset - new digit splitter and counter combined
   code =
-    " 89" + (0xC1 + ((exe.fetchByte(refOffset + 1) & 0x7) << 3)).packToHex(1) //MOV ECX, reg32_A
+    " 89" + (0xC1 + ((pe.fetchByte(refOffset + 1) & 0x7) << 3)).packToHex(1) //MOV ECX, reg32_A
   + " BE" + offByte2.packToHex(4) //MOV ESI, offByte2
   + " B8 67 66 66 66"    //MOV EAX,66666667
   + " F7 E9"             //IMUL ECX
@@ -185,17 +185,17 @@ function IncreaseAtkDisplay()
   code = ReplaceVarHex(code, 1, offset - (refOffset + code.hexlength()));
 
   //Step 3d - Replace code at refOffset
-  exe.replace(refOffset, code, PTYPE_HEX);
+  pe.replaceHex(refOffset, code);
 
   //Step 4a - Find the end of the function
   if (fpEnb)
     code = "8B E5 5D"; //MOV ESP, EBP and POP EBP
   else
-    code = "83 C4 AB"; //ADD ESP, const
+    code = "83 C4 ??"; //ADD ESP, const
 
   code += "C2 10 00";//RETN 10
 
-  var offset3 = exe.find(code, PTYPE_HEX, true, "\xAB", offset, offset + 0x200);
+  var offset3 = pe.find(code, offset, offset + 0x200);
   if (offset3 === -1)
     return "Failed in Step 4 - Function end missing";
 
@@ -208,8 +208,8 @@ function IncreaseAtkDisplay()
   while (offset2 < offset3)
   {
     //Step 4b - Get current opcode and modrm
-    var opcode = exe.fetchUByte(offset2);
-    var modrm = exe.fetchUByte(offset2 + 1);
+    var opcode = pe.fetchUByte(offset2);
+    var modrm = pe.fetchUByte(offset2 + 1);
 
     //Step 4c - Get the instruction details
     var details = GetOpDetails(opcode, modrm, offset2);//contains length of instruction, distance to next offset, optional destination operand, optional source operand. Usually index 0 and 1 are same
@@ -229,16 +229,16 @@ function IncreaseAtkDisplay()
 
         if (fpEnb && details.mode === 1)
         {
-          if (details.rm === 5 && exe.fetchByte(offset2 + 2) <= (offByte2 + soff) )
+          if (details.rm === 5 && pe.fetchByte(offset2 + 2) <= (offByte2 + soff) )
           {
             offsetStack(offset2 + 2);
           }
-          else if (details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 5 &&  exe.fetchByte(offset2 + 3) <= (offByte2 + soff))
+          else if (details.rm === 4 && (pe.fetchByte(offset2 + 2) & 0x7) === 5 &&  pe.fetchByte(offset2 + 3) <= (offByte2 + soff))
           {
             offsetStack(offset2 + 3);
           }
         }
-        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (exe.fetchByte(offset2 + 2) & 0x7) === 4 && exe.fetchByte(offset2 + 3) >= (offByte2 + soff) )
+        else if (!fpEnb && details.mode === 1 && details.rm === 4 && (pe.fetchByte(offset2 + 2) & 0x7) === 4 && pe.fetchByte(offset2 + 3) >= (offByte2 + soff) )
         {
           offsetStack(offset2 + 3, 1);
         }
@@ -272,10 +272,10 @@ function IncreaseAtkDisplay()
     if (typeof(offByte) === "number")//Only saw it in VC10+ clients
     {
       //Step 5a - Look for MOV instruction to stack that occurs before refOffset
-      offset = exe.find("89 AB AB 81", PTYPE_HEX, true, "\xAB", refOffset - 6, refOffset);//MOV DWORD PTR SS:[EBP-x], reg32_A followed by the comparson
+      offset = pe.find("89 ?? ?? 81", refOffset - 6, refOffset);//MOV DWORD PTR SS:[EBP-x], reg32_A followed by the comparson
 
       if (offset === -1)
-        offset = exe.find("89 AB AB 8B", PTYPE_HEX, true, "\xAB", refOffset-6, refOffset);//MOV DWORD PTR SS:[EBP-x], reg32_A followed by another MOV
+        offset = pe.find("89 ?? ?? 8B", refOffset-6, refOffset);//MOV DWORD PTR SS:[EBP-x], reg32_A followed by another MOV
 
       if (offset === -1)
         return "Failed in Step 2 - MOV missing";
@@ -290,7 +290,7 @@ function IncreaseAtkDisplay()
     offsetStack(offset3 + 2, 1);
 
     //Step 5d - Look for LEA instruction before refOffset (FPO client). ESP+x will be before the space allocated for digits
-    offset = exe.find("8D AB 24", PTYPE_HEX, true, "\xAB", refOffset - 0x28, refOffset);//LEA EAX, [ESP+x]
+    offset = pe.find("8D ?? 24", refOffset - 0x28, refOffset);//LEA EAX, [ESP+x]
     if (offset === -1)
       return "Failed in Step 2 - LEA missing";
 
@@ -298,7 +298,7 @@ function IncreaseAtkDisplay()
     offsetStack(offset + 3, 1);
 
     //Step 5f - Look for MOV ECX, DWORD PTR SS:[ARG.2] before refOffset. ARG.2 is now 0x10 bytes farther
-    offset = exe.find("8B AB 24", PTYPE_HEX, true, "\xAB", refOffset - 8, refOffset);
+    offset = pe.find("8B ?? 24", refOffset - 8, refOffset);
     if (offset === -1)
       return "Failed in Step 2 - ARG.2 assignment missing";
 
@@ -316,6 +316,6 @@ function IncreaseAtkDisplay()
 function offsetStack(loc, sign)
 {
   if (typeof(sign) === "undefined") sign = -1;
-  var obyte = exe.fetchByte(loc) + sign * 16;
-  exe.replace(loc, obyte.packToHex(1), PTYPE_HEX);
+  var obyte = pe.fetchByte(loc) + sign * 16;
+  pe.replaceByte(loc, obyte);
 }

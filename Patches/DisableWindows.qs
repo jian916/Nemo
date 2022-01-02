@@ -25,24 +25,24 @@ function DisableWindows()
 
   //Find switch table
   var code =
-    " 0F B6 AB AB AB AB 00" //movzx eax,byte ptr [eax+iswTable]
-  + " FF 24 85 AB AB AB 00" //jmp dword ptr [eax*4+swTable]
+    " 0F B6 ?? ?? ?? ?? 00" //movzx eax,byte ptr [eax+iswTable]
+  + " FF 24 85 ?? ?? ?? 00" //jmp dword ptr [eax*4+swTable]
   ;
   var switch1Offset = 3;
   var switch2Offset = 10;
 
-  var offset = exe.find(code, PTYPE_HEX, true, "\xAB", makeWnd, makeWnd + 0x200);
+  var offset = pe.find(code, makeWnd, makeWnd + 0x200);
   if (offset === -1)
     return "Failed in Step 1 - Can't find indirect table for switch statement";
 
   logVaVar("UIWindowMgr_MakeWindow switch1", offset, switch1Offset);
   logVaVar("UIWindowMgr_MakeWindow switch2", offset, switch2Offset);
 
-  var ITSS = exe.fetchDWord(offset + 3);
+  var ITSS = pe.fetchDWord(offset + 3);
 
   //Find the default case offset, should be same in ID 54 & 67
-  var dfCase = exe.fetchHex(exe.Rva2Raw(ITSS + 54), 1);
-  if (dfCase !== exe.fetchHex(exe.Rva2Raw(ITSS + 67), 1))
+  var dfCase = pe.fetchHex(pe.vaToRaw(ITSS + 54), 1);
+  if (dfCase !== pe.fetchHex(pe.vaToRaw(ITSS + 67), 1))
     return "Failed in Step 2";
 
   //Get disable windows id list from input file
@@ -73,7 +73,7 @@ function DisableWindows()
   //Make specified windows jump to default case
   for (var i = 0; i < WndID.length; i++)
   {
-    exe.replace(exe.Rva2Raw(ITSS + WndID[i]), dfCase, PTYPE_HEX);
+    pe.replaceHex(pe.vaToRaw(ITSS + WndID[i]), dfCase);
   }
 
   return true;

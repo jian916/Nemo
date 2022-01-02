@@ -25,26 +25,26 @@ function OpeningToServiceSelect()
     //Step 1 - Find the MsgString ID references of "Please enter at least %d characters. If you don't have account,"
     var code = " 68 D5 0B 00 00 E8"; //PUSH BD5 CALL
 
-    var offset = exe.findCode(code, PTYPE_HEX, false);
+    var offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - MsgString ID Missing";
 
     //Step 2 - Find the indirect table for switch statement inside UILoginWnd::SendMsg
     code =
-      " 0F B6 80 AB AB AB AB"
-    + " FF 24 85 AB AB AB AB"
+      " 0F B6 80 ?? ?? ?? ??"
+    + " FF 24 85 ?? ?? ?? ??"
     ;
 
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset - 0x300, offset);
+    offset = pe.find(code, offset - 0x300, offset);
     if (offset === -1)
         return "Failed in Step 2 - Switch Table Missing";
 
-    var switchTable = exe.fetchDWord(offset + 3);
+    var switchTable = pe.fetchDWord(offset + 3);
 
     //Step 2 - Change Opening button to Service Select
     var opOffset = switchTable + 100;
 
-    exe.replace(exe.Rva2Raw(opOffset), "00", PTYPE_HEX);
+    pe.replaceByte(pe.vaToRaw(opOffset), 0);
 
     return true;
 }
@@ -54,5 +54,5 @@ function OpeningToServiceSelect()
 //======================================================================//
 function OpeningToServiceSelect_()
 {
-  return (exe.findCode(" 68 D5 0B 00 00 E8", PTYPE_HEX, false) !== -1);
+  return (pe.findCode(" 68 D5 0B 00 00 E8") !== -1);
 }

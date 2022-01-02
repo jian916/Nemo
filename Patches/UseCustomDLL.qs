@@ -25,13 +25,13 @@ function UseCustomDLL()
   var dirData = "";
   var offset = dir.offset;
 
-  for ( ; (curValue = exe.fetchHex(offset, 20)) !== finalValue; offset += 20)
+  for ( ; (curValue = pe.fetchHex(offset, 20)) !== finalValue; offset += 20)
   {
 
     //Step 1e - Get the DLL Name for the import entry
-    var offset2 = exe.Rva2Raw(exe.fetchDWord(offset + 12) + exe.getImageBase());
-    var offset3 = exe.find("00", PTYPE_HEX, false, "\xAB", offset2);
-    var curDLL = exe.fetch(offset2, offset3 - offset2);
+    var offset2 = pe.vaToRaw(pe.fetchDWord(offset + 12) + pe.getImageBase());
+    var offset3 = pe.find("00", offset2);
+    var curDLL = pe.fetch(offset2, offset3 - offset2);
 
     //Step 1f - Make sure there is no duplicate
     //if (curDLL === lastDLL) continue;
@@ -117,7 +117,7 @@ function UseCustomDLL()
     return "Failed in Step 3 - Not enough free space";
 
   //Step 3c - Construct the new Import table
-  var baseAddr = exe.Raw2Rva(free) - exe.getImageBase();
+  var baseAddr = pe.rawToVa(free) - pe.getImageBase();
   var prefix = " 00".repeat(12);
   var dirEntryData = "";
   var dirTableData = "";
@@ -146,9 +146,9 @@ function UseCustomDLL()
   exe.insert(free, strSize + dirSize, strData + dirEntryData + dirTableData, PTYPE_HEX);
 
   //Step 4b - Change the PE Table Import Data Directory Address
-  var PEoffset = exe.find("50 45 00 00", PTYPE_HEX, false);
-  exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, baseAddr + strSize + dirEntryData.hexlength() );
-  exe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, dirTableData.hexlength() - 20);
+  var PEoffset = pe.find("50 45 00 00");
+  pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0x8, baseAddr + strSize + dirEntryData.hexlength() );
+  pe.replaceDWord(PEoffset + 0x18 + 0x60 + 0xC, dirTableData.hexlength() - 20);
 
   //Step 4 - Hint for HShield Patch to not conflict with this one.
   Import_Info = {

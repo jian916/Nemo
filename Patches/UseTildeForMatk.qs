@@ -7,17 +7,17 @@ function UseTildeForMatk()
 {
 
   //Step 1a - Find the original format string
-  var offset = exe.findString("%d + %d", RVA);
+  var offset = pe.stringVa("%d + %d");
   if (offset === -1)
     return "Failed in Step 1 - Format string missing";
 
   //Step 1b - Find all its references - There should be exactly 5 matches
-  var offsets = exe.findCodes("68" + offset.packToHex(4), PTYPE_HEX, false);
+  var offsets = pe.findCodes("68" + offset.packToHex(4));
   if (offsets.length !== 5)
     return "Failed in Step 1 - Not enough matches";
 
   //Step 2a - Find the replacement format string
-  offset = exe.findString("%d ~ %d", RVA, false);
+  offset = pe.halfStringVa("%d ~ %d");
   if (offset === -1)
   {
 
@@ -30,11 +30,11 @@ function UseTildeForMatk()
     exe.insert(offset, 8, "%d ~ %d", PTYPE_STRING);
 
     //Step 2d - Get its RVA
-    offset = exe.Raw2Rva(offset);
+    offset = pe.rawToVa(offset);
   }
 
   //Step 2e - Replace the PUSHed address for the 2nd match out of the 5
-  exe.replaceDWord(offsets[1] + 1, offset);
+  pe.replaceDWord(offsets[1] + 1, offset);
 
   return true;
 }

@@ -20,18 +20,14 @@
 //##################################################################
 function InsensitiveStorageSearch()
 {
-  var GetModuleHandleA = GetFunction("GetModuleHandleA", "KERNEL32.dll");
-  if (GetModuleHandleA === -1)
-    return "Failed in Step 1 - GetModuleHandleA not found.";
-  var GetProcAddress = GetFunction("GetProcAddress", "KERNEL32.dll");
-  if (GetProcAddress === -1)
-    return "Failed in Step 1 - GetProcAddress not found.";
+  var GetModuleHandleA = imports.ptrValidated("GetModuleHandleA", "KERNEL32.dll");
+  var GetProcAddress = imports.ptrValidated("GetProcAddress", "KERNEL32.dll");
 
   //Find string compair for storage
   var code =
     " 51"                 //0 push ecx
   + " 50"                 //1 push eax
-  + " FF 15 AB AB AB AB"  //2 call _mbsstr
+  + " FF 15 ?? ?? ?? ??"  //2 call _mbsstr
   + " 83 C4 08"           //8 add esp,8
   + " 85 C0"              //11 test eax,eax
   + " 74 04"              //13 je short
@@ -40,19 +36,19 @@ function InsensitiveStorageSearch()
   ;
   var calloffset = 2;
 
-  var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+  var offset = pe.findCode(code);
   if (offset === -1)
   {//newer clients
-    code = code.replace(" 51 50", " 51 0F 43 45 AB 50");//cmovnb eax,[ebp-x]
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    code = code.replace(" 51 50", " 51 0F 43 45 ?? 50");//cmovnb eax,[ebp-x]
+    offset = pe.findCode(code);
     calloffset += 4;
   }
   if (offset === -1)
     return "Failed in Step 2 - String compair not found";
 
   //Fetch original code, just in case
-  var varcode = exe.fetchHex(offset + calloffset, 9);
-  var retAddr = exe.Raw2Rva(offset + calloffset + 9);
+  var varcode = pe.fetchHex(offset + calloffset, 9);
+  var retAddr = pe.rawToVa(offset + calloffset + 9);
 
   //Prepare our code
   code =
@@ -88,7 +84,7 @@ function InsensitiveStorageSearch()
   if (free === -1)
     return "Failed in Step 3 - Not enough free space";
 
-  var freeRva = exe.Raw2Rva(free);
+  var freeRva = pe.rawToVa(free);
 
   //Replace the variables used in code
   var memPosition = freeRva + code.hexlength();
@@ -114,11 +110,11 @@ function InsensitiveStorageSearch()
 
   //Prepare the code for jump
   code =
-    " E9" + (freeRva - exe.Raw2Rva(offset + calloffset + 5)).packToHex(4)
+    " E9" + (freeRva - pe.rawToVa(offset + calloffset + 5)).packToHex(4)
   + " 90 90 90 90";
 
   //Insert jump to our code
-  exe.replace(offset + calloffset, code, PTYPE_HEX);
+  pe.replaceHex(offset + calloffset, code);
 
   return true;
 }

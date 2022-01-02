@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2018-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,17 +21,17 @@
 
 function HidePacketsFromPeek()
 {
-    var code = "E8ABABABAB8BC8E8ABABABAB50E8ABABABAB8BC8E8ABABABAB6A01E8ABABABAB8BC8E8ABABABAB6A06";
+    var code = "E8????????8BC8E8????????50E8????????8BC8E8????????6A01E8????????8BC8E8????????6A06";
     var pushOffset = 25;
     var callOffset = 27;
-    var offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+    var offsets = pe.findCodes(code);
 
     if (offsets.length === 0)
     {
-        code = "E8ABABABAB8BC8E8ABABABAB50E8ABABABAB8BC8E8ABABABAB6A006A016A11B9ABABABABE8ABABABAB6A01E8ABABABAB8BC8E8ABABABAB6A06";
+        code = "E8????????8BC8E8????????50E8????????8BC8E8????????6A006A016A11B9????????E8????????6A01E8????????8BC8E8????????6A06";
         pushOffset = 41;
         callOffset = 43;
-        offsets = exe.findCodes(code, PTYPE_HEX, true, "\xAB");
+        offsets = pe.findCodes(code);
     }
 
     if (offsets.length === 0)
@@ -42,10 +42,10 @@ function HidePacketsFromPeek()
 
     for (var f = 0; f < offsets.length; f++)
     {
-        var instanceAddr = exe.fetchDWord(offsets[f] + callOffset + 1) + 2;
+        var instanceAddr = pe.fetchDWord(offsets[f] + callOffset + 1) + 2;
         var code = "E8 " + instanceAddr.packToHex(4) + "6A 01 ";
 
-        exe.replace(offsets[f] + pushOffset, code, PTYPE_HEX);
+        pe.replaceHex(offsets[f] + pushOffset, code);
     }
 
     return true;

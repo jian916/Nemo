@@ -6,53 +6,56 @@
 function DisableMultipleWindows()
 {
     consoleLog("Step 1a - Find Address of ole32.CoInitialize function");
-    var funcOffset = GetFunction("CoInitialize", "ole32.dll");
-    if (funcOffset === -1)
-        return "Failed in Step 1 - CoInitialize not found";
+    var funcOffset = imports.ptrValidated("CoInitialize", "ole32.dll");
 
     consoleLog("Step 1b - Find where it is called from.");
     var code =
-        " E8 AB AB AB FF" //CALL ResetTimer
-      + " AB"             //PUSH reg32
+        " E8 ?? ?? ?? FF" //CALL ResetTimer
+      + " ??"             //PUSH reg32
       + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
     ;
     var resetTimerOffset = 1;
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var stolenCodeOffset = 0;
+    var continueOffset = 5;
+    var offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB FF" //CALL ResetTimer
+            " E8 ?? ?? ?? FF" //CALL ResetTimer
           + " 6A 00 "         //PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
-
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        continueOffset = 5;
+        stolenCodeOffset = 0;
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB 00" //CALL ResetTimer
+            " E8 ?? ?? ?? 00" //CALL ResetTimer
           + " 6A 00 "         //PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 1;
-
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        continueOffset = 5;
+        stolenCodeOffset = 0;
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     {
         code =
-            " 8B 35 AB AB AB AB" //CALL [func]
-          + " 6A 00 "            //PUSH 0
+            " 8B 35 ?? ?? ?? ??" // mov esi, ds:CreateDirectoryA
+          + " 6A 00 "            // PUSH 0
           + " FF 15" + funcOffset.packToHex(4) //CALL DWORD PTR DS:[<&ole32.CoInitialize>]
         ;
         resetTimerOffset = 2;
-
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        continueOffset = 6;
+        stolenCodeOffset = [0, 6];
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
@@ -62,9 +65,9 @@ function DisableMultipleWindows()
 
     consoleLog("Step 1c - If the MOV EAX statement follows the CoInitialize call then it is the old client where Multiple client check is there,");
     consoleLog("Replace the statement with MOV EAX, 00FFFFFF");
-    if (exe.fetchUByte(offset + code.hexlength()) === 0xA1)
+    if (pe.fetchUByte(offset + code.hexlength()) === 0xA1)
     {
-        exe.replace(offset + code.hexlength(), " B8 FF FF FF 00");
+        pe.replaceHex(offset + code.hexlength(), " B8 FF FF FF 00");
         return true;
     }
 
@@ -74,12 +77,18 @@ function DisableMultipleWindows()
     //=====================================================================================//
 
     consoleLog("Step 2a - Extract the ResetTimer function address (called before CoInitialize)");
-    offset += 5;
-    var resetTimer = exe.fetchDWord(offset-4) + exe.Raw2Rva(offset);
+    if (stolenCodeOffset === 0)
+    {
+        var resetTimer = pe.fetchDWord(offset-4+5) + pe.rawToVa(offset+5);
+        code = " E8" + GenVarHex(0)          //CALL ResetTimer
+    }
+    else
+    {
+        code = pe.fetchHexBytes(offset, stolenCodeOffset);
+    }
 
     consoleLog("Step 2b - Prepare code for mutex windows");
-    code =
-        " E8" + GenVarHex(0)          //CALL ResetTimer
+    code = code +
       + " 56"                         //PUSH ESI
       + " 33 F6"                      //XOR ESI,ESI
       + " 68" + GenVarHex(1)          //PUSH addr ; "KERNEL32"
@@ -122,23 +131,23 @@ function DisableMultipleWindows()
         return "Failed in Step 2 - Not enough free space";
 
     consoleLog("Step 2d - Replace the resetTimer call with our code");
-    exe.replace(offset - 5, "E9" + (exe.Raw2Rva(free) - exe.Raw2Rva(offset)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset, "E9" + (pe.rawToVa(free) - pe.rawToVa(offset + 5)).packToHex(4));
 
     consoleLog("Step 2e - Fill in the blanks");
-    code = ReplaceVarHex(code, 0, resetTimer - exe.Raw2Rva(free + 5));
-    code = ReplaceVarHex(code, 8, exe.Raw2Rva(offset));
+    code = ReplaceVarHex(code, 0, resetTimer - pe.rawToVa(free + 5));
+    code = ReplaceVarHex(code, 8, pe.rawToVa(offset + continueOffset));
 
-    code = ReplaceVarHex(code, 4, GetFunction("WaitForSingleObject", "KERNEL32.dll"));
+    code = ReplaceVarHex(code, 4, imports.ptrValidated("WaitForSingleObject", "KERNEL32.dll"));
 
-    offset = exe.Raw2Rva(free + csize - 9);
+    offset = pe.rawToVa(free + csize - 9);
     code = ReplaceVarHex(code, 1, offset);
     code = ReplaceVarHex(code, 5, offset);
 
-    offset = GetFunction("GetModuleHandleA", "KERNEL32.dll");
+    offset = imports.ptrValidated("GetModuleHandleA", "KERNEL32.dll");
     code = ReplaceVarHex(code, 2, offset);
     code = ReplaceVarHex(code, 6, offset);
 
-    offset = GetFunction("GetProcAddress", "KERNEL32.dll");
+    offset = imports.ptrValidated("GetProcAddress", "KERNEL32.dll");
     code = ReplaceVarHex(code, 3, offset);
     code = ReplaceVarHex(code, 7, offset);
 

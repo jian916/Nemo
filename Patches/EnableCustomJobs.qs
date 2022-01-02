@@ -15,52 +15,52 @@ function EnableCustomJobs()
     //===============================//
 
     //Step 1a - Get address of reference strings . (Pattern for Archer seems to be stable across clients hence we will use it)
-    var refPath = exe.findString("\xB1\xC3\xBC\xF6", RVA); // 궁수 for Archer. Same value is used for palette as well as imf
+    var refPath = pe.stringVa("\xB1\xC3\xBC\xF6"); // 궁수 for Archer. Same value is used for palette as well as imf
     if (refPath === -1)
         return "Failed in Step 1 - Path prefix missing";
 
-    var refHand = exe.findString("\xB1\xC3\xBC\xF6\\\xB1\xC3\xBC\xF6", RVA); // 궁수\궁수 for Archer
+    var refHand = pe.stringVa("\xB1\xC3\xBC\xF6\\\xB1\xC3\xBC\xF6"); // 궁수\궁수 for Archer
     if (refHand === -1)
         return "Failed in Step 1 - Hand prefix missing";
 
-    var refName = exe.findString("Acolyte", RVA);//We use Acolyte here because Archer has a MOV ECX, OFFSET statement before it in Older clients
+    var refName = pe.stringVa("Acolyte");//We use Acolyte here because Archer has a MOV ECX, OFFSET statement before it in Older clients
     if (refName === -1)
         return "Failed in Step 1 - Name prefix missing";
 
 
     //Step 1b - Find all references of refPath
-    var hooks = exe.findCodes("C7 AB 0C" + refPath.packToHex(4), PTYPE_HEX, true, "\xAB");
+    var hooks = pe.findCodes("C7 ?? 0C" + refPath.packToHex(4));
     var assigner;//std::vector[] function used in Older clients
 
     if (hooks.length === 2)
     {
         //Step 1c - Look for old style assignment following a call to std::vector[] - For Older clients
-        var offset = exe.findCode(" C7 00" + refPath.packToHex(4) + " E8", PTYPE_HEX, false);
+        var offset = pe.findCode(" C7 00" + refPath.packToHex(4) + " E8");
         if (offset === -1)
             return "Failed in Step 1 - Palette reference is missing";
 
         //Step 1d - Extract the function address (RAW)
-        assigner = (offset + 11) + exe.fetchDWord(offset + 7);
+        assigner = (offset + 11) + pe.fetchDWord(offset + 7);
 
         //Step 1e - Hook Location will be 4 bytes before at PUSH 4
         hooks[2] = offset - 4;
 
         //Step 1f - Little trick to change the PUSH 3 to PUSH 0 so that EAX will point to the first location like we need
-        offset = exe.find(" 6A 03", PTYPE_HEX, false, "\xAB", hooks[2] - 0x12, hooks[2]);
-        exe.replace(offset + 1, "00", PTYPE_HEX);
+        offset = pe.find(" 6A 03", hooks[2] - 0x12, hooks[2]);
+        pe.replaceByte(offset + 1, 0);
     }
     if (hooks.length !== 3)
         return "Failed in Step 1 - Prefix reference missing or extra";
 
     //Step 1g - Find reference of refHand
-    var offset = exe.findCode("C7 AB 0C" + refHand.packToHex(4), PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode("C7 ?? 0C" + refHand.packToHex(4));
     if (offset === -1)
         return "Failed in Step 1 - Hand reference missing";
 
     hooks[3] = offset;
 
     //Step 1h - Find reference of refName
-    offset = exe.findCode("C7 AB 10" + refName.packToHex(4), PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode("C7 ?? 10" + refName.packToHex(4));
     if (offset === -1)
         return "Failed in Step 1 - Name reference missing";
 
@@ -84,19 +84,19 @@ function EnableCustomJobs()
         //          MOV curReg, DWORD PTR DS:[refReg + refOff]
         //          curReg can also be extracted from code at hook location
 
-        if (exe.fetchByte(hooks[i] - 2) === 0)
+        if (pe.fetchByte(hooks[i] - 2) === 0)
         {  //refOff != 0
-            var modrm  = exe.fetchByte(hooks[i] - 5);
-            var refOff = exe.fetchDWord(hooks[i] - 4);
+            var modrm  = pe.fetchByte(hooks[i] - 5);
+            var refOff = pe.fetchDWord(hooks[i] - 4);
         }
-        else if (exe.fetchByte(hooks[i]) === 0x6A)
+        else if (pe.fetchByte(hooks[i]) === 0x6A)
         { //Older client
             var modrm  = 0x6;//so that refReg will be ESI and curReg will be EAX
             var refOff = 0;
         }
         else
         { //refOff = 0
-            var modrm  = exe.fetchByte(hooks[i] - 1);
+            var modrm  = pe.fetchByte(hooks[i] - 1);
             var refOff = 0;
         }
         var refReg = modrm & 0x7;
@@ -143,7 +143,7 @@ function EnableCustomJobs()
 
     code += (details[4].endOff - (hooks[4] + code.hexlength() + 4)).packToHex(4);
 
-    exe.replace(hooks[4], code, PTYPE_HEX);
+    pe.replaceHex(hooks[4], code);
 
     //Step 4c - Update hook location to address after the JMP
     hooks[4] += code.hexlength();
@@ -153,83 +153,83 @@ function EnableCustomJobs()
     //================================================================//
 
     //Step 5a - Find address of 'TaeKwon Girl'
-    offset = exe.findString("TaeKwon Girl", RVA);
+    offset = pe.stringVa("TaeKwon Girl");
     if (offset === -1)
         return "Failed in Step 5 - 'TaeKwon Girl' missing";
 
     //Step 5b - Find its reference - this is where we will jump out and start loading the table
     code =
         " 85 C0"                                   //TEST EAX, EAX
-      + " 75 AB"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
-      + " A1 AB AB AB 00"                          //MOV EAX, DWORD PTR DS:[g_jobName]
-      + " C7 AB 38 3F 00 00" + offset.packToHex(4) //MOV DWORD PTR DS:[EAX+3F38], OFFSET addr; ASCII "TaeKwon Girl"
+      + " 75 ??"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
+      + " A1 ?? ?? ?? 00"                          //MOV EAX, DWORD PTR DS:[g_jobName]
+      + " C7 ?? 38 3F 00 00" + offset.packToHex(4) //MOV DWORD PTR DS:[EAX+3F38], OFFSET addr; ASCII "TaeKwon Girl"
       ;
     var gJobName = 5;
-    var offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+    var offset2 = pe.findCode(code); //VC9 Clients
 
     if (offset2 === -1)
     { //Older clients
-        code = code.replace(" A1", " 8B AB");//Change EAX to reg32_A and update the JNZ
+        code = code.replace(" A1", " 8B ??");//Change EAX to reg32_A and update the JNZ
         gJobName = 6;
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset2 = pe.findCode(code);
     }
 
     if (offset2 === -1)
     { //Latest Clients
         code =
           " 85 C0"                    //TEST EAX, EAX
-        + " A1 AB AB AB 00"           //MOV EAX, DWORD PTR DS:[g_jobName]
-        + " AB" + offset.packToHex(4) //MOV reg32_A, OFFSET addr; ASCII "TaeKwon Girl"
+        + " A1 ?? ?? ?? 00"           //MOV EAX, DWORD PTR DS:[g_jobName]
+        + " ??" + offset.packToHex(4) //MOV reg32_A, OFFSET addr; ASCII "TaeKwon Girl"
         ;
         gJobName = 3;
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset2 = pe.findCode(code);
     }
 
     if (offset2 === -1)
     { //Latest Clients
         code =
           " 85 C0"                                   //TEST EAX, EAX
-        + " 75 AB"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
-        + " A1 AB AB AB 00"                          //MOV EAX, DWORD PTR DS:[g_jobName]
-        + " C7 AB 38 3F 00 00" + offset.packToHex(4) //MOV DWORD PTR DS:[EAX+3F38], OFFSET addr; ASCII "TaeKwon Girl"
+        + " 75 ??"                                   //JNZ SHORT addr -> TaeKwon Boy assignment
+        + " A1 ?? ?? ?? 00"                          //MOV EAX, DWORD PTR DS:[g_jobName]
+        + " C7 ?? 38 3F 00 00" + offset.packToHex(4) //MOV DWORD PTR DS:[EAX+3F38], OFFSET addr; ASCII "TaeKwon Girl"
         ;
         gJobName = 5;
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+        offset2 = pe.findCode(code); //VC9 Clients
     }
 
     if (offset2 === -1)
     {  // 2017+
         code =
-          " 85 AB"                       //TEST EDI, EDI
+          " 85 ??"                       //TEST EDI, EDI
         + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"
-        + " 0F AB AB"                    //cmovnz ecx, eax
-        + " A1 AB AB AB 01"              //MOV EAX, DWORD PTR DS:[g_jobName]
-        + " AB"                          //pop edi
-        + " 89 AB 38 3F 00 00"           //mov [eax+3F38h], ecx
+        + " 0F ?? ??"                    //cmovnz ecx, eax
+        + " A1 ?? ?? ?? 01"              //MOV EAX, DWORD PTR DS:[g_jobName]
+        + " ??"                          //pop edi
+        + " 89 ?? 38 3F 00 00"           //mov [eax+3F38h], ecx
         ;
         gJobName = 13;
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+        offset2 = pe.findCode(code); //VC9 Clients
     }
 
     if (offset2 === -1)
     {  // 2018-05-30+
         code =
-          " 85 AB"                       //TEST EDI, EDI
+          " 85 ??"                       //TEST EDI, EDI
         + " B9 " + offset.packToHex(4)   //MOV ECX, OFFSET addr; ASCII "TaeKwon Girl"
-        + " 0F AB AB"                    //cmovnz ecx, eax
-        + " A1 AB AB AB 00"              //MOV EAX, DWORD PTR DS:[g_jobName]
-        + " AB"                          //pop edi
-        + " 89 AB 38 3F 00 00"           //mov [eax+3F38h], ecx
+        + " 0F ?? ??"                    //cmovnz ecx, eax
+        + " A1 ?? ?? ?? 00"              //MOV EAX, DWORD PTR DS:[g_jobName]
+        + " ??"                          //pop edi
+        + " 89 ?? 38 3F 00 00"           //mov [eax+3F38h], ecx
         ;
         gJobName = 13;
-        offset2 = exe.findCode(code, PTYPE_HEX, true, "\xAB");//VC9 Clients
+        offset2 = pe.findCode(code); //VC9 Clients
     }
 
     if (offset2 === -1)
         return "Failed in Step 5 - 'TaeKwon Girl' reference missing";
 
     //Step 5c - Extract the g_jobName address
-    gJobName = exe.fetchDWord(offset2 + gJobName);
+    gJobName = pe.fetchDWord(offset2 + gJobName);
 
     //Step 5d - Look for the LangType comparison before offset2 (in fact the JNZ should jump to a call after which we do the above TEST)
     //          Steps 5d and 5e are also done in TranslateClient but we will keep it anyways as a failsafe
@@ -238,17 +238,17 @@ function EnableCustomJobs()
       + getEcxSessionHex()          //MOV ECX, g_session
       + " 75"                       //JNE SHORT addr -> CALL CSession::GetSex
       ;
-    offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
+    offset = pe.find(code, offset2 - 0x80, offset2);
 
     if (offset === -1)
     {
         code =
             " A1" + LANGTYPE   //mov eax, g_serviceType
-          + " B9 AB AB AB 00"  //mov ecx, addr1
+          + " B9 ?? ?? ?? 00"  //mov ecx, addr1
           + " 85 C0"           //test eax, eax
           + " 75"              //jnz addr -> CALL CSession::GetSex
         ;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x80, offset2);
+        offset = pe.find(code, offset2 - 0x80, offset2);
     }
 
     if (offset === -1)
@@ -258,14 +258,14 @@ function EnableCustomJobs()
           + " 85 C0"           //test eax, eax
           + " 75"              //jnz addr -> CALL CSession::GetSex
         ;
-        offset = exe.find(code, PTYPE_HEX, true, "\xAB", offset2 - 0x90, offset2);
+        offset = pe.find(code, offset2 - 0x90, offset2);
     }
 
     if (offset === -1)
         return "Failed in Step 5 - LangType comparison missing";
 
     //Step 5e - Change the JNE to JMP
-    exe.replace(offset + code.hexlength() - 1, "EB", PTYPE_HEX)
+    pe.replaceByte(offset + code.hexlength() - 1, 0xEB)
 
     offset = offset2;
 
@@ -279,7 +279,7 @@ function EnableCustomJobs()
       + " 0F 85"    //JNE addr2
       ;
 
-    offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset + 0x10, offset + 0x100);
+    offset2 = pe.find(code, offset + 0x10, offset + 0x100);
     if (offset2 === -1)
     {
         code =
@@ -291,17 +291,17 @@ function EnableCustomJobs()
           + " 74 1F"    //JNE addr2
           ;
 
-        offset2 = exe.find(code, PTYPE_HEX, false, "\xAB", offset - 0x20, offset + 0x100);
+        offset2 = pe.find(code, offset - 0x20, offset + 0x100);
     }
     if (offset2 === -1)
         return "Failed in Step 5 - 2nd LangType comparison missing";
 
     //Step 5g - Extract any Register Pushes before the Comparison - This is needed since they are restored at the end of the function
-    var push1 = exe.fetchUByte(offset2 - 1);
+    var push1 = pe.fetchUByte(offset2 - 1);
     if (push1 < 0x50 || push1 > 0x57)
         push1 = 0x90;
 
-    var push2 = exe.fetchUByte(offset2 - 2);
+    var push2 = pe.fetchUByte(offset2 - 2);
     if (push2 < 0x50 || push2 > 0x57)
         push2 = 0x90;
 
@@ -309,16 +309,16 @@ function EnableCustomJobs()
         push1 = 0x56;
 
     offset2 += code.hexlength();
-    offset2 += 4 + exe.fetchDWord(offset2);
+    offset2 += 4 + pe.fetchDWord(offset2);
 
-    if (exe.Raw2Rva(offset2) == -1)
+    if (pe.rawToVa(offset2) == -1)
         return "Failed in Step 5g - wrong offset.";
 
     //Step 5h - Change the CMP to NOP and JNE to JMP as shown below at The JNE address
     //A1 <LANGTYPE> ; MOV EAX, DWORD PTR DS:[g_serviceType]
     //83 F8 0A    => push2 push1 90
     //0F 85 addr  => 90 E9 addr
-    exe.replace(offset2, push2.packToHex(1) + push1.packToHex(1) + " 90 90 E9", PTYPE_HEX);
+    pe.replaceHex(offset2, push2.packToHex(1) + push1.packToHex(1) + " 90 90 E9");
 
     //Step 5h - Point offset2 to the MOV EAX before the CMP
     offset2 -= 5;
@@ -345,7 +345,7 @@ function EnableCustomJobs()
     code = ReplaceVarHex(code, 1, csize - code.hexlength());
 
     //Step 6e - Add it to client
-    exe.replace(offset, code, PTYPE_HEX);
+    pe.replaceHex(offset, code);
 
     //=========================//
     // Inject Lua file loading //
@@ -376,10 +376,10 @@ function EnableCustomJobs()
     //Step 7a - Find the function where the Cash Mount Job ID is assigned
     code =
         " 83 F8 19"        //CMP EAX, 19
-      + " 75 AB"           //JNE SHORT addr -> next CMP
+      + " 75 ??"           //JNE SHORT addr -> next CMP
       + " B8 12 10 00 00"  //MOV EAX, 1012
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset !== -1)
     {
@@ -401,7 +401,7 @@ function EnableCustomJobs()
         code += " C2 04 00"; //RETN 4
 
         //Step 7c - Replace at offset
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     //================================================//
@@ -411,28 +411,28 @@ function EnableCustomJobs()
     //Step 8a - Find Function where Baby Jobs are checked (missing in old client)
     if (fpEnb)
     {
-        code = " 8B AB 08";    //MOV reg32_A, DWORD PTR SS:[EBP+8]
+        code = " 8B ?? 08";    //MOV reg32_A, DWORD PTR SS:[EBP+8]
         csize = 3;
     }
     else
     {
-        code = " 8B AB 24 04"; //MOV reg32_A, DWORD PTR SS:[ESP+4]
+        code = " 8B ?? 24 04"; //MOV reg32_A, DWORD PTR SS:[ESP+4]
         csize = 4;
     }
 
     code +=
         " 3D B7 0F 00 00" //CMP EAX, 0FB7
-      + " 7C AB"          //JL SHORT addr -> next CMP chain
+      + " 7C ??"          //JL SHORT addr -> next CMP chain
       + " 3D BD 0F 00 00" //CMP EAX, 0FBD
     ;
     offset2 = " 50"; //Don't mind the var name
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
     {
-        code = code.replace(/ 3D/g, " 81 AB");//Change EAX with reg32_A
+        code = code.replace(/ 3D/g, " 81 ??");//Change EAX with reg32_A
         offset2 = "";
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset !== -1)
@@ -440,7 +440,7 @@ function EnableCustomJobs()
         offset += csize;
         //Step 8b - Get the PUSH register in case it is not EAX
         if (offset2 === "")
-            offset2 = (0x50 + (exe.fetchByte(offset + 1) & 0x7)).packToHex(1);
+            offset2 = (0x50 + (pe.fetchByte(offset + 1) & 0x7)).packToHex(1);
 
         //Step 8c - Build the replacement code using IsDwarf Lua function
         var result = GenLuaCaller(offset + 1, "IsDwarf", Funcs[13], "d>d", offset2);
@@ -459,7 +459,7 @@ function EnableCustomJobs()
         code += " C2 04 00"; //RETN 4
 
         //Step 8d - Replace at offset
-        exe.replace(offset, code, PTYPE_HEX);
+        pe.replaceHex(offset, code);
     }
 
     return true;
@@ -477,16 +477,16 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
 
     //SUB reg32_A, reg32_B
     //SAR reg32_A, 2
-    if (opcode === 0x2B && exe.fetchUByte(offset + 2) === 0xC1 && exe.fetchUByte(offset + 4) === 0x02 )
+    if (opcode === 0x2B && pe.fetchUByte(offset + 2) === 0xC1 && pe.fetchUByte(offset + 4) === 0x02 )
         return true;
 
     //PUSH 524C
-    if (opcode === 0x68 && exe.fetchDWord(offset + 1) === 0x524C)
+    if (opcode === 0x68 && pe.fetchDWord(offset + 1) === 0x524C)
         return true;
 
     //PUSH EAX
     //PUSH 2 or PUSH 5
-    if (opcode === 0x50 && modrm === 0x6A && (exe.fetchByte(offset + 2) === 0x02 || exe.fetchByte(offset + 2) === 0x05))
+    if (opcode === 0x50 && modrm === 0x6A && (pe.fetchByte(offset + 2) === 0x02 || pe.fetchByte(offset + 2) === 0x05))
         return true;
 
 
@@ -503,7 +503,7 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
         return true;
 
     //OR reg32_A, FFFFFFFF
-    if (opcode === 0x83 && (modrm & 0xF8) === 0xC8 && exe.fetchUByte(offset + 2) === 0xFF)
+    if (opcode === 0x83 && (modrm & 0xF8) === 0xC8 && pe.fetchUByte(offset + 2) === 0xFF)
         return true;
 
     //MOV EDI, EDI
@@ -511,7 +511,7 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
         return true;
 
     //MOV EDI, 2D - deprecated since MOV EDI, EDI doesn't leave out any stray assignments
-    //if (opcode === 0xBF && exe.fetchDWord(offset + 1) === 0x2D)
+    //if (opcode === 0xBF && pe.fetchDWord(offset + 1) === 0x2D)
     //  return true;
 
     return false;
@@ -525,17 +525,17 @@ function CheckEoT(opcode, modrm, offset, details, assigner)
 function OverwriteString(srcString, tgtString)
 {
     //Step 1 - Find address
-    var offset = exe.findString(srcString, RAW);
+    var offset = pe.stringRaw(srcString);
 
     if (offset === -1)
     {
         throw "String " + srcString + " not found";
     }
     //Step 2a - Overwrite it
-    exe.replace(offset, tgtString, PTYPE_STRING);
+    pe.replace(offset, tgtString);
 
     //Step 2b - Return the RVA of offset
-    return exe.Raw2Rva(offset);
+    return pe.rawToVa(offset);
 }
 
 //########################################################################
@@ -640,7 +640,7 @@ function WriteLoader(hookLoc, curReg, suffix, reqAddr, mapAddr, jmpLoc, extraDat
     else
         code += " C3"; //RETN
 
-    exe.replace(hookLoc, code, PTYPE_HEX);
+    pe.replaceHex(hookLoc, code);
 
     return code;
 }

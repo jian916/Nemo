@@ -21,20 +21,20 @@ function DisableChatInSkill(txtname)
 {
 
   //Step 1a - Find the 1st text file offset
-  var offset = exe.findString("english\\" + txtname, RAW);
+  var offset = pe.stringRaw("english\\" + txtname);
   if (offset === -1)
     return "Failed in Step 1";
 
   //Step 1b - Zero it out
-  exe.replace(offset, "00", PTYPE_HEX);
+  pe.replaceByte(offset, 0);
 
   //Step 2a - Find the 2nd one
-  offset = exe.findString(txtname, RAW);
+  offset = pe.stringRaw(txtname);
   if (offset === -1)
     return "Failed in Step 2";
 
   //Step 2b - Zero it out
-  exe.replace(offset, "00", PTYPE_HEX);
+  pe.replaceByte(offset, 0);
 
   return true;
 }

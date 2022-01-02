@@ -22,16 +22,16 @@ function RestoreChatFocus()
 {
     // search UIWindowMgr::SetFocusEdit call in CGameMode static member
     var code =
-        "83 3D AB AB AB AB 01 " +  // cmp g_CMouse.button, 1
-        "75 AB " +                 // jnz addr1
+        "83 3D ?? ?? ?? ?? 01 " +  // cmp g_CMouse.button, 1
+        "75 ?? " +                 // jnz addr1
         "6A 00 " +                 // push 0
         getEcxWindowMgrHex() +     // mov ecx, offset g_windowMgr
-        "E8 AB AB AB AB " +        // call UIWindowMgr::SetFocusEdit
+        "E8 ?? ?? ?? ?? " +        // call UIWindowMgr::SetFocusEdit
         "EB ";                     // jmp addr2
 
     var patchOffset = 9;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in step 1 - pattern not found";
@@ -40,7 +40,7 @@ function RestoreChatFocus()
         "90 90 " +
         "90 90 90 90 90" +
         "90 90 90 90 90";
-    exe.replace(offset + patchOffset, code, PTYPE_HEX);  // replace edit lost focus call to nops
+    pe.replaceHex(offset + patchOffset, code);  // replace edit lost focus call to nops
 
     return true;
 }

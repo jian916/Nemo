@@ -4,7 +4,7 @@
 //
 // Copyright (C) 2020 CH.C (jchcc)
 // Copyright (C) 2020-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,12 +28,12 @@ function RemoveEquipmentTitleUI()
 {
     consoleLog("Step 1 - Find the location where equipment function is called");
     var code =
-        "E8 AB AB AB FF " +           // 0 call UITabControl_AddTab
-        "83 BF AB AB 00 00 00 " +     // 5 cmp [edi+UIEquipWnd.m_typeWnd], 0
+        "E8 ?? ?? ?? FF " +           // 0 call UITabControl_AddTab
+        "83 BF ?? ?? 00 00 00 " +     // 5 cmp [edi+UIEquipWnd.m_typeWnd], 0
         "75 19 " +                    // 12 jnz short loc_5C54F6
         "68 7D 0A 00 00 " +           // 14 push 0A7Dh
-        "E8 AB AB AB AB " +           // 19 call MsgStr
-        "8B 8F AB AB 00 00 " +        // 24 mov ecx, [edi+UIEquipWnd.m_UITabControl]
+        "E8 ?? ?? ?? ?? " +           // 19 call MsgStr
+        "8B 8F ?? ?? 00 00 " +        // 24 mov ecx, [edi+UIEquipWnd.m_UITabControl]
         "83 C4 04 " +                 // 30 add esp, 4
         "50 " +                       // 33 push eax
         "E8 ";                        // 34 call UITabControl_AddTab
@@ -43,7 +43,7 @@ function RemoveEquipmentTitleUI()
     var typeWndOffset = [7, 4];
     var msgStrOffset = 20;
     var tabControlOffset = [26, 4];
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 1 - Pattern not found";
@@ -56,7 +56,7 @@ function RemoveEquipmentTitleUI()
     logRawFunc("MsgStr", offset, msgStrOffset);
     logField("UIEquipWnd::m_UITabControl", offset, tabControlOffset);
 
-    exe.replace(offset + repLoc, "EB ", PTYPE_HEX);
+    pe.replaceByte(offset + repLoc, 0xEB);
 
     return true;
 }

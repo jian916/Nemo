@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2020-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 function IgnoreQuestErrors()
 {
     consoleLog("Step 1 - Search string 'Not found Quest Info = %lu'");
-    var offset = exe.findString("Not found Quest Info = %lu", RVA);
+    var offset = pe.stringVa("Not found Quest Info = %lu");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
@@ -38,21 +38,21 @@ function IgnoreQuestErrors()
     var code =
         "68 " + strHex +           // 0 push offset aNotFoundQuestI
         "50 " +                    // 5 push eax
-        "E8 AB AB AB AB " +        // 6 call std_string_sprintf
+        "E8 ?? ?? ?? ?? " +        // 6 call std_string_sprintf
         "83 C4 0C " +              // 11 add esp, 0Ch
-        "C7 45 AB 01 00 00 00 " +  // 14 mov [ebp+var_4], 1
+        "C7 45 ?? 01 00 00 00 " +  // 14 mov [ebp+var_4], 1
         "83 78 14 10 " +           // 21 cmp dword ptr [eax+14h], 10h
         "72 02 " +                 // 25 jb short loc_561264
         "8B 00 " +                 // 27 mov eax, [eax]
         "6A 00 " +                 // 29 push 0
-        "68 AB AB AB AB " +        // 31 push offset aError
+        "68 ?? ?? ?? ?? " +        // 31 push offset aError
         "50 " +                    // 36 push eax
         "FF 35 " + hwndHex +       // 37 push g_hMainWnd
-        "FF 15 AB AB AB AB ";      // 43 call ds:MessageBoxA
+        "FF 15 ?? ?? ?? ?? ";      // 43 call ds:MessageBoxA
     var sprintfOffset = 7;
     var replaceOffset = 29;
 
-    var offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    var offset = pe.findCode(code);
 
     if (offset === -1)
         return "Failed in Step 2 - Pattern not found";
@@ -68,7 +68,7 @@ function IgnoreQuestErrors()
         "90 90 90 90 90 90 " +  // 08 nops
         "90 90 90 90 90 90 ";   // 14 nops
 
-    exe.replace(offset + replaceOffset, newCode, PTYPE_HEX);
+    pe.replaceHex(offset + replaceOffset, newCode);
 
     return true;
 }

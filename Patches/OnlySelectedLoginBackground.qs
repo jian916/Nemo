@@ -28,12 +28,12 @@ function OnlySelectedBackground(s1, s2)
   var rep = s2 + "_\xB9\xE8\xB0\xE6" + "%d-%d.bmp" + "\x00";
 
   //Step 1b - Find the source format string => s1
-  var offset = exe.findString(fnd, RAW, false);
+  var offset = pe.halfStringRaw(fnd);
   if (offset === -1)
     return "Failed in Step 1";
 
   //Step 2 - Replace with the other => s2
-  exe.replace(offset + 16, rep, PTYPE_STRING);
+  pe.replace(offset + 16, rep);
 
   return true;
 }

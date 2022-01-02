@@ -27,7 +27,7 @@ function DisablePacketEncryption()
 
   code += " E8";         //CALL CRagConnection::Encryptor
 
-  var offset = exe.findCode(code, PTYPE_HEX, false);
+  var offset = pe.findCode(code);
   if (offset === -1)
     return "Failed in Step 2";
 
@@ -37,7 +37,7 @@ function DisablePacketEncryption()
   + " EB" + code.hexlength().packToHex(1) //JMP addr
   ;
 
-  exe.replace(offset, code, PTYPE_HEX);
+  pe.replaceHex(offset, code);
 
   return true;
 }

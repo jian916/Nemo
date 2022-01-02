@@ -6,83 +6,83 @@
 function EnableDNSSupport()
 {
   //Step 1a - Find the common IP address across all clients
-    var offset = exe.findString("211.172.247.115", RVA);
+    var offset = pe.stringVa("211.172.247.115");
     if (offset === -1)
         return "Failed in Step 1 - IP not found";
 
     //Step 1b - Find the g_accountAddr assignment to the IP
-    var code = "C7 05 AB AB AB 00" + offset.packToHex(4); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII '211.172.247.115'
+    var code = "C7 05 ?? ?? ?? 00" + offset.packToHex(4); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII '211.172.247.115'
 
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
     if (offset === -1)
         return "Failed in Step 1 - g_accountAddr assignment missing";
 
     //Step 1c - Extract g_accountAddr
-    var gAccountAddr = exe.fetchHex(offset + 2, 4);
+    var gAccountAddr = pe.fetchHex(offset + 2, 4);
 
     //Step 2a - Find the code to hook our function to
     code =
-        " E8 AB AB AB FF"    //CALL g_resMgr
+        " E8 ?? ?? ?? FF"    //CALL g_resMgr
       + " 8B C8"             //MOV ECX,EAX
-      + " E8 AB AB AB FF"    //CALL CResMgr::Get
+      + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
       + " 50"                //PUSH EAX
       + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-      + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
+      + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
       + " A1" + gAccountAddr //MOV EAX,DWORD PTR DS:[g_accountAddr]
     ;
-    offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+    offset = pe.findCode(code);
 
     if (offset === -1)
     {
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     { // 2018-03-xx ragexe +
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
-          + " E8 AB AB AB FF"    //CALL CCheatDefenderMgr::init
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B 0D ?? ?? ?? ??" //mov ecx, g_CCheatDefenderMgr
+          + " E8 ?? ?? ?? FF"    //CALL CCheatDefenderMgr::init
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
     { // 2018-05-30 ragexe +
         code =
-            " E8 AB AB AB FF"    //CALL g_resMgr
+            " E8 ?? ?? ?? FF"    //CALL g_resMgr
           + " 8B C8"             //MOV ECX,EAX
-          + " E8 AB AB AB FF"    //CALL CResMgr::Get
+          + " E8 ?? ?? ?? FF"    //CALL CResMgr::Get
           + " 50"                //PUSH EAX
           + getEcxWindowMgrHex() //MOV ECX,OFFSET g_windowMgr
-          + " E8 AB AB AB FF"    //CALL UIWindowMgr::SetWallpaper
-          + " 8B 0D AB AB AB AB" //mov ecx, g_CCheatDefenderMgr
-          + " E8 AB AB AB 00"    //CALL CCheatDefenderMgr::init
-          + " 8B AB" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
+          + " E8 ?? ?? ?? FF"    //CALL UIWindowMgr::SetWallpaper
+          + " 8B 0D ?? ?? ?? ??" //mov ecx, g_CCheatDefenderMgr
+          + " E8 ?? ?? ?? 00"    //CALL CCheatDefenderMgr::init
+          + " 8B ??" + gAccountAddr //MOV reg32_B,DWORD PTR DS:[g_accountAddr]
         ;
-        offset = exe.findCode(code, PTYPE_HEX, true, "\xAB");
+        offset = pe.findCode(code);
     }
 
     if (offset === -1)
         return "Failed in Step 2";
 
     //Step 2b - Extract g_resMgr
-    var gResMgr = exe.Raw2Rva(offset+5) + exe.fetchDWord(offset+1);
+    var gResMgr = pe.rawToVa(offset+5) + pe.fetchDWord(offset + 1);
 
     //Step 3a - Construct our function
     var dnscode =
@@ -122,23 +122,21 @@ function EnableDNSSupport()
         return "Failed in Step 3 - Not enough free space";
 
     //Step 4a - Create a call to our function at CALL g_ResMgr
-    exe.replace(offset+1, (exe.Raw2Rva(free) - exe.Raw2Rva(offset+5)).packToHex(4), PTYPE_HEX);
+    pe.replaceHex(offset+1, (pe.rawToVa(free) - pe.rawToVa(offset+5)).packToHex(4));
 
     //Step 4b - Find gethostbyname function address (#52 when imported by ordinal)
-    var uGethostbyname = GetFunction("gethostbyname", "ws2_32.dll", 52);//By Ordinal
-    if (uGethostbyname === -1)
-        return "Failed in Step 4 - gethostbyname not found";
+    var uGethostbyname = imports.ptrValidated("gethostbyname", "ws2_32.dll", 52);  // By Ordinal
 
     //Step 4c - Find the IP address format string
-    var ipFormat = exe.findString("%d.%d.%d.%d", RVA);
+    var ipFormat = pe.stringVa("%d.%d.%d.%d");
     if (ipFormat === -1)
         return "Failed in Step 4 - IP string missing";
 
     //Step 4d - Adjust g_resMgr relative to function
-    gResMgr = gResMgr - exe.Raw2Rva(free + 5);
+    gResMgr = gResMgr - pe.rawToVa(free + 5);
 
     //Step 4e - addr2 value
-    offset = exe.Raw2Rva(free + size - (3*1 + 4*3 + 1));//3 Dots, 4 3digits, NULL
+    offset = pe.rawToVa(free + size - (3*1 + 4*3 + 1));//3 Dots, 4 3digits, NULL
 
     //Step 4g - Replace all the variables
     dnscode = ReplaceVarHex(dnscode, 1, gResMgr);
@@ -146,7 +144,7 @@ function EnableDNSSupport()
     dnscode = ReplaceVarHex(dnscode, 3, uGethostbyname);
     dnscode = ReplaceVarHex(dnscode, 4, ipFormat);
     dnscode = ReplaceVarHex(dnscode, 5, offset);
-    dnscode = ReplaceVarHex(dnscode, 6, GetFunction("wsprintfA", "USER32.dll"));
+    dnscode = ReplaceVarHex(dnscode, 6, imports.ptrValidated("wsprintfA", "USER32.dll"));
     dnscode = ReplaceVarHex(dnscode, 7, gAccountAddr);
     dnscode = ReplaceVarHex(dnscode, 8, offset);
 

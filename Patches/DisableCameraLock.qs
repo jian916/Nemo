@@ -3,7 +3,7 @@
 // http://nemo.herc.ws - http://gitlab.com/4144/Nemo
 //
 // Copyright (C) 2020-2021 Andrei Karas (4144)
-// Copyright (C) 2020 X-EcutiOnner (xex.ecutionner@gmail.com)
+// Copyright (C) 2020-2021 X-EcutiOnner (xex.ecutionner@gmail.com)
 //
 // Hercules is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@
 function DisableCameraLock()
 {
     consoleLog("Step 1 - Search string 'ViewPointTable.txt'");
-    var offset = exe.findString("ViewPointTable.txt", RAW);
+    var offset = pe.stringRaw("ViewPointTable.txt");
 
     if (offset === -1)
         return "Failed in Step 1 - String not found";
 
     consoleLog("Step 2 - Zero it out string 'ViewPointTable.txt'");
-    exe.replace(offset, "00 ", PTYPE_HEX);
+    pe.replaceByte(offset, 0);
 
     return true;
 }
@@ -42,5 +42,5 @@ function DisableCameraLock()
 //=======================================================//
 function DisableCameraLock_()
 {
-    return (exe.findString("ViewPointTable.txt", RAW) !== -1);
+    return (pe.stringRaw("ViewPointTable.txt") !== -1);
 }
